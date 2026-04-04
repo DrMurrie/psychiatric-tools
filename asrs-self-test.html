@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADHD Screener — ASRS v1.1 | Dokotela</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Dokotela brand colours extracted from site */
+  --dok-navy:    #1b3a4b;   /* primary dark navy/teal */
+  --dok-teal:    #2a7f7f;   /* mid teal accent */
+  --dok-teal-lt: #e6f4f4;   /* light teal background tint */
+  --dok-teal-md: #b2d8d8;   /* mid teal for borders */
+  --dok-white:   #ffffff;
+  --dok-bg:      #f7fafa;   /* very light teal-tinted background */
+  --dok-surface: #ffffff;
+  --dok-border:  #dde8e8;
+  --dok-text:    #1b3a4b;   /* same as primary for headings */
+  --dok-body:    #3d5a6b;   /* slightly lighter for body copy */
+  --dok-muted:   #7a96a3;
+  --dok-faint:   #aabec7;
+  --dok-green:   #1a7f5a;
+  --dok-green-bg:#e6f5ef;
+  --dok-amber:   #7a5200;
+  --dok-amber-bg:#fef3dc;
+  --dok-red:     #9b2335;
+  --dok-red-bg:  #fde8eb;
+  --radius-lg:   16px;
+  --radius:      10px;
+  --radius-sm:   6px;
+  --shadow:      0 2px 12px rgba(27,58,75,0.08);
+  --shadow-sm:   0 1px 4px rgba(27,58,75,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--dok-bg);
+  color: var(--dok-body);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ── Header bar ── */
+.site-header {
+  background: var(--dok-white);
+  border-bottom: 1px solid var(--dok-border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+.site-header-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--dok-navy);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 18px; height: 18px; }
+.logo-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dok-navy);
+  letter-spacing: -0.01em;
+}
+.logo-text span { color: var(--dok-teal); }
+.header-tool-label {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--dok-muted);
+  background: var(--dok-teal-lt);
+  border: 1px solid var(--dok-teal-md);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Page container ── */
+.container { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* ── Hero ── */
+.hero {
+  background: var(--dok-navy);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  margin-bottom: 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  background: rgba(42,127,127,0.25);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dok-teal-md);
+  display: block;
+  margin-bottom: 10px;
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: white;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.hero p {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.75);
+  max-width: 480px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+/* ── Disclaimer ── */
+.disclaimer {
+  background: var(--dok-amber-bg);
+  border: 1px solid #f5d78a;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.82rem;
+  color: var(--dok-amber);
+  margin-bottom: 24px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+/* ── Progress ── */
+.progress-wrap { margin-bottom: 28px; }
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--dok-muted);
+  margin-bottom: 7px;
+}
+.progress-track {
+  height: 4px;
+  background: var(--dok-border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--dok-teal);
+  border-radius: 100px;
+  transition: width 0.35s ease;
+  width: 0%;
+}
+
+/* ── Part label ── */
+.part-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0 10px;
+  border-bottom: 2px solid var(--dok-teal-lt);
+  margin-bottom: 10px;
+}
+.part-label:first-child { padding-top: 0; }
+.part-label-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--dok-navy);
+}
+.part-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: var(--dok-teal-lt);
+  color: var(--dok-teal);
+  border: 1px solid var(--dok-teal-md);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.03em;
+}
+
+/* ── Question cards ── */
+.asrs-q {
+  background: var(--dok-white);
+  border: 1px solid var(--dok-border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+.asrs-q:hover { border-color: var(--dok-teal-md); }
+.asrs-q.answered {
+  border-color: var(--dok-teal);
+  box-shadow: 0 0 0 3px rgba(42,127,127,0.08), var(--shadow-sm);
+}
+
+.asrs-q-text {
+  padding: 14px 18px 12px;
+  font-size: 0.88rem;
+  color: var(--dok-text);
+  line-height: 1.55;
+  font-weight: 400;
+}
+.asrs-qnum {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--dok-teal);
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+/* ── Radio options ── */
+.asrs-opts {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--dok-border);
+}
+.asrs-opt { position: relative; }
+.asrs-opt input[type="radio"] {
+  position: absolute; opacity: 0; width: 100%; height: 100%;
+  cursor: pointer; margin: 0; top: 0; left: 0;
+}
+.asrs-opt label {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 9px 4px; font-size: 0.7rem; font-weight: 500; color: var(--dok-muted);
+  cursor: pointer; transition: all 0.12s; text-align: center;
+  border-right: 1px solid var(--dok-border);
+  min-height: 48px; line-height: 1.3; background: var(--dok-bg);
+}
+.asrs-opt:last-child label { border-right: none; }
+.asrs-opt label.shaded {
+  background: var(--dok-teal-lt);
+  color: var(--dok-teal);
+}
+.asrs-opt input[type="radio"]:checked + label {
+  background: var(--dok-teal);
+  color: white;
+  font-weight: 600;
+}
+
+/* ── Notes field ── */
+.asrs-notes-row {
+  border-top: 1px solid var(--dok-border);
+  padding: 8px 14px;
+  background: #fafcfc;
+}
+.asrs-notes {
+  width: 100%; border: none; background: transparent; resize: none; outline: none;
+  font-family: 'Inter', sans-serif; font-size: 0.79rem; color: var(--dok-body);
+  line-height: 1.5; min-height: 26px; overflow: hidden;
+}
+.asrs-notes::placeholder { color: var(--dok-faint); font-style: italic; }
+
+/* ── Info note ── */
+.asrs-note {
+  font-size: 0.79rem;
+  color: var(--dok-body);
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--dok-teal-lt);
+  border-radius: var(--radius);
+  border: 1px solid var(--dok-teal-md);
+  line-height: 1.55;
+}
+
+/* ── Calculate button ── */
+.action-row { display: flex; justify-content: center; margin: 32px 0; }
+.btn-calc {
+  padding: 14px 36px;
+  background: var(--dok-teal);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(42,127,127,0.3);
+  letter-spacing: 0.01em;
+}
+.btn-calc:hover {
+  background: var(--dok-navy);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(27,58,75,0.25);
+}
+.btn-calc:active { transform: translateY(0); }
+
+/* ── Results ── */
+.results-panel { display: none; }
+
+.diag-banner {
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+.diag-pos { background: var(--dok-navy); color: white; }
+.diag-neg { background: var(--dok-teal-lt); border: 1px solid var(--dok-teal-md); }
+.diag-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 1.1rem;
+}
+.diag-pos .diag-icon { background: rgba(255,255,255,0.15); }
+.diag-neg .diag-icon { background: var(--dok-teal-md); }
+.diag-content h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  letter-spacing: -0.01em;
+}
+.diag-pos .diag-content h2 { color: white; }
+.diag-neg .diag-content h2 { color: var(--dok-navy); }
+.diag-content p {
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+.diag-pos .diag-content p { color: rgba(255,255,255,0.8); }
+.diag-neg .diag-content p { color: var(--dok-body); }
+
+/* ── Result cards ── */
+.result-box {
+  background: var(--dok-white);
+  border: 1px solid var(--dok-border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.result-box-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dok-muted);
+  margin-bottom: 16px;
+}
+
+.score-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid var(--dok-border);
+}
+.score-row:last-of-type { border-bottom: none; }
+.score-label { min-width: 200px; color: var(--dok-body); font-size: 0.82rem; font-weight: 400; }
+.score-bar { flex: 1; height: 6px; background: var(--dok-bg); border-radius: 100px; overflow: hidden; border: 1px solid var(--dok-border); }
+.score-bar-fill { height: 100%; border-radius: 100px; background: var(--dok-teal); transition: width 0.6s ease; }
+.score-val { min-width: 42px; text-align: right; font-size: 0.78rem; font-weight: 600; color: var(--dok-navy); }
+
+.badge {
+  display: inline-block; padding: 4px 12px; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.02em;
+}
+.badge-green { background: var(--dok-green-bg); color: var(--dok-green); border: 1px solid #a8d5c2; }
+.badge-neutral { background: var(--dok-bg); color: var(--dok-muted); border: 1px solid var(--dok-border); }
+
+.screen-result-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 0; border-top: 1px solid var(--dok-border); margin-top: 4px;
+}
+.screen-result-label { font-size: 0.88rem; font-weight: 600; color: var(--dok-navy); }
+
+/* ── Breakdown ── */
+.breakdown-part {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  color: var(--dok-muted); padding: 14px 0 8px; border-bottom: 1px solid var(--dok-border);
+  margin-bottom: 4px;
+}
+.breakdown-q {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 9px 0; border-bottom: 1px solid var(--dok-border); font-size: 0.82rem;
+}
+.breakdown-q:last-child { border-bottom: none; }
+.breakdown-num {
+  font-size: 0.65rem; font-weight: 700; color: var(--dok-teal);
+  min-width: 24px; margin-top: 1px; flex-shrink: 0;
+}
+.breakdown-body { flex: 1; }
+.breakdown-text { color: var(--dok-body); line-height: 1.45; }
+.breakdown-user-note {
+  font-size: 0.75rem; color: var(--dok-muted); font-style: italic; margin-top: 3px; display: block;
+}
+.breakdown-ans {
+  font-size: 0.73rem; font-weight: 600; min-width: 82px; text-align: right; flex-shrink: 0;
+}
+.breakdown-ans.shaded { color: var(--dok-teal); }
+.breakdown-ans.not-shaded { color: var(--dok-faint); font-weight: 400; }
+
+/* ── Report text ── */
+.report-text {
+  background: var(--dok-bg);
+  border: 1px solid var(--dok-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--dok-muted);
+  max-height: 420px;
+  overflow-y: auto;
+  line-height: 1.7;
+  margin-top: 12px;
+}
+
+/* ── Ghost button ── */
+.btn-ghost {
+  padding: 9px 18px; border-radius: 100px;
+  border: 1.5px solid var(--dok-border);
+  background: var(--dok-white); color: var(--dok-body);
+  font-family: 'Inter', sans-serif; font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-ghost:hover { border-color: var(--dok-teal); color: var(--dok-teal); }
+
+.bottom-row { display: flex; justify-content: center; gap: 10px; margin-top: 28px; }
+
+/* ── Footer ── */
+.page-footer {
+  text-align: center;
+  padding: 32px 0 0;
+  font-size: 0.75rem;
+  color: var(--dok-faint);
+  border-top: 1px solid var(--dok-border);
+  margin-top: 40px;
+}
+.page-footer a { color: var(--dok-teal); text-decoration: none; }
+
+@media (max-width: 560px) {
+  .hero { padding: 28px 22px; }
+  .asrs-opt label { font-size: 0.6rem; padding: 7px 2px; min-height: 42px; }
+  .score-label { min-width: 140px; font-size: 0.76rem; }
+  .breakdown-text { font-size: 0.78rem; }
+  .diag-banner { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z" fill="rgba(255,255,255,0.4)"/>
+        <path d="M12 7a5 5 0 100 10A5 5 0 0012 7z" fill="#2a7f7f"/>
+      </svg>
+    </div>
+    <span class="logo-text">Doko<span>tela</span></span>
+    <span class="header-tool-label">Clinical Screener</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-eyebrow">ADHD Self-Screener</span>
+    <h1>ASRS v1.1</h1>
+    <p>The Adult ADHD Self-Report Scale — 18 questions about your experience over the past 6 months. Developed by the World Health Organization.</p>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <span>⚠️</span>
+    <span>This screener is for informational purposes only and does not constitute a clinical diagnosis. Please consult a Dokotela specialist or your GP for a formal assessment.</span>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span>Your progress</span>
+      <span id="progressPct">0 of 18 answered</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div id="asrsContainer"></div>
+
+  <!-- Calculate -->
+  <div class="action-row">
+    <button class="btn-calc" onclick="calculate()">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      Calculate My Results
+    </button>
+  </div>
+
+  <!-- Results -->
+  <div class="results-panel" id="resultsPanel">
+
+    <div id="diagBanner"></div>
+
+    <div class="result-box">
+      <div class="result-box-title">Scores</div>
+      <div class="score-row">
+        <span class="score-label">Part A shaded responses</span>
+        <div class="score-bar"><div class="score-bar-fill" id="barPartA" style="width:0%"></div></div>
+        <span class="score-val" id="valPartA">0 / 6</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Inattention subscale (raw)</span>
+        <div class="score-bar"><div class="score-bar-fill" id="barInatt" style="width:0%"></div></div>
+        <span class="score-val" id="valInatt">0 / 36</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Hyperactivity-Impulsivity (raw)</span>
+        <div class="score-bar"><div class="score-bar-fill" id="barHI" style="width:0%"></div></div>
+        <span class="score-val" id="valHI">0 / 36</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Total raw score</span>
+        <div class="score-bar"><div class="score-bar-fill" id="barTotal" style="width:0%"></div></div>
+        <span class="score-val" id="valTotal">0 / 72</span>
+      </div>
+      <div class="screen-result-row">
+        <span class="screen-result-label">Part A screen result</span>
+        <span id="screenBadge"></span>
+      </div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-box-title">Question-by-Question Breakdown</div>
+      <div id="breakdownContainer"></div>
+    </div>
+
+    <div class="result-box">
+      <div class="result-box-title">Report</div>
+      <button class="btn-ghost" id="copyBtn" onclick="copyReport()">📋 Copy to clipboard</button>
+      <div class="report-text" id="reportText"></div>
+    </div>
+
+    <div class="bottom-row">
+      <button class="btn-ghost" onclick="resetAll()">↺ Start Over</button>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <p>A <a href="https://dokotela.com.au" target="_blank">Dokotela</a> clinical tool &nbsp;·&nbsp; ASRS v1.1 © WHO / Kessler, Adler et al. (2005) &nbsp;·&nbsp; For clinical use only</p>
+  </footer>
+
+</div>
+
+<script>
+const asrsQuestions = [
+  {num:1,  part:"A", sub:"Inatt", shade:[2,3,4], q:"How often do you have trouble wrapping up the final details of a project, once the challenging parts have been done?"},
+  {num:2,  part:"A", sub:"Inatt", shade:[2,3,4], q:"How often do you have difficulty getting things in order when you have to do a task that requires organization?"},
+  {num:3,  part:"A", sub:"Inatt", shade:[2,3,4], q:"How often do you have problems remembering appointments or obligations?"},
+  {num:4,  part:"A", sub:"Inatt", shade:[3,4],   q:"When you have a task that requires a lot of thought, how often do you avoid or delay getting started?"},
+  {num:5,  part:"A", sub:"H/I",   shade:[3,4],   q:"How often do you fidget or squirm with your hands or feet when you have to sit down for a long time?"},
+  {num:6,  part:"A", sub:"H/I",   shade:[3,4],   q:"How often do you feel overly active and compelled to do things, like you were driven by a motor?"},
+  {num:7,  part:"B", sub:"Inatt", shade:[3,4],   q:"How often do you make careless mistakes when you have to work on a boring or difficult project?"},
+  {num:8,  part:"B", sub:"Inatt", shade:[3,4],   q:"How often do you have difficulty keeping your attention when you are doing boring or repetitive work?"},
+  {num:9,  part:"B", sub:"Inatt", shade:[2,3,4], q:"How often do you have difficulty concentrating on what people say to you, even when they are speaking to you directly?"},
+  {num:10, part:"B", sub:"Inatt", shade:[3,4],   q:"How often do you misplace or have difficulty finding things at home or at work?"},
+  {num:11, part:"B", sub:"Inatt", shade:[3,4],   q:"How often are you distracted by activity or noise around you?"},
+  {num:12, part:"B", sub:"H/I",   shade:[2,3,4], q:"How often do you leave your seat in meetings or other situations in which you are expected to remain seated?"},
+  {num:13, part:"B", sub:"H/I",   shade:[3,4],   q:"How often do you feel restless or fidgety?"},
+  {num:14, part:"B", sub:"H/I",   shade:[3,4],   q:"How often do you have difficulty unwinding and relaxing when you have time to yourself?"},
+  {num:15, part:"B", sub:"H/I",   shade:[3,4],   q:"How often do you find yourself talking too much when you are in social situations?"},
+  {num:16, part:"B", sub:"H/I",   shade:[2,3,4], q:"When you are in a conversation, how often do you find yourself finishing the sentences of the people you are talking to, before they can finish them themselves?"},
+  {num:17, part:"B", sub:"H/I",   shade:[3,4],   q:"How often do you have difficulty waiting your turn in situations when turn taking is required?"},
+  {num:18, part:"B", sub:"H/I",   shade:[3,4],   q:"How often do you interrupt others when they are busy?"}
+];
+const labels = ["Never", "Rarely", "Sometimes", "Often", "Very Often"];
+
+let answeredCount = 0;
+
+function buildASRS() {
+  const container = document.getElementById('asrsContainer');
+  let lastPart = '';
+
+  asrsQuestions.forEach(q => {
+    if (q.part !== lastPart) {
+      const lbl = document.createElement('div');
+      lbl.className = 'part-label';
+      if (q.part === 'A') {
+        lbl.innerHTML = `<span class="part-label-text">Part A — Screener (6 items)</span><span class="part-badge">Shaded = consistent with ADHD</span>`;
+      } else {
+        lbl.innerHTML = `<span class="part-label-text">Part B — Additional Symptoms (12 items)</span>`;
+      }
+      container.appendChild(lbl);
+      lastPart = q.part;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'asrs-q';
+    card.id = `card_${q.num}`;
+
+    let html = `<div class="asrs-q-text"><span class="asrs-qnum">Q${q.num} &nbsp;·&nbsp; ${q.sub}</span>${q.q}</div>`;
+
+    html += `<div class="asrs-opts">`;
+    for (let v = 0; v < 5; v++) {
+      const shaded = q.shade.includes(v);
+      html += `<div class="asrs-opt">
+        <input type="radio" name="q${q.num}" value="${v}" id="q${q.num}_${v}" onchange="onAnswer(${q.num})">
+        <label for="q${q.num}_${v}" class="${shaded ? 'shaded' : ''}">${labels[v]}</label>
+      </div>`;
+    }
+    html += `</div>`;
+
+    html += `<div class="asrs-notes-row">
+      <textarea class="asrs-notes" id="notes_${q.num}" placeholder="Add your own examples or notes… (optional)" rows="1" oninput="autoResize(this)"></textarea>
+    </div>`;
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  });
+
+  const note = document.createElement('div');
+  note.className = 'asrs-note';
+  note.innerHTML = '<strong>How to read Part A:</strong> Blue-highlighted columns indicate responses consistent with ADHD. If 4 or more of your 6 Part A answers fall in blue columns, the screener is positive and further evaluation is recommended.';
+  container.appendChild(note);
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function onAnswer(num) {
+  const card = document.getElementById(`card_${num}`);
+  if (!card.classList.contains('answered')) {
+    card.classList.add('answered');
+    answeredCount++;
+  }
+  const pct = Math.round((answeredCount / 18) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = `${answeredCount} of 18 answered`;
+}
+
+function getVal(num) {
+  const el = document.querySelector(`input[name="q${num}"]:checked`);
+  return el ? parseInt(el.value) : null;
+}
+
+function calculate() {
+  let partAShaded = 0, inattTotal = 0, hiTotal = 0, totalRaw = 0;
+  const details = [];
+
+  asrsQuestions.forEach(q => {
+    const v = getVal(q.num);
+    const val = v !== null ? v : 0;
+    const isShaded = v !== null && q.shade.includes(val);
+    const note = document.getElementById(`notes_${q.num}`).value.trim();
+    if (q.part === 'A' && isShaded) partAShaded++;
+    totalRaw += val;
+    if (q.sub === 'Inatt') inattTotal += val; else hiTotal += val;
+    details.push({ ...q, val, label: v !== null ? labels[val] : '(not answered)', isShaded, answered: v !== null, note });
+  });
+
+  const positive = partAShaded >= 4;
+
+  // Banner
+  document.getElementById('diagBanner').innerHTML = positive
+    ? `<div class="diag-banner diag-pos">
+        <div class="diag-icon">✓</div>
+        <div class="diag-content">
+          <h2>Screen Positive</h2>
+          <p>${partAShaded} of 6 Part A responses fell in shaded columns — consistent with ADHD symptoms. This does not confirm a diagnosis. We recommend speaking with a Dokotela specialist for a full assessment.</p>
+        </div>
+      </div>`
+    : `<div class="diag-banner diag-neg">
+        <div class="diag-icon">–</div>
+        <div class="diag-content">
+          <h2>Screen Negative</h2>
+          <p>${partAShaded} of 6 Part A responses fell in shaded columns. Symptoms are not strongly consistent with ADHD on this screener. Clinical judgement should always prevail — speak with your GP if you have concerns.</p>
+        </div>
+      </div>`;
+
+  // Scores
+  document.getElementById('barPartA').style.width  = (partAShaded / 6 * 100) + '%';
+  document.getElementById('valPartA').textContent   = `${partAShaded} / 6`;
+  document.getElementById('barInatt').style.width   = (inattTotal / 36 * 100) + '%';
+  document.getElementById('valInatt').textContent   = `${inattTotal} / 36`;
+  document.getElementById('barHI').style.width      = (hiTotal / 36 * 100) + '%';
+  document.getElementById('valHI').textContent      = `${hiTotal} / 36`;
+  document.getElementById('barTotal').style.width   = (totalRaw / 72 * 100) + '%';
+  document.getElementById('valTotal').textContent   = `${totalRaw} / 72`;
+  document.getElementById('screenBadge').innerHTML  = positive
+    ? `<span class="badge badge-green">Positive — ≥4 / 6 shaded</span>`
+    : `<span class="badge badge-neutral">Negative — ${partAShaded} / 6 shaded</span>`;
+
+  // Breakdown
+  const bc = document.getElementById('breakdownContainer');
+  bc.innerHTML = '';
+  let lastPart = '';
+  details.forEach(d => {
+    if (d.part !== lastPart) {
+      const lbl = document.createElement('div');
+      lbl.className = 'breakdown-part';
+      lbl.textContent = d.part === 'A' ? 'Part A — Screener' : 'Part B — Additional Symptoms';
+      bc.appendChild(lbl);
+      lastPart = d.part;
+    }
+    const row = document.createElement('div');
+    row.className = 'breakdown-q';
+    row.innerHTML = `
+      <span class="breakdown-num">Q${d.num}</span>
+      <span class="breakdown-body">
+        <span class="breakdown-text">${d.q}</span>
+        ${d.note ? `<span class="breakdown-user-note">"${d.note}"</span>` : ''}
+      </span>
+      <span class="breakdown-ans ${d.isShaded ? 'shaded' : 'not-shaded'}">${d.label}${d.isShaded ? ' ●' : ''}</span>`;
+    bc.appendChild(row);
+  });
+
+  // Report
+  const now = new Date().toLocaleDateString('en-AU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  let r = '';
+  r += '═══════════════════════════════════════════════════\n';
+  r += '   ASRS v1.1 — ADULT ADHD SELF-REPORT SCALE\n';
+  r += '   WHO / Kessler, Adler et al. (2005)\n';
+  r += '   Dokotela Clinical Tool\n';
+  r += '═══════════════════════════════════════════════════\n\n';
+  r += `Date: ${now}\n\n`;
+  r += '─── PART A — SCREENER ──────────────────────────────\n\n';
+  details.filter(d => d.part === 'A').forEach(d => {
+    r += `Q${d.num}. [${d.sub}] ${d.q}\n`;
+    r += `  → ${d.label}${d.isShaded ? '  [SHADED]' : ''}\n`;
+    if (d.note) r += `  Notes: ${d.note}\n`;
+    r += '\n';
+  });
+  r += `Part A shaded: ${partAShaded}/6 — ${positive ? 'POSITIVE (≥4)' : 'Negative (<4)'}\n\n`;
+  r += '─── PART B — ADDITIONAL SYMPTOMS ───────────────────\n\n';
+  details.filter(d => d.part === 'B').forEach(d => {
+    r += `Q${d.num}. [${d.sub}] ${d.q}\n`;
+    r += `  → ${d.label}${d.isShaded ? '  [SHADED]' : ''}\n`;
+    if (d.note) r += `  Notes: ${d.note}\n`;
+    r += '\n';
+  });
+  r += '─── SCORING SUMMARY ────────────────────────────────\n\n';
+  r += `Part A shaded:      ${partAShaded}/6   ${positive ? '→ SCREEN POSITIVE' : '→ Screen negative'}\n`;
+  r += `Inattention (raw):  ${inattTotal}/36\n`;
+  r += `H/I (raw):          ${hiTotal}/36\n`;
+  r += `Total (raw):        ${totalRaw}/72\n\n`;
+  r += '⚠️  For informational purposes only — not a clinical diagnosis.\n';
+  r += 'Please consult a Dokotela specialist or your GP for a formal assessment.\n';
+  r += '═══════════════════════════════════════════════════\n';
+  document.getElementById('reportText').textContent = r;
+
+  const panel = document.getElementById('resultsPanel');
+  panel.style.display = 'block';
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+}
+
+function copyReport() {
+  const text = document.getElementById('reportText').textContent;
+  const btn = document.getElementById('copyBtn');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy to clipboard', 2000);
+    });
+  }
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers and start over?')) return;
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.asrs-q').forEach(c => c.classList.remove('answered'));
+  document.querySelectorAll('.asrs-notes').forEach(t => { t.value = ''; t.style.height = 'auto'; });
+  answeredCount = 0;
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressPct').textContent = '0 of 18 answered';
+  document.getElementById('resultsPanel').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildASRS();
+</script>
+</body>
+</html>
