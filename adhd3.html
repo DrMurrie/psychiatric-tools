@@ -1240,7 +1240,7 @@
         <summary>
           <div>
             <div class="card-title">Pre-screens &amp; Collateral</div>
-            <div class="card-subtitle">Quick review summaries and full ASRS.</div>
+            <div class="card-subtitle">Quick review summaries, full ASRS, and full DIVA-5 in three parts.</div>
           </div>
           <span class="section-badge">Open</span>
         </summary>
@@ -1332,7 +1332,61 @@
             </div>
           </details>
 
-          <!-- SUB 3: COLLATERAL HISTORY -->
+          <!-- SUB 3: DIVA PART 1 — INATTENTION -->
+          <details class="card" id="divaPart1Card">
+            <summary>
+              <div>
+                <div class="card-title">DIVA-5 Part 1 — Inattention</div>
+                <div class="card-subtitle">9 inattention symptoms with adult and childhood examples.</div>
+              </div>
+              <span class="badge" id="divaPart1Badge">0 / 9</span>
+            </summary>
+            <div class="card-body">
+              <div class="completion-mode-bar" style="margin-bottom:14px;">
+                <span class="completion-mode-label">Completion mode:</span>
+                <div class="completion-mode-btns" id="diva1ModeMount"></div>
+              </div>
+              <div id="divaPart1Container"></div>
+            </div>
+          </details>
+
+          <!-- SUB 4: DIVA PART 2 — HYPERACTIVITY/IMPULSIVITY -->
+          <details class="card" id="divaPart2Card">
+            <summary>
+              <div>
+                <div class="card-title">DIVA-5 Part 2 — Hyperactivity / Impulsivity</div>
+                <div class="card-subtitle">9 hyperactivity/impulsivity symptoms with adult and childhood examples.</div>
+              </div>
+              <span class="badge" id="divaPart2Badge">0 / 9</span>
+            </summary>
+            <div class="card-body">
+              <div class="completion-mode-bar" style="margin-bottom:14px;">
+                <span class="completion-mode-label">Completion mode:</span>
+                <div class="completion-mode-btns" id="diva2ModeMount"></div>
+              </div>
+              <div id="divaPart2Container"></div>
+            </div>
+          </details>
+
+          <!-- SUB 5: DIVA PART 3 — CRITERIA & IMPAIRMENT -->
+          <details class="card" id="divaPart3Card">
+            <summary>
+              <div>
+                <div class="card-title">DIVA-5 Part 3 — Criteria &amp; Impairment</div>
+                <div class="card-subtitle">Age of onset, functional impairment areas, clinical significance, and exclusion.</div>
+              </div>
+              <span class="badge" id="divaPart3Badge">0 / 4</span>
+            </summary>
+            <div class="card-body">
+              <div class="completion-mode-bar" style="margin-bottom:14px;">
+                <span class="completion-mode-label">Completion mode:</span>
+                <div class="completion-mode-btns" id="diva3ModeMount"></div>
+              </div>
+              <div id="divaPart3Container"></div>
+            </div>
+          </details>
+
+          <!-- SUB 6: COLLATERAL HISTORY -->
           <details class="card" id="collateralHistoryCard">
             <summary>
               <div>
@@ -2220,80 +2274,30 @@
       'Family member suggested',
       'Partner suggested',
       'Workplace difficulties',
-      'Academic / study difficulties',
-      'Social media / online content',
+      'Diagnosed as a child',
+      'Study difficulties',
       'Social media',
       'Friend diagnosed with ADHD',
       'Child diagnosed — recognised in self'
     ];
 
-    var pcDifficultiesGrouped = [
-      { group: 'Core Symptoms', items: [
-        'Difficulty focusing / concentrating',
-        'Poor organisation / time management',
-        'Procrastination',
-        'Forgetfulness / memory issues',
-        'Restlessness / inability to sit still',
-        'Emotional dysregulation / mood swings',
-        'Impulsive behaviour / decisions',
-        'Sleep problems',
-        'Anxiety',
-        'Low mood / depression'
-      ]},
-      { group: 'Work / Education', items: [
-        'Underperformance at work despite effort',
-        'Did not complete education or training needed for intended work',
-        'Working below expected level given education or ability',
-        'Pattern of many short-lasting jobs',
-        'Difficulty with administrative work or planning at work',
-        'Not achieving expected promotions or career progression',
-        'Left work following arguments or dismissal',
-        'Difficulty meeting deadlines at work',
-        'Difficulty completing paperwork or administrative tasks'
-      ]},
-      { group: 'Relationships / Family', items: [
-        'Relationship difficulties',
-        'Marital strain',
-        'Difficulty with kids',
-        'Frequent relationship difficulties or arguments',
-        'Pattern of quickly starting or ending relationships',
-        'Unequal relationship dynamic due to symptoms',
-        'Relationship breakdown or divorce related to symptoms',
-        'Problems with parenting or co-parenting due to symptoms',
-        'Difficulty with household management or administration',
-        'Financial problems or impulsive spending',
-        'Not daring to start a relationship'
-      ]},
-      { group: 'Social Contacts', items: [
-        'Difficulty maintaining social contacts over time',
-        'Conflicts arising from communication problems',
-        'Difficulty initiating social contacts',
-        'Low self-assertiveness from negative social experiences',
-        'Not being attentive (forgetting events, calls, to empathise)',
-        'Tendency to dominate conversations'
-      ]},
-      { group: 'Free Time / Hobbies', items: [
-        'Unable to relax properly during free time',
-        'Needing excessive sport or activity to feel calm',
-        'Unable to finish a book or watch a film',
-        'Continually busy, becoming overtired',
-        'Tire quickly of hobbies or activities',
-        'Accidents or near-misses from reckless or distracted behaviour',
-        'Sensation seeking or taking excessive risks',
-        'Binge eating'
-      ]},
-      { group: 'Self-Confidence / Self-Image', items: [
-        'Persistent negative self-image from experiences of failure',
-        'Fear of failure when starting new things',
-        'Excessive or intense reaction to criticism',
-        'Perfectionism causing distress or avoidance',
-        'Chronic low self-esteem linked to ADHD symptoms',
-        'Distressed by the symptoms themselves'
-      ]}
+    var pcDifficulties = [
+      'Difficulty focusing / concentrating',
+      'Poor organisation / time management',
+      'Procrastination',
+      'Forgetfulness / memory issues',
+      'Restlessness / inability to sit still',
+      'Emotional dysregulation / mood swings',
+      'Underperformance at work',
+      'Relationship difficulties',
+      'Marital strain',
+      'Difficulty with kids',
+      'Sleep problems',
+      'Anxiety',
+      'Low mood / depression',
+      'Impulsive behaviour / decisions',
+      'Binge eating'
     ];
-    // Flat list derived from grouped structure (used for state init, badge counts, etc.)
-    var pcDifficulties = [];
-    pcDifficultiesGrouped.forEach(function(g) { g.items.forEach(function(item) { pcDifficulties.push(item); }); });
 
     var STORAGE_KEY = 'adhd_assessment_ios_v5';
     var CLINICIAN_KEY = 'dokotela_clinician_v1';
@@ -2875,19 +2879,8 @@
         });
         document.getElementById(mountId).innerHTML = html;
       }
-      function makeGroupedChips(mountId, groups, stateObj) {
-        var html = '';
-        groups.forEach(function(g) {
-          html += '<div style="width:100%;margin-top:10px;margin-bottom:2px;"><span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted,#667085);padding:2px 6px;background:var(--surface2,#f1f5f9);border-radius:4px;">' + escapeHtml(g.group) + '</span></div>';
-          g.items.forEach(function(item) {
-            var cls = stateObj[item] ? 'pc-active' : '';
-            html += '<button type="button" class="pc-chip ' + cls + '" data-pc-chip="' + escapeHtml(item) + '">' + escapeHtml(item) + '</button>';
-          });
-        });
-        document.getElementById(mountId).innerHTML = html;
-      }
       makeChips('pcReasonsMount', pcReasons, state.presentingConcerns.reasons);
-      makeGroupedChips('pcDifficultiesMount', pcDifficultiesGrouped, state.presentingConcerns.difficulties);
+      makeChips('pcDifficultiesMount', pcDifficulties, state.presentingConcerns.difficulties);
       document.getElementById('pcReasonsNotes').value = state.presentingConcerns.reasonsNotes || '';
       document.getElementById('pcDifficultiesNotes').value = state.presentingConcerns.difficultiesNotes || '';
 
@@ -3667,7 +3660,7 @@
       1: {
         title: "Baseline Assessment & Cardiac Screen",
         subtitle: "Box A: Cardiac Risk Indicators",
-        content: '<div class="algo-card" style="margin-bottom:12px;"><div class="algo-card-title">Complete Baseline Assessment</div><ul style="padding-left:18px;font-size:0.87rem;"><li>Confirm diagnosis and functional impairment</li><li>Document current medications</li><li>Measure height and weight</li><li>Baseline HR, BP (correct cuff size)</li></ul></div><div class="algo-alert algo-alert-warning"><strong>Box A – Does the patient have ANY of the following?</strong><ul style="margin:8px 0 0 18px;padding:0;font-size:0.86rem;line-height:1.7;"><li>History of congenital heart disease or previous cardiac surgery</li><li>Sudden death in first-degree relative &lt;40 years (cardiac cause)</li><li>Shortness of breath on exertion compared with peers</li><li>Fainting on exertion</li><li>Palpitations (rapid, regular, sudden start/stop)</li><li>Chest pain suggesting cardiac origin</li><li>Signs of heart failure</li><li>Cardiac murmur on examination</li><li>Hypertension</li></ul></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.1.3</div>',
+        content: '<div class="algo-card" style="margin-bottom:12px;"><div class="algo-card-title">Complete Baseline Assessment</div><ul style="padding-left:18px;font-size:0.87rem;"><li>Confirm diagnosis and functional impairment</li><li>Document current medications</li><li>Nil concerns on ECG, UDS, BMI, BP, HR</li></ul></div><div class="algo-alert algo-alert-warning"><strong>Does the patient have ANY of the following?</strong><ul style="margin:8px 0 0 18px;padding:0;font-size:0.86rem;line-height:1.7;"><li>History of congenital heart disease or previous cardiac surgery</li><li>Sudden death in first-degree relative &lt;40 years (cardiac cause)</li><li>Shortness of breath on exertion compared with peers</li><li>Fainting on exertion</li><li>Palpitations (rapid, regular, sudden start/stop)</li><li>Chest pain suggesting cardiac origin</li><li>Signs of heart failure</li><li>Cardiac murmur on examination</li><li>Hypertension</li></ul></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.1.3</div>',
         buttons: [
           { text: "Yes — Cardiac Risk Present", next: 'cardiac-referral', cls: 'algo-btn-secondary' },
           { text: "No — Proceed to Treatment", next: 2, cls: 'algo-btn-primary' }
@@ -3677,7 +3670,7 @@
         title: "Cardiology Referral Required",
         subtitle: "Specialist assessment before stimulant initiation",
         badge: "cardiac",
-        content: '<div class="algo-alert algo-alert-danger"><strong>Action Required:</strong><ul style="margin-top:6px;padding-left:18px;"><li>Refer for cardiology opinion before starting any stimulant</li><li>Also consider cardiology review for atomoxetine/guanfacine</li><li>ECG and further investigations as per cardiologist</li></ul></div><div class="algo-card"><div class="algo-card-title">After specialist clearance:</div><p style="font-size:0.87rem;">Once cardiology provides clearance, return to treatment decision pathway.</p></div><div class="algo-ref">Ref: AADPA Prescribing Guide & Guideline Rec 5.1.3</div>',
+        content: '<div class="algo-alert algo-alert-danger"><strong>Action Required:</strong><ul style="margin-top:6px;padding-left:18px;"><li>Refer for cardiology or further GP medical review before starting any stimulant</li><li>Also consider cardiology review for atomoxetine/guanfacine and further investigations as per cardiologist/GP</li></ul></div><div class="algo-card"><div class="algo-card-title">After specialist clearance:</div><p style="font-size:0.87rem;">Once cardiology provides clearance, return to treatment decision pathway.</p></div><div class="algo-ref">Ref: AADPA Prescribing Guide & Guideline Rec 5.1.3</div>',
         buttons: [{ text: "Cardiology Clearance Obtained — Continue", next: 2 }]
       },
       2: {
@@ -3693,14 +3686,14 @@
         title: "First-Line Non-Stimulant Selection",
         subtitle: "Branch 1: Non-stimulant as first-line",
         badge: "line1",
-        content: '<div class="algo-alert algo-alert-info"><strong>First-line non-stimulant options for adults:</strong></div><div class="algo-med-grid"><div class="algo-med-card" data-med="atomoxetine"><div class="algo-med-name">Atomoxetine</div><div class="algo-med-type">Noradrenaline reuptake inhibitor</div><ul><li>PBS listed for adults</li><li>Monitor BP, HR, liver function</li><li>May help comorbid anxiety</li></ul></div><div class="algo-med-card" data-med="guanfacine"><div class="algo-med-name">Guanfacine XR</div><div class="algo-med-type">Alpha-2A agonist</div><ul><li>Not PBS listed (private script)</li><li>Monitor BP, HR, sedation</li><li>May help emotional dysregulation</li></ul></div></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.4.4</div>',
+        content: '<div class="algo-alert algo-alert-info"><strong>First-line non-stimulant options for adults:</strong></div><div class="algo-med-grid"><div class="algo-med-card" data-med="atomoxetine"><div class="algo-med-name">Atomoxetine</div><div class="algo-med-type">Noradrenaline reuptake inhibitor</div><ul><li>PBS only if diagnosed <18 but private scripts relatively cheap</li><li>Monitor BP, HR, liver function</li><li>May help comorbid anxiety</li></ul></div><div class="algo-med-card" data-med="guanfacine"><div class="algo-med-name">Guanfacine XR</div><div class="algo-med-type">Alpha-2A agonist</div><ul><li>Only PBS listed if ADHD diagnosed <18 - private scripts can be a little expensive</li><li>Monitor BP, HR, sedation</li><li>May help emotional dysregulation</li></ul></div></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.4.4</div>',
         buttons: [{ text: "Select Medication & Begin Titration", next: 5 }]
       },
       5: {
         title: "Non-Stimulant Titration & Monitoring",
         subtitle: "First-line non-stimulant trial",
         badge: "line1",
-        content: '<div class="algo-card"><div class="algo-card-title">Titration Protocol</div><ul style="padding-left:18px;font-size:0.87rem;"><li>Start at recommended initial dose</li><li>Titrate gradually to adequate therapeutic dose</li><li>Allow sufficient time: atomoxetine 6–8 weeks; guanfacine 4–6 weeks</li></ul></div><div class="algo-monitoring"><div class="algo-monitoring-title">Monitor During Titration:</div><ul><li>ADHD core symptoms (ASRS or similar)</li><li>Functional outcomes (work, study, home, relationships)</li><li>Blood pressure and heart rate</li><li>Adverse effects: sedation, mood changes, suicidality screening</li><li>Atomoxetine: liver function tests if clinically indicated</li></ul></div><div class="algo-ref">Ref: AADPA Prescribing Guide</div>',
+        content: '<div class="algo-card"><div class="algo-card-title">Titration Protocol</div><ul style="padding-left:18px;font-size:0.87rem;"><li>Start at recommended initial dose (Atomoxetine: usually start 40 mg for adults, 18 mg for children - Guanfacine: usually start 1 mg)</li><li>Titrate gradually to adequate therapeutic dose (Atomoxetine: usually increase by 20 mg per 1-2 weeks as tolerated until reach 80-100 mg - Guanfacine increase by 1 mg each 1-2 weeks until reach 4-7 mg for adults)</li><li>Allow sufficient time: atomoxetine 6–8 weeks; guanfacine 4–6 weeks</li></ul></div><div class="algo-monitoring"><div class="algo-monitoring-title">Monitor During Titration:</div><ul><li>ADHD core symptoms (ASRS or similar)</li><li>Functional outcomes (work, study, home, relationships)</li><li>Blood pressure and heart rate</li><li>Adverse effects: sedation, mood changes, suicidality screening</li><li>Atomoxetine: liver function tests if clinically indicated</li></ul></div><div class="algo-ref">Ref: AADPA Prescribing Guide</div>',
         buttons: [
           { text: "Good Response — Continue Treatment", next: 11, cls: 'algo-btn-primary' },
           { text: "Inadequate Response — Try Other Non-Stimulant", next: 'switch-nonstim', cls: 'algo-btn-secondary' },
@@ -3721,7 +3714,7 @@
         title: "First-Line Stimulant Selection",
         subtitle: "Branch 2: Stimulant as first-line",
         badge: "line1",
-        content: '<div class="algo-alert algo-alert-info"><strong>First-line stimulant options for adults:</strong></div><div class="algo-med-grid"><div class="algo-med-card" data-med="methylphenidate-ir"><div class="algo-med-name">Methylphenidate IR</div><div class="algo-med-type">Short-acting stimulant</div><ul><li>Multiple daily doses</li><li>Flexible dosing</li><li>PBS: Authority Required</li></ul></div><div class="algo-med-card" data-med="methylphenidate-mr"><div class="algo-med-name">Methylphenidate MR</div><div class="algo-med-type">Long-acting stimulant</div><ul><li>Once-daily dosing</li><li>PBS: Concerta (Authority)</li></ul></div><div class="algo-med-card" data-med="dexamphetamine"><div class="algo-med-name">Dexamphetamine</div><div class="algo-med-type">Short-acting stimulant</div><ul><li>Multiple daily doses</li><li>PBS listed for adults</li><li>Lower cost option</li></ul></div><div class="algo-med-card" data-med="lisdexamfetamine"><div class="algo-med-name">Lisdexamfetamine</div><div class="algo-med-type">Long-acting prodrug</div><ul><li>Once-daily dosing</li><li>PBS: Not listed (private)</li></ul></div></div><div class="algo-card" style="margin-top:8px;"><div class="algo-card-title">Selection Considerations:</div><ul style="padding-left:18px;font-size:0.85rem;"><li><strong>Long-acting preferred</strong> if misuse/diversion risk, for adherence</li><li>Consider PBS restrictions, cost, excipients</li></ul></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.4.1; Prescribing Guide</div>',
+        content: '<div class="algo-alert algo-alert-info"><strong>First-line stimulant options for adults:</strong></div><div class="algo-med-grid"><div class="algo-med-card" data-med="methylphenidate-ir"><div class="algo-med-name">Methylphenidate IR</div><div class="algo-med-type">Short-acting stimulant</div><ul><li>Multiple daily doses</li><li>Flexible dosing</li><li>PBS listed for ADHD</li></ul></div><div class="algo-med-card" data-med="methylphenidate-mr"><div class="algo-med-name">Methylphenidate MR</div><div class="algo-med-type">Long-acting stimulant</div><ul><li>Once-daily dosing</li><li>PBS: Concerta (Authority)</li></ul></div><div class="algo-med-card" data-med="dexamphetamine"><div class="algo-med-name">Dexamphetamine</div><div class="algo-med-type">Short-acting stimulant</div><ul><li>Multiple daily doses</li><li>PBS listed for ADHD and narcolepsy</li><li>Highly effective, allows for careful dose adjustments</li></ul></div><div class="algo-med-card" data-med="lisdexamfetamine"><div class="algo-med-name">Lisdexamfetamine</div><div class="algo-med-type">Long-acting prodrug</div><ul><li>Once-daily dosing</li><li>PBS listed for ADHD</li></ul></div></div><div class="algo-card" style="margin-top:8px;"><div class="algo-card-title">Selection Considerations:</div><ul style="padding-left:18px;font-size:0.85rem;"><li><strong>Long-acting preferred</strong> if misuse/diversion risk, for convenience, if there are cardiac concerns and want a gentler onset</li><li>Consider duration of action needed, onset time, and whether short acting allows for more adjustment</li></ul></div><div class="algo-ref">Ref: AADPA Guideline Rec 5.4.1; Prescribing Guide</div>',
         buttons: [{ text: "Select Stimulant & Begin Titration", next: 6 }]
       },
       6: {
@@ -4348,19 +4341,100 @@
         : '<span class="ps-badge-negative">Screen Negative (&lt;4 / 6)</span>';
     }
 
+    // Full DIVA build
+    function buildFullDIVA(symptoms, containerId, prefix, badgeId, maxCount) {
+      var container = document.getElementById(containerId);
+      symptoms.forEach(function(s) {
+        var card = document.createElement('div');
+        card.className = 'ps-diva-card'; card.id = 'ps_diva_' + prefix + '_' + s.id;
+        var html = '<div class="ps-diva-head"><span class="ps-diva-code">' + s.code + '</span><div class="ps-diva-q-text">' + escapeHtml(s.q) + '</div>';
+        if (s.note) html += '<div class="ps-diva-note">' + escapeHtml(s.note) + '</div>';
+        html += '</div><div class="ps-diva-cols">';
+        html += '<div class="ps-diva-col"><div class="ps-diva-col-title ps-col-adult">Adulthood (past 6+ months)</div>';
+        s.adultEx.forEach(function(ex, i) { html += '<div class="ps-diva-ex"><input type="checkbox" id="ps_' + prefix + '_' + s.id + '_aEx' + i + '"><label for="ps_' + prefix + '_' + s.id + '_aEx' + i + '">' + escapeHtml(ex) + '</label></div>'; });
+        html += '</div><div class="ps-diva-col"><div class="ps-diva-col-title ps-col-child">Childhood (age 5–12)</div>';
+        s.childEx.forEach(function(ex, i) { html += '<div class="ps-diva-ex"><input type="checkbox" id="ps_' + prefix + '_' + s.id + '_cEx' + i + '"><label for="ps_' + prefix + '_' + s.id + '_cEx' + i + '">' + escapeHtml(ex) + '</label></div>'; });
+        html += '</div></div>';
+        html += '<div class="ps-diva-verdict">';
+        html += '<div class="ps-diva-verdict-col"><span class="ps-verdict-lbl">Adult:</span><div class="ps-vbtns"><button class="ps-vbtn" id="ps_' + prefix + '_' + s.id + '_aYes" onclick="setPSVerdict(\'' + prefix + '\',\'' + s.id + '\',\'a\',\'yes\',\'' + badgeId + '\',' + maxCount + ')">Yes</button><button class="ps-vbtn" id="ps_' + prefix + '_' + s.id + '_aNo" onclick="setPSVerdict(\'' + prefix + '\',\'' + s.id + '\',\'a\',\'no\',\'' + badgeId + '\',' + maxCount + ')">No</button></div></div>';
+        html += '<div class="ps-diva-verdict-col"><span class="ps-verdict-lbl">Childhood:</span><div class="ps-vbtns"><button class="ps-vbtn" id="ps_' + prefix + '_' + s.id + '_cYes" onclick="setPSVerdict(\'' + prefix + '\',\'' + s.id + '\',\'c\',\'yes\',\'' + badgeId + '\',' + maxCount + ')">Yes</button><button class="ps-vbtn" id="ps_' + prefix + '_' + s.id + '_cNo" onclick="setPSVerdict(\'' + prefix + '\',\'' + s.id + '\',\'c\',\'no\',\'' + badgeId + '\',' + maxCount + ')">No</button></div></div>';
+        html += '</div>';
+        card.innerHTML = html;
+        container.appendChild(card);
+      });
+    }
+
+    function setPSVerdict(prefix, id, period, val, badgeId, maxCount) {
+      var key = prefix + '_' + id + '_' + period;
+      psVerdicts[key] = val;
+      if (!state.psVerdicts) state.psVerdicts = {};
+      state.psVerdicts[key] = val;
+      var yBtn = document.getElementById('ps_' + prefix + '_' + id + '_' + period + 'Yes');
+      var nBtn = document.getElementById('ps_' + prefix + '_' + id + '_' + period + 'No');
+      if (yBtn) yBtn.className = 'ps-vbtn' + (val === 'yes' ? ' ps-yes' : '');
+      if (nBtn) nBtn.className = 'ps-vbtn' + (val === 'no' ? ' ps-no' : '');
+      document.getElementById('ps_diva_' + prefix + '_' + id).classList.add('ps-diva-answered');
+      var syms = prefix === 'att' ? psAttentionSymptoms : psHISymptoms;
+      var count = 0;
+      syms.forEach(function(s) { if (psVerdicts[prefix + '_' + s.id + '_a'] !== undefined) count++; });
+      document.getElementById(badgeId).textContent = count + ' / ' + maxCount;
+      saveState();
+    }
+
+    // DIVA Part 3
+    function buildDIVAPart3() {
+      var container = document.getElementById('divaPart3Container');
+      var html = '';
+
+      // Crit B
+      html += '<div class="ps-crit-card"><div class="ps-crit-title">B — Age of Onset</div><div class="ps-crit-q">Were several of these symptoms present before the age of 12?</div><div class="ps-crit-opts"><button class="ps-crit-btn" id="ps_critB_yes" onclick="setPSCrit(\'critB\',\'yes\')">Yes — symptoms were present as a child</button><button class="ps-crit-btn" id="ps_critB_no" onclick="setPSCrit(\'critB\',\'no\')">No — symptoms started in adulthood</button></div></div>';
+
+      // Impairment areas
+      html += '<div class="ps-crit-card"><div class="ps-crit-title">C — Areas of Functional Impairment</div><div class="ps-crit-q">Tick all areas where symptoms cause meaningful difficulty. ADHD criteria require impairment in at least two settings.</div>';
+      psImpairmentAreas.forEach(function(area) {
+        html += '<div class="ps-imp-section"><div class="ps-imp-section-title">' + area.title + '</div><div class="ps-imp-grid">';
+        area.items.forEach(function(item, i) {
+          html += '<div class="ps-imp-item"><input type="checkbox" id="ps_imp_' + area.key + '_' + i + '" onchange="updatePSImpCount()"><label for="ps_imp_' + area.key + '_' + i + '">' + escapeHtml(item) + '</label></div>';
+        });
+        html += '</div></div>';
+      });
+      html += '<div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;"><div class="ps-crit-q">Based on what you\'ve ticked above, are symptoms affecting two or more separate areas of life?</div><div class="ps-crit-opts"><button class="ps-crit-btn" id="ps_critC_yes" onclick="setPSCrit(\'critC\',\'yes\')">Yes — multiple settings affected</button><button class="ps-crit-btn" id="ps_critC_no" onclick="setPSCrit(\'critC\',\'no\')">No — only one setting</button></div><div id="psImpCountNote" style="font-size:0.78rem;color:var(--muted);margin-top:8px;"></div></div></div>';
+
+      // Crits D and E
+      html += '<div class="ps-crit-card"><div class="ps-crit-title">D — Clinical Significance</div><div class="ps-crit-q">Do these symptoms clearly interfere with or reduce quality of life?</div><div class="ps-crit-opts"><button class="ps-crit-btn" id="ps_critD_yes" onclick="setPSCrit(\'critD\',\'yes\')">Yes — significant impact</button><button class="ps-crit-btn" id="ps_critD_no" onclick="setPSCrit(\'critD\',\'no\')">No — minimal impact</button></div></div>';
+      html += '<div class="ps-crit-card"><div class="ps-crit-title">E — Exclusion</div><div class="ps-crit-q">Could these symptoms be better explained by another condition (e.g. anxiety, mood disorder, trauma)?</div><div class="ps-crit-opts"><button class="ps-crit-btn" id="ps_critE_no" onclick="setPSCrit(\'critE\',\'no\')">No — not better explained by another condition</button><button class="ps-crit-btn" id="ps_critE_yes" onclick="setPSCrit(\'critE\',\'yes\')">Yes — another condition likely explains them</button></div></div>';
+
+      container.innerHTML = html;
+    }
+
     function setPSCrit(id, val) {
       psCritValues[id] = val;
       if (!state.psCritValues) state.psCritValues = {};
       state.psCritValues[id] = val;
       ['yes','no'].forEach(function(v) { var el = document.getElementById('ps_' + id + '_' + v); if (el) el.classList.toggle('ps-crit-active', v === val); });
       psCritsAnswered.add(id);
+      document.getElementById('divaPart3Badge').textContent = psCritsAnswered.size + ' / 4';
+    }
+
+    function updatePSImpCount() {
+      var total = 0; var areasHit = [];
+      psImpairmentAreas.forEach(function(area) {
+        var hit = false;
+        area.items.forEach(function(_, i) { var el = document.getElementById('ps_imp_' + area.key + '_' + i); if (el && el.checked) { total++; hit = true; } });
+        if (hit) areasHit.push(area.title);
+      });
+      var note = document.getElementById('psImpCountNote');
+      if (note) note.textContent = total > 0 ? total + ' item' + (total !== 1 ? 's' : '') + ' checked across ' + areasHit.length + ' area' + (areasHit.length !== 1 ? 's' : '') + ': ' + areasHit.join(', ') + '.' : '';
     }
 
     var completionModes = ['Pre-Completed', 'Clinician Completed', 'Pre-Completed & Clinician Verified'];
     var completionModeTargets = [
       { mountId: 'patientASRSModeMount', key: 'asrsMode' },
       { mountId: 'qrDIVAModeMount',      key: 'qrDIVAMode' },
-      { mountId: 'fullASRSModeMount',    key: 'fullASRSMode' }
+      { mountId: 'fullASRSModeMount',    key: 'fullASRSMode' },
+      { mountId: 'diva1ModeMount',       key: 'diva1Mode' },
+      { mountId: 'diva2ModeMount',       key: 'diva2Mode' },
+      { mountId: 'diva3ModeMount',       key: 'diva3Mode' }
     ];
 
     function renderCompletionModes() {
@@ -4496,6 +4570,41 @@
 
     // Initialise pre-screens
     function restoreDIVAVisualState() {
+      // Restore full DIVA Part 1 & 2 button states
+      ['att', 'hi'].forEach(function(prefix) {
+        var syms = prefix === 'att' ? psAttentionSymptoms : psHISymptoms;
+        var badgeId = prefix === 'att' ? 'divaPart1Badge' : 'divaPart2Badge';
+        var count = 0;
+        syms.forEach(function(s) {
+          ['a', 'c'].forEach(function(period) {
+            var key = prefix + '_' + s.id + '_' + period;
+            var val = psVerdicts[key];
+            if (val) {
+              var yBtn = document.getElementById('ps_' + prefix + '_' + s.id + '_' + period + 'Yes');
+              var nBtn = document.getElementById('ps_' + prefix + '_' + s.id + '_' + period + 'No');
+              if (yBtn) yBtn.className = 'ps-vbtn' + (val === 'yes' ? ' ps-yes' : '');
+              if (nBtn) nBtn.className = 'ps-vbtn' + (val === 'no' ? ' ps-no' : '');
+              var card = document.getElementById('ps_diva_' + prefix + '_' + s.id);
+              if (card) card.classList.add('ps-diva-answered');
+            }
+          });
+          if (psVerdicts[prefix + '_' + s.id + '_a'] !== undefined) count++;
+        });
+        var badge = document.getElementById(badgeId);
+        if (badge) badge.textContent = count + ' / 9';
+      });
+
+      // Restore DIVA Part 3 criterion buttons
+      ['critB', 'critC', 'critD', 'critE'].forEach(function(id) {
+        var val = psCritValues[id];
+        if (val) {
+          ['yes', 'no'].forEach(function(v) {
+            var btn = document.getElementById('ps_' + id + '_' + v);
+            if (btn) btn.classList.toggle('ps-crit-active', v === val);
+          });
+        }
+      });
+
       // Restore QR quick review buttons
       psAttentionSymptoms.concat(psHISymptoms).forEach(function(s) {
         ['att', 'hi'].forEach(function(prefix) {
@@ -4539,6 +4648,9 @@
       buildQRDiva(psHISymptoms, 'qrHIMount', 'hi');
       buildQRCriteria();
       buildFullASRS();
+      buildFullDIVA(psAttentionSymptoms, 'divaPart1Container', 'att', 'divaPart1Badge', 9);
+      buildFullDIVA(psHISymptoms, 'divaPart2Container', 'hi', 'divaPart2Badge', 9);
+      buildDIVAPart3();
       restoreDIVAVisualState();
       renderCollateralTable();
       bindPreScreenEvents();
@@ -4791,7 +4903,7 @@
       state.medical.safescriptDetail = '';
       malingeringList.forEach(function(n) { state.medical.malingering[n] = false; });
 
-      // ── 8. DSM Criteria B/C/D/E (Quick Review buttons) ──
+      // ── 8. DSM Criteria B/C/D/E (DIVA Part 3 buttons) ──
       // critB/C/D = yes, critE = no (not better explained by another condition)
       if (!state.psCritValues) state.psCritValues = {};
       ['critB','critC','critD'].forEach(function(id) {
@@ -4830,8 +4942,25 @@
         buildQRCriteria();
       }
 
-      // Restore QR visual state
+      // Full DIVA Part 1 & 2 button highlights + badges
       restoreDIVAVisualState();
+
+      // DIVA Part 3 — rebuild then re-apply active classes
+      if (document.getElementById('divaPart3Container')) {
+        buildDIVAPart3();
+        ['critB','critC','critD'].forEach(function(id) {
+          var y = document.getElementById('ps_'+id+'_yes');
+          var n = document.getElementById('ps_'+id+'_no');
+          if (y) y.classList.add('ps-crit-active');
+          if (n) n.classList.remove('ps-crit-active');
+        });
+        var eN = document.getElementById('ps_critE_no');
+        var eY = document.getElementById('ps_critE_yes');
+        if (eN) eN.classList.add('ps-crit-active');
+        if (eY) eY.classList.remove('ps-crit-active');
+        var b3 = document.getElementById('divaPart3Badge');
+        if (b3) b3.textContent = '4 / 4';
+      }
 
       // DSM criteria display
       if (typeof renderDSMCriteria === 'function') renderDSMCriteria();
@@ -4932,20 +5061,20 @@
       });
       html += '</div>';
 
-      html += '<div class="dsm-crit-source">Source: Quick Review DIVA · Childhood symptoms inform Criterion B only · Toggle ○/✓ to override individual symptoms</div>';
+      html += '<div class="dsm-crit-source">Source: DIVA Part 1 & 2 + Quick Review · Childhood symptoms inform Criterion B only · Toggle ○/✓ to override individual symptoms</div>';
       html += '</div>'; // end critA row
 
       // ── Criteria B–E ──
       var otherCriteria = [
         { id: 'critB', label: 'Criterion B — Onset before age 12',
           detail: 'Several symptoms present before age 12. Childhood DIVA: Inattention ' + counts.attChild + '/9, H/I ' + counts.hiChild + '/9.',
-          source: 'Quick Review / Developmental history' },
+          source: 'DIVA Part 3 / Developmental history' },
         { id: 'critC', label: 'Criterion C — Cross-situational',
           detail: 'Symptoms present in two or more settings (home, work/school, social).',
-          source: 'Quick Review / Cross-situational history' },
+          source: 'DIVA Part 3 / Cross-situational history' },
         { id: 'critD', label: 'Criterion D — Functional impairment',
           detail: 'Symptoms interfere with or reduce quality of social, academic, or occupational functioning.',
-          source: 'Quick Review / Impairment history' },
+          source: 'DIVA Part 3 / Impairment history' },
         { id: 'critE', label: 'Criterion E — Not better explained',
           detail: 'Symptoms not better explained by another mental disorder.',
           source: 'Differential review' }
@@ -5318,7 +5447,7 @@ const MEDS = {
     class: 'stimulant', scriptNote: 'Concerta capsules (Dx <18 yrs required)', multiCap: false, singleCap: true, mustDxUnder18: true,
   },
   strattera: {
-    name: 'Strattera', brandName: 'Strattera (atomoxetine)', form: 'capsule', unit: 'mg',
+    name: 'Atomoxetine', brandName: 'Strattera', form: 'capsule', unit: 'mg',
     strengths: [10, 18, 25, 40, 60, 80], defaultStrength: 25, doseOptions: null,
     onset: 'Delayed: 4–12 weeks for full therapeutic effect', duration: '24 hours',
     notes: 'Non-stimulant SNRI. Must be swallowed whole. Full effect takes 4–12 weeks.',
@@ -5370,7 +5499,7 @@ const PLAN_PRESETS = {
     ]
   },
   dexTitration: {
-    label: 'Dex IR — Standard Titration', mode: 'titration',
+    label: 'Dexamfetamine 5 mg IR — Standard Titration', mode: 'titration',
     authorityNote: 'Stimulant authority script. Add CA2023 to the script. Authority via PRODA recommended.',
     phases: [
       { label: 'Phase 1 — Initiation', duration: 2, unit: 'days', ongoing: false, note: 'Starting dose. Take morning dose immediately on waking.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
@@ -5384,8 +5513,8 @@ const PLAN_PRESETS = {
     ]
   },
   ritalinTitration: {
-    label: 'Ritalin IR — Standard Titration', mode: 'titration',
-    authorityNote: 'Stimulant authority script. Add CA2023 to the script. Authority via PRODA recommended.',
+    label: 'Methylphenidate 10 mg IR (Ritalin or Artige) — Standard Titration', mode: 'titration',
+    authorityNote: 'Stimulant authority script. Add CA2023 to the script for NSW. Authority via PRODA recommended.',
     phases: [
       { label: 'Phase 1 — Initiation', duration: 2, unit: 'days', ongoing: false, note: 'Starting dose. Take morning dose immediately on waking.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         meds: [{ medId: 'ritalinIR', strength: 10, doses: [{ time: 'morning', qty: 0.5, label: '½ tab (5 mg)' }, { time: 'midday', qty: 0.5, label: '½ tab (5 mg)' }], caps: [] }] },
@@ -5399,7 +5528,7 @@ const PLAN_PRESETS = {
   },
   ritalinLATitration: {
     label: 'Ritalin LA — Standard Titration', mode: 'titration',
-    authorityNote: 'Stimulant authority script. Add CA2023 to the script. Authority via PRODA recommended.',
+    authorityNote: 'Stimulant authority script. Add CA2023 to the script for NSW. Authority via PRODA recommended.',
     phases: [
       { label: 'Phase 1 — Initiation', duration: 7, unit: 'days', ongoing: false, note: 'Take in the morning. Capsule can be swallowed whole or sprinkled onto soft food.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         meds: [{ medId: 'ritalinLA', strength: 10, doses: [{ time: 'morning', qty: 1, label: '10 mg × 1 capsule' }], caps: [] }] },
@@ -5413,7 +5542,7 @@ const PLAN_PRESETS = {
   },
   concertaTitration: {
     label: 'Concerta — Standard Titration', mode: 'titration',
-    authorityNote: 'PBS Authority required. ADHD diagnosis must have been made before age 18. Add CA2023 to the script.',
+    authorityNote: 'PBS Authority required. ADHD diagnosis must have been made before age 18. Add CA2023 to the script for NSW.',
     phases: [
       { label: 'Phase 1 — Initiation', duration: 7, unit: 'days', ongoing: false, note: 'Take in the morning on waking. Must be swallowed whole — do not crush or split.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         meds: [{ medId: 'concerta', strength: 18, doses: [{ time: 'morning', qty: 1, label: '18 mg × 1 capsule' }], caps: [] }] },
@@ -5449,7 +5578,7 @@ const PLAN_PRESETS = {
   },
   vyvanseWaterTitration: {
     label: 'Vyvanse (water method)', mode: 'titration',
-    authorityNote: 'Preparation: Dissolve a 70 mg Vyvanse capsule in exactly 70 ml of water. Stir well. The solution is 1 mg per 1 ml. Store in the fridge and discard after 7 days. Use an oral syringe to measure the dose each morning.',
+    authorityNote: 'Preparation: Get a measuring cup from your pharmacy and (optional) a 10 mL syringe. Every morning fill the measuring cup up to exactly 70 mL. Then open the 70 mg capsule and dissolve it in the water. Stir well. The solution is 1 mg per 1 ml. If you are starting with 30 mg, then you may: 1. Tip out 40 mL leaving 30 mL remaining - drink the 30 mL. OR 2. Use the 10 mL syringe to draw up 10 mL (which is equal to 10 mg) and squirt it in your mouth three times for a total of 30 mL (which is equal to 30 mg) then discard the rest. Once you have found the optimum dose then this dose can be prescribed as a capsule.',
     phases: [
       { label: 'Phase 1 — Week 1', duration: 7, unit: 'days', ongoing: false, note: 'Draw up 30 ml each morning (= 30 mg). Monitor benefits and side effects.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         meds: [{ medId: 'vyvanse', strength: null, doses: [{ time: 'morning', caps: [70] }], caps: [70] }] },
@@ -5465,7 +5594,7 @@ const PLAN_PRESETS = {
   },
   vyvansePsychTitration: {
     label: 'Vyvanse (psychiatrist guided)', mode: 'titration',
-    authorityNote: 'Stimulant authority script. Add CA2023. Authority via PRODA recommended. Follow-up within 2–4 weeks for review.',
+    authorityNote: 'Stimulant authority script. Add CA2023 if script is in NSW. Authority via PRODA recommended. Follow-up within 2–4 weeks for review.',
     phases: [
       { label: 'Phase 1', duration: 21, unit: 'days', ongoing: false, note: 'Start Vyvanse 30 mg each morning. Your psychiatrist will review within 2–4 weeks.', days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
         meds: [{ medId: 'vyvanse', strength: null, doses: [{ time: 'morning', caps: [30] }], caps: [30] }] },
@@ -8909,32 +9038,33 @@ document.addEventListener('DOMContentLoaded', () => {
             <p style="margin:0 0 16px;font-size:0.88rem;">You don't need individual patient authority provided you stay within the state maximum, prescribe for what the state allows, and the patient is not drug dependent. Generally this is just ADHD, except WA allows more diagnoses. For other indications, apply for individual patient authority through that state's SafeScript.</p>
 
             <h3 style="color:#1e40af;margin:0 0 8px;font-size:1rem;">PBS Authority — How to Get It</h3>
-            <p style="margin:0 0 8px;font-size:0.88rem;">Go to <strong>PRODA &rarr; HPOS &rarr; My Providers &rarr; Authorities &rarr; Request Authority.</strong> You need your authority script authorisation number (next to your prescriber number on eScripts). You need a new authority for every new script.</p>
-            <p style="margin:0 0 8px;font-size:0.88rem;">In the Authority Request, enter the <strong>total tablets per day</strong> and the <strong>total repeats you'll actually prescribe</strong>. Vyvanse needs individual authority for each capsule strength — re-prescribing still needs a new request.</p>
+            <p style="margin:0 0 8px;font-size:0.88rem;">Go to <strong>PRODA &rarr; HPOS &rarr; My Providers &rarr; Authorities &rarr; Request Authority.</strong> You need your authority script authorisation number (next to your prescriber number on eScripts). You need a new authority for every new script, even if you're represcribing a script with previous authorisation.</p>
+            <p style="margin:0 0 8px;font-size:0.88rem;">In the Authority Request, enter the <strong>total tablets per day</strong> and the <strong>total repeats you'll actually prescribe</strong>. Vyvanse needs individual PRODA authority for each capsule strength.</p>
             <p style="margin:0 0 16px;font-size:0.88rem;background:#fff7ed;border-left:3px solid #fb923c;padding:8px 12px;">For patients on <strong>5+ tablets/day</strong> of dex IR or methylphenidate IR, the 20-day rule means they may run out. Enter <strong>200 tablets</strong> (not the default 100) to get authority for 2 bottles. 200 is the maximum for methylphenidate; dex has no legal limit but be careful above 200.</p>
 
             <h3 style="color:#1e40af;margin:0 0 8px;font-size:1rem;">Special Indications</h3>
             <ul style="margin:0 0 16px;padding-left:18px;font-size:0.88rem;">
-              <li style="margin-bottom:5px;"><strong>Narcolepsy (dexamfetamine):</strong> Obtain individual patient authority via SafeScript — CA2023/psychiatric powers don't apply. PBS is available for narcolepsy but requires individual authority first.</li>
+              <li style="margin-bottom:5px;"><strong>Narcolepsy (dexamfetamine):</strong> Obtain individual patient authority via SafeScript. PBS is available for narcolepsy but requires individual authority first.</li>
               <li><strong>Binge eating disorder (Vyvanse):</strong> Requires individual patient authority on SafeScript. Not PBS approved — private script only.</li>
             </ul>
 
             <h3 style="color:#1e40af;margin:0 0 8px;font-size:1rem;">Authority Requirements &amp; Private Costs (Chemist Warehouse)</h3>
             <table style="border-collapse:collapse;width:100%;font-size:0.87rem;margin-bottom:8px;">
-              <thead><tr style="background:#dbeafe;"><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Medication</th><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Authority</th><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Private cost/month</th></tr></thead>
+              <thead><tr style="background:#dbeafe;"><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Medication</th><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Authority</th><th style="padding:5px 10px;text-align:left;border:1px solid #bfdbfe;">Private Scirpt Cost</th></tr></thead>
               <tbody>
                 <tr><td style="padding:4px 10px;border:1px solid #e5e7eb;">Any authority script</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">—</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$25</td></tr>
-                <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Lisdexamfetamine (Vyvanse)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA required</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$31.99</td></tr>
+                <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Lisdexamfetamine (Vyvanse)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA required</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$30-$35</td></tr>
                 <tr><td style="padding:4px 10px;border:1px solid #e5e7eb;">Methylphenidate IR (Artige/Ritalin IR)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA required</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$25.99</td></tr>
                 <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Ritalin LA 40mg</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA required</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$42.99</td></tr>
                 <tr><td style="padding:4px 10px;border:1px solid #e5e7eb;">Ritalin LA 60mg</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA required</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$56.99</td></tr>
+                                <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Concerta 36mg</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA (Dx as child)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$47.99</td></tr>
                 <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Concerta 54mg</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">PRODA (Dx as child)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$56.99</td></tr>
                 <tr><td style="padding:4px 10px;border:1px solid #e5e7eb;">Atomoxetine (Strattera)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">Streamline 7876 / 7890 (Dx as child)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$35.99</td></tr>
                 <tr style="background:#f9fafb;"><td style="padding:4px 10px;border:1px solid #e5e7eb;">Guanfacine (Intuniv)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">Streamlined (Dx as child)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$58.99</td></tr>
                 <tr><td style="padding:4px 10px;border:1px solid #e5e7eb;">Clonidine (Catapres)</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">Not PBS listed for ADHD</td><td style="padding:4px 10px;border:1px solid #e5e7eb;">$19.99</td></tr>
               </tbody>
             </table>
-            <p style="margin:4px 0 0;font-size:0.8rem;color:#6b7280;font-style:italic;">Note: Prices at Chemist Warehouse. PBS co-pay ~$7.70 concession / $31.60 general with authority.</p>
+            <p style="margin:4px 0 0;font-size:0.8rem;color:#6b7280;font-style:italic;">Note: Prices at Chemist Warehouse. Authority script makes it $25 per script (as of Jan 2026).</p>
           </div>
         </div>
       </div>
