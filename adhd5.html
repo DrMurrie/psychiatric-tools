@@ -1904,7 +1904,11 @@ function refreshTitOutputs(){
   if(rp)rp.innerHTML=titBuildDocHTML();
   if(dp)dp.innerHTML=titBuildDayHTML();
   if(pp)pp.textContent=titBuildPlain();
+  var se=$('out-script');if(se)se.textContent=buildScript();
+  var he=$('out-heidi');if(he)he.textContent=buildHeidi();
+  if(typeof refreshDocPreview==='function')refreshDocPreview();
 }
+
 
 function copyTitOut(){
   var pane=$('tit-pane-'+titCurTab)||$('tit-pane-rich');
@@ -3854,10 +3858,7 @@ function refresh(){
   }
   autoDSM();
   renderFlags();updateBadges();
-  var se=$('out-script');if(se)se.textContent=buildScript();
-  var he=$('out-heidi');if(he)he.textContent=buildHeidi();
   refreshTitOutputs();
-  refreshDocPreview();
 }
 
 function setActiveTab(name){
