@@ -73,12 +73,19 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
 .card{background:var(--surface);border:1px solid #e8ebf1;border-radius:12px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 2px rgba(15,23,42,.04)}
 .ch{padding:9px 14px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:#26456b}
-.ch.danger{background:#7f1d1d}
-.ch.warning{background:#78350f}
-.ch.green{background:#14532d}
+.ch.danger{background:#b91c1c}
+.ch.warning{background:#b45309}
+.ch.green{background:#047857}
 .ch.gold{background:#b45309;color:#fefce8}
 .ch.gold-bright{background:#d97706;color:#1c1917}
-.ch.purple{background:#4c1d95}
+.ch.purple{background:#6d28d9}
+.ch.rose{background:#be185d}
+.ch.teal{background:#0f766e}
+.ch.sky{background:#0369a1}
+.ch.indigo{background:#4338ca}
+.ch.slate{background:#334155}
+.ch.emerald{background:#047857}
+.ch.plum{background:#86198f}
 .cb{padding:12px 14px}
 .crow{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #f4f5f8;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:36px}
 .crow:last-child{border-bottom:none}
@@ -330,7 +337,7 @@ select.inp{appearance:none}
 
 <div class="topbar">
   <div class="tb-row">
-    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.4</span></span>
+    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.5</span></span>
     <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="save();refresh()" style="flex:1 1 130px;min-width:100px">
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
@@ -482,7 +489,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Presenting Concerns</div>
+    <div class="ch rose">Presenting Concerns</div>
     <div class="cb">
       <label class="fl" style="margin-top:0">Reason for referral</label>
       <input class="inp" id="referralReason" placeholder="e.g. Self-identified, GP referral, partner suggested..." oninput="save();refresh()">
@@ -492,7 +499,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Pre-screening &amp; Collateral</div>
+    <div class="ch teal">Pre-screening &amp; Collateral</div>
     <div class="cb" style="padding:0">
       <div class="inner-split">
       <div><!-- patient side -->
@@ -634,21 +641,21 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Developmental History &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for example questions</span></div>
+    <div class="ch indigo">Developmental History &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for example questions</span></div>
     <div class="cb">
       <div id="dev-checks"></div>
       <textarea class="nf" id="devNotes" placeholder="Developmental notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
 <div class="card">
-    <div class="ch">Differential Diagnoses &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for questions</span></div>
+    <div class="ch sky">Differential Diagnoses &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for questions</span></div>
     <div class="cb">
       <div id="diff-rows" class="inner-2col-sm"></div>
       <textarea class="nf" id="diffNotes" placeholder="Differential notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
 <div class="card">
-    <div class="ch">Substance Use</div>
+    <div class="ch danger">Substance Use</div>
     <div class="cb">
       <div class="sub-grid" id="sub-grid"></div>
       <div class="rrow" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
@@ -673,7 +680,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Family Psychiatric History</div>
+    <div class="ch purple">Family Psychiatric History</div>
     <div class="cb" style="padding:0">
       <div style="padding:6px 13px 8px">
         <div style="display:flex;gap:6px;margin-bottom:8px">
@@ -689,7 +696,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Mental State Examination</div>
+    <div class="ch slate">Mental State Examination</div>
     <div class="cb">
       <div id="mse-rows" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px"></div>
       <label class="fl">Free text MSE</label>
@@ -740,7 +747,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Medical Conditions</div>
+    <div class="ch teal">Medical Conditions</div>
     <div class="cb">
       <div id="med-checks" class="inner-2col-sm"></div>
       <label class="fl">Other medical history</label>
@@ -751,11 +758,11 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch" style="background:#9d174d">Validity / Malingering Concerns</div>
+    <div class="ch plum">Validity / Malingering Concerns</div>
     <div class="cb"><div id="mal-checks" class="inner-2col-sm"></div></div>
   </div>
 <div class="card">
-    <div class="ch">Investigations</div>
+    <div class="ch sky">Investigations</div>
     <div class="cb">
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;align-items:start">
         <div>
@@ -833,7 +840,7 @@ select.inp{appearance:none}
   </div>
 
   <div class="card">
-    <div class="ch">Treatment Rationale</div>
+    <div class="ch indigo">Treatment Rationale</div>
     <div class="cb" style="padding:0">
 
       <!-- Decision grid -->
@@ -931,7 +938,7 @@ select.inp{appearance:none}
 
 <div class="g2-flow">
 <div class="card">
-    <div class="ch">Medication &amp; Titration Plan</div>
+    <div class="ch emerald">Medication &amp; Titration Plan</div>
     <div class="cb" style="padding:0">
       <!-- Protocol Picker -->
       <div style="padding:10px 13px 6px">
@@ -970,7 +977,7 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card">
-    <div class="ch">Follow-Up Plan</div>
+    <div class="ch teal">Follow-Up Plan</div>
     <div class="cb" style="padding:0">
       <div style="padding:10px 13px 8px">
         <div class="fl" style="margin-top:0">Quick templates</div>
@@ -1070,7 +1077,7 @@ select.inp{appearance:none}
 
   <!-- PATIENT DOCUMENT BUILDER -->
   <div class="card">
-    <div class="ch" style="background:#1e3a5f">Patient Document</div>
+    <div class="ch slate">Patient Document</div>
     <div class="cb" style="padding:0">
 
       <!-- Attachment toggles -->
