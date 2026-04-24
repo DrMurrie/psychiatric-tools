@@ -337,7 +337,7 @@ select.inp{appearance:none}
 
 <div class="topbar">
   <div class="tb-row">
-    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.7</span></span>
+    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.8</span></span>
     <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="save();refresh()" style="flex:1 1 130px;min-width:100px">
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
@@ -368,6 +368,15 @@ select.inp{appearance:none}
 <div class="card">
     <div class="ch gold">Patient &amp; Session Information</div>
     <div class="cb">
+      <div style="margin-bottom:10px">
+        <label class="fl" style="margin-top:0">Review type</label>
+        <div class="rbtns" id="review-type-btns">
+          <button class="rb" onclick="setReviewType('Initial',this)">Initial</button>
+          <button class="rb" onclick="setReviewType('Follow-up',this)">Follow-up</button>
+          <button class="rb" onclick="setReviewType('Titration',this)">Titration</button>
+          <button class="rb" onclick="setReviewType('Script',this)">Script</button>
+        </div>
+      </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:8px">
         <div>
           <label class="fl" style="margin-top:0">Patient name</label>
@@ -488,7 +497,46 @@ select.inp{appearance:none}
       </div>
     </div>
   </div>
-<div class="card">
+
+<!-- Follow-Up Assessment (shown when review type != Initial) -->
+<div class="card" data-followup-only style="display:none">
+  <div class="ch teal">Follow-Up Assessment</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Reason for this review</label>
+    <textarea class="nf" id="reviewReason" oninput="save();refresh()" rows="2" placeholder="Purpose of today's visit, recent events..."></textarea>
+
+    <label class="fl">Medication response / efficacy</label>
+    <div class="rbtns" id="med-response-btns">
+      <button class="rb" onclick="setFuRating('medResponse','Good',this,'ay')">Good</button>
+      <button class="rb" onclick="setFuRating('medResponse','Partial',this,'ap')">Partial</button>
+      <button class="rb" onclick="setFuRating('medResponse','Poor',this,'an')">Poor</button>
+      <button class="rb" onclick="setFuRating('medResponse','Adverse',this,'af')">Adverse</button>
+      <button class="rb" onclick="setFuRating('medResponse','Too early',this,'ap')">Too early</button>
+    </div>
+
+    <label class="fl">Side effects (tap any that apply)</label>
+    <div id="side-fx-chips" class="inner-2col-sm"></div>
+    <textarea class="nf" id="sideFxNotes" oninput="save();refresh()" rows="2" placeholder="Side effect details, severity, duration..."></textarea>
+
+    <label class="fl">Adherence</label>
+    <div class="rbtns" id="adherence-btns">
+      <button class="rb" onclick="setFuRating('adherence','Full',this,'ay')">Full</button>
+      <button class="rb" onclick="setFuRating('adherence','Partial',this,'ap')">Partial</button>
+      <button class="rb" onclick="setFuRating('adherence','Non-adherent',this,'an')">Non-adherent</button>
+    </div>
+
+    <label class="fl">Issues or concerns raised</label>
+    <textarea class="nf" id="followupConcerns" oninput="save();refresh()" rows="3" placeholder="Sleep, appetite, work, mood, social..."></textarea>
+
+    <label class="fl">MSE changes since last visit</label>
+    <textarea class="nf" id="mseChanges" oninput="save();refresh()" rows="3" placeholder="Mood, affect, cognition, behaviour, thought content..."></textarea>
+
+    <label class="fl">Additional notes</label>
+    <textarea class="nf" id="reviewNotes" oninput="save();refresh()" rows="2" placeholder="Other relevant observations..."></textarea>
+  </div>
+</div>
+
+<div class="card" data-initial-only>
     <div class="ch rose">Presenting Concerns</div>
     <div class="cb">
       <label class="fl" style="margin-top:0">Reason for referral</label>
@@ -498,7 +546,7 @@ select.inp{appearance:none}
       <textarea class="nf" id="presentNotes" placeholder="Additional notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch teal">Pre-screening &amp; Collateral</div>
     <div class="cb" style="padding:0">
       <div class="inner-split">
@@ -640,21 +688,21 @@ select.inp{appearance:none}
 
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch indigo">Developmental History &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for example questions</span></div>
     <div class="cb">
       <div id="dev-checks"></div>
       <textarea class="nf" id="devNotes" placeholder="Developmental notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch sky">Differential Diagnoses &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for questions</span></div>
     <div class="cb">
       <div id="diff-rows" class="inner-2col-sm"></div>
       <textarea class="nf" id="diffNotes" placeholder="Differential notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch danger">Substance Use</div>
     <div class="cb">
       <div class="sub-grid" id="sub-grid"></div>
@@ -679,7 +727,7 @@ select.inp{appearance:none}
       <textarea class="nf" id="subNotes" placeholder="Substance use notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch purple">Family Psychiatric History</div>
     <div class="cb" style="padding:0">
       <div style="padding:6px 13px 8px">
@@ -695,7 +743,7 @@ select.inp{appearance:none}
       </div>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch slate">Mental State Examination</div>
     <div class="cb">
       <div id="mse-rows" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px"></div>
@@ -703,7 +751,7 @@ select.inp{appearance:none}
       <textarea class="nf" id="mseNotes" placeholder="Appearance, speech, mood, affect, thought, perception, cognition, insight, judgment, risk..." oninput="save();refresh()" rows="3"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch gold">DSM-5-TR Criteria</div>
     <div class="cb">
       <div id="dsm-checks"></div>
@@ -733,20 +781,20 @@ select.inp{appearance:none}
 <div class="section-header" id="sec-safety"><span class="sh-num">2</span>Medical History<span class="sh-badge" id="sh-badge-safety">--</span></div>
 <div class="panel active" id="panel-safety">
 <div class="g2-single">
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch green">Current Medications</div>
     <div class="cb">
       <textarea class="nf" id="currentMeds" placeholder="Name, dose, frequency..." oninput="save();refresh()" rows="4"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch danger">Cardiac Screening</div>
     <div class="cb">
       <div id="cardiac-checks" class="inner-2col-sm"></div>
       <textarea class="nf" id="cardiacNotes" placeholder="Cardiac history detail, referral plan..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch teal">Medical Conditions</div>
     <div class="cb">
       <div id="med-checks" class="inner-2col-sm"></div>
@@ -757,7 +805,7 @@ select.inp{appearance:none}
 
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch plum">Validity / Malingering Concerns</div>
     <div class="cb"><div id="mal-checks" class="inner-2col-sm"></div></div>
   </div>
@@ -809,7 +857,7 @@ select.inp{appearance:none}
       <input class="inp" id="otherInvest" placeholder="e.g. Bloods, neuropsychological testing, neuroimaging..." oninput="save();refresh()">
     </div>
   </div>
-<div class="card">
+<div class="card" data-initial-only>
     <div class="ch warning">SafeScript / RTPM (NSW)</div>
     <div class="cb">
       <div class="rrow" style="padding-top:0">
@@ -1455,7 +1503,8 @@ const TIT_SCEN={
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',consultType:'',otherPresent:''};
+const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',consultType:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:''};
+const SIDE_FX=[{id:'appetite',label:'Reduced appetite'},{id:'insomnia',label:'Insomnia / sleep disturbance'},{id:'headache',label:'Headache'},{id:'dryMouth',label:'Dry mouth'},{id:'hrBp',label:'Elevated HR / BP'},{id:'anxiety',label:'Anxiety / jitteriness'},{id:'mood',label:'Mood changes / irritability'},{id:'gi',label:'GI upset / nausea'},{id:'rebound',label:'Rebound / afternoon crash'},{id:'weight',label:'Weight loss'},{id:'tics',label:'Tics'},{id:'libido',label:'Sexual / libido changes'},{id:'none',label:'Nil reported'}];
 var titMeds=[];
 var titCurTab='rich';
 
@@ -2515,8 +2564,71 @@ function updateBadges(){
 function setBadge(id,txt,cls){var el=$(id);if(!el)return;el.textContent=txt;el.className='tbadge'+(cls?' '+cls:'');}
 function setShBadge(id,txt,cls){var el=$(id);if(!el)return;el.textContent=txt||'--';el.className='sh-badge'+(cls?' '+cls:'');}
 
+// ─── HEIDI / AI CONTEXT - FOLLOW-UP VARIANT ──────────────────────────────────
+function buildHeidiFollowUp(rt){
+  var name=f('ptName')||'[Name]',age=f('ptAge'),g=f('ptGender'),occ=f('ptOcc');
+  var dr=f('drName'),gp=f('gpName'),mbs=f('mbsItem');
+  var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  var o='ADHD '+rt.toUpperCase()+' REVIEW - '+ds+'\n';
+  o+='Patient: '+name+(age?' | Age: '+age:'')+(g?' | '+g:'')+(occ?' | '+occ:'')+'\n';
+  if(dr)o+='Psychiatrist: '+dr+(f('drQuals')?' ('+f('drQuals')+')':'')+'\n';
+  if(gp)o+='Referring GP: '+gp+'\n';
+  if(S.consultType)o+='Consultation type: '+S.consultType+'\n';
+  if(mbs)o+='MBS item: '+mbs+'\n';
+  o+='Review type: '+rt+'\n\n';
+  if(f('reviewReason'))o+='REVIEW REASON:\n'+f('reviewReason')+'\n\n';
+  if(S.medResponse)o+='MEDICATION RESPONSE: '+S.medResponse+'\n';
+  if(S.adherence)o+='ADHERENCE: '+S.adherence+'\n';
+  var sfx=SIDE_FX.filter(function(s){return S.sideFx&&S.sideFx[s.id];});
+  if(sfx.length){o+='SIDE EFFECTS:\n';sfx.forEach(function(s){o+='- '+s.label+'\n';});}
+  if(f('sideFxNotes'))o+='Side effect detail: '+f('sideFxNotes')+'\n';
+  if(S.medResponse||S.adherence||sfx.length||f('sideFxNotes'))o+='\n';
+  if(f('followupConcerns'))o+='ISSUES / CONCERNS:\n'+f('followupConcerns')+'\n\n';
+  if(f('mseChanges'))o+='MSE CHANGES SINCE LAST VISIT:\n'+f('mseChanges')+'\n\n';
+  var invItems=[];
+  if(f('bpReading'))invItems.push('BP: '+f('bpReading'));
+  if(f('hrReading'))invItems.push('HR: '+f('hrReading'));
+  if(f('ptWeight'))invItems.push('Weight: '+f('ptWeight')+' kg');
+  if(f('ptHeight'))invItems.push('Height: '+f('ptHeight')+' cm');
+  if(S.ecg&&S.ecg!=='Not done')invItems.push('ECG: '+S.ecg);
+  if(S.uds&&S.uds!=='Not done')invItems.push('UDS: '+S.uds+(f('udsDetail')?' ('+f('udsDetail')+')':''));
+  if(invItems.length)o+='INVESTIGATIONS:\n- '+invItems.join('\n- ')+'\n\n';
+  if(titMeds.length){
+    o+='TREATMENT PLAN:\n';
+    titMeds.forEach(function(m){
+      var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
+      o+='- Medication: '+nm+'\n';
+      m.steps.forEach(function(st,si){
+        var lbl=titAutoLabel(m.steps,si);
+        var parts=st.doses.map(function(d){return d.t+': '+titGetDoseDisplay(d);}).join(', ');
+        o+='  '+lbl+': '+parts+(st.note?' ['+st.note+']':'')+'\n';
+      });
+    });
+    if(f('rationaleNotes'))o+='Rationale: '+f('rationaleNotes')+'\n';
+    if(f('rxNotes'))o+='Rx notes: '+f('rxNotes')+'\n';
+    o+='\n';
+  }
+  var fuApptStr=getFuApptStr(),fuMonStr=getFuMonStr(),fuNPList=getFuNPList();
+  if(fuApptStr||fuMonStr||fuNPList.length||f('fuNotes')){
+    o+='FOLLOW-UP:\n';
+    if(fuApptStr)o+='- Appointments: '+fuApptStr+'\n';
+    if(fuMonStr)o+='- GP monitoring: '+fuMonStr+'\n';
+    if(fuNPList.length)o+='- Non-pharmacological: '+fuNPList.join(', ')+'\n';
+    var provideList=getFuProvideList(),provideOther=f('fu-provide-other'),provideTF=f('fu-provide-timeframe');
+    if(provideList.length||provideOther)o+='- Patient to provide: '+provideList.concat(provideOther?[provideOther]:[]).join(', ')+(provideTF?' (by '+provideTF+')':'')+'\n';
+    if(f('fuNotes'))o+='- Notes: '+f('fuNotes')+'\n';
+    o+='\n';
+  }
+  var peDone=getPEDoneItems();
+  if(peDone.length){o+='EDUCATIONAL MATERIAL PROVIDED:\n';peDone.forEach(function(t){o+='- '+t+'\n';});o+='\n';}
+  if(f('reviewNotes'))o+='ADDITIONAL NOTES:\n'+f('reviewNotes')+'\n';
+  return o.trim();
+}
+
 // ─── HEIDI / AI CONTEXT ───────────────────────────────────────────────────────
 function buildHeidi(){
+  var rt=S.reviewType||'Initial';
+  if(rt!=='Initial')return buildHeidiFollowUp(rt);
   var name=f('ptName')||'[Name]',age=f('ptAge'),g=f('ptGender'),occ=f('ptOcc');
   var dr=f('drName'),gp=f('gpName'),mbs=f('mbsItem'),prev=f('prevPsych');
   var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
@@ -2853,6 +2965,42 @@ function toggleHeidi(e){
   box.style.display=open?'none':'block';
   if(arrow)arrow.style.transform=open?'rotate(0deg)':'rotate(90deg)';
 }
+
+// ─── REVIEW TYPE + FOLLOW-UP STATE ────────────────────────────────────────────
+function setReviewType(val,btn){
+  S.reviewType=val;
+  applyReviewType();
+  save();refresh();
+}
+function applyReviewType(){
+  var rt=S.reviewType||'Initial';
+  var isFu=rt!=='Initial';
+  document.querySelectorAll('[data-initial-only]').forEach(function(el){el.style.display=isFu?'none':'';});
+  document.querySelectorAll('[data-followup-only]').forEach(function(el){el.style.display=isFu?'':'none';});
+  document.querySelectorAll('#review-type-btns .rb').forEach(function(b){
+    b.className='rb'+(b.textContent.trim()===rt?' aq':'');
+  });
+}
+function renderSideFx(){
+  var el=$('side-fx-chips');if(!el)return;
+  el.innerHTML=SIDE_FX.map(function(s){
+    var on=!!(S.sideFx&&S.sideFx[s.id]);
+    return '<div class="crow" onclick="toggleSideFx(\''+s.id+'\',this)"><div class="cbox'+(on?' yes':'')+'"></div><div class="clabel">'+s.label+'</div></div>';
+  }).join('');
+}
+function toggleSideFx(k,r){
+  if(!S.sideFx)S.sideFx={};
+  S.sideFx[k]=!S.sideFx[k];
+  var b=r.querySelector('.cbox');if(b)b.className='cbox'+(S.sideFx[k]?' yes':'');
+  save();refresh();
+}
+function setFuRating(key,val,btn,cls){
+  S[key]=val;
+  var parent=btn.parentElement;
+  if(parent)parent.querySelectorAll('.rb').forEach(function(b){b.className='rb';});
+  btn.classList.add(cls||'ay');
+  save();refresh();
+}
 function toggleReport(e){
   if(e&&e.target&&e.target.closest('button'))return;
   var box=$('out-report'),arrow=$('report-arrow');
@@ -2863,7 +3011,147 @@ function toggleReport(e){
 }
 
 // ─── FULL ASSESSMENT REPORT (formatted) ───────────────────────────────────────
+function buildFullReportFollowUp(rt){
+  var name=f('ptName')||'[Patient Name]',age=f('ptAge'),g=f('ptGender'),occ=f('ptOcc');
+  var dr=f('drName'),drQuals=f('drQuals'),gp=f('gpName');
+  var dv=f('ptDate');
+  var ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  var F='font-family:Arial,sans-serif;color:#000;';
+  var h='';
+
+  // Title block
+  h+='<div style="'+F+'text-align:center;margin:0 0 14pt 0;">';
+  h+='<div style="'+F+'font-size:16pt;font-weight:bold;letter-spacing:.02em;">ADHD '+rt.toUpperCase()+' REVIEW</div>';
+  h+='<div style="'+F+'font-size:11pt;color:#444;margin-top:2pt;">Attention-Deficit / Hyperactivity Disorder — Review Note</div>';
+  h+='</div>';
+
+  // Identifier table
+  function row(a,av,b,bv){
+    return '<tr>'
+      +'<td style="'+F+'padding:3pt 8pt 3pt 0;width:22%;vertical-align:top;"><strong>'+a+'</strong></td>'
+      +'<td style="'+F+'padding:3pt 14pt 3pt 0;width:28%;vertical-align:top;">'+av+'</td>'
+      +'<td style="'+F+'padding:3pt 8pt 3pt 0;width:22%;vertical-align:top;"><strong>'+b+'</strong></td>'
+      +'<td style="'+F+'padding:3pt 0 3pt 0;width:28%;vertical-align:top;">'+bv+'</td>'
+      +'</tr>';
+  }
+  h+='<table style="border-collapse:collapse;width:100%;'+F+'font-size:11pt;margin:0 0 14pt 0;border-top:1.5pt solid #000;border-bottom:1.5pt solid #000;">';
+  h+=row('Patient', esc(name)+(age?' ('+esc(age)+' y)':'')+(g?' · '+esc(g):''), 'Date of review', ds);
+  h+=row('Review type', esc(rt), 'Occupation', esc(occ||'—'));
+  if(dr||gp) h+=row('Psychiatrist', dr?esc(dr)+(drQuals?' '+esc(drQuals):''):'—', 'Referring GP', gp?esc(gp):'—');
+  h+='</table>';
+
+  function sec(t){return '<div style="'+F+'font-size:12pt;font-weight:bold;margin:16pt 0 6pt 0;padding-bottom:2pt;border-bottom:.5pt solid #888;">'+t+'</div>';}
+  function p(t){return '<div style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 8pt 0;">'+t+'</div>';}
+  function list(items){
+    return '<ul style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 10pt 20pt;padding:0;">'
+      +items.map(function(i){return '<li style="margin-bottom:2pt;">'+i+'</li>';}).join('')
+      +'</ul>';
+  }
+  function nl(t){return esc(t).replace(/\n/g,'<br>');}
+
+  var n=1;
+
+  // Review reason
+  if(f('reviewReason')){
+    h+=sec(n+++'. Reason for Review');
+    h+=p(nl(f('reviewReason')));
+  }
+
+  // Medication response + adherence + side effects
+  var sfx=SIDE_FX.filter(function(s){return S.sideFx&&S.sideFx[s.id];});
+  if(S.medResponse||S.adherence||sfx.length||f('sideFxNotes')){
+    h+=sec(n+++'. Medication Response and Tolerability');
+    var rItems=[];
+    if(S.medResponse) rItems.push('<strong>Response / efficacy:</strong> '+esc(S.medResponse));
+    if(S.adherence) rItems.push('<strong>Adherence:</strong> '+esc(S.adherence));
+    if(rItems.length) h+=list(rItems);
+    if(sfx.length){ h+=p('<strong>Side effects reported:</strong>'); h+=list(sfx.map(function(s){return esc(s.label);})); }
+    if(f('sideFxNotes')) h+=p(nl(f('sideFxNotes')));
+  }
+
+  // Issues / concerns
+  if(f('followupConcerns')){
+    h+=sec(n+++'. Issues and Concerns');
+    h+=p(nl(f('followupConcerns')));
+  }
+
+  // MSE changes
+  if(f('mseChanges')){
+    h+=sec(n+++'. Mental State Examination — Changes Since Last Visit');
+    h+=p(nl(f('mseChanges')));
+  }
+
+  // Investigations / vitals
+  var invItems=[];
+  if(f('bpReading')) invItems.push('<strong>BP:</strong> '+esc(f('bpReading')));
+  if(f('hrReading')) invItems.push('<strong>HR:</strong> '+esc(f('hrReading')));
+  if(f('ptWeight')) invItems.push('<strong>Weight:</strong> '+esc(f('ptWeight'))+' kg');
+  if(f('ptHeight')) invItems.push('<strong>Height:</strong> '+esc(f('ptHeight'))+' cm');
+  if(S.ecg&&S.ecg!=='Not done') invItems.push('<strong>ECG:</strong> '+esc(S.ecg));
+  if(S.uds&&S.uds!=='Not done') invItems.push('<strong>UDS:</strong> '+esc(S.uds)+(f('udsDetail')?' ('+esc(f('udsDetail'))+')':''));
+  if(invItems.length){
+    h+=sec(n+++'. Investigations');
+    h+=list(invItems);
+  }
+
+  // Management plan
+  if(titMeds.length||f('rationaleNotes')||f('rxNotes')){
+    h+=sec(n+++'. Management Plan');
+    if(f('rationaleNotes')) h+=p('<strong>Rationale:</strong> '+nl(f('rationaleNotes')));
+    if(titMeds.length){
+      titMeds.forEach(function(m){
+        var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
+        h+=p('<strong>'+esc(nm)+'</strong>'+(m.def.auth?' <em style="color:#555">('+esc(m.def.auth)+')</em>':''));
+        var stepItems=m.steps.map(function(st,si){
+          var lbl=titAutoLabel(m.steps,si);
+          var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
+          return '<strong>'+esc(lbl)+':</strong> '+(parts||'<em>no dose entered</em>')+(st.note?' <em>['+esc(st.note)+']</em>':'');
+        });
+        if(stepItems.length) h+=list(stepItems);
+      });
+    }
+    if(f('rxNotes')) h+=p('<strong>Prescribing notes:</strong> '+nl(f('rxNotes')));
+  }
+
+  // Follow-up
+  var fuApptStr=getFuApptStr(),fuMonStr=getFuMonStr(),fuNPList=getFuNPList();
+  if(fuApptStr||fuMonStr||fuNPList.length||f('fuNotes')){
+    h+=sec(n+++'. Follow-Up and Monitoring');
+    var fuItems=[];
+    if(fuApptStr) fuItems.push('<strong>Appointments:</strong> '+esc(fuApptStr));
+    if(fuMonStr) fuItems.push('<strong>GP monitoring:</strong> '+esc(fuMonStr));
+    if(fuNPList.length) fuItems.push('<strong>Non-pharmacological:</strong> '+fuNPList.map(esc).join(', '));
+    var provideList=getFuProvideList(),provideOther=f('fu-provide-other'),provideTF=f('fu-provide-timeframe');
+    if(provideList.length||provideOther) fuItems.push('<strong>Patient to provide:</strong> '+provideList.concat(provideOther?[provideOther]:[]).map(esc).join(', ')+(provideTF?' (by '+esc(provideTF)+')':''));
+    if(fuItems.length) h+=list(fuItems);
+    if(f('fuNotes')) h+=p(nl(f('fuNotes')));
+  }
+
+  // Educational material
+  var peDone=getPEDoneItems();
+  if(peDone.length){
+    h+=sec(n+++'. Educational Material Provided');
+    h+=list(peDone.map(esc));
+  }
+
+  if(f('reviewNotes')){
+    h+=sec(n+++'. Additional Notes');
+    h+=p(nl(f('reviewNotes')));
+  }
+
+  // Signature
+  h+='<div style="'+F+'margin-top:28pt;padding-top:12pt;border-top:.5pt solid #888;font-size:11pt;">';
+  h+='<div style="'+F+'margin:0 0 2pt 0;">Yours sincerely,</div>';
+  h+='<div style="'+F+'margin:32pt 0 0 0;font-weight:bold;">'+esc(dr||'[Psychiatrist Name]')+(drQuals?', '+esc(drQuals):'')+'</div>';
+  h+='<div style="'+F+'margin:2pt 0 0 0;color:#555;">Consultant Psychiatrist</div>';
+  h+='</div>';
+
+  return h;
+}
+
 function buildFullReport(){
+  var rt=S.reviewType||'Initial';
+  if(rt!=='Initial')return buildFullReportFollowUp(rt);
   var name=f('ptName')||'[Patient Name]',age=f('ptAge'),g=f('ptGender'),occ=f('ptOcc');
   var dr=f('drName'),drQuals=f('drQuals'),gp=f('gpName');
   var dv=f('ptDate');
@@ -4242,6 +4530,7 @@ function init(){
   renderTitMeds();
   calcBMI();
   renderConsultType();
+  renderSideFx();applyReviewType();
   renderFuAppts();renderFuCustomMon();
   var dtEl=$('ptDate');if(dtEl&&!dtEl.value)dtEl.value=new Date().toISOString().slice(0,10);
   refresh();
