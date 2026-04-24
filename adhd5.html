@@ -337,7 +337,7 @@ select.inp{appearance:none}
 
 <div class="topbar">
   <div class="tb-row">
-    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.5</span></span>
+    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.6</span></span>
     <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="save();refresh()" style="flex:1 1 130px;min-width:100px">
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
@@ -1070,9 +1070,12 @@ select.inp{appearance:none}
     <div class="out-head"><span class="out-title">Script text -- eScript</span><button class="cbtn" onclick="copyOut('out-script',this)">Copy</button></div>
     <div class="out-text" id="out-script">--</div>
   </div>
-  <div class="out-panel">
-    <div class="out-head"><span class="out-title">Heidi / AI context -- plain text</span><button class="cbtn" onclick="copyOut('out-heidi',this)">Copy</button></div>
-    <div class="out-text" id="out-heidi">--</div>
+  <div class="out-panel" id="heidi-panel">
+    <div class="out-head" onclick="toggleHeidi(event)" style="cursor:pointer">
+      <span class="out-title">Heidi / AI context -- plain text <span id="heidi-arrow" style="display:inline-block;margin-left:4px;font-size:9px;color:#64748b;transition:transform .15s">▶</span></span>
+      <button class="cbtn" onclick="event.stopPropagation();copyOut('out-heidi',this)">Copy full report</button>
+    </div>
+    <div class="out-text" id="out-heidi" style="display:none">--</div>
   </div>
 
   <!-- PATIENT DOCUMENT BUILDER -->
@@ -2827,6 +2830,14 @@ function extraLetter(type){
 function copyOut(id,btn){
   var el=$(id);if(!el)return;
   navigator.clipboard.writeText(el.textContent).then(function(){var orig=btn.textContent;btn.textContent='Copied';btn.classList.add('copied');setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);});
+}
+function toggleHeidi(e){
+  if(e&&e.target&&e.target.closest('button'))return;
+  var box=$('out-heidi'),arrow=$('heidi-arrow');
+  if(!box)return;
+  var open=box.style.display!=='none';
+  box.style.display=open?'none':'block';
+  if(arrow)arrow.style.transform=open?'rotate(0deg)':'rotate(90deg)';
 }
 function copyLetterText(){var el=$('out-letter');if(!el)return;navigator.clipboard.writeText(el.innerText);}
 
