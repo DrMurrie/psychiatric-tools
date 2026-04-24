@@ -291,6 +291,10 @@
         <button class="tab-btn" data-tab="bprs" onclick="switchTab('bprs')">BPRS</button>
         <button class="tab-btn" data-tab="k10" onclick="switchTab('k10')">K10</button>
         <button class="tab-btn" data-tab="msibpd" onclick="switchTab('msibpd')">MSI-BPD</button>
+        <button class="tab-btn" data-tab="audit" onclick="switchTab('audit')">AUDIT</button>
+        <button class="tab-btn" data-tab="dast" onclick="switchTab('dast')">DAST-10</button>
+        <button class="tab-btn" data-tab="wsas" onclick="switchTab('wsas')">WSAS</button>
+        <button class="tab-btn" data-tab="sds" onclick="switchTab('sds')">SDS</button>
         <button class="tab-btn" data-tab="cgi" onclick="switchTab('cgi')">CGI</button>
     </div>
 
@@ -664,6 +668,151 @@
 
         <div class="disclaimer">
             <strong>Reference:</strong> Zanarini MC, Vujanovic AA, Parachini EA, Boulanger JL, Frankenburg FR, Hennen J. A screening measure for BPD: the McLean Screening Instrument for Borderline Personality Disorder (MSI-BPD). J Pers Disord. 2003;17(6):568-73. A cut-off of ≥7 is commonly recommended; screen only — not diagnostic.
+        </div>
+    </div>
+
+    <!-- AUDIT -->
+    <div class="tab-pane" id="tab-audit">
+        <div class="card">
+            <div class="card-title">AUDIT Instructions</div>
+            <p style="font-size:0.9em;">10-item alcohol-use screen. Items 1–8 are scored 0–4; items 9–10 are scored 0, 2, or 4. Total 0–40. Use AUDIT-C (items 1–3) for a rapid screen when needed.</p>
+        </div>
+
+        <div class="section-body" id="auditItems"></div>
+
+        <div class="score-bar">
+            AUDIT Total: <span id="auditTotal">0</span> / 40 &nbsp; — &nbsp; <span class="severity-pill" id="auditSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('audit')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('audit')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="auditOutput">
+            <div class="output-header">
+                <h3>AUDIT Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('audit')" id="auditCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="auditText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Saunders JB, Aasland OG, Babor TF, de la Fuente JR, Grant M. Development of the Alcohol Use Disorders Identification Test (AUDIT). Addiction. 1993;88:791-804. Zones: 0–7 low risk; 8–15 hazardous/risky drinking (advice to reduce); 16–19 harmful (brief intervention + monitoring); ≥20 possible dependence (further assessment + specialist referral).
+        </div>
+    </div>
+
+    <!-- DAST-10 -->
+    <div class="tab-pane" id="tab-dast">
+        <div class="card">
+            <div class="card-title">DAST-10 Instructions</div>
+            <p style="font-size:0.9em;">Drug-use screening, 10 yes/no items referring to the <strong>past 12 months</strong> and excluding prescribed medications taken as directed. Note: item 3 ("always able to stop") is reverse-scored — "No" = 1 point.</p>
+        </div>
+
+        <div class="section-body" id="dastItems"></div>
+
+        <div class="score-bar">
+            DAST-10 Score: <span id="dastTotal">0</span> / 10 &nbsp; — &nbsp; <span class="severity-pill" id="dastSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('dast')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('dast')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="dastOutput">
+            <div class="output-header">
+                <h3>DAST-10 Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('dast')" id="dastCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="dastText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Skinner HA. The Drug Abuse Screening Test. Addict Behav. 1982;7:363-71. Score interpretation: 0 no problems reported; 1–2 low level; 3–5 moderate level; 6–8 substantial level; 9–10 severe level — further assessment indicated at ≥3.
+        </div>
+    </div>
+
+    <!-- WSAS -->
+    <div class="tab-pane" id="tab-wsas">
+        <div class="card">
+            <div class="card-title">WSAS Instructions</div>
+            <p style="font-size:0.9em;">Work and Social Adjustment Scale. 5 items rated 0–8 on how the patient's problem impairs each life domain. Total 0–40.</p>
+            <div style="margin-top:10px;">
+                <label style="display:block; font-weight:500; font-size:0.9em; color:var(--gray-700); margin-bottom:4px;">Anchor problem (optional):</label>
+                <input type="text" id="wsasProblem" placeholder="e.g. depression, social anxiety, panic"
+                       style="width:100%; padding:8px 12px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;">
+            </div>
+        </div>
+
+        <div class="section-body" id="wsasItems"></div>
+
+        <div class="score-bar">
+            WSAS Total: <span id="wsasTotal">0</span> / 40 &nbsp; — &nbsp; <span class="severity-pill" id="wsasSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('wsas')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('wsas')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="wsasOutput">
+            <div class="output-header">
+                <h3>WSAS Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('wsas')" id="wsasCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="wsasText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Mundt JC, Marks IM, Shear MK, Greist JM. The Work and Social Adjustment Scale: a simple measure of impairment in functioning. Br J Psychiatry. 2002;180:461-4. Interpretation: 0–9 subclinical; 10–20 significant functional impairment with less severe symptomatology; 21–30 moderately severe; 31–40 severely impaired.
+        </div>
+    </div>
+
+    <!-- SDS -->
+    <div class="tab-pane" id="tab-sds">
+        <div class="card">
+            <div class="card-title">Sheehan Disability Scale (SDS)</div>
+            <p style="font-size:0.9em;">3 items rated on a 0–10 visual analogue (0 = not at all, 10 = extremely). Total 0–30. Any single item ≥5 indicates significant functional impairment in that domain.</p>
+        </div>
+
+        <div class="section-body" id="sdsItems"></div>
+
+        <div class="card" id="sdsExtras">
+            <div class="card-title">Symptom Days (optional — not scored)</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div>
+                    <label style="display:block; font-weight:500; font-size:0.9em; color:var(--gray-700); margin-bottom:4px;">Days lost — how many days in the last week did you completely miss work, school or other activities because of your symptoms?</label>
+                    <input type="number" id="sdsDaysLost" min="0" max="7" placeholder="0–7"
+                           style="width:100%; padding:8px 12px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;">
+                </div>
+                <div>
+                    <label style="display:block; font-weight:500; font-size:0.9em; color:var(--gray-700); margin-bottom:4px;">Days unproductive — how many days in the last week were you so impaired by your symptoms that, even though you went to work / school / other activities, your productivity was reduced?</label>
+                    <input type="number" id="sdsDaysUnprod" min="0" max="7" placeholder="0–7"
+                           style="width:100%; padding:8px 12px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;">
+                </div>
+            </div>
+        </div>
+
+        <div class="score-bar">
+            SDS Total: <span id="sdsTotal">0</span> / 30 &nbsp; — &nbsp; <span class="severity-pill" id="sdsSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('sds')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('sds')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="sdsOutput">
+            <div class="output-header">
+                <h3>SDS Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('sds')" id="sdsCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="sdsText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Sheehan DV, Harnett-Sheehan K, Raj BA. The measurement of disability. Int Clin Psychopharmacol. 1996;11(Suppl 3):89-95. Any single item ≥5 suggests significant impairment. Totals: 0 none; 1–5 mild; 6–15 moderate; 16–20 marked; 21–30 extreme.
         </div>
     </div>
 
@@ -1207,6 +1356,133 @@ const CGII_OPTIONS = [
     { val: 7, label: 'Very much worse' }
 ];
 
+// ---------- AUDIT data ----------
+// Items 1-8 use 5-option set; items 9-10 use 3-option set (0, 2, 4).
+const AUDIT_ITEMS = [
+    { prompt: 'How often do you have a drink containing alcohol?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Monthly or less' },
+        { val: 2, label: '2–4 times a month' },
+        { val: 3, label: '2–3 times a week' },
+        { val: 4, label: '4 or more times a week' }
+      ]},
+    { prompt: 'How many standard drinks containing alcohol do you have on a typical day when you are drinking?',
+      options: [
+        { val: 0, label: '1 or 2' },
+        { val: 1, label: '3 or 4' },
+        { val: 2, label: '5 or 6' },
+        { val: 3, label: '7 to 9' },
+        { val: 4, label: '10 or more' }
+      ]},
+    { prompt: 'How often do you have six or more drinks on one occasion?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'How often during the last year have you found that you were not able to stop drinking once you had started?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'How often during the last year have you failed to do what was normally expected of you because of drinking?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'How often during the last year have you needed a drink in the morning to get yourself going after a heavy drinking session?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'How often during the last year have you had a feeling of guilt or remorse after drinking?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'How often during the last year have you been unable to remember what happened the night before because of your drinking?',
+      options: [
+        { val: 0, label: 'Never' },
+        { val: 1, label: 'Less than monthly' },
+        { val: 2, label: 'Monthly' },
+        { val: 3, label: 'Weekly' },
+        { val: 4, label: 'Daily or almost daily' }
+      ]},
+    { prompt: 'Have you or someone else been injured because of your drinking?',
+      options: [
+        { val: 0, label: 'No' },
+        { val: 2, label: 'Yes, but not in the last year' },
+        { val: 4, label: 'Yes, during the last year' }
+      ]},
+    { prompt: 'Has a relative, friend, doctor, or other health worker been concerned about your drinking or suggested you cut down?',
+      options: [
+        { val: 0, label: 'No' },
+        { val: 2, label: 'Yes, but not in the last year' },
+        { val: 4, label: 'Yes, during the last year' }
+      ]}
+];
+
+// ---------- DAST-10 data ----------
+// Item 3 is reverse-scored ("No" = 1 point, "Yes" = 0 points).
+const DAST_ITEMS = [
+    { prompt: 'Have you used drugs other than those required for medical reasons?', reverse: false },
+    { prompt: 'Do you abuse more than one drug at a time?', reverse: false },
+    { prompt: 'Are you always able to stop using drugs when you want to? (If never use drugs, answer "Yes")', reverse: true },
+    { prompt: 'Have you had "blackouts" or "flashbacks" as a result of drug use?', reverse: false },
+    { prompt: 'Do you ever feel bad or guilty about your drug use?', reverse: false },
+    { prompt: 'Does your spouse (or parents) ever complain about your involvement with drugs?', reverse: false },
+    { prompt: 'Have you neglected your family because of your use of drugs?', reverse: false },
+    { prompt: 'Have you engaged in illegal activities in order to obtain drugs?', reverse: false },
+    { prompt: 'Have you ever experienced withdrawal symptoms (felt sick) when you stopped taking drugs?', reverse: false },
+    { prompt: 'Have you had medical problems as a result of your drug use (e.g. memory loss, hepatitis, convulsions, bleeding, etc.)?', reverse: false }
+];
+
+// ---------- WSAS data ----------
+const WSAS_OPTIONS = [
+    { val: 0, label: '0 — Not at all impaired' },
+    { val: 1, label: '1' },
+    { val: 2, label: '2 — Slightly' },
+    { val: 3, label: '3' },
+    { val: 4, label: '4 — Definitely' },
+    { val: 5, label: '5' },
+    { val: 6, label: '6 — Markedly' },
+    { val: 7, label: '7' },
+    { val: 8, label: '8 — Very severely impaired' }
+];
+const WSAS_ITEMS = [
+    { title: 'Work',                  prompt: 'Because of my problem, my ability to work is impaired. (If retired or choosing not to work for reasons unrelated to the problem, mark "not applicable".)' },
+    { title: 'Home management',       prompt: 'Because of my problem, my home management (cleaning, tidying, shopping, cooking, looking after home/children, paying bills) is impaired.' },
+    { title: 'Social leisure',        prompt: 'Because of my problem, my social leisure activities (with other people, e.g. parties, bars, clubs, outings, visits, dating, entertaining) are impaired.' },
+    { title: 'Private leisure',       prompt: 'Because of my problem, my private leisure activities (done alone, e.g. reading, gardening, collecting, sewing, walking) are impaired.' },
+    { title: 'Close relationships',   prompt: 'Because of my problem, my ability to form and maintain close relationships with others, including those I live with, is impaired.' }
+];
+
+// ---------- SDS data ----------
+const SDS_OPTIONS = Array.from({ length: 11 }, (_, v) => ({
+    val: v,
+    label: (v === 0 ? '0 — Not at all' : v === 5 ? '5 — Moderately' : v === 10 ? '10 — Extremely' : String(v))
+}));
+const SDS_ITEMS = [
+    { title: 'Work / School',   prompt: 'The symptoms have disrupted your work / school work.' },
+    { title: 'Social life',     prompt: 'The symptoms have disrupted your social life / leisure activities.' },
+    { title: 'Family life',     prompt: 'The symptoms have disrupted your family life / home responsibilities.' }
+];
+
 // ---------- Shared 0-4 "Not at all / Extremely" response set (PCL-5, IES-R) ----------
 const TRAUMA_OPTIONS = [
     { val: 0, label: 'Not at all' },
@@ -1447,6 +1723,82 @@ const HAMA_ITEMS = [
     container.innerHTML = html;
 })();
 
+// ---------- Build AUDIT UI ----------
+(function buildAudit() {
+    const container = document.getElementById('auditItems');
+    let html = '';
+    AUDIT_ITEMS.forEach((item, idx) => {
+        const n = idx + 1;
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + item.prompt + '</span></div>';
+        html += '<div class="radio-group">';
+        item.options.forEach(opt => {
+            html += '<label class="radio-option"><input type="radio" name="audit_' + n + '" value="' + opt.val + '" onchange="updateAudit()">' +
+                    '<span class="radio-label"><span class="val">' + opt.val + '</span>' + opt.label + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
+// ---------- Build DAST-10 UI ----------
+(function buildDast() {
+    const container = document.getElementById('dastItems');
+    let html = '';
+    DAST_ITEMS.forEach((item, idx) => {
+        const n = idx + 1;
+        const label = item.prompt + (item.reverse ? ' <span style="color:var(--warning);font-size:0.85em;font-weight:400;">(reverse-scored)</span>' : '');
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + label + '</span></div>';
+        html += '<div class="radio-group">';
+        YESNO_OPTIONS.forEach(opt => {
+            html += '<label class="radio-option"><input type="radio" name="dast_' + n + '" value="' + opt.val + '" onchange="updateDast()">' +
+                    '<span class="radio-label"><span class="val">' + opt.val + '</span>' + opt.label + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
+// ---------- Build WSAS UI ----------
+(function buildWsas() {
+    const container = document.getElementById('wsasItems');
+    let html = '';
+    WSAS_ITEMS.forEach((item, idx) => {
+        const n = idx + 1;
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + item.title + '</span></div>';
+        html += '<div class="item-sub">' + item.prompt + '</div>';
+        html += '<div class="radio-group">';
+        WSAS_OPTIONS.forEach(opt => {
+            html += '<label class="radio-option"><input type="radio" name="wsas_' + n + '" value="' + opt.val + '" onchange="updateWsas()">' +
+                    '<span class="radio-label"><span class="val">' + opt.val + '</span>' + opt.label.replace(/^\d+ — /, '').replace(/^\d+$/, '') + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
+// ---------- Build SDS UI ----------
+(function buildSds() {
+    const container = document.getElementById('sdsItems');
+    let html = '';
+    SDS_ITEMS.forEach((item, idx) => {
+        const n = idx + 1;
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + item.title + '</span></div>';
+        html += '<div class="item-sub">' + item.prompt + '</div>';
+        html += '<div class="radio-group">';
+        SDS_OPTIONS.forEach(opt => {
+            const tag = opt.label.includes('—') ? opt.label.split('—')[1].trim() : '';
+            html += '<label class="radio-option"><input type="radio" name="sds_' + n + '" value="' + opt.val + '" onchange="updateSds()">' +
+                    '<span class="radio-label"><span class="val">' + opt.val + '</span>' + tag + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
 // ---------- Build CGI UI ----------
 (function buildCgi() {
     const sev = document.getElementById('cgisOptions');
@@ -1581,6 +1933,32 @@ function k10Severity(score) {
 function msibpdSeverity(score) {
     if (score < 7) return { level: 'Below screening cut-off', css: 'sev-none' };
     return          { level: 'Positive screen (≥7) — further assessment recommended', css: 'sev-modsev' };
+}
+function auditSeverity(score) {
+    if (score <= 7)  return { level: 'Low-risk drinking',       css: 'sev-none' };
+    if (score <= 15) return { level: 'Hazardous / risky',       css: 'sev-mild' };
+    if (score <= 19) return { level: 'Harmful drinking',        css: 'sev-moderate' };
+    return            { level: 'Possible dependence',      css: 'sev-severe' };
+}
+function dastSeverity(score) {
+    if (score === 0) return { level: 'No problems reported',  css: 'sev-none' };
+    if (score <= 2)  return { level: 'Low level',             css: 'sev-mild' };
+    if (score <= 5)  return { level: 'Moderate level',        css: 'sev-moderate' };
+    if (score <= 8)  return { level: 'Substantial level',     css: 'sev-modsev' };
+    return            { level: 'Severe level',          css: 'sev-severe' };
+}
+function wsasSeverity(score) {
+    if (score <= 9)  return { level: 'Subclinical',            css: 'sev-none' };
+    if (score <= 20) return { level: 'Significant impairment', css: 'sev-mild' };
+    if (score <= 30) return { level: 'Moderately severe',      css: 'sev-moderate' };
+    return            { level: 'Severely impaired',       css: 'sev-severe' };
+}
+function sdsSeverity(score) {
+    if (score === 0) return { level: 'None',     css: 'sev-none' };
+    if (score <= 5)  return { level: 'Mild',     css: 'sev-mild' };
+    if (score <= 15) return { level: 'Moderate', css: 'sev-moderate' };
+    if (score <= 20) return { level: 'Marked',   css: 'sev-modsev' };
+    return            { level: 'Extreme',  css: 'sev-severe' };
 }
 
 function pcl5Severity(score) {
@@ -1745,6 +2123,75 @@ function updateMsibpd() {
     } else {
         const sev = msibpdSeverity(total);
         pill.textContent = sev.level + (rated < 10 ? ' (partial: ' + rated + '/10)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function updateAudit() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 10; i++) {
+        const v = getRadioVal('audit_' + i);
+        if (v !== null) { total += parseInt(v, 10); rated++; }
+    }
+    document.getElementById('auditTotal').textContent = total;
+    const pill = document.getElementById('auditSeverityPill');
+    if (rated === 0) { pill.textContent = 'Not rated'; pill.className = 'severity-pill'; }
+    else {
+        const sev = auditSeverity(total);
+        pill.textContent = sev.level + (rated < 10 ? ' (partial: ' + rated + '/10)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function updateDast() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 10; i++) {
+        const v = getRadioVal('dast_' + i);
+        if (v === null) continue;
+        rated++;
+        const item = DAST_ITEMS[i-1];
+        const answer = parseInt(v, 10); // 0 = No, 1 = Yes
+        // Reverse scoring for item 3 (always able to stop): "No" = 1 point
+        total += item.reverse ? (1 - answer) : answer;
+    }
+    document.getElementById('dastTotal').textContent = total;
+    const pill = document.getElementById('dastSeverityPill');
+    if (rated === 0) { pill.textContent = 'Not rated'; pill.className = 'severity-pill'; }
+    else {
+        const sev = dastSeverity(total);
+        pill.textContent = sev.level + (rated < 10 ? ' (partial: ' + rated + '/10)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function updateWsas() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 5; i++) {
+        const v = getRadioVal('wsas_' + i);
+        if (v !== null) { total += parseInt(v, 10); rated++; }
+    }
+    document.getElementById('wsasTotal').textContent = total;
+    const pill = document.getElementById('wsasSeverityPill');
+    if (rated === 0) { pill.textContent = 'Not rated'; pill.className = 'severity-pill'; }
+    else {
+        const sev = wsasSeverity(total);
+        pill.textContent = sev.level + (rated < 5 ? ' (partial: ' + rated + '/5)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function updateSds() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 3; i++) {
+        const v = getRadioVal('sds_' + i);
+        if (v !== null) { total += parseInt(v, 10); rated++; }
+    }
+    document.getElementById('sdsTotal').textContent = total;
+    const pill = document.getElementById('sdsSeverityPill');
+    if (rated === 0) { pill.textContent = 'Not rated'; pill.className = 'severity-pill'; }
+    else {
+        const sev = sdsSeverity(total);
+        pill.textContent = sev.level + (rated < 3 ? ' (partial: ' + rated + '/3)' : '');
         pill.className = 'severity-pill ' + sev.css;
     }
 }
@@ -2165,6 +2612,209 @@ function buildMsibpdText() {
     return t;
 }
 
+function buildAuditText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'ALCOHOL USE DISORDERS IDENTIFICATION TEST (AUDIT)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    let total = 0, rated = 0;
+    let auditC = 0, auditCRated = 0;
+    const rows = [];
+    for (let i = 1; i <= 10; i++) {
+        const v = getRadioVal('audit_' + i);
+        const item = AUDIT_ITEMS[i-1];
+        let answerLabel = 'Not rated';
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            total += n; rated++;
+            if (i <= 3) { auditC += n; auditCRated++; }
+            const opt = item.options.find(o => o.val === n);
+            answerLabel = opt ? opt.label : String(n);
+        }
+        rows.push({
+            num: i,
+            prompt: item.prompt,
+            score: v === null ? 'NR' : v,
+            answer: answerLabel
+        });
+    }
+
+    const sev = auditSeverity(total);
+    t += 'TOTAL SCORE: ' + total + ' / 40';
+    if (rated < 10) t += '  (partial: ' + rated + '/10 items rated)';
+    t += '\n';
+    t += 'ZONE:        ' + sev.level + '\n';
+    if (auditCRated === 3) {
+        const cPositive = auditC >= 4; // general cut-off (>=3 in women, >=4 in men)
+        t += 'AUDIT-C:     ' + auditC + ' / 12 (items 1-3; brief screen)'
+           + (cPositive ? '  — positive' : '') + '\n';
+    }
+    t += thin + '\n';
+    t += 'ITEM RESPONSES\n';
+    t += thin + '\n';
+    rows.forEach(r => {
+        t += r.num.toString().padStart(2, ' ') + '. ' + r.prompt + '\n';
+        t += '    [Score: ' + r.score + ']  ' + r.answer + '\n';
+    });
+    t += thin + '\n';
+    t += 'Zones: 0-7 low risk | 8-15 hazardous | 16-19 harmful | >=20 possible dependence.\n';
+    t += 'Reference: Saunders et al. Addiction. 1993;88:791-804.\n';
+    t += line + '\n';
+    return t;
+}
+
+function buildDastText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'DRUG ABUSE SCREENING TEST (DAST-10)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    let total = 0, rated = 0;
+    const rows = [];
+    for (let i = 1; i <= 10; i++) {
+        const v = getRadioVal('dast_' + i);
+        const item = DAST_ITEMS[i-1];
+        let pointsAwarded = 'NR';
+        let answerLabel = 'Not rated';
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            rated++;
+            const pts = item.reverse ? (1 - n) : n;
+            total += pts;
+            pointsAwarded = String(pts);
+            answerLabel = YESNO_OPTIONS[n].label + (item.reverse ? ' (reverse-scored)' : '');
+        }
+        rows.push({ num: i, prompt: item.prompt, score: pointsAwarded, answer: answerLabel });
+    }
+
+    const sev = dastSeverity(total);
+    t += 'SCORE:    ' + total + ' / 10';
+    if (rated < 10) t += '  (partial: ' + rated + '/10 items rated)';
+    t += '\n';
+    t += 'LEVEL:    ' + sev.level + '\n';
+    if (total >= 3) t += 'NOTE:     Score >=3 — further drug-use assessment indicated.\n';
+    t += thin + '\n';
+    t += 'ITEM RESPONSES (past 12 months; excluding prescribed medications taken as directed)\n';
+    t += thin + '\n';
+    rows.forEach(r => {
+        t += r.num.toString().padStart(2, ' ') + '. ' + r.prompt + '\n';
+        t += '    [Pts: ' + r.score + ']  ' + r.answer + '\n';
+    });
+    t += thin + '\n';
+    t += 'Scoring: 0 none | 1-2 low | 3-5 moderate | 6-8 substantial | 9-10 severe.\n';
+    t += 'Reference: Skinner HA. Addict Behav. 1982;7:363-71.\n';
+    t += line + '\n';
+    return t;
+}
+
+function buildWsasText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'WORK AND SOCIAL ADJUSTMENT SCALE (WSAS)\n';
+    t += line + '\n';
+    t += patientHeader();
+    const problem = (document.getElementById('wsasProblem').value || '').trim();
+    if (problem) t += 'Problem:   ' + problem + '\n';
+    t += thin + '\n';
+
+    let total = 0, rated = 0;
+    const rows = [];
+    for (let i = 1; i <= 5; i++) {
+        const v = getRadioVal('wsas_' + i);
+        if (v !== null) { total += parseInt(v, 10); rated++; }
+        const item = WSAS_ITEMS[i-1];
+        rows.push({
+            num: i,
+            title: item.title,
+            score: v === null ? 'NR' : v,
+            answer: v === null ? 'Not rated' : (WSAS_OPTIONS.find(o => o.val === parseInt(v,10)) || {}).label
+        });
+    }
+
+    const sev = wsasSeverity(total);
+    t += 'TOTAL SCORE: ' + total + ' / 40';
+    if (rated < 5) t += '  (partial: ' + rated + '/5 items rated)';
+    t += '\n';
+    t += 'SEVERITY:    ' + sev.level + '\n';
+    t += thin + '\n';
+    t += 'ITEM RESPONSES (0 = not at all impaired, 8 = very severely)\n';
+    t += thin + '\n';
+    rows.forEach(r => {
+        t += r.num.toString().padStart(2, ' ') + '. ' + r.title + '  [Score: ' + r.score + ']\n';
+        t += '    ' + r.answer + '\n';
+    });
+    t += thin + '\n';
+    t += 'Interpretation: 0-9 subclinical | 10-20 significant impairment | 21-30 moderately severe | 31-40 severe.\n';
+    t += 'Reference: Mundt JC et al. Br J Psychiatry. 2002;180:461-4.\n';
+    t += line + '\n';
+    return t;
+}
+
+function buildSdsText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'SHEEHAN DISABILITY SCALE (SDS)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    let total = 0, rated = 0;
+    const rows = [];
+    const flags = [];
+    for (let i = 1; i <= 3; i++) {
+        const v = getRadioVal('sds_' + i);
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            total += n; rated++;
+            if (n >= 5) flags.push(SDS_ITEMS[i-1].title);
+        }
+        rows.push({
+            num: i,
+            title: SDS_ITEMS[i-1].title,
+            score: v === null ? 'NR' : v
+        });
+    }
+
+    const sev = sdsSeverity(total);
+    t += 'TOTAL SCORE: ' + total + ' / 30';
+    if (rated < 3) t += '  (partial: ' + rated + '/3 items rated)';
+    t += '\n';
+    t += 'SEVERITY:    ' + sev.level + '\n';
+    if (flags.length) t += 'FLAGS:       Significant impairment (≥5) in: ' + flags.join(', ') + '\n';
+    t += thin + '\n';
+    t += 'DOMAIN SCORES (0 = not at all, 10 = extremely)\n';
+    t += thin + '\n';
+    rows.forEach(r => {
+        t += r.num + '. ' + r.title.padEnd(15) + ' ' + r.score + ' / 10\n';
+    });
+
+    const daysLost = (document.getElementById('sdsDaysLost').value || '').trim();
+    const daysUnprod = (document.getElementById('sdsDaysUnprod').value || '').trim();
+    if (daysLost || daysUnprod) {
+        t += thin + '\n';
+        if (daysLost) t += 'Days lost in last week:         ' + daysLost + '\n';
+        if (daysUnprod) t += 'Days underproductive in week:   ' + daysUnprod + '\n';
+    }
+    t += thin + '\n';
+    t += 'Totals: 0 none | 1-5 mild | 6-15 moderate | 16-20 marked | 21-30 extreme.\n';
+    t += 'Reference: Sheehan DV et al. Int Clin Psychopharmacol. 1996;11(S3):89-95.\n';
+    t += line + '\n';
+    return t;
+}
+
 function buildCgiText() {
     const line = '='.repeat(66);
     const thin = '-'.repeat(66);
@@ -2495,6 +3145,22 @@ function generateOutput(which) {
         document.getElementById('cgiText').value = buildCgiText();
         document.getElementById('cgiOutput').classList.add('visible');
         document.getElementById('cgiOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'audit') {
+        document.getElementById('auditText').value = buildAuditText();
+        document.getElementById('auditOutput').classList.add('visible');
+        document.getElementById('auditOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'dast') {
+        document.getElementById('dastText').value = buildDastText();
+        document.getElementById('dastOutput').classList.add('visible');
+        document.getElementById('dastOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'wsas') {
+        document.getElementById('wsasText').value = buildWsasText();
+        document.getElementById('wsasOutput').classList.add('visible');
+        document.getElementById('wsasOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'sds') {
+        document.getElementById('sdsText').value = buildSdsText();
+        document.getElementById('sdsOutput').classList.add('visible');
+        document.getElementById('sdsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
@@ -2521,7 +3187,7 @@ function copyOutput(which) {
 }
 
 function resetScale(which) {
-    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, bprs: 18, k10: 10, msibpd: 10 };
+    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, bprs: 18, k10: 10, msibpd: 10, audit: 10, dast: 10, wsas: 5, sds: 3 };
     if (which === 'cgi') {
         document.querySelectorAll('input[name="cgis"]').forEach(r => r.checked = false);
         document.querySelectorAll('input[name="cgii"]').forEach(r => r.checked = false);
@@ -2537,9 +3203,15 @@ function resetScale(which) {
     }
     if (which === 'pcl5') { const e = document.getElementById('pcl5Event'); if (e) e.value = ''; }
     if (which === 'iesr') { const e = document.getElementById('iesrEvent'); if (e) e.value = ''; }
+    if (which === 'wsas') { const e = document.getElementById('wsasProblem'); if (e) e.value = ''; }
+    if (which === 'sds')  {
+        const a = document.getElementById('sdsDaysLost'); if (a) a.value = '';
+        const b = document.getElementById('sdsDaysUnprod'); if (b) b.value = '';
+    }
     const updaters = { madrs: updateMadrs, hamd: updateHamd, phq9: updatePhq9, gad7: updateGad7,
                        hama: updateHama, ymrs: updateYmrs, pcl5: updatePcl5, iesr: updateIesr,
-                       bprs: updateBprs, k10: updateK10, msibpd: updateMsibpd };
+                       bprs: updateBprs, k10: updateK10, msibpd: updateMsibpd,
+                       audit: updateAudit, dast: updateDast, wsas: updateWsas, sds: updateSds };
     if (updaters[which]) updaters[which]();
     document.getElementById(which + 'Output').classList.remove('visible');
 }
@@ -2556,6 +3228,10 @@ updateIesr();
 updateBprs();
 updateK10();
 updateMsibpd();
+updateAudit();
+updateDast();
+updateWsas();
+updateSds();
 </script>
 </body>
 </html>
