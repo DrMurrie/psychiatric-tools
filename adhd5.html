@@ -302,6 +302,22 @@ select.inp{appearance:none}
 .tit-add-dose{background:#f3f5f9;border:1px solid var(--border);border-radius:4px;color:var(--muted);padding:2px 7px;font:500 10px var(--sans);cursor:pointer}
 .tit-add-dose:hover{border-color:var(--primary);color:var(--primary)}
 .tit-add-step{background:none;border:none;color:var(--primary);font:500 10px var(--sans);padding:0;text-decoration:underline;cursor:pointer}
+/* Script details rows */
+.script-med-block{background:#fafbfc;border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:8px}
+.script-med-head{font-size:13px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.script-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:4px 0}
+.script-row+.script-row{border-top:1px dashed var(--border);margin-top:4px}
+.script-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.script-lbl-suf{font-size:10px;color:var(--muted);margin-left:-3px}
+.script-inp{padding:5px 8px;border:1px solid var(--border);border-radius:6px;font:13px var(--sans);background:#fff;color:var(--text);min-width:0}
+.script-inp[type="number"]{width:60px;text-align:center}
+.script-escript{display:flex;align-items:center;gap:4px;font:600 11px var(--sans);color:var(--text);white-space:nowrap;background:#eef1f6;padding:4px 9px;border-radius:6px;cursor:pointer}
+.script-escript input{margin:0}
+.script-rm{background:none;border:none;color:#c8cdd9;font-size:16px;cursor:pointer;padding:0 5px;line-height:1}
+.script-rm:hover{color:var(--red)}
+.script-add{background:none;border:none;color:var(--primary);font:600 11px var(--sans);cursor:pointer;padding:4px 0;text-decoration:underline}
+.script-dose-row{flex-basis:100%;padding-top:3px}
+.script-dose{width:100%;font-style:italic;color:#374151}
 /* Titration outputs tab additions */
 .tit-out-tabs{display:flex;background:#1e293b;gap:2px;padding:0 13px;border-bottom:1px solid #334155}
 .tit-out-tab{padding:7px 12px;border:none;background:none;color:#64748b;font:600 10px var(--sans);text-transform:uppercase;letter-spacing:.05em;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
@@ -337,7 +353,7 @@ select.inp{appearance:none}
 
 <div class="topbar">
   <div class="tb-row">
-    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v5.9</span></span>
+    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v6.0</span></span>
     <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="save();refresh()" style="flex:1 1 130px;min-width:100px">
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
@@ -1007,10 +1023,10 @@ select.inp{appearance:none}
         </div>
         <button onclick="titAddBlank()" class="abtn" style="margin-top:6px;font-size:11px;width:100%;border-style:dashed">+ Add medication manually</button>
       </div>
-      <!-- Authority / Rx notes -->
+      <!-- Scripts provided -->
       <div style="padding:0 13px 10px;border-top:1px solid var(--border)">
-        <label class="fl" style="margin-top:8px">Authority / Rx notes</label>
-        <textarea class="nf" id="rxNotes" placeholder="PBS authority, script notes..." oninput="save();refresh()" rows="2"></textarea>
+        <label class="fl" style="margin-top:8px">Scripts provided today</label>
+        <div id="scripts-list"></div>
       </div>
     </div>
   </div>
@@ -1465,6 +1481,23 @@ const TIT_MEDS={
     strengths:[]}
 };
 
+// Per-medication script defaults: tabs, repeats (0-5), prescription interval (days)
+// perStrength = generate one script per distinct strength used in titration
+const SCRIPT_DEFAULTS={
+  dex:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mg',fixedStrength:5},
+  ritalinIR:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mg',fixedStrength:10},
+  ritalinLA:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg'},
+  concerta:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
+  vyvanse2030:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
+  vyvanse3050:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
+  vyvanseWater:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
+  intuniv:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
+  strattera:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg'},
+  catnanight:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mcg',strengthOpts:[100,150]},
+  catnaday:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mcg',strengthOpts:[100,150]},
+  other:{tabs:30,repeats:5,interval:20,form:'tab',unit:''}
+};
+
 const TIT_MED_INFO={
   dex:{genericName:'Dexamphetamine sulfate',formulation:'Immediate-release tablet (5mg)',onset:'20-30 minutes',peak:'1-2 hours',duration:'3-5 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, dry mouth, difficulty sleeping (take last dose before 1pm), headache, increased heart rate and BP, irritability as dose wears off. Less common: weight loss, stomach upset, anxiety.',dietary:'Avoid acidic drinks (juice, vitamin C) within 1 hour of your dose - they reduce absorption significantly.',excipients:'Contains lactose.',storage:'Store below 25 degrees, away from moisture. Keep out of reach of children.',stopping:'Can be stopped abruptly, but discuss with your psychiatrist first.',important:'Do not give to someone else. Report chest pain, palpitations, or significant mood changes immediately.'},
   ritalinIR:{genericName:'Methylphenidate hydrochloride',formulation:'Immediate-release tablet (10mg)',onset:'20-30 minutes',peak:'1-2 hours',duration:'3-5 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, difficulty sleeping (take last dose before 1pm), headache, dry mouth, increased heart rate and BP. Less common: rebound mood changes as dose wears off, weight loss.',dietary:'Avoid acidic drinks within 1 hour of dose. Taking with food reduces stomach upset.',excipients:'Contains lactose. Free from gluten and gelatin.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Do not give to someone else. Report chest pain, palpitations, or significant mood changes immediately.'},
@@ -1770,11 +1803,150 @@ function renderTitMedBlock(m,mi){
   return '<div class="tit-med-block"><div class="tit-med-head">'+nameEl+'<button class="tit-med-rm" onclick="titRemoveMed('+mi+')">x</button></div><div class="tit-step-list">'+steps+'</div></div>';
 }
 
+// ─── SCRIPT DETAILS ───────────────────────────────────────────────────────────
+function getUsedStrengths(m){
+  var set={};
+  m.steps.forEach(function(st){
+    st.doses.forEach(function(d){
+      if(d.type==='cap'&&d.caps){d.caps.forEach(function(s){if(s)set[s]=true;});}
+      else if(d.type==='str'&&d.s){set[d.s]=true;}
+    });
+  });
+  return Object.keys(set).map(function(k){return parseFloat(k);}).sort(function(a,b){return a-b;});
+}
+function getDefaultStrength(m){
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  if(def.fixedStrength!=null)return def.fixedStrength;
+  var used=getUsedStrengths(m);
+  if(used.length)return used[used.length-1];
+  if(def.strengthOpts&&def.strengthOpts.length)return def.strengthOpts[0];
+  if(m.def.strengths&&m.def.strengths.length)return m.def.strengths[m.def.strengths.length-1];
+  return null;
+}
+function deriveDose(m,strength){
+  if(!m.steps.length)return '';
+  var st=null;
+  for(var i=m.steps.length-1;i>=0;i--){if(m.steps[i].ongoing){st=m.steps[i];break;}}
+  if(!st)st=m.steps[m.steps.length-1];
+  if(!st)return '';
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  var form=def.form||'tab';
+  var byTime={};
+  var order=[];
+  st.doses.forEach(function(d){
+    var n=0;
+    if(d.type==='cap'&&d.caps){n=d.caps.filter(function(s){return s==strength;}).length;}
+    else if(d.type==='str'&&d.s==strength){n=d.q||1;}
+    else if(d.type==='opt'){n=d.q||0;}
+    else if(d.type==='free'){return;}
+    if(n>0){
+      if(!(d.t in byTime))order.push(d.t);
+      byTime[d.t]=(byTime[d.t]||0)+n;
+    }
+  });
+  function nstr(n){return n===0.25?'quarter':n===0.5?'half':n===1?'1':n===1.5?'1.5':String(n);}
+  function plural(n){return (n===1||n===0.5||n===0.25)?form:form+'s';}
+  function loc(t){var l=t.toLowerCase();if(l==='morning'||l==='afternoon'||l==='evening')return 'in the '+l;if(l==='midday'||l==='noon')return 'at midday';if(l==='night'||l==='nocte')return 'at night';return l;}
+  return order.map(function(t){return nstr(byTime[t])+' '+plural(byTime[t])+' '+loc(t);}).join(', ');
+}
+function ensureScripts(m){
+  if(m.scripts&&m.scripts.length)return;
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  if(def.perStrength){
+    var used=getUsedStrengths(m);
+    if(!used.length)used=[m.def.strengths&&m.def.strengths[0]||null];
+    m.scripts=used.map(function(s){return {strength:s,dose:deriveDose(m,s),tabs:def.tabs,repeats:def.repeats,interval:def.interval,escript:true};});
+  } else {
+    var s=getDefaultStrength(m);
+    m.scripts=[{strength:s,dose:deriveDose(m,s),tabs:def.tabs,repeats:def.repeats,interval:def.interval,escript:true}];
+  }
+}
+function setScript(mi,si,key,val){
+  var s=titMeds[mi].scripts[si];
+  if(key==='tabs'||key==='interval'||key==='repeats')val=parseInt(val);
+  if(key==='strength'){s.strength=isNaN(parseFloat(val))?val:parseFloat(val);s.dose=deriveDose(titMeds[mi],s.strength);renderScripts();return;}
+  s[key]=val;
+  refreshTitOutputs();
+}
+function addScript(mi){
+  var m=titMeds[mi];ensureScripts(m);
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  var s=getDefaultStrength(m);
+  m.scripts.push({strength:s,dose:deriveDose(m,s),tabs:def.tabs,repeats:def.repeats,interval:def.interval,escript:true});
+  renderScripts();
+}
+function removeScript(mi,si){
+  titMeds[mi].scripts.splice(si,1);
+  if(!titMeds[mi].scripts.length){var def=SCRIPT_DEFAULTS[titMeds[mi].key]||SCRIPT_DEFAULTS.other;var s=getDefaultStrength(titMeds[mi]);titMeds[mi].scripts.push({strength:s,dose:deriveDose(titMeds[mi],s),tabs:def.tabs,repeats:def.repeats,interval:def.interval,escript:true});}
+  renderScripts();
+}
+function renderScriptRow(m,mi,s,si){
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  var unit=def.unit||m.def.unit||'';
+  var strengths=def.strengthOpts||(def.fixedStrength!=null?[def.fixedStrength]:(m.def.strengths||[]));
+  var strengthCtrl;
+  if(strengths.length){
+    strengthCtrl='<select class="script-inp" onchange="setScript('+mi+','+si+',\'strength\',this.value)">'
+      +strengths.map(function(o){return '<option value="'+o+'"'+(s.strength==o?' selected':'')+'>'+o+unit+'</option>';}).join('')
+      +'</select>';
+  } else {
+    strengthCtrl='<input class="script-inp" type="text" placeholder="strength" value="'+esc(s.strength==null?'':s.strength)+'" onchange="setScript('+mi+','+si+',\'strength\',this.value)" style="width:80px">';
+  }
+  var repOpts='';for(var i=0;i<=5;i++){repOpts+='<option value="'+i+'"'+(s.repeats===i?' selected':'')+'>'+i+'</option>';}
+  return '<div class="script-row">'
+    +'<span class="script-lbl">Strength</span>'+strengthCtrl
+    +'<span class="script-lbl">Qty</span><input class="script-inp" type="number" min="1" value="'+(s.tabs||'')+'" onchange="setScript('+mi+','+si+',\'tabs\',this.value)" style="width:60px">'
+    +'<span class="script-lbl">Rpts</span><select class="script-inp" onchange="setScript('+mi+','+si+',\'repeats\',this.value)">'+repOpts+'</select>'
+    +'<span class="script-lbl">Interval</span><input class="script-inp" type="number" min="1" value="'+(s.interval||'')+'" onchange="setScript('+mi+','+si+',\'interval\',this.value)" style="width:54px"><span class="script-lbl-suf">d</span>'
+    +'<label class="script-escript"><input type="checkbox" '+(s.escript?'checked':'')+' onchange="setScript('+mi+','+si+',\'escript\',this.checked)"> eScript</label>'
+    +'<button class="script-rm" onclick="removeScript('+mi+','+si+')" title="Remove this script">×</button>'
+    +'<div class="script-dose-row"><input class="script-inp script-dose" type="text" value="'+esc(s.dose||'')+'" placeholder="e.g. 1 cap in the morning" onchange="setScript('+mi+','+si+',\'dose\',this.value)"></div>'
+    +'</div>';
+}
+function renderScripts(){
+  var el=$('scripts-list');if(!el)return;
+  if(!titMeds.length){el.innerHTML='<div style="font-size:12px;color:var(--muted);padding:6px 0">Add a medication above to generate script details.</div>';refreshTitOutputs();return;}
+  el.innerHTML=titMeds.map(function(m,mi){
+    ensureScripts(m);
+    var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
+    var rows=m.scripts.map(function(s,si){return renderScriptRow(m,mi,s,si);}).join('');
+    return '<div class="script-med-block">'
+      +'<div class="script-med-head">'+esc(nm)+'</div>'
+      +rows
+      +'<button class="script-add" onclick="addScript('+mi+')">+ Add another script</button>'
+      +'</div>';
+  }).join('');
+  refreshTitOutputs();
+}
+function buildScriptLines(){
+  // Returns an array of "Med strength form, dose, qty, X rpts, Y day interval, escript|paper" strings.
+  var lines=[];
+  titMeds.forEach(function(m){
+    if(!m.scripts||!m.scripts.length)return;
+    var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
+    var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+    var unit=def.unit||m.def.unit||'';
+    var form=def.form||m.def.form||'tab';
+    m.scripts.forEach(function(s){
+      var parts=[nm];
+      if(s.strength!=null&&s.strength!=='')parts[0]+=' '+s.strength+unit+' '+form;
+      var bits=[parts[0]];
+      if(s.dose)bits.push(s.dose);
+      if(s.tabs)bits.push(s.tabs+' '+form+(s.tabs===1?'':'s'));
+      bits.push((s.repeats||0)+' rpt'+((s.repeats||0)===1?'':'s'));
+      if(s.interval)bits.push(s.interval+'-day prescription interval');
+      bits.push(s.escript?'eScript sent':'paper script');
+      lines.push(bits.join(', '));
+    });
+  });
+  return lines;
+}
+
 function renderTitMeds(){
   var el=$('tit-med-plan-list');if(!el)return;
-  if(!titMeds.length){el.innerHTML='<div class="tit-empty">No medication selected yet. Choose a protocol above or <button onclick="titAddBlank()" style="background:none;border:none;color:var(--primary);font:600 12px var(--sans);cursor:pointer;text-decoration:underline;padding:0;">add manually</button>.</div>';refreshTitOutputs();return;}
+  if(!titMeds.length){el.innerHTML='<div class="tit-empty">No medication selected yet. Choose a protocol above or <button onclick="titAddBlank()" style="background:none;border:none;color:var(--primary);font:600 12px var(--sans);cursor:pointer;text-decoration:underline;padding:0;">add manually</button>.</div>';renderScripts();return;}
   el.innerHTML=titMeds.map(function(m,mi){return renderTitMedBlock(m,mi);}).join('');
-  refreshTitOutputs();
+  renderScripts();
 }
 
 // ─── OUTPUT BUILDERS ──────────────────────────────────────────────────────────
@@ -1802,7 +1974,8 @@ function buildScript(){
     });
     if(titMeds.length>1)txt+='\n';
   });
-  if(f('rxNotes'))txt+='\n'+f('rxNotes');
+  var sLines=buildScriptLines();
+  if(sLines.length){txt+='\nScripts provided today:\n'+sLines.map(function(l){return '- '+l;}).join('\n')+'\n';}
   return txt.trim();
 }
 
@@ -2603,7 +2776,8 @@ function buildHeidiFollowUp(rt){
       });
     });
     if(f('rationaleNotes'))o+='Rationale: '+f('rationaleNotes')+'\n';
-    if(f('rxNotes'))o+='Rx notes: '+f('rxNotes')+'\n';
+    var sLines=buildScriptLines();
+    if(sLines.length){o+='Scripts provided today:\n'+sLines.map(function(l){return '- '+l;}).join('\n')+'\n';}
     o+='\n';
   }
   var fuApptStr=getFuApptStr(),fuMonStr=getFuMonStr(),fuNPList=getFuNPList();
@@ -2728,7 +2902,8 @@ function buildHeidi(){
       });
     });
     if(f('rationaleNotes'))o+='Rationale: '+f('rationaleNotes')+'\n';
-    if(f('rxNotes'))o+='Rx notes: '+f('rxNotes')+'\n';
+    var sLines=buildScriptLines();
+    if(sLines.length){o+='Scripts provided today:\n'+sLines.map(function(l){return '- '+l;}).join('\n')+'\n';}
   }
   var fuApptStr=getFuApptStr(),fuMonStr=getFuMonStr(),fuNPList=getFuNPList();
   if(fuApptStr||fuMonStr||f('fuNotes')){
@@ -3101,7 +3276,11 @@ function buildFullReportFollowUp(rt){
         if(stepItems.length) h+=list(stepItems);
       });
     }
-    if(f('rxNotes')) h+=p('<strong>Prescribing notes:</strong> '+nl(f('rxNotes')));
+    var sLines=buildScriptLines();
+    if(sLines.length){
+      h+=p('<strong>Scripts provided today:</strong>');
+      h+=list(sLines.map(esc));
+    }
   }
 
   // Follow-up
@@ -3326,7 +3505,11 @@ function buildFullReport(){
         if(stepItems.length) h+=list(stepItems);
       });
     }
-    if(f('rxNotes')) h+=p('<strong>Prescribing notes:</strong> '+nl(f('rxNotes')));
+    var sLines=buildScriptLines();
+    if(sLines.length){
+      h+=p('<strong>Scripts provided today:</strong>');
+      h+=list(sLines.map(esc));
+    }
   }
 
   // 12. Follow-up
