@@ -2207,6 +2207,52 @@ function _formatDoseLine(byTime,order,form){
   function loc(t){var l=t.toLowerCase();if(l==='morning'||l==='afternoon'||l==='evening')return 'in the '+l;if(l==='midday'||l==='noon')return 'at midday';if(l==='night'||l==='nocte')return 'at night';return l;}
   return order.map(function(t){return nstr(byTime[t])+' '+plural(byTime[t])+' '+loc(t);}).join(', ');
 }
+function _qWord(q){return q===0.25?'quarter':q===0.5?'half':q===1?'1':q===1.5?'1.5':String(q);}
+function _locWord(t){var l=(t||'').toLowerCase();
+  if(l==='morning'||l==='afternoon'||l==='evening')return 'in the '+l;
+  if(l==='midday'||l==='noon')return 'at midday';
+  if(l==='night'||l==='nocte')return 'at night';
+  if(l==='bedtime')return 'at bedtime';
+  return l||'';
+}
+function totalDailyDose(m,st){
+  var total=0;
+  st.doses.forEach(function(d){
+    if(d.type==='str')total+=(d.q||0)*(d.s||0);
+    else if(d.type==='cap'&&d.caps)total+=d.caps.reduce(function(a,b){return a+b;},0);
+  });
+  return Math.round(total*100)/100;
+}
+function formatStepSig(m,st){
+  // Natural-English sig like "take 1 cap in the morning, half tab at midday".
+  var def=m.def||{};
+  var form=def.form||'tab';
+  var unit=def.unit||'mg';
+  function plural(q){return (q===1||q===0.5||q===0.25)?form:form+'s';}
+  var byTime={},order=[];
+  var distinctStrengths={};
+  st.doses.forEach(function(d){
+    if(!(d.t in byTime)){byTime[d.t]=[];order.push(d.t);}
+    byTime[d.t].push(d);
+    if(d.type==='str'&&d.s!=null)distinctStrengths[d.s]=true;
+  });
+  var multipleStrengths=Object.keys(distinctStrengths).length>1;
+  function fmtDose(d){
+    if(d.type==='free')return d.l||'';
+    var piece=_qWord(d.q)+' '+plural(d.q)+(multipleStrengths?' ('+(d.s||0)+unit+')':'');
+    if(d.prn)piece+=' PRN';
+    return piece;
+  }
+  var parts=order.map(function(t){
+    var doses=byTime[t];
+    var pieces=doses.map(fmtDose);
+    var joined=pieces.length===1?pieces[0]
+      :pieces.length===2?pieces.join(' and ')
+      :pieces.slice(0,-1).join(', ')+', and '+pieces[pieces.length-1];
+    return joined+' '+_locWord(t);
+  });
+  return 'take '+parts.join(', ');
+}
 function deriveDose(m,strength){
   if(!m.steps.length)return '';
   var st=null;
@@ -3664,13 +3710,22 @@ function buildFullReportFollowUp(rt){
     if(titMeds.length){
       titMeds.forEach(function(m){
         var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
-        var _ma=medAuth(m);h+=p('<strong>'+esc(nm)+'</strong>'+(_ma?' <em style="color:#555">('+esc(_ma)+')</em>':''));
-        var stepItems=m.steps.map(function(st,si){
-          var lbl=titAutoLabel(m.steps,si);
-          var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
-          return '<strong>'+esc(lbl)+':</strong> '+(parts||'<em>no dose entered</em>')+(st.note?' <em>['+esc(st.note)+']</em>':'');
-        });
-        if(stepItems.length) h+=list(stepItems);
+        var hasRealTitration=m.steps.length>1&&m.steps.some(function(s){return !s.ongoing;});
+        if(!hasRealTitration){
+          var st=m.steps[0]||{doses:[]};
+          var total=totalDailyDose(m,st);
+          var unit=m.def.unit||'mg';
+          var sig=st.doses.length?formatStepSig(m,st):'';
+          h+=p('<strong>'+esc(nm)+(total?' ('+total+unit+')':'')+'</strong>'+(sig?': '+esc(sig):''));
+        } else {
+          h+=p('<strong>'+esc(nm)+'</strong>');
+          var stepItems=m.steps.map(function(st,si){
+            var lbl=titAutoLabel(m.steps,si);
+            var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
+            return '<strong>'+esc(lbl)+':</strong> '+(parts||'<em>no dose entered</em>')+(st.note?' <em>['+esc(st.note)+']</em>':'');
+          });
+          if(stepItems.length) h+=list(stepItems);
+        }
       });
     }
     var sLines=buildScriptLines();
@@ -3906,13 +3961,22 @@ function buildFullReport(){
     if(titMeds.length){
       titMeds.forEach(function(m){
         var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
-        var _ma=medAuth(m);h+=p('<strong>'+esc(nm)+'</strong>'+(_ma?' <em style="color:#555">('+esc(_ma)+')</em>':''));
-        var stepItems=m.steps.map(function(st,si){
-          var lbl=titAutoLabel(m.steps,si);
-          var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
-          return '<strong>'+esc(lbl)+':</strong> '+(parts||'<em>no dose entered</em>')+(st.note?' <em>['+esc(st.note)+']</em>':'');
-        });
-        if(stepItems.length) h+=list(stepItems);
+        var hasRealTitration=m.steps.length>1&&m.steps.some(function(s){return !s.ongoing;});
+        if(!hasRealTitration){
+          var st=m.steps[0]||{doses:[]};
+          var total=totalDailyDose(m,st);
+          var unit=m.def.unit||'mg';
+          var sig=st.doses.length?formatStepSig(m,st):'';
+          h+=p('<strong>'+esc(nm)+(total?' ('+total+unit+')':'')+'</strong>'+(sig?': '+esc(sig):''));
+        } else {
+          h+=p('<strong>'+esc(nm)+'</strong>');
+          var stepItems=m.steps.map(function(st,si){
+            var lbl=titAutoLabel(m.steps,si);
+            var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
+            return '<strong>'+esc(lbl)+':</strong> '+(parts||'<em>no dose entered</em>')+(st.note?' <em>['+esc(st.note)+']</em>':'');
+          });
+          if(stepItems.length) h+=list(stepItems);
+        }
       });
     }
     var sLines=buildScriptLines();
