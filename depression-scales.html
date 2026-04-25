@@ -289,6 +289,7 @@
         <button class="tab-btn" data-tab="pcl5" onclick="switchTab('pcl5')">PCL-5</button>
         <button class="tab-btn" data-tab="iesr" onclick="switchTab('iesr')">IES-R</button>
         <button class="tab-btn" data-tab="ybocs" onclick="switchTab('ybocs')">Y-BOCS</button>
+        <button class="tab-btn" data-tab="bfcrs" onclick="switchTab('bfcrs')">Bush-Francis</button>
         <button class="tab-btn" data-tab="bprs" onclick="switchTab('bprs')">BPRS</button>
         <button class="tab-btn" data-tab="k10" onclick="switchTab('k10')">K10</button>
         <button class="tab-btn" data-tab="msibpd" onclick="switchTab('msibpd')">MSI-BPD</button>
@@ -636,6 +637,44 @@
 
         <div class="disclaimer">
             <strong>Reference:</strong> Goodman WK, Price LH, Rasmussen SA, et al. The Yale-Brown Obsessive Compulsive Scale. Arch Gen Psychiatry. 1989;46(11):1006-16. Total (items 1–10): 0–7 subclinical · 8–15 mild · 16–23 moderate · 24–31 severe · 32–40 extreme. A ≥35% reduction in total score is a commonly-used benchmark for clinically meaningful treatment response.
+        </div>
+    </div>
+
+    <!-- Bush-Francis Catatonia Rating Scale -->
+    <div class="tab-pane" id="tab-bfcrs">
+        <div class="card">
+            <div class="card-title">Bush-Francis Catatonia Rating Scale (BFCRS)</div>
+            <p style="font-size:0.9em;">Clinician-rated. <strong>Items 1–14</strong> form the Bush-Francis Catatonia Screening Instrument (BFCSI) — a screen is positive when <strong>2 or more</strong> of these items are present (score ≥1). All <strong>23 items</strong> together form the full BFCRS severity total (0–69). Each item is rated 0–3 based on observation during the examination.</p>
+        </div>
+
+        <h3 style="color: var(--primary); font-size: 1.05em; margin: 18px 0 8px;">Screening items (1–14)</h3>
+        <div class="section-body" id="bfcrsScreenItems"></div>
+
+        <h3 style="color: var(--gray-700); font-size: 1.05em; margin: 18px 0 8px;">Additional items (15–23) — full BFCRS severity</h3>
+        <div class="section-body" id="bfcrsExtraItems"></div>
+
+        <div class="score-bar">
+            BFCRS Total: <span id="bfcrsTotal">0</span> / 69 &nbsp; — &nbsp; <span class="severity-pill" id="bfcrsSeverityPill">Not rated</span>
+            <div style="text-align:right; font-size:0.85em; font-weight:400; color: var(--gray-600); margin-top:4px;">
+                BFCSI screen items endorsed: <span id="bfcrsScreenCount">0</span>/14 (≥2 = positive)
+            </div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('bfcrs')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('bfcrs')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="bfcrsOutput">
+            <div class="output-header">
+                <h3>BFCRS Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('bfcrs')" id="bfcrsCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="bfcrsText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Bush G, Fink M, Petrides G, Dowling F, Francis A. Catatonia I. Rating scale and standardized examination. Acta Psychiatr Scand. 1996;93(2):129-36. The BFCSI (items 1–14) is a screening instrument; the full BFCRS (items 1–23) is used to track severity. Diagnostic criteria require 2+ items on the screen, evaluated alongside DSM-5/ICD criteria.
         </div>
     </div>
 
@@ -1560,6 +1599,151 @@ const YBOCS_INVEST_ITEMS = [
     ]}
 ];
 
+// ---------- Bush-Francis Catatonia Rating Scale (BFCRS) data ----------
+// Items 1-14 = screening (BFCSI). All 23 items rated 0-3.
+const BFCRS_ITEMS = [
+    // SCREENING ITEMS (1-14)
+    { title: 'Excitement', desc: 'Extreme hyperactivity, constant motor unrest which is apparently non-purposeful. Not to be attributed to akathisia or goal-directed agitation.', anchors: [
+        'Absent',
+        'Excessive motion, intermittent',
+        'Constant motion, hyperkinetic without rest periods',
+        'Full-blown catatonic excitement, endless and frenzied motor activity'
+    ]},
+    { title: 'Immobility / Stupor', desc: 'Extreme hypoactivity, immobile, minimally responsive to stimuli.', anchors: [
+        'Absent',
+        'Sits abnormally still; may interact briefly',
+        'Virtually no interaction with external world',
+        'Stuporous; non-reactive to painful stimuli'
+    ]},
+    { title: 'Mutism', desc: 'Verbally unresponsive or minimally responsive.', anchors: [
+        'Absent',
+        'Verbally unresponsive to majority of questions; incomprehensible whisper',
+        'Speaks fewer than 20 words / 5 minutes',
+        'No speech'
+    ]},
+    { title: 'Staring', desc: 'Fixed gaze, decreased blinking.', anchors: [
+        'Absent',
+        'Poor eye contact; gaze held <20 sec between shifts; decreased blinking',
+        'Gaze held >20 sec, occasional shifting',
+        'Fixed gaze, non-reactive'
+    ]},
+    { title: 'Posturing / Catalepsy', desc: 'Spontaneous maintenance of posture(s), including mundane (e.g. sitting / standing for long periods without reacting).', anchors: [
+        'Absent',
+        'Less than 1 minute',
+        'Greater than 1 minute, less than 15 minutes',
+        'Bizarre posture, or mundane maintained more than 15 minutes'
+    ]},
+    { title: 'Grimacing', desc: 'Maintenance of odd facial expressions.', anchors: [
+        'Absent',
+        'Less than 10 seconds',
+        'Less than 1 minute',
+        'Bizarre expression(s) or maintained more than 1 minute'
+    ]},
+    { title: 'Echopraxia / Echolalia', desc: 'Mimicking of examiner’s movements / speech.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Stereotypy', desc: 'Repetitive, non-goal-directed motor activity (e.g. finger-play, repeatedly touching, patting or rubbing self).', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Mannerisms', desc: 'Odd, purposeful movements (e.g. hopping or walking on tiptoe, saluting passers-by, exaggerated mocking caricatures of mundane movements).', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Verbigeration', desc: 'Repetition of phrases or sentences (like a scratched record).', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent, difficult to interrupt',
+        'Constant'
+    ]},
+    { title: 'Rigidity', desc: 'Maintenance of a rigid position despite efforts to be moved. Exclude rigidity if cogwheeling or tremor present.', anchors: [
+        'Absent',
+        'Mild resistance',
+        'Moderate',
+        'Severe; cannot be re-postured'
+    ]},
+    { title: 'Negativism', desc: 'Apparently motiveless resistance to instructions or attempts to move/examine; opposite behaviour elicited.', anchors: [
+        'Absent',
+        'Mild resistance and/or occasionally contrary',
+        'Moderate resistance and/or frequently contrary',
+        'Severe resistance and/or continually contrary'
+    ]},
+    { title: 'Waxy Flexibility', desc: 'During reposturing, slow even resistance to movement, like bending a candle.', anchors: [
+        'Absent',
+        'Subtle / mild',
+        'Moderate',
+        'Marked / definite'
+    ]},
+    { title: 'Withdrawal', desc: 'Refusal to eat, drink, and/or make eye contact.', anchors: [
+        'Absent',
+        'Minimal PO intake / interaction for less than 1 day',
+        'Minimal PO intake / interaction for more than 1 day',
+        'No PO intake / interaction for 1 day or more'
+    ]},
+    // ADDITIONAL ITEMS (15-23)
+    { title: 'Impulsivity', desc: 'Sudden inappropriate behaviours (e.g. running down hallway, screaming, taking off clothes) without provocation; afterwards cannot explain.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant or not redirectable'
+    ]},
+    { title: 'Automatic Obedience', desc: 'Exaggerated cooperation with examiner’s request, or spontaneous continuation of movement requested.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Mitgehen', desc: '"Anglepoise lamp" arm raising in response to light pressure of finger, despite instructions to the contrary.', anchors: [
+        'Absent',
+        'Mild — raises arm with light pressure',
+        'Moderate',
+        'Marked'
+    ]},
+    { title: 'Gegenhalten', desc: 'Resistance to passive movement which is proportional to strength of stimulus; appears automatic rather than wilful.', anchors: [
+        'Absent',
+        'Mild',
+        'Moderate',
+        'Severe'
+    ]},
+    { title: 'Ambitendency', desc: 'Patient appears motorically "stuck" in indecisive, hesitant movement.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Grasp Reflex', desc: 'Per neurological examination.', anchors: [
+        'Absent',
+        'Mild',
+        'Moderate',
+        'Severe'
+    ]},
+    { title: 'Perseveration', desc: 'Repeatedly returns to same topic or persists with movement.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant'
+    ]},
+    { title: 'Combativeness', desc: 'Usually in an undirected manner.', anchors: [
+        'Absent',
+        'Occasional',
+        'Frequent',
+        'Constant or dangerous'
+    ]},
+    { title: 'Autonomic Abnormality', desc: 'Temperature, BP, pulse, respiratory rate, diaphoresis.', anchors: [
+        'Absent',
+        'Abnormality of one parameter (excluding pre-existing hypertension)',
+        'Abnormality of two parameters',
+        'Abnormality of 3+ parameters or severe'
+    ]}
+];
+
 // ---------- AUDIT data ----------
 // Items 1-8 use 5-option set; items 9-10 use 3-option set (0, 2, 4).
 const AUDIT_ITEMS = [
@@ -1966,6 +2150,30 @@ const HAMA_ITEMS = [
     investEl.innerHTML = iHtml;
 })();
 
+// ---------- Build BFCRS UI ----------
+(function buildBfcrs() {
+    const screenEl = document.getElementById('bfcrsScreenItems');
+    const extraEl = document.getElementById('bfcrsExtraItems');
+    function renderBlock(items, startIdx) {
+        let html = '';
+        items.forEach((item, idx) => {
+            const n = startIdx + idx;
+            html += '<div class="item-block">';
+            html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + item.title + '</span></div>';
+            html += '<div class="item-sub">' + item.desc + '</div>';
+            html += '<div class="radio-group">';
+            for (let v = 0; v <= 3; v++) {
+                html += '<label class="radio-option"><input type="radio" name="bfcrs_' + n + '" value="' + v + '" onchange="updateBfcrs()">' +
+                        '<span class="radio-label"><span class="val">' + v + '</span>' + item.anchors[v] + '</span></label>';
+            }
+            html += '</div></div>';
+        });
+        return html;
+    }
+    screenEl.innerHTML = renderBlock(BFCRS_ITEMS.slice(0, 14), 1);
+    extraEl.innerHTML = renderBlock(BFCRS_ITEMS.slice(14), 15);
+})();
+
 // ---------- Build AUDIT UI ----------
 (function buildAudit() {
     const container = document.getElementById('auditItems');
@@ -2177,6 +2385,13 @@ function msibpdSeverity(score) {
     if (score < 7) return { level: 'Below screening cut-off', css: 'sev-none' };
     return          { level: 'Positive screen (≥7) — further assessment recommended', css: 'sev-modsev' };
 }
+function bfcrsSeverity(screenCount, total, anyRated) {
+    if (!anyRated) return { level: 'Not rated', css: '' };
+    if (screenCount >= 2) return { level: 'BFCSI screen POSITIVE — possible catatonia', css: 'sev-modsev' };
+    if (total === 0)      return { level: 'No catatonic features',                       css: 'sev-none' };
+    return { level: 'Below screening cut-off (1 of 14 endorsed)',                        css: 'sev-mild' };
+}
+
 function ybocsSeverity(score) {
     if (score <= 7)  return { level: 'Subclinical', css: 'sev-none' };
     if (score <= 15) return { level: 'Mild',        css: 'sev-mild' };
@@ -2374,6 +2589,30 @@ function updateMsibpd() {
     } else {
         const sev = msibpdSeverity(total);
         pill.textContent = sev.level + (rated < 10 ? ' (partial: ' + rated + '/10)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function updateBfcrs() {
+    let total = 0, rated = 0, screenCount = 0;
+    for (let i = 1; i <= 23; i++) {
+        const v = getRadioVal('bfcrs_' + i);
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            total += n;
+            rated++;
+            if (i <= 14 && n >= 1) screenCount++;
+        }
+    }
+    document.getElementById('bfcrsTotal').textContent = total;
+    document.getElementById('bfcrsScreenCount').textContent = screenCount;
+    const pill = document.getElementById('bfcrsSeverityPill');
+    const sev = bfcrsSeverity(screenCount, total, rated > 0);
+    if (rated === 0) {
+        pill.textContent = 'Not rated';
+        pill.className = 'severity-pill';
+    } else {
+        pill.textContent = sev.level + (rated < 23 ? ' (partial: ' + rated + '/23 items rated)' : '');
         pill.className = 'severity-pill ' + sev.css;
     }
 }
@@ -2884,6 +3123,82 @@ function buildMsibpdText() {
     t += thin + '\n';
     t += 'Scoring: 1 point per "Yes". Cut-off >=7 suggests positive screen.\n';
     t += 'Reference: Zanarini MC et al. J Pers Disord. 2003;17:568-73.\n';
+    t += line + '\n';
+    return t;
+}
+
+function buildBfcrsText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'BUSH-FRANCIS CATATONIA RATING SCALE (BFCRS)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    let total = 0, rated = 0, screenCount = 0, screenRated = 0;
+    const screenEndorsed = [];
+    const rows = [];
+    for (let i = 1; i <= 23; i++) {
+        const v = getRadioVal('bfcrs_' + i);
+        const item = BFCRS_ITEMS[i-1];
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            total += n;
+            rated++;
+            if (i <= 14) {
+                screenRated++;
+                if (n >= 1) {
+                    screenCount++;
+                    screenEndorsed.push(i + '. ' + item.title + ' (' + n + ')');
+                }
+            }
+        }
+        rows.push({
+            num: i,
+            title: item.title,
+            score: v === null ? 'NR' : v,
+            answer: v === null ? 'Not rated' : item.anchors[parseInt(v,10)],
+            screen: i <= 14
+        });
+    }
+
+    const sev = bfcrsSeverity(screenCount, total, rated > 0);
+    t += 'TOTAL SEVERITY (items 1-23): ' + total + ' / 69';
+    if (rated < 23) t += '  (partial: ' + rated + '/23 items rated)';
+    t += '\n';
+    t += 'BFCSI SCREEN (items 1-14):  ' + screenCount + ' of 14 endorsed';
+    if (screenRated < 14) t += '  (partial: ' + screenRated + '/14 screen items rated)';
+    t += '\n';
+    t += 'RESULT:                      ' + sev.level + '\n';
+    if (screenEndorsed.length) {
+        t += thin + '\n';
+        t += 'Endorsed screen items:\n';
+        screenEndorsed.forEach(s => { t += '  - ' + s + '\n'; });
+    }
+    t += thin + '\n';
+    t += 'SCREENING ITEMS (1-14)\n';
+    t += thin + '\n';
+    rows.filter(r => r.screen).forEach(r => {
+        t += r.num.toString().padStart(2, ' ') + '. ' + r.title + '  [Score: ' + r.score + ']\n';
+        t += '    ' + r.answer + '\n';
+    });
+
+    if (rows.some(r => !r.screen && r.score !== 'NR')) {
+        t += thin + '\n';
+        t += 'ADDITIONAL ITEMS (15-23)\n';
+        t += thin + '\n';
+        rows.filter(r => !r.screen).forEach(r => {
+            t += r.num + '. ' + r.title + '  [Score: ' + r.score + ']\n';
+            t += '    ' + r.answer + '\n';
+        });
+    }
+
+    t += thin + '\n';
+    t += 'BFCSI screen positive: 2 or more of items 1-14 present (>=1).\n';
+    t += 'Reference: Bush G, Fink M, Petrides G, Dowling F, Francis A.\n';
+    t += '           Acta Psychiatr Scand. 1996;93:129-36.\n';
     t += line + '\n';
     return t;
 }
@@ -3494,6 +3809,10 @@ function generateOutput(which) {
         document.getElementById('ybocsText').value = buildYbocsText();
         document.getElementById('ybocsOutput').classList.add('visible');
         document.getElementById('ybocsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'bfcrs') {
+        document.getElementById('bfcrsText').value = buildBfcrsText();
+        document.getElementById('bfcrsOutput').classList.add('visible');
+        document.getElementById('bfcrsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (which === 'ymrs') {
         document.getElementById('ymrsText').value = buildYmrsText();
         document.getElementById('ymrsOutput').classList.add('visible');
@@ -3556,7 +3875,7 @@ function copyOutput(which) {
 }
 
 function resetScale(which) {
-    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, ybocs: 19, bprs: 18, k10: 10, msibpd: 10, audit: 10, dast: 10, wsas: 5, sds: 3 };
+    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, ybocs: 19, bfcrs: 23, bprs: 18, k10: 10, msibpd: 10, audit: 10, dast: 10, wsas: 5, sds: 3 };
     if (which === 'cgi') {
         document.querySelectorAll('input[name="cgis"]').forEach(r => r.checked = false);
         document.querySelectorAll('input[name="cgii"]').forEach(r => r.checked = false);
@@ -3584,7 +3903,7 @@ function resetScale(which) {
     }
     const updaters = { madrs: updateMadrs, hamd: updateHamd, phq9: updatePhq9, gad7: updateGad7,
                        hama: updateHama, ymrs: updateYmrs, pcl5: updatePcl5, iesr: updateIesr,
-                       ybocs: updateYbocs,
+                       ybocs: updateYbocs, bfcrs: updateBfcrs,
                        bprs: updateBprs, k10: updateK10, msibpd: updateMsibpd,
                        audit: updateAudit, dast: updateDast, wsas: updateWsas, sds: updateSds };
     if (updaters[which]) updaters[which]();
@@ -3608,6 +3927,7 @@ updateDast();
 updateWsas();
 updateSds();
 updateYbocs();
+updateBfcrs();
 </script>
 </body>
 </html>
