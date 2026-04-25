@@ -1475,22 +1475,35 @@ const TIT_MEDS={
       {label:'Weeks 2-3',dur:14,unit:'days',ongoing:false,note:'',doses:[{t:'morning',type:'str',s:27,q:1,l:'1 tab (27mg)'}]},
       {label:'Weeks 4-5',dur:14,unit:'days',ongoing:false,note:'',doses:[{t:'morning',type:'str',s:36,q:1,l:'1 tab (36mg)'}]},
       {label:'Ongoing',dur:0,unit:'days',ongoing:true,note:'Maximum dose.',doses:[{t:'morning',type:'str',s:54,q:1,l:'1 tab (54mg)'}]}]},
-  vyvanse2030:{name:'Vyvanse',brand:'Lisdexamfetamine dimesilate',auth:'Stimulant authority script. Add CA2023 (NSW). Prescribe 20mg AND 30mg capsules together.',
+  vyvanse:{name:'Vyvanse',brand:'Lisdexamfetamine dimesilate',auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA.',
     unit:'mg',form:'cap',strengths:[20,30,40,50,60,70],
-    steps:[{label:'Week 1',dur:7,unit:'days',ongoing:false,note:'30mg capsule on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
+    steps:[{label:'Week 1',dur:7,unit:'days',ongoing:false,note:'30mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
       {label:'Weeks 2-3',dur:14,unit:'days',ongoing:false,note:'30mg + 20mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:1,l:'1 cap (20mg)'}]},
-      {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}]},
-  vyvanse3050:{name:'Vyvanse 30 to 50mg',brand:'Lisdexamfetamine dimesilate',auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA.',
-    unit:'mg',form:'cap',strengths:[20,30,40,50,60,70],
-    steps:[{label:'Days 1-21',dur:21,unit:'days',ongoing:false,note:'Take 30mg each morning on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
-      {label:'Ongoing - 50mg',dur:0,unit:'days',ongoing:true,note:'Increase to 50mg only if tolerating 30mg well but still symptomatic.',doses:[{t:'morning',type:'str',s:50,q:1,l:'1 cap (50mg)'}]}]},
-  vyvanseWater:{name:'Vyvanse water method',brand:'Lisdexamfetamine dimesilate 70mg',auth:'Dissolve one 70mg capsule in exactly 70mL water (1mg/mL). Draw up prescribed volume and drink immediately. Discard remainder. Switch to standard capsule once optimal dose found.',
-    unit:'mg',form:'cap',strengths:[70],
-    steps:[{label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Draw up 30mL = 30mg.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 30mL'}]},
-      {label:'Week 2',dur:7,unit:'days',ongoing:false,note:'40mL if well tolerated.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 40mL'}]},
-      {label:'Week 3',dur:7,unit:'days',ongoing:false,note:'50mL.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 50mL'}]},
-      {label:'Week 4',dur:7,unit:'days',ongoing:false,note:'60mL.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 60mL'}]},
-      {label:'Ongoing - max 70mg',dur:0,unit:'days',ongoing:true,note:'Stay at lowest effective dose.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg)'}]}]},
+      {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}],
+    protocols:[
+      {key:'flex_2030',label:'Flexible 20+30 caps',
+        auth:'Stimulant authority script. Add CA2023 (NSW). Prescribe 20mg AND 30mg capsules together.',
+        steps:[
+          {label:'Week 1',dur:7,unit:'days',ongoing:false,note:'30mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
+          {label:'Weeks 2-3',dur:14,unit:'days',ongoing:false,note:'30mg + 20mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:1,l:'1 cap (20mg)'}]},
+          {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}
+        ]},
+      {key:'simple_3050',label:'30 → 50mg',
+        auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA.',
+        steps:[
+          {label:'Days 1-21',dur:21,unit:'days',ongoing:false,note:'Take 30mg each morning on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
+          {label:'Ongoing - 50mg',dur:0,unit:'days',ongoing:true,note:'Increase to 50mg only if tolerating 30mg well but still symptomatic.',doses:[{t:'morning',type:'str',s:50,q:1,l:'1 cap (50mg)'}]}
+        ]},
+      {key:'water',label:'Water method',
+        auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA. Dissolve one 70mg capsule in exactly 70mL water (1mg/mL). Draw up prescribed volume and drink immediately. Discard remainder. Switch to standard capsule once optimal dose found.',
+        steps:[
+          {label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Draw up 30mL = 30mg.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 30mL'}]},
+          {label:'Week 2',dur:7,unit:'days',ongoing:false,note:'40mL if well tolerated.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 40mL'}]},
+          {label:'Week 3',dur:7,unit:'days',ongoing:false,note:'50mL.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 50mL'}]},
+          {label:'Week 4',dur:7,unit:'days',ongoing:false,note:'60mL.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg) — 60mL'}]},
+          {label:'Ongoing - max 70mg',dur:0,unit:'days',ongoing:true,note:'Stay at lowest effective dose.',doses:[{t:'morning',type:'str',s:70,q:1,l:'1 cap (70mg)'}]}
+        ]}
+    ]},
   strattera:{name:'Atomoxetine',brand:'Atomoxetine hydrochloride (Strattera)',auth:'Streamlined 7876 (initiation), 7890 (continuation). NOT a controlled substance. Full effect 4-12 weeks.',
     unit:'mg',form:'cap',strengths:[10,18,25,40,60,80],
     steps:[{label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
@@ -1555,17 +1568,13 @@ const REGULAR_REGIMENS={
     {label:'36mg mane',doses:[{t:'morning',s:36,q:1}]},
     {label:'54mg mane',doses:[{t:'morning',s:54,q:1}]}
   ],
-  vyvanse2030:[
+  vyvanse:[
     {label:'20mg mane',doses:[{t:'morning',s:20,q:1}]},
     {label:'30mg mane',doses:[{t:'morning',s:30,q:1}]},
-    {label:'40mg mane (20+20)',doses:[{t:'morning',s:20,q:2}]},
-    {label:'50mg mane (20+30)',doses:[{t:'morning',s:20,q:1},{t:'morning',s:30,q:1}]},
-    {label:'60mg mane (30+30)',doses:[{t:'morning',s:30,q:2}]},
-    {label:'70mg mane (40+30)',doses:[{t:'morning',s:40,q:1},{t:'morning',s:30,q:1}]}
-  ],
-  vyvanse3050:[
-    {label:'30mg mane',doses:[{t:'morning',s:30,q:1}]},
-    {label:'50mg mane',doses:[{t:'morning',s:50,q:1}]}
+    {label:'40mg mane',doses:[{t:'morning',s:40,q:1}]},
+    {label:'50mg mane',doses:[{t:'morning',s:50,q:1}]},
+    {label:'60mg mane',doses:[{t:'morning',s:60,q:1}]},
+    {label:'70mg mane',doses:[{t:'morning',s:70,q:1}]}
   ],
   strattera:[
     {label:'40mg mane',doses:[{t:'morning',s:40,q:1}]},
@@ -1598,9 +1607,7 @@ const SCRIPT_DEFAULTS={
   ritalinIR:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mg',fixedStrength:10,scriptName:'Methylphenidate IR'},
   ritalinLA:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg'},
   concerta:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
-  vyvanse2030:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
-  vyvanse3050:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
-  vyvanseWater:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
+  vyvanse:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
   intuniv:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
   strattera:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg'},
   catnanight:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mcg',strengthOpts:[100,150]},
@@ -1695,9 +1702,7 @@ const TIT_MED_INFO={
   ritalinIR:{genericName:'Methylphenidate hydrochloride',formulation:'Immediate-release tablet (10mg)',onset:'20-30 minutes',peak:'1-2 hours',duration:'3-5 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, difficulty sleeping (take last dose before 1pm), headache, dry mouth, increased heart rate and BP. Less common: rebound mood changes as dose wears off, weight loss.',dietary:'Avoid acidic drinks within 1 hour of dose. Taking with food reduces stomach upset.',excipients:'Contains lactose. Free from gluten and gelatin.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Do not give to someone else. Report chest pain, palpitations, or significant mood changes immediately.'},
   ritalinLA:{genericName:'Methylphenidate hydrochloride',formulation:'Modified-release capsule (10, 20, 30, 40, 60mg) - dual-release beads (50% immediate, 50% delayed)',onset:'20-30 minutes',peak:'1-2 hours and again at 4-6 hours',duration:'8-10 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite (often worse at lunchtime), difficulty sleeping, headache, dry mouth, increased HR and BP. Less common: irritability, stomach upset.',dietary:'Avoid acidic drinks within 1 hour of dose. Can be taken with or without food.',excipients:'Capsule shell contains gelatin. Beads can be sprinkled onto soft food - swallow without chewing.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Do not crush or chew the capsule or beads. Do not give to someone else.'},
   concerta:{genericName:'Methylphenidate hydrochloride',formulation:'Extended-release tablet (18, 27, 36, 54mg) - OROS osmotic delivery system',onset:'20-30 minutes',peak:'6-8 hours',duration:'10-12 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, difficulty sleeping, headache, dry mouth, increased HR and BP. Less common: stomach upset, irritability.',dietary:'Avoid acidic drinks around dosing time. Can be taken with or without food.',excipients:'Contains lactose.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'MUST be swallowed whole - never crush, split, or chew. An empty shell in your stool is normal. PBS: ADHD Dx must have been made before age 18.'},
-  vyvanse2030:{genericName:'Lisdexamfetamine dimesilate',formulation:'Capsule (20mg and 30mg) - prodrug converted to active dexamphetamine after absorption',onset:'60-90 minutes (slower than dexamphetamine IR)',peak:'3-4 hours',duration:'10-14 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite (often significant), difficulty sleeping, dry mouth, headache, increased HR and BP, irritability. Less common: anxiety, weight loss, mood changes.',dietary:'Avoid acidic drinks around dosing time. Can be taken with food.',excipients:'Capsule shell contains gelatin. Free from lactose and gluten.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Capsule can be dissolved in water and consumed immediately. Do not give to someone else.'},
-  vyvanse3050:{genericName:'Lisdexamfetamine dimesilate',formulation:'Capsule (30mg, 50mg)',onset:'60-90 minutes',peak:'3-4 hours',duration:'10-14 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, difficulty sleeping, dry mouth, headache, increased HR and BP, irritability. Less common: anxiety, weight loss, mood changes.',dietary:'Avoid acidic drinks around dosing time. Can be taken with food.',excipients:'Capsule shell contains gelatin. Free from lactose and gluten.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Capsule can be dissolved in water and consumed immediately. Do not give to someone else.'},
-  vyvanseWater:{genericName:'Lisdexamfetamine dimesilate',formulation:'Capsule (70mg) dissolved in water for micro-titration (1mg per mL)',onset:'60-90 minutes',peak:'3-4 hours',duration:'10-14 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite, difficulty sleeping, dry mouth, headache, increased HR and BP. Less common: anxiety, weight loss, mood changes.',dietary:'Use plain water only - acidic drinks reduce conversion to the active drug.',excipients:'Capsule shell contains gelatin. Free from lactose and gluten.',storage:'Store capsules below 25 degrees. Prepared solution must be consumed immediately.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Dissolve one 70mg capsule in exactly 70mL of water. Draw up prescribed volume (mL = mg). Drink immediately and discard the rest.'},
+  vyvanse:{genericName:'Lisdexamfetamine dimesilate',formulation:'Capsule (20, 30, 40, 50, 60, 70mg) - prodrug converted to active dexamphetamine after absorption',onset:'60-90 minutes (slower than dexamphetamine IR)',peak:'3-4 hours',duration:'10-14 hours',schedule:'Schedule 8 (controlled drug)',sideEffects:'Common: reduced appetite (often significant), difficulty sleeping, dry mouth, headache, increased HR and BP, irritability. Less common: anxiety, weight loss, mood changes.',dietary:'Avoid acidic drinks around dosing time. Can be taken with food.',excipients:'Capsule shell contains gelatin. Free from lactose and gluten.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Can be stopped without tapering, but discuss with your psychiatrist first.',important:'Capsule can be swallowed whole, opened and dissolved in water, or used in the water-titration method (one 70mg capsule in 70mL water = 1mg/mL). Do not give to someone else.'},
   strattera:{genericName:'Atomoxetine hydrochloride',formulation:'Capsule (10, 18, 25, 40, 60, 80mg)',onset:'Full effect takes 4-12 weeks of consistent daily use',peak:'1-2 hours plasma; therapeutic effect gradual over weeks',duration:'24 hours (once daily)',schedule:'Not a controlled drug (Schedule 4)',sideEffects:'Common: nausea (take with food), reduced appetite, dry mouth, constipation, fatigue, mild increase in HR and BP. Rare but serious: liver toxicity - report jaundice, dark urine, or severe abdominal pain immediately.',dietary:'Take with food to reduce nausea. No acidic food interaction.',excipients:'Capsule shell contains gelatin. Free from lactose and gluten.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'Do not stop abruptly without discussing with your psychiatrist.',important:'Full benefit may not be apparent for 4-12 weeks - do not stop early. Not a stimulant and has no abuse potential.'},
   intuniv:{genericName:'Guanfacine hydrochloride',formulation:'Modified-release tablet (1, 2, 3, 4mg)',onset:'Gradual over several weeks',peak:'5-7 hours',duration:'24 hours',schedule:'Not a controlled drug (Schedule 4)',sideEffects:'Common: drowsiness (especially early), low BP, dizziness on standing, headache, dry mouth, constipation, fatigue. Less common: mood changes, nausea.',dietary:'Do not take with high-fat meals or grapefruit juice. Avoid alcohol.',excipients:'Free from lactose, gluten, and gelatin.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'MUST be tapered slowly - do not stop abruptly. Sudden cessation can cause rebound hypertension.',important:'Swallow whole - do not crush, split, or chew. Stand up slowly to avoid dizziness. Monitor BP regularly.'},
   catnanight:{genericName:'Clonidine hydrochloride',formulation:'Tablet (100mcg, 150mcg)',onset:'30-60 minutes',peak:'2-4 hours',duration:'6-10 hours',schedule:'Not a controlled drug (Schedule 4)',sideEffects:'Common: drowsiness (useful at night), dry mouth, low BP, dizziness. Rebound hypertension if stopped suddenly.',dietary:'Avoid alcohol - increases sedation and BP-lowering effect.',excipients:'Free from gelatin.',storage:'Store below 25 degrees. Keep out of reach of children.',stopping:'MUST be tapered slowly - do not stop abruptly.',important:'Private prescription - not PBS subsidised for ADHD. Monitor BP. Drowsiness at night is part of the therapeutic effect.'},
@@ -1892,10 +1897,12 @@ function loadTitProtocol(key,protoKey){
   if(!proto)return;
   var idx=titMeds.findIndex(function(m){return m.key===key;});
   var entry={key:key,def:def,customName:key==='other'?'':'',steps:JSON.parse(JSON.stringify(proto.steps)),proto:protoKey};
+  if(proto.auth)entry.auth=proto.auth;
   if(idx>=0)titMeds[idx]=entry;
   else titMeds.push(entry);
   renderTitMeds();
 }
+function medAuth(m){return (m&&m.auth)||(m&&m.def&&m.def.auth)||'';}
 function loadTitRegular(key,regIdx){
   var def=TIT_MEDS[key];if(!def)return;
   var regs=REGULAR_REGIMENS[key];if(!regs||!regs[regIdx])return;
@@ -1926,7 +1933,7 @@ function titLoadMed(key,btn){
 function renderTitPicker(){
   var el=$('tit-picker');if(!el)return;
   var groups=[
-    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater']},
+    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse']},
     {label:'Non-stimulants',keys:['strattera','intuniv','catnanight','catnaday']},
     {label:'Other',keys:['other']}
   ];
@@ -2008,7 +2015,7 @@ function titAddBlank(){
   // Build picker HTML
   var opts='<option value="">-- Select medication --</option>';
   var groups=[
-    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse2030']},
+    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse']},
     {label:'Non-Stimulants',keys:['strattera','intuniv','catnanight','catnaday']},
     {label:'Other',keys:['other']}
   ];
@@ -2143,7 +2150,7 @@ function renderTitMedBlock(m,mi){
   // Build med selector dropdown for header
   var allMedOpts='';
   var grps=[
-    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse2030']},
+    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse']},
     {label:'Non-Stimulants',keys:['strattera','intuniv','catnanight','catnaday']},
     {label:'Other / Custom',keys:['other']}
   ];
@@ -2385,7 +2392,7 @@ function titBuildDocHTML(){
   h+='<p style="'+F+'font-size:9pt;color:#555;margin:2px 0 12px 0;">'+esc(ds)+(clin&&clin!=='[Clinician]'?' &nbsp;&middot;&nbsp; '+esc(clin):'')+'</p>';
   h+='<hr style="border:none;border-top:2px solid #1a4db5;margin:8px 0 16px 0;">';
 
-  var stimKeys=['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'];
+  var stimKeys=['dex','ritalinIR','ritalinLA','concerta','vyvanse'];
   if(titMeds.some(function(m){return stimKeys.indexOf(m.key)>=0;}))
     h+=box('<strong>20-day rule:</strong> You can only collect your next prescription a minimum of 20 days after the previous one was dispensed.','#fff7ed','#f97316');
 
@@ -2394,7 +2401,7 @@ function titBuildDocHTML(){
     titMeds.forEach(function(m){
       var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
       h+='<p style="'+F+'font-size:11pt;font-weight:bold;margin:8px 0 4px 0;">'+esc(nm)+'</p>';
-      if(m.def.auth)h+=box(esc(m.def.auth),'#f0f5ff','#3b82f6');
+      var auth=medAuth(m);if(auth)h+=box(esc(auth),'#f0f5ff','#3b82f6');
       var isSingleOngoing=!m.steps.some(function(s){return !s.ongoing;});
       if(isSingleOngoing){
         var st=m.steps[0];
@@ -3282,7 +3289,7 @@ function buildHeidi(){
     o+='TREATMENT PLAN:\n';
     titMeds.forEach(function(m){
       var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
-      o+='- Medication: '+nm+'\n';if(m.def.auth)o+='  Authority: '+m.def.auth+'\n';
+      o+='- Medication: '+nm+'\n';var auth=medAuth(m);if(auth)o+='  Authority: '+auth+'\n';
       m.steps.forEach(function(st,si){
         var lbl=titAutoLabel(m.steps,si);
         var parts=st.doses.map(function(d){return d.t+': '+titGetDoseDisplay(d);}).join(', ');
@@ -3334,9 +3341,7 @@ function buildLetter(){
     ritalinIR:'This is a short-acting stimulant taken two to three times daily. It begins working within 20 to 30 minutes and lasts three to five hours. Take it with food and avoid acidic drinks around the time of each dose.',
     ritalinLA:'This is a once-daily modified-release formulation that provides approximately eight to ten hours of coverage. The capsule can be swallowed whole or sprinkled onto soft food such as yoghurt.',
     concerta:'This is a once-daily extended-release formulation providing approximately ten to twelve hours of coverage. It must be swallowed whole and must never be crushed, split, or chewed.',
-    vyvanse2030:'This is a once-daily long-acting stimulant. Two capsule sizes have been prescribed to allow fine-tuned dose adjustments. Take all capsules together on waking.',
-    vyvanse3050:'This is a once-daily long-acting stimulant providing smooth, sustained coverage of up to twelve to fourteen hours. Take it on waking.',
-    vyvanseWater:'This formulation involves dissolving one 70mg capsule in exactly 70mL of water each morning (which gives a concentration of 1mg per mL). Draw up your prescribed volume in mL, drink it immediately, and discard the rest.',
+    vyvanse:'This is a once-daily long-acting stimulant providing smooth, sustained coverage of up to twelve to fourteen hours. Take it on waking. If two different capsule sizes have been prescribed, take both capsules together on waking. If using the water-titration method, dissolve one 70mg capsule in exactly 70mL of water each morning (1mg/mL), draw up your prescribed volume in mL, drink immediately, and discard the rest.',
     strattera:'This is a non-stimulant medication and is not a controlled substance. It takes four to twelve weeks to reach its full effect, which is expected and does not mean it is not working. Take it with food to reduce the chance of nausea.',
     intuniv:'This is a non-stimulant taken at night. It helps with hyperarousal, restlessness and sleep. It must not be stopped suddenly and will need to be tapered gradually when the time comes.',
     catnanight:'This is a non-stimulant taken at night. It helps with restlessness and hyperarousal and can assist with sleep. It must not be stopped suddenly and will need to be tapered gradually.',
@@ -3385,7 +3390,7 @@ function buildLetter(){
       }
 
     });
-    var isStim=titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'].indexOf(m.key)>=0;});
+    var isStim=titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse'].indexOf(m.key)>=0;});
     if(isStim){
       h+='<p><strong>Prescription rule:</strong> Stimulant medications are controlled substances. You can only collect your next prescription a minimum of 20 days after the previous one was dispensed. Please plan ahead and contact the pharmacy on or around Day 20.</p>';
     }
@@ -3659,7 +3664,7 @@ function buildFullReportFollowUp(rt){
     if(titMeds.length){
       titMeds.forEach(function(m){
         var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
-        h+=p('<strong>'+esc(nm)+'</strong>'+(m.def.auth?' <em style="color:#555">('+esc(m.def.auth)+')</em>':''));
+        var _ma=medAuth(m);h+=p('<strong>'+esc(nm)+'</strong>'+(_ma?' <em style="color:#555">('+esc(_ma)+')</em>':''));
         var stepItems=m.steps.map(function(st,si){
           var lbl=titAutoLabel(m.steps,si);
           var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
@@ -3901,7 +3906,7 @@ function buildFullReport(){
     if(titMeds.length){
       titMeds.forEach(function(m){
         var nm=m.key==='other'&&m.customName?m.customName:m.def.name;
-        h+=p('<strong>'+esc(nm)+'</strong>'+(m.def.auth?' <em style="color:#555">('+esc(m.def.auth)+')</em>':''));
+        var _ma=medAuth(m);h+=p('<strong>'+esc(nm)+'</strong>'+(_ma?' <em style="color:#555">('+esc(_ma)+')</em>':''));
         var stepItems=m.steps.map(function(st,si){
           var lbl=titAutoLabel(m.steps,si);
           var parts=st.doses.map(function(d){return esc(d.t)+': '+esc(titGetDoseDisplay(d));}).join(', ');
@@ -4193,7 +4198,7 @@ function buildCoverLetter(){
   var peDone2 = getPEDoneItems();
   var hasEdu = peDone2.length > 0;
   var fuApptStr2 = getFuApptStr(), fuMonStr2 = getFuMonStr(), fuNPList2 = getFuNPList(), fuNotes = f('fuNotes');
-  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'].indexOf(m.key)>=0;});
+  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse'].indexOf(m.key)>=0;});
 
   function dxLong(){
     var sub = S.subtype;
@@ -4300,7 +4305,7 @@ function buildMedTable(){
   var h = '<h2>Medication Plan</h2>';
   var patName = f('ptName')||''; var drN = f('drName')||'';
   if(patName||drN) h += '<p style="font-size:12px;color:#6b7280">'+esc(patName)+(drN?' &nbsp;|&nbsp; '+esc(drN):'')+'</p>';
-  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'].indexOf(m.key)>=0;});
+  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse'].indexOf(m.key)>=0;});
   if(isStim) h += '<p style="background:#fff7ed;border-left:3px solid #f97316;padding:7px 10px;font-size:12px;color:#92400e;margin-bottom:10px"><strong>20-day rule:</strong> You can only collect your next prescription a minimum of 20 days after the previous one was dispensed.</p>';
   titMeds.forEach(function(m){
     var nm = m.key==='other'&&m.customName?m.customName:m.def.name;
@@ -4439,7 +4444,7 @@ function buildTravelLetter(){
   var drN = f('drName')||'[Clinician]';
   var dx = dxFull()||'Attention Deficit Hyperactivity Disorder (ADHD)';
   var medNamesArr2=titMeds.map(function(m){return m.key==='other'&&m.customName?m.customName:m.def.brand||m.def.name;});var medNames=medNamesArr2.length>1?medNamesArr2.slice(0,-1).join(', ')+' and '+medNamesArr2[medNamesArr2.length-1]:medNamesArr2[0]||'[prescribed medication]';
-  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'].indexOf(m.key)>=0;});
+  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse'].indexOf(m.key)>=0;});
   var h = '<h2>To Whom It May Concern</h2>';
   h += '<p>'+esc(ds)+'</p>';
   h += '<p>Dear Sir or Madam,</p>';
@@ -4540,7 +4545,7 @@ function buildDrivingLetter(){
   var drN = f('drName')||'[Clinician]';
   var dx = dxFull()||'Attention Deficit Hyperactivity Disorder (ADHD)';
   var medNames = (function(){var a=titMeds.map(function(m){return m.key==='other'&&m.customName?m.customName:m.def.brand||m.def.name;});return a.length>1?a.slice(0,-1).join(', ')+' and '+a[a.length-1]:a[0]||'[prescribed medication]';})();
-  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','vyvanse3050','vyvanseWater'].indexOf(m.key)>=0;});
+  var isStim = titMeds.some(function(m){return['dex','ritalinIR','ritalinLA','concerta','vyvanse'].indexOf(m.key)>=0;});
   var h = '<h2>To Whom It May Concern</h2>';
   h += '<p>'+esc(ds)+'</p>';
   h += '<p>Dear Sir or Madam,</p>';
