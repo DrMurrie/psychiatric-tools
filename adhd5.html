@@ -240,8 +240,9 @@ select.inp{appearance:none}
 .doc-letter td{padding:5px 8px;border:1px solid #e5e7eb}
 .doc-page-break{border:none;border-top:2px dashed #cbd5e1;margin:16px 0;opacity:0.5}
 .doc-section-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:4px 13px;background:#f9fafb;border-top:1px solid var(--border)}
-.rat-row{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.rat-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;border-radius:9px;padding:3px;transition:box-shadow .15s,background .15s}
 .rat-row:has(.rat-btn:nth-child(3)){grid-template-columns:1fr 1fr 1fr}
+.rat-row.active{box-shadow:0 0 0 2px var(--green);background:var(--green-bg)}
 .rat-btn{padding:6px 9px;border-radius:8px;border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);font:500 11px var(--sans);cursor:pointer;transition:all .13s;text-align:center;line-height:1.3}
 .rat-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-bg)}
 .rat-btn.rat-yes.on{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:700}
@@ -952,65 +953,67 @@ select.inp{appearance:none}
         <div id="rationale-chips" style="display:flex;flex-direction:column;gap:5px">
 
           <!-- Row: consent -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-consent">
             <button class="rat-btn rat-yes" data-group="consent" data-val="yes" onclick="selectRat(this)">Consenting to medication</button>
             <button class="rat-btn rat-no"  data-group="consent" data-val="no" onclick="selectRat(this)">Not wanting medication</button>
           </div>
 
           <!-- Row: cardiac -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-cardiac">
             <button class="rat-btn rat-yes" data-group="cardiac" data-val="neg" onclick="selectRat(this)">Cardiac screen negative</button>
             <button class="rat-btn rat-no"  data-group="cardiac" data-val="pos" onclick="selectRat(this)">Cardiac screen positive</button>
+            <button class="rat-btn rat-opt" data-group="cardiac" data-val="cleared" onclick="selectRat(this)">Cleared from cardio</button>
           </div>
 
           <!-- Row: medical -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-medical">
             <button class="rat-btn rat-yes" data-group="medical" data-val="ok" onclick="selectRat(this)">Medical screen sufficient</button>
             <button class="rat-btn rat-no"  data-group="medical" data-val="outstanding" onclick="selectRat(this)">Outstanding medical requirements</button>
           </div>
 
           <!-- Row: breastfeeding / pregnancy -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-bf">
             <button class="rat-btn rat-opt" data-group="bf" data-val="na" onclick="selectRat(this)">N/A</button>
             <button class="rat-btn rat-no"  data-group="bf" data-val="pregnant" onclick="selectRat(this)">Breastfeeding</button>
             <button class="rat-btn rat-no"  data-group="bf" data-val="preg" onclick="selectRat(this)">Pregnant</button>
           </div>
 
           <!-- Row: contraindications -->
-          <div class="rat-row">
-            <button class="rat-btn rat-yes" data-group="contras" data-val="none" onclick="selectRat(this)">No contraindications to stimulants</button>
-            <button class="rat-btn rat-no"  data-group="contras" data-val="present" onclick="selectRat(this)">Contraindications to stimulants</button>
+          <div class="rat-row" id="rat-row-contras">
+            <button class="rat-btn rat-yes" data-group="contras" data-val="none" onclick="selectRat(this)">Can have stimulants (no contraindications)</button>
+            <button class="rat-btn rat-no"  data-group="contras" data-val="shouldnt" onclick="selectRat(this)">Shouldn't have stimulants (possible issues identified)</button>
+            <button class="rat-btn rat-no"  data-group="contras" data-val="cannot" onclick="selectRat(this)">Cannot have stimulants (second opinion required)</button>
           </div>
 
           <!-- Row: line -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-line">
             <button class="rat-btn rat-yes" data-group="line" data-val="first" onclick="selectRat(this)">First-line — stimulant</button>
             <button class="rat-btn rat-no"  data-group="line" data-val="second" onclick="selectRat(this)">Second-line — non-stimulant</button>
             <button class="rat-btn rat-opt" data-group="line" data-val="third" onclick="selectRat(this)">Third-line</button>
           </div>
 
           <!-- Row: duration (3-way) -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-duration">
             <button class="rat-btn rat-opt" data-group="duration" data-val="short" onclick="selectRat(this)">Short-acting preferred</button>
             <button class="rat-btn rat-opt" data-group="duration" data-val="long" onclick="selectRat(this)">Long-acting preferred</button>
             <button class="rat-btn rat-opt" data-group="duration" data-val="either" onclick="selectRat(this)">Either acceptable</button>
           </div>
 
           <!-- Row: stimulant class (3-way) -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-stimclass">
             <button class="rat-btn rat-opt" data-group="stimclass" data-val="mph" onclick="selectRat(this)">Methylphenidate</button>
             <button class="rat-btn rat-opt" data-group="stimclass" data-val="amp" onclick="selectRat(this)">Amphetamine-based</button>
           </div>
 
           <!-- Row: non-stimulant class -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-nsclass">
             <button class="rat-btn rat-opt" data-group="nsclass" data-val="nri" onclick="selectRat(this)">Atomoxetine</button>
             <button class="rat-btn rat-opt" data-group="nsclass" data-val="guanfacine" onclick="selectRat(this)">Guanfacine</button>
             <button class="rat-btn rat-opt" data-group="nsclass" data-val="clonidine" onclick="selectRat(this)">Clonidine</button>
           </div>
 
           <!-- Row: third-line class -->
-          <div class="rat-row">
+          <div class="rat-row" id="rat-row-tlclass">
             <button class="rat-btn rat-opt" data-group="tlclass" data-val="bupropion" onclick="selectRat(this)">Bupropion</button>
             <button class="rat-btn rat-opt" data-group="tlclass" data-val="modafinil" onclick="selectRat(this)">Modafinil</button>
             <button class="rat-btn rat-opt" data-group="tlclass" data-val="reboxetine" onclick="selectRat(this)">Reboxetine</button>
@@ -1020,9 +1023,10 @@ select.inp{appearance:none}
           </div>
 
           <!-- Row: plan -->
-          <div class="rat-row">
-            <button class="rat-btn rat-yes" data-group="plan" data-val="see_plan" onclick="selectRat(this)">See titration and follow-up plan</button>
+          <div class="rat-row" id="rat-row-plan">
+            <button class="rat-btn rat-yes" data-group="plan" data-val="see_plan" onclick="selectRat(this)">See treatment plan</button>
             <button class="rat-btn rat-no"  data-group="plan" data-val="deferred" onclick="selectRat(this)">Medication decision deferred</button>
+            <button class="rat-btn rat-opt" data-group="plan" data-val="non_pharm" onclick="selectRat(this)">Non-pharmacotherapy only</button>
           </div>
 
         </div>
@@ -4122,12 +4126,14 @@ function buildRationaleFromChips(){
   var safetyParts=[];
   if(v('cardiac')==='neg') safetyParts.push('cardiac screening was satisfactory');
   if(v('cardiac')==='pos') safetyParts.push('cardiac screen was positive (see notes)');
+  if(v('cardiac')==='cleared') safetyParts.push('cleared by cardiology');
   if(v('medical')==='ok')  safetyParts.push('medical screen was sufficient to proceed');
   if(v('medical')==='outstanding') safetyParts.push('outstanding medical requirements were noted prior to commencing');
   if(v('contras')==='none') safetyParts.push('no contraindications to stimulants were identified');
-  if(v('contras')==='present') safetyParts.push('contraindications to stimulants were present');
-  if(v('bf')==='pregnant') safetyParts.push('the patient is pregnant or breastfeeding and medication choice was informed by this');
-  if(v('bf')==='no')  safetyParts.push('the patient is neither pregnant nor breastfeeding');
+  if(v('contras')==='shouldnt') safetyParts.push('possible contraindications to stimulants were identified');
+  if(v('contras')==='cannot') safetyParts.push('stimulants are contraindicated and a second opinion is being sought');
+  if(v('bf')==='pregnant') safetyParts.push('the patient is breastfeeding and medication choice was informed by this');
+  if(v('bf')==='preg') safetyParts.push('the patient is pregnant and medication choice was informed by this');
 
   if(safetyParts.length){
     var s=safetyParts.slice();
@@ -4169,6 +4175,10 @@ function buildRationaleFromChips(){
   // ── Plan sentence ─────────────────────────────────────────────────────────
   if(v('plan')==='deferred'){
     sentences.push('Medication decision has been deferred pending further review.');
+  } else if(v('plan')==='non_pharm'){
+    sentences.push('Non-pharmacotherapy management only at this stage.');
+  } else if(v('plan')==='see_plan'){
+    sentences.push('See treatment plan.');
   }
 
   return sentences.join(' ');
@@ -4183,8 +4193,66 @@ function selectRat(btn){
   if(!alreadyOn)btn.classList.add('on');
   // Apply dimming based on line selection
   updateRatDimming();
+  // Disable First-line stimulant button if contras blocks stimulants
+  updateRatContras();
+  // Reveal/highlight rows based on what's been answered
+  updateRatProgression();
   var ta=$('rationaleNotes');
   if(ta){ta.value=buildRationaleFromChips();save();refresh();}
+}
+
+function getRatAnswers(){
+  var answered={};
+  document.querySelectorAll('#rationale-chips .rat-btn.on').forEach(function(b){
+    answered[b.getAttribute('data-group')]=b.getAttribute('data-val');
+  });
+  return answered;
+}
+
+function updateRatContras(){
+  var ans=getRatAnswers();
+  var firstLine=document.querySelector('#rationale-chips .rat-btn[data-group="line"][data-val="first"]');
+  if(!firstLine)return;
+  var disable=ans.contras==='shouldnt'||ans.contras==='cannot';
+  firstLine.style.opacity=disable?'0.3':'';
+  firstLine.style.pointerEvents=disable?'none':'';
+  if(disable&&firstLine.classList.contains('on'))firstLine.classList.remove('on');
+}
+
+function updateRatProgression(){
+  var ans=getRatAnswers();
+  // Visibility per row: each row reveals once its prerequisite is answered.
+  // consent (always) → cardiac + plan → medical → bf → contras → meds rows.
+  var visible={
+    consent:true,
+    cardiac:!!ans.consent,
+    plan:!!ans.consent,
+    medical:!!ans.cardiac,
+    bf:!!ans.medical,
+    contras:!!ans.bf,
+    line:!!ans.contras,
+    duration:!!ans.contras,
+    stimclass:!!ans.contras,
+    nsclass:!!ans.contras,
+    tlclass:!!ans.contras
+  };
+  Object.keys(visible).forEach(function(g){
+    var row=document.getElementById('rat-row-'+g);
+    if(!row)return;
+    row.style.display=visible[g]?'':'none';
+    row.classList.remove('active');
+  });
+  // Highlight the next un-answered row in the main flow
+  var flow=['consent','cardiac','medical','bf','contras','line'];
+  for(var i=0;i<flow.length;i++){
+    var g=flow[i];
+    if(!visible[g])break;
+    if(!ans[g]){
+      var row=document.getElementById('rat-row-'+g);
+      if(row)row.classList.add('active');
+      break;
+    }
+  }
 }
 
 function updateRatDimming(){
@@ -5189,7 +5257,7 @@ function init(){
   renderTitMeds();
   calcBMI();
   renderConsultType();
-  renderSideFx();applyReviewType();
+  renderSideFx();applyReviewType();updateRatProgression();updateRatContras();
   renderFuAppts();renderFuCustomMon();
   var dtEl=$('ptDate');if(dtEl&&!dtEl.value)dtEl.value=new Date().toISOString().slice(0,10);
   refresh();
