@@ -171,9 +171,19 @@ select.inp{appearance:none}
 .pe-grid{display:flex;flex-wrap:wrap;gap:5px}
 .pchip{padding:5px 10px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:12px;cursor:pointer;font-family:var(--sans);user-select:none}
 .pchip.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:600}
-.mse-row{padding:5px 0;border-bottom:1px solid #f1f5f9}
+.mse-row{padding:9px 0;border-bottom:1px solid #f4f5f8}
 .mse-row:last-child{border-bottom:none}
-.mse-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.mse-row-flag{background:#fff9ef;border:1.5px solid #b45309;border-radius:8px;padding:9px 11px;margin:6px 0;border-bottom:1.5px solid #b45309}
+.mse-row-flag .mse-label{color:#b45309}
+.mse-label{font-size:13px;font-weight:600;color:#334155;margin-bottom:5px}
+.mse-checks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:6px}
+.mse-check{display:inline-flex;align-items:center;gap:5px;cursor:pointer;font-size:13px;user-select:none;color:var(--text);line-height:1.3}
+.mse-check input{margin:0;cursor:pointer;flex-shrink:0}
+.mse-check.bad span{color:#b91c1c}
+.mse-check.on span{font-weight:600}
+.mse-check.bad.on span{color:#b91c1c}
+.mse-note{width:100%;border:1px solid var(--border);border-radius:7px;padding:6px 10px;font:13px var(--sans);background:#fafbfc;color:var(--text)}
+.mse-note:focus{outline:1px solid var(--primary);background:#fff}
 .mse-opts{display:flex;flex-wrap:wrap;gap:4px}
 .diff-row{padding:6px 0;border-bottom:1px solid #f1f5f9}
 .diff-row:last-child{border-bottom:none}
@@ -319,6 +329,12 @@ select.inp{appearance:none}
 .script-add{background:none;border:none;color:var(--primary);font:600 11px var(--sans);cursor:pointer;padding:4px 0;text-decoration:underline}
 .script-dose-row{flex-basis:100%;padding-top:3px}
 .script-dose{width:100%;font-style:italic;color:#374151}
+.script-mode-toggle{display:flex;gap:5px;margin-bottom:8px}
+.script-mode-toggle .rb{flex:1;font-size:12px;padding:6px 10px}
+.reg-picker{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font:13px var(--sans);background:#fff;color:var(--text);margin-bottom:8px}
+.reg-script-block{background:#fafbfc;border:1px solid var(--border);border-radius:9px;padding:9px 11px;margin-bottom:8px}
+.reg-script-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px;color:var(--text)}
+.reg-script-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:3px 0}
 /* Titration outputs tab additions */
 .tit-out-tabs{display:flex;background:#1e293b;gap:2px;padding:0 13px;border-bottom:1px solid #334155}
 .tit-out-tab{padding:7px 12px;border:none;background:none;color:#64748b;font:600 10px var(--sans);text-transform:uppercase;letter-spacing:.05em;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
@@ -354,7 +370,7 @@ select.inp{appearance:none}
 
 <div class="topbar">
   <div class="tb-row">
-    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v6.2</span></span>
+    <span class="topbar-title">ADHD <span style="font-size:9px;font-weight:600;color:#64748b;letter-spacing:normal;text-transform:none;margin-left:2px">v6.3</span></span>
     <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="save();refresh()" style="flex:1 1 130px;min-width:100px">
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
@@ -1543,7 +1559,7 @@ const TIT_SCEN={
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',consultType:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:''};
+const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',consultType:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',scriptMode:'titration'};
 const SIDE_FX=[{id:'appetite',label:'Reduced appetite'},{id:'insomnia',label:'Insomnia / sleep disturbance'},{id:'headache',label:'Headache'},{id:'dryMouth',label:'Dry mouth'},{id:'hrBp',label:'Elevated HR / BP'},{id:'anxiety',label:'Anxiety / jitteriness'},{id:'mood',label:'Mood changes / irritability'},{id:'gi',label:'GI upset / nausea'},{id:'rebound',label:'Rebound / afternoon crash'},{id:'weight',label:'Weight loss'},{id:'tics',label:'Tics'},{id:'libido',label:'Sexual / libido changes'},{id:'none',label:'Nil reported'}];
 var titMeds=[];
 var titCurTab='rich';
@@ -1971,8 +1987,15 @@ function renderScriptRow(m,mi,s,si){
 }
 function renderScripts(){
   var el=$('scripts-list');if(!el)return;
-  if(!titMeds.length){el.innerHTML='<div style="font-size:12px;color:var(--muted);padding:6px 0">Add a medication above to generate script details.</div>';refreshTitOutputs();return;}
-  el.innerHTML=titMeds.map(function(m,mi){
+  var mode=S.scriptMode||'titration';
+  var modeBar='<div class="script-mode-toggle">'
+    +'<button class="rb '+(mode==='titration'?'aq':'')+'" onclick="setScriptMode(\'titration\')">From titration plan</button>'
+    +'<button class="rb '+(mode==='regular'?'aq':'')+'" onclick="setScriptMode(\'regular\')">Regular medication</button>'
+    +'</div>';
+  if(mode==='regular'){el.innerHTML=modeBar+renderRegularScripts();refreshTitOutputs();return;}
+  // Titration mode (default)
+  if(!titMeds.length){el.innerHTML=modeBar+'<div style="font-size:12px;color:var(--muted);padding:6px 0">Add a medication to the titration plan above to generate script details.</div>';refreshTitOutputs();return;}
+  el.innerHTML=modeBar+titMeds.map(function(m,mi){
     ensureScripts(m);
     var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
     var nm=m.key==='other'&&m.customName?m.customName:(def.scriptName||m.def.name);
@@ -1985,9 +2008,137 @@ function renderScripts(){
   }).join('');
   refreshTitOutputs();
 }
+function setScriptMode(mode){S.scriptMode=mode;renderScripts();save();}
+
+// ─── REGULAR MEDS (standalone scripts) ────────────────────────────────────────
+var regScripts=[];
+function getAllMedStrengthOptions(){
+  var opts=[];
+  var keys=['dex','ritalinIR','ritalinLA','concerta','vyvanse2030','strattera','intuniv','catnanight','catnaday'];
+  var seen={};
+  keys.forEach(function(k){
+    var def=TIT_MEDS[k];if(!def)return;
+    var sd=SCRIPT_DEFAULTS[k]||SCRIPT_DEFAULTS.other;
+    var name=sd.scriptName||def.name;
+    var unit=def.unit||sd.unit||'mg';
+    var form=def.form||sd.form||'tab';
+    var strengths=sd.strengthOpts||def.strengths||[];
+    if(!strengths.length)return;
+    strengths.forEach(function(s){
+      var label=name+' '+s+unit;
+      if(seen[label])return;
+      seen[label]=true;
+      opts.push({key:k,name:name,strength:s,unit:unit,form:form,label:label});
+    });
+  });
+  return opts;
+}
+function regAddPickerOpts(){
+  var opts='<option value="">+ Add medication —</option>';
+  var groups={Stimulants:['dex','ritalinIR','ritalinLA','concerta','vyvanse2030'],
+              'Non-stimulants':['strattera','intuniv','catnanight','catnaday']};
+  var allOpts=getAllMedStrengthOptions();
+  Object.keys(groups).forEach(function(g){
+    opts+='<optgroup label="'+g+'">';
+    allOpts.filter(function(o){return groups[g].indexOf(o.key)>=0;}).forEach(function(o){
+      opts+='<option value="'+o.key+'|'+o.strength+'">'+esc(o.label)+'</option>';
+    });
+    opts+='</optgroup>';
+  });
+  return opts;
+}
+function regAddMed(val){
+  if(!val)return;
+  var bits=val.split('|');
+  var key=bits[0],strength=parseFloat(bits[1]);
+  var def=TIT_MEDS[key];if(!def)return;
+  var sd=SCRIPT_DEFAULTS[key]||SCRIPT_DEFAULTS.other;
+  var unit=def.unit||sd.unit||'mg';
+  var form=def.form||sd.form||'tab';
+  var qSteps=getQSteps({key:key});
+  var defaultQ=qSteps.indexOf(1)>=0?1:qSteps[0];
+  regScripts.push({
+    key:key,strength:strength,unit:unit,form:form,
+    q:defaultQ,timing:'morning',
+    tabs:sd.tabs,repeats:sd.repeats,interval:sd.interval,escript:true
+  });
+  renderScripts();
+}
+function regSet(ri,key,val){
+  var r=regScripts[ri];if(!r)return;
+  if(key==='q'||key==='strength')val=parseFloat(val);
+  else if(key==='tabs'||key==='repeats'||key==='interval')val=parseInt(val);
+  r[key]=val;
+  refreshTitOutputs();
+}
+function regRemove(ri){regScripts.splice(ri,1);renderScripts();}
+function regChangeQ(ri,dir){
+  var r=regScripts[ri];if(!r)return;
+  var qSteps=getQSteps({key:r.key});
+  var idx=qSteps.indexOf(r.q);if(idx<0)idx=qSteps.indexOf(1);
+  var ni=Math.max(0,Math.min(qSteps.length-1,idx+dir));
+  r.q=qSteps[ni];
+  renderScripts();
+}
+function renderRegularScripts(){
+  var picker='<select class="reg-picker" onchange="regAddMed(this.value);this.value=\'\'">'+regAddPickerOpts()+'</select>';
+  if(!regScripts.length)return picker+'<div style="font-size:12px;color:var(--muted);padding:8px 0">Pick a medication above to add a script.</div>';
+  var rows=regScripts.map(function(r,ri){
+    var sd=SCRIPT_DEFAULTS[r.key]||SCRIPT_DEFAULTS.other;
+    var def=TIT_MEDS[r.key]||{};
+    var nm=sd.scriptName||def.name||r.key;
+    var qSteps=getQSteps({key:r.key});
+    var qDisplay=fmtQ(r.q||1)+' '+(r.form||'tab')+(r.q===1||r.q===0.5||r.q===0.25?'':'s');
+    var stepper='<div class="tit-stepper">'
+      +'<button class="tit-ds-btn" onclick="regChangeQ('+ri+',-1)">-</button>'
+      +'<span class="tit-ds-lbl">'+qDisplay+'</span>'
+      +'<button class="tit-ds-btn" onclick="regChangeQ('+ri+',1)">+</button>'
+      +'</div>';
+    var times=TIT_TIMES.map(function(t){return '<option value="'+t+'"'+(r.timing===t?' selected':'')+'>'+t+'</option>';}).join('');
+    var repOpts='';for(var i=0;i<=5;i++){repOpts+='<option value="'+i+'"'+(r.repeats===i?' selected':'')+'>'+i+'</option>';}
+    return '<div class="reg-script-block">'
+      +'<div class="reg-script-head"><strong>'+esc(nm)+' '+r.strength+r.unit+'</strong>'
+        +'<button class="script-rm" onclick="regRemove('+ri+')">×</button></div>'
+      +'<div class="reg-script-row">'
+        +'<span class="script-lbl">Take</span>'+stepper
+        +'<select class="script-inp" onchange="regSet('+ri+',\'timing\',this.value)">'+times+'</select>'
+      +'</div>'
+      +'<div class="reg-script-row">'
+        +'<span class="script-lbl">Qty</span><input class="script-inp" type="number" min="1" value="'+(r.tabs||'')+'" onchange="regSet('+ri+',\'tabs\',this.value)" style="width:64px">'
+        +'<span class="script-lbl">Rpts</span><select class="script-inp" onchange="regSet('+ri+',\'repeats\',this.value)">'+repOpts+'</select>'
+        +'<span class="script-lbl">Interval</span><input class="script-inp" type="number" min="1" value="'+(r.interval||'')+'" onchange="regSet('+ri+',\'interval\',this.value)" style="width:54px"><span class="script-lbl-suf">d</span>'
+        +'<label class="script-escript"><input type="checkbox" '+(r.escript?'checked':'')+' onchange="regSet('+ri+',\'escript\',this.checked)"> eScript</label>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+  return picker+rows;
+}
+
 function buildScriptLines(){
-  // Returns an array of "Med strength form, dose, qty, X rpts, Y day interval, escript|paper" strings.
   var lines=[];
+  var mode=S.scriptMode||'titration';
+  if(mode==='regular'){
+    regScripts.forEach(function(r){
+      var sd=SCRIPT_DEFAULTS[r.key]||SCRIPT_DEFAULTS.other;
+      var def=TIT_MEDS[r.key]||{};
+      var nm=sd.scriptName||def.name||r.key;
+      var form=r.form||'tab';
+      var fStr=form+((r.q===1||r.q===0.5||r.q===0.25)?'':'s');
+      var loc=r.timing==='morning'||r.timing==='afternoon'||r.timing==='evening'?'in the '+r.timing
+            :r.timing==='midday'||r.timing==='noon'?'at midday'
+            :r.timing==='night'||r.timing==='nocte'||r.timing==='bedtime'?'at '+r.timing
+            :r.timing;
+      var bits=[nm+' '+r.strength+r.unit+' '+form,
+                fmtQ(r.q||1)+' '+fStr+' '+loc,
+                r.tabs+' '+form+(r.tabs===1?'':'s'),
+                (r.repeats||0)+' rpt'+((r.repeats||0)===1?'':'s'),
+                r.interval+'-day prescription interval',
+                r.escript?'eScript sent':'paper script'];
+      lines.push(bits.join(', '));
+    });
+    return lines;
+  }
+  // Titration mode
   titMeds.forEach(function(m){
     if(!m.scripts||!m.scripts.length)return;
     var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
@@ -2369,31 +2520,35 @@ function mseAddFree(id){
   S.mse[id]=vals;inp.value='';
   renderMSE();save();refresh();
 }
+function mseSetNote(id,val){
+  var current=S.mse[id]||[];
+  var sec=MSE.filter(function(s){return s.id===id;})[0];
+  var opts=sec?sec.opts:[];
+  var keepStandard=current.filter(function(v){return opts.indexOf(v)>=0;});
+  if(val&&val.trim())keepStandard.push(val.trim());
+  S.mse[id]=keepStandard;
+  save();refresh();
+}
 function renderMSE(){
   var el=$('mse-rows');if(!el)return;
   el.innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllMSENormal()">All normal</button><button class="sel-all-btn desel" onclick="deselectAllMSE()">Deselect all</button></div>'+
   MSE.map(function(sec){
     var vals=mseVals(sec.id);
     var isADHD=sec.id==='adhd_support';
-    var opts=sec.opts.map(function(o){
+    var checks=sec.opts.map(function(o){
       var on=mseHas(sec.id,o);
       var bad=mseIsBad(o);
-      var cls=on?(bad?' af':' ay'):'';
-      // adhd_support is single-select only
+      var safeO=o.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       var handler=isADHD
-        ?'var v=mseVals(\''+sec.id+'\');var on=v.indexOf(\''+o+'\')>=0;S.mse[\''+sec.id+'\']=(on?[]:[\''+o+'\']);renderMSE();save();refresh();'
-        :'toggleMSE(\''+sec.id+'\',\''+o.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')';
-      return '<button class="rb'+cls+'" onclick="'+handler+'" >'+o+'</button>';
+        ?"var v=mseVals('"+sec.id+"');var was=v.indexOf('"+safeO+"')>=0;S.mse['"+sec.id+"']=(was?[]:['"+safeO+"']);renderMSE();save();refresh();"
+        :"toggleMSE('"+sec.id+"','"+safeO+"')";
+      return '<label class="mse-check'+(bad?' bad':'')+(on?' on':'')+'"><input type="checkbox" '+(on?'checked':'')+' onchange="'+handler+'"><span>'+esc(o)+'</span></label>';
     }).join('');
-    // Free values (not in opts)
     var freeVals=vals.filter(function(v){return sec.opts.indexOf(v)<0;});
-    var freeBtns=freeVals.map(function(v){return '<button class="rb ay" onclick="toggleMSE(\''+sec.id+'\',\''+v.replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')" title="Click to remove">'+v+' ×</button>';}).join('');
-    var addBtn='<div style="display:flex;gap:4px;margin-top:4px"><input id="mse-free-inp-'+sec.id+'" style="flex:1;border:1px solid var(--border);border-radius:6px;padding:3px 7px;font:12px var(--sans);background:#fafbfc;color:var(--text)" placeholder="Add note..." onkeydown="if(event.key===\'Enter\'){mseAddFree(\''+sec.id+'\')}" ><button onclick="mseAddFree(\''+sec.id+'\')" style="padding:3px 8px;border-radius:6px;border:1px solid var(--border);background:#f1f5f9;font:11px var(--sans);cursor:pointer">+</button></div>';
-    var inner='<div class="mse-opts">'+opts+freeBtns+'</div>'+addBtn;
-    if(isADHD){
-      return '<div class="mse-row" style="border:2px solid #b45309;border-radius:8px;padding:6px 8px;background:#fff9ef"><div class="mse-label" style="color:#b45309">'+sec.label+'</div>'+inner+'</div>';
-    }
-    return '<div class="mse-row"><div class="mse-label">'+sec.label+'</div>'+inner+'</div>';
+    var noteVal=freeVals.join('; ');
+    var noteBox='<input class="mse-note" placeholder="Notes…" value="'+esc(noteVal)+'" onchange="mseSetNote(\''+sec.id+'\',this.value)">';
+    var rowCls=isADHD?'mse-row mse-row-flag':'mse-row';
+    return '<div class="'+rowCls+'"><div class="mse-label">'+esc(sec.label)+'</div><div class="mse-checks">'+checks+'</div>'+noteBox+'</div>';
   }).join('');
 }
 function renderCardiac(){$('cardiac-checks').innerHTML=CARDIAC.map(function(c){var on=!!S.cardiac[c.id];var isMaoi=c.id==='c_maoi';return '<div class="crow" onclick="toggleCardiac(\''+c.id+'\','+c.flag+',this)"><div class="cbox'+(on?(c.flag?' flag':' yes'):'')+'"></div><div class="clabel">'+(isMaoi?'<strong style="color:var(--red)">'+c.label+'</strong>':c.label)+(c.flag&&!isMaoi?'<span style="font-size:10px;color:var(--red);margin-left:5px">\u26a0</span>':'')+'</div><button class="qbtn" onclick="openDrawer(event,\''+c.id+'\',\'cardiac\')">?</button></div>';}).join('');}
