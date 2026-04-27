@@ -371,6 +371,10 @@ select.inp{appearance:none}
 .script-add{background:none;border:none;color:var(--primary);font:600 11px var(--sans);cursor:pointer;padding:4px 0;text-decoration:underline}
 .script-dose-row{flex-basis:100%;padding-top:3px}
 .script-dose{width:100%;font-style:italic;color:#374151;font-family:var(--sans);resize:vertical;line-height:1.4;box-sizing:border-box}
+.script-actions{flex-basis:100%;display:flex;gap:6px;padding-top:4px}
+.script-copy-btn{padding:4px 10px;border-radius:6px;border:1.5px solid var(--primary);background:var(--primary-bg);color:var(--primary);font:600 11px var(--sans);cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent}
+.script-copy-btn:hover{background:var(--primary);color:#fff}
+.script-copy-btn:focus{outline:none}
 .script-mode-toggle{display:flex;gap:5px;margin-bottom:8px}
 .script-mode-toggle .rb{flex:1;font-size:12px;padding:6px 10px}
 .reg-picker{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font:13px var(--sans);background:#fff;color:var(--text);margin-bottom:8px}
@@ -1201,10 +1205,10 @@ select.inp{appearance:none}
         <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px" id="doc-section-toggles">
           <!-- auto sections -->
           <button class="doc-toggle on" data-sec="cover" onclick="toggleDocSec(this)">Intro letter</button>
-          <button class="doc-toggle on" data-sec="medinfo" onclick="toggleDocSec(this)">Medication info</button>
+          <button class="doc-toggle" data-sec="medinfo" onclick="toggleDocSec(this)">Medication info</button>
           <button class="doc-toggle on" data-sec="medtable" onclick="toggleDocSec(this)">Titration plan</button>
           <button class="doc-toggle on" data-sec="monitoring" onclick="toggleDocSec(this)">Monitoring</button>
-          <button class="doc-toggle on" data-sec="concerns" onclick="toggleDocSec(this)">If concerns arise</button>
+          <button class="doc-toggle" data-sec="concerns" onclick="toggleDocSec(this)">If concerns arise</button>
           <button class="doc-toggle on" data-sec="handout" onclick="toggleDocSec(this)">Educational handout</button>
           <!-- additional letters -->
           <button class="doc-toggle" data-sec="gphandover" onclick="toggleDocSec(this)">+ GP handover letter</button>
@@ -2362,6 +2366,10 @@ function renderScriptRow(m,mi,s,si){
     +'<label class="script-escript"><input type="checkbox" '+(s.escript?'checked':'')+' onchange="setScript('+mi+','+si+',\'escript\',this.checked)"> eScript</label>'
     +'<button class="script-rm" onclick="removeScript('+mi+','+si+')" title="Remove this script">×</button>'
     +'<div class="script-dose-row"><textarea class="script-inp script-dose" rows="'+Math.min(6,Math.max(1,(s.dose||'').split(/\n/).length))+'" placeholder="e.g. 1 cap in the morning" onchange="setScript('+mi+','+si+',\'dose\',this.value)">'+esc(s.dose||'')+'</textarea></div>'
+    +'<div class="script-actions">'
+      +'<button class="script-copy-btn" onclick="copyScriptInstructions('+mi+','+si+',this)" title="Copy just the directions for pasting into eScript">Copy instructions</button>'
+      +'<button class="script-copy-btn" onclick="copyScriptFull('+mi+','+si+',this)" title="Copy the full script line">Copy full script</button>'
+    +'</div>'
     +'</div>';
 }
 function renderScripts(){
@@ -2381,27 +2389,50 @@ function renderScripts(){
   refreshTitOutputs();
 }
 
+function buildOneScriptLine(m,s){
+  // "Med Xmg, Q form, R rpt, [instructions]" — instructions go last.
+  var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
+  var nm=m.key==='other'&&m.customName?m.customName:(def.scriptName||m.def.name);
+  var unit=def.unit||m.def.unit||'';
+  var form=def.form||m.def.form||'tab';
+  var head=nm+(s.strength!=null&&s.strength!==''?' '+s.strength+unit:'');
+  var bits=[head];
+  if(s.tabs)bits.push(s.tabs+' '+form+(s.tabs===1?'':'s'));
+  bits.push((s.repeats||0)+' rpt'+((s.repeats||0)===1?'':'s'));
+  if(s.dose)bits.push(s.dose);
+  return bits.join(', ');
+}
 function buildScriptLines(){
   var lines=[];
   titMeds.forEach(function(m){
     if(!m.scripts||!m.scripts.length)return;
-    var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
-    var nm=m.key==='other'&&m.customName?m.customName:(def.scriptName||m.def.name);
-    var unit=def.unit||m.def.unit||'';
-    var form=def.form||m.def.form||'tab';
-    m.scripts.forEach(function(s){
-      var parts=[nm];
-      if(s.strength!=null&&s.strength!=='')parts[0]+=' '+s.strength+unit+' '+form;
-      var bits=[parts[0]];
-      if(s.dose)bits.push(s.dose);
-      if(s.tabs)bits.push(s.tabs+' '+form+(s.tabs===1?'':'s'));
-      bits.push((s.repeats||0)+' rpt'+((s.repeats||0)===1?'':'s'));
-      if(s.interval)bits.push(s.interval+'-day prescription interval');
-      bits.push(s.escript?'eScript sent':'paper script');
-      lines.push(bits.join(', '));
-    });
+    m.scripts.forEach(function(s){lines.push(buildOneScriptLine(m,s));});
   });
   return lines;
+}
+function copyScriptText(text,btn){
+  if(!text)return;
+  var done=function(){
+    if(!btn)return;
+    var orig=btn.textContent;
+    btn.textContent='Copied';
+    setTimeout(function(){btn.textContent=orig;},900);
+  };
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done,function(){done();});
+  } else {
+    var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);done();
+  }
+}
+function copyScriptInstructions(mi,si,btn){
+  var m=titMeds[mi];if(!m||!m.scripts||!m.scripts[si])return;
+  copyScriptText(m.scripts[si].dose||'',btn);
+}
+function copyScriptFull(mi,si,btn){
+  var m=titMeds[mi];if(!m||!m.scripts||!m.scripts[si])return;
+  copyScriptText(buildOneScriptLine(m,m.scripts[si]),btn);
 }
 
 function renderTitMeds(){
@@ -3413,9 +3444,10 @@ function buildLetter(){
   };
 
   var h='<h2>Dear '+firstName+',</h2>';
-  h+='<p>Thank you for attending your psychiatric appointment on '+ds+'. I am writing to summarise the outcome of our assessment and the plan we discussed.</p>';
+  h+='<p>Thank you for attending your '+reviewLabelLower()+' on '+ds+'. I am writing to summarise the outcome of our '+(S.reviewType==='Initial'?'assessment':'review')+' and the plan we discussed.</p>';
 
-  // Diagnosis
+  // Diagnosis (only on Initial — already known on follow-ups)
+  if(S.reviewType==='Initial'||!S.reviewType){
   if(S.dx==='Yes'&&dx){
     h+='<h3>Diagnosis</h3>';
     h+='<p>Following a thorough psychiatric assessment, which included a detailed developmental and clinical history, standardised rating scales, review of collateral information where available, and careful consideration of alternative explanations, you have been formally diagnosed with <strong>'+dxLong()+'</strong>.</p>';
@@ -3428,6 +3460,7 @@ function buildLetter(){
     h+='<h3>Assessment Outcome</h3>';
     h+='<p>'+(S.dx==='Insufficient evidence'?'The assessment raised the possibility of Attention Deficit Hyperactivity Disorder, however further information is needed before a formal diagnosis can be confirmed.':'The diagnostic conclusion has been deferred pending further review.')+(f('dxNotes')?' '+f('dxNotes'):'')+'</p>';
   }
+  } // end of Initial-only diagnosis block
 
   // Medication
   if(titMeds.length){
@@ -3671,6 +3704,11 @@ function buildFullReportFollowUp(rt){
   h+='<div style="'+F+'font-size:11pt;color:#444;margin-top:2pt;">Attention-Deficit / Hyperactivity Disorder — Review Note</div>';
   h+='</div>';
 
+  // Addressed to the referring GP
+  var gpSalutation=gp?'Dear Dr '+esc(gp):'Dear Doctor';
+  h+='<div style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 10pt 0;">'+gpSalutation+',</div>';
+  h+='<div style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 12pt 0;">The following summarises the '+esc(rt.toLowerCase())+' review and outcome for <strong>'+esc(name)+'</strong>'+(age?' (age '+esc(age)+')':'')+' on '+ds+'.</div>';
+
   // Identifier table — only fill cells with values
   function buildIdRowsFu(items){
     var pairs='';
@@ -3829,6 +3867,11 @@ function buildFullReport(){
   h+='<div style="'+F+'font-size:16pt;font-weight:bold;letter-spacing:.02em;">PSYCHIATRIC ASSESSMENT REPORT</div>';
   h+='<div style="'+F+'font-size:11pt;color:#444;margin-top:2pt;">Adult Attention-Deficit / Hyperactivity Disorder Assessment</div>';
   h+='</div>';
+
+  // Addressed to the referring GP
+  var gpSalutation=gp?'Dear Dr '+esc(gp):'Dear Doctor';
+  h+='<div style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 10pt 0;">'+gpSalutation+',</div>';
+  h+='<div style="'+F+'font-size:11pt;line-height:1.5;margin:0 0 12pt 0;">The following summarises the psychiatric assessment and outcome for <strong>'+esc(name)+'</strong>'+(age?' (age '+esc(age)+')':'')+' on '+ds+'.</div>';
 
   // Identifier block — only include cells that have values, paired into rows.
   function buildIdRows(items){
@@ -4207,6 +4250,19 @@ function buildRationaleFromChips(){
   return sentences.join(' ');
 }
 
+function hasRealTitration(){
+  return titMeds.some(function(m){
+    return m.steps&&m.steps.length>1&&m.steps.some(function(s){return !s.ongoing;});
+  });
+}
+function reviewLabelLower(){
+  var rt=S.reviewType||'Initial';
+  if(rt==='Follow-up')return 'follow-up review';
+  if(rt==='Titration')return 'titration review';
+  if(rt==='Script')return 'script appointment';
+  return 'psychiatric appointment';
+}
+
 function selectRat(btn){
   var group=btn.getAttribute('data-group');
   var alreadyOn=btn.classList.contains('on');
@@ -4335,7 +4391,7 @@ function updateRatDimming(){
 
 var docSections = {
   cover:true,
-  medinfo:true, medtable:true, monitoring:true,
+  medinfo:false, medtable:true, monitoring:true,
   concerns:false, handout:true,
   gphandover:false,
   medcert:false, travel:false, possession:false,
@@ -4346,6 +4402,9 @@ var docCurTab = 'preview';
 function toggleDocSec(btn){
   var sec = btn.getAttribute('data-sec');
   docSections[sec] = !docSections[sec];
+  // Mark sections as user-controlled so refresh() doesn't auto-flip them
+  if(sec==='medinfo') docSections._medinfoManual = true;
+  if(sec==='concerns') docSections._concernsManual = true;
   btn.classList.toggle('on', docSections[sec]);
   var mcFields = document.getElementById('medcert-fields');
   if(mcFields) mcFields.style.display = docSections.medcert ? 'flex' : 'none';
@@ -4385,9 +4444,10 @@ function buildCoverLetter(){
   }
 
   var h = '<h2>Dear '+firstName+',</h2>';
-  h += '<p>Thank you for attending your psychiatric appointment on '+ds+'. I am writing to summarise the outcome of our assessment and the plan we discussed.</p>';
+  h += '<p>Thank you for attending your '+reviewLabelLower()+' on '+ds+'. I am writing to summarise the outcome of our '+(S.reviewType==='Initial'?'assessment':'review')+' and the plan we discussed.</p>';
 
-  // Diagnosis
+  // Diagnosis (only on Initial — already known on follow-ups)
+  if(S.reviewType==='Initial'||!S.reviewType){
   if(S.dx==='Yes'&&dx){
     h += '<h3>Diagnosis</h3>';
     h += '<p>Following a thorough psychiatric assessment, which included a detailed developmental and clinical history, standardised rating scales, review of collateral information where available, and careful consideration of alternative explanations, you have been formally diagnosed with <strong>'+dxLong()+'</strong>.</p>';
@@ -4400,6 +4460,7 @@ function buildCoverLetter(){
     h += '<h3>Assessment Outcome</h3>';
     h += '<p>'+(S.dx==='Insufficient evidence'?'The assessment raised the possibility of Attention Deficit Hyperactivity Disorder, however further information is needed before a formal diagnosis can be confirmed.':'The diagnostic conclusion has been deferred pending further review.')+(f('dxNotes')?' '+f('dxNotes'):'')+'</p>';
   }
+  } // end of Initial-only diagnosis block
 
   // What follows this letter
   var following = [];
@@ -5229,14 +5290,17 @@ function autoDSM(){
 
 // ─── MAIN REFRESH ─────────────────────────────────────────────────────────────
 function refresh(){
-  // Auto-toggle concerns: on if fuCon has items; if user manually enabled with no items, respect that too
-  if(!docSections._concernsManual) docSections.concerns = fuCon.size > 0;
+  // Auto-toggle concerns: on if titrating OR user added concern items; off otherwise. Manual toggles always win.
+  var titrating=hasRealTitration();
+  if(!docSections._concernsManual) docSections.concerns = titrating || fuCon.size > 0;
+  // Auto-toggle medication info: on only when actively titrating. User can manually flip.
+  if(!docSections._medinfoManual) docSections.medinfo = titrating;
   // Sync the toggle button visual state
-  var concernsBtn = document.querySelector('.doc-toggle[data-sec="concerns"]');
-  if(concernsBtn){
-    if(docSections.concerns){concernsBtn.classList.add('on');}
-    else{concernsBtn.classList.remove('on');}
-  }
+  ['concerns','medinfo'].forEach(function(sec){
+    var b=document.querySelector('.doc-toggle[data-sec="'+sec+'"]');
+    if(!b)return;
+    if(docSections[sec])b.classList.add('on'); else b.classList.remove('on');
+  });
   autoDSM();
   renderFlags();updateBadges();
   refreshTitOutputs();
