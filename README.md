@@ -8,20 +8,18 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 
 ## ADHD Assessment Generators
 
-### [Ben's Amazing ADHD Assessment Generator](adhd4.html)
-This has everything you need:
+### [Ben's Amazing ADHD Assessment Generator](adhd5.html)
+This has everything you need — suitable for both initial assessments and follow-up reviews:
 - Interview template to follow with the key things, plus DSM-5-TR criteria
 - Psychoeducation
-- Titration algorithm
-- Titration and follow-up plan generator
-- Generates a nice ADHD report, certificate, and script text for eScripts
-- Creates all the letters they might need
-- Prescriber guidance per state
+- Prescribing information and prescriber guidance per state
+- Common medication titration schedules
+- Titration algorithm and follow-up plan generator
+- Easily generates a straightforward letter or note
+- Generates medical, travel, and possession certificates
+- Generates a nice ADHD report and script text for eScripts
 
 Perfect for beginners and experienced psychiatrists alike.
-
-### [ADHD Assessment v5 — Single Page](adhd5.html)
-A streamlined single-page version of the ADHD assessment workflow.
 
 ### [Old ADHD Assessment Generator](adhd3.html)
 The first one I made. Subtle differences and not as good — kept here for reference.
