@@ -24,7 +24,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:#1e293b;color:#64748b;white-space:nowrap}
 .pill.red{background:#450a0a;color:#fca5a5}
 .pill.amber{background:#431407;color:#fcd34d}
-.tabs{background:#1e293b;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid #334155;position:sticky;top:0;z-index:49;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.tabs{background:#1e293b;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:0;border-bottom:1px solid #334155;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.sticky-headerbar{position:sticky;top:0;z-index:50;flex-shrink:0}
 .tabs::-webkit-scrollbar{display:none}
 .tab{padding:10px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#64748b;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--sans);flex-shrink:0}
 .tab:hover{color:#cbd5e1}
@@ -409,10 +410,22 @@ select.inp{appearance:none}
 /* Prescriber Guide Drawer */
 .pg-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:3000;align-items:flex-end;justify-content:center}
 .pg-ov.open{display:flex}
-.pg-box{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column;animation:slideUp .2s ease}
-.pg-head{padding:12px 18px 10px;border-bottom:1px solid #e2e6ed;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.pg-head-title{font-size:13px;font-weight:700;color:#1e3a5f}
-.pg-close{width:28px;height:28px;border-radius:50%;border:none;background:#f1f5f9;color:#64748b;font-size:18px;cursor:pointer;line-height:1;font-family:var(--sans)}
+.pg-box{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column;animation:slideUp .2s ease;overflow:hidden}
+.pg-head{padding:12px 18px 10px;border-bottom:1px solid #e2e6ed;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:10px}
+.pg-head-title{font-size:13px;font-weight:700;color:#1e3a5f;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-close{width:34px;height:34px;border-radius:50%;border:none;background:#1e3a5f;color:#fff;font-size:22px;font-weight:300;cursor:pointer;line-height:1;font-family:var(--sans);display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.pg-close:hover{background:#dc2626}
+.pg-close:focus{outline:none}
+.pg-ov-tabs{display:flex;background:#0f1d33;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.pg-ov-tabs::-webkit-scrollbar{display:none}
+.pg-ov-tab{flex:1 0 auto;padding:8px 9px;background:none;border:none;color:#94a3b8;font:600 11px var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid transparent;border-right:1px solid #1e3252;white-space:nowrap;transition:background .12s,color .12s;-webkit-tap-highlight-color:transparent}
+.pg-ov-tab:last-child{border-right:none}
+.pg-ov-tab:hover{background:#1e2d4a;color:#e2e8f0}
+.pg-ov-tab.active{color:#fff;background:#1e2d4a;border-bottom-color:#3b82f6}
+.pg-ov-tab:focus{outline:none}
+.pg-ov-tab-icon{font-size:14px;line-height:1}
+.pg-ov-tab-label{display:none}
+@media(min-width:560px){.pg-ov-tab-label{display:inline}}
 .pg-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 20px 40px;flex:1;font-size:13px;line-height:1.6;color:#1f2937}
 .pg-scroll h1{color:#1e40af;font-size:1.1rem;border-bottom:2px solid #1e40af;padding-bottom:8px;margin:0 0 16px}
 .pg-scroll h3{color:#1e40af;margin:16px 0 6px;font-size:.95rem}
@@ -447,13 +460,14 @@ select.inp{appearance:none}
   </div>
 </div>
 
+<div class="sticky-headerbar">
 <div class="refbar" id="refbar">
-  <button class="refbar-btn" onclick="document.getElementById('how-ov').classList.add('open')" title="GUIDE — How to use this tool"><span class="refbar-icon">🦮</span><span class="refbar-label">Guide</span></button>
-  <button class="refbar-btn" onclick="document.getElementById('pg-ov').classList.add('open')" title="PRESCRIBING — Prescriber guide"><span class="refbar-icon">✍️</span><span class="refbar-label">Prescribing</span></button>
-  <button class="refbar-btn" onclick="document.getElementById('tit-ov').classList.add('open')" title="TITRATION — Reference titrations / regular regimens"><span class="refbar-icon">💊</span><span class="refbar-label">Titration</span></button>
-  <button class="refbar-btn" onclick="document.getElementById('bill-ov').classList.add('open')" title="BILLING — MBS item numbers"><span class="refbar-icon">💵</span><span class="refbar-label">Billing</span></button>
-  <button class="refbar-btn" onclick="document.getElementById('fu-ov').classList.add('open')" title="FOLLOW-UP — Follow-up styles"><span class="refbar-icon">📅</span><span class="refbar-label">Follow-up</span></button>
-  <button class="refbar-btn" onclick="document.getElementById('ho-ov').classList.add('open')" title="HANDOVER — GP handover letter and prescribing guide"><span class="refbar-icon">🤝</span><span class="refbar-label">Handover</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('how-ov')" title="GUIDE — How to use this tool"><span class="refbar-icon">🦮</span><span class="refbar-label">Guide</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('pg-ov')" title="PRESCRIBING — Prescriber guide"><span class="refbar-icon">✍️</span><span class="refbar-label">Prescribing</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('tit-ov')" title="TITRATION — Reference titrations"><span class="refbar-icon">💊</span><span class="refbar-label">Titration</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('bill-ov')" title="BILLING — MBS item numbers"><span class="refbar-icon">💵</span><span class="refbar-label">Billing</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('fu-ov')" title="FOLLOW-UP — Follow-up styles"><span class="refbar-icon">📅</span><span class="refbar-label">Follow-up</span></button>
+  <button class="refbar-btn" onclick="openRefOverlay('ho-ov')" title="HANDOVER — GP handover letter and prescribing guide"><span class="refbar-icon">🤝</span><span class="refbar-label">Handover</span></button>
 </div>
 
 <div class="tabs">
@@ -461,8 +475,7 @@ select.inp{appearance:none}
   <button class="tab" onclick="showTab('safety',this)">Medical Hx <span class="tbadge" id="tb-safety">--</span></button>
   <button class="tab" onclick="showTab('plan',this)">Plan</button>
   <button class="tab" onclick="showTab('outputs',this)">Letters</button>
-  <button class="tab-guide" onclick="document.getElementById('how-ov').classList.add('open')" title="How to Use" aria-label="How to Use">💡</button>
-  <button class="tab-guide" onclick="document.getElementById('pg-ov').classList.add('open')" title="Prescriber Guide" aria-label="Prescriber Guide">📋</button>
+</div>
 </div>
 
 <div class="content">
@@ -5382,6 +5395,7 @@ function init(){
   refresh();
   initScrollSpy();
   // Reference overlays — render once on init since they only depend on static data
+  initOverlayTabs();
   renderTitReference();
   renderBillingReference();
   renderHandoverReference();
@@ -5389,79 +5403,98 @@ function init(){
 document.addEventListener('DOMContentLoaded',init);
 
 // ─── REFERENCE OVERLAYS (Titration / Billing / Handover) ─────────────────────
-function _refSchedule(def, steps){
-  var rows=steps.map(function(st,si){
-    var lbl=titAutoLabel(steps,si);
-    var dur=st.ongoing?'Ongoing':st.dur?st.dur+' '+st.unit:'';
-    var dl=st.doses.map(function(d){return '<strong>'+esc(d.t)+':</strong> '+esc(titGetDoseDisplay(d))+(d.prn?' <em>(PRN)</em>':'');}).join('<br>');
-    return '<tr><td style="padding:5px 8px;border:1px solid #e5e7eb;font-weight:600;color:#1e3a5f;vertical-align:top;white-space:nowrap">'+esc(lbl)+'</td>'
-      +'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;white-space:nowrap;color:#555;font-size:12px">'+esc(dur)+'</td>'
-      +'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;line-height:1.5">'+dl+'</td>'
-      +(st.note?'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;font-style:italic;color:#555;font-size:12px">'+esc(st.note)+'</td>':'<td style="border:1px solid #e5e7eb"></td>')+'</tr>';
-  }).join('');
-  return '<table style="border-collapse:collapse;width:100%;margin:6px 0 2px;font-size:12.5px"><thead><tr>'
-    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Step</th>'
-    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Duration</th>'
-    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Dose</th>'
-    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Note</th>'
-    +'</tr></thead><tbody>'+rows+'</tbody></table>';
+var REF_OVERLAYS=[
+  {id:'how-ov',icon:'🦮',label:'Guide'},
+  {id:'pg-ov',icon:'✍️',label:'Prescribing'},
+  {id:'tit-ov',icon:'💊',label:'Titration'},
+  {id:'bill-ov',icon:'💵',label:'Billing'},
+  {id:'fu-ov',icon:'📅',label:'Follow-up'},
+  {id:'ho-ov',icon:'🤝',label:'Handover'}
+];
+function openRefOverlay(id){
+  document.querySelectorAll('.pg-ov.open').forEach(function(o){if(o.id!==id)o.classList.remove('open');});
+  var el=document.getElementById(id);if(el)el.classList.add('open');
+  // Sync the active state on tab strips inside any overlay
+  document.querySelectorAll('.pg-ov-tab').forEach(function(b){
+    if(b.getAttribute('data-target')===id)b.classList.add('active');
+    else b.classList.remove('active');
+  });
 }
-function toggleTitRefSchedule(id, btn){
-  var el=document.getElementById(id);if(!el)return;
-  var open=el.style.display!=='none';
-  el.style.display=open?'none':'block';
-  if(btn){
-    if(open)btn.classList.remove('on'); else btn.classList.add('on');
+function initOverlayTabs(){
+  REF_OVERLAYS.forEach(function(t){
+    var ov=document.getElementById(t.id);if(!ov)return;
+    var box=ov.querySelector('.pg-box');if(!box)return;
+    if(box.querySelector('.pg-ov-tabs'))return; // already done
+    var tabsHtml='<div class="pg-ov-tabs">';
+    REF_OVERLAYS.forEach(function(t2){
+      var active=t2.id===t.id?' active':'';
+      tabsHtml+='<button class="pg-ov-tab'+active+'" data-target="'+t2.id+'" onclick="openRefOverlay(\''+t2.id+'\')" title="'+t2.label+'"><span class="pg-ov-tab-icon">'+t2.icon+'</span><span class="pg-ov-tab-label">'+t2.label+'</span></button>';
+    });
+    tabsHtml+='</div>';
+    box.insertAdjacentHTML('afterbegin', tabsHtml);
+  });
+}
+
+function _refDoseDisplay(d, def){
+  var unit=def.unit||'mg';
+  // Vyvanse water-dissolution: extract the actual dose (mL = mg) from the label
+  if(d.l){
+    var mlMatch=d.l.match(/(\d+(?:\.\d+)?)\s*mL/);
+    if(mlMatch)return mlMatch[1]+'mg ('+mlMatch[1]+'mL)';
   }
+  var total=Math.round((d.q||0)*(d.s||0)*100)/100;
+  return total+unit;
+}
+function _refStepDosing(st, def){
+  var byTime={},order=[];
+  st.doses.forEach(function(d){
+    if(!(d.t in byTime)){byTime[d.t]=[];order.push(d.t);}
+    byTime[d.t].push(d);
+  });
+  return order.map(function(t){
+    var doses=byTime[t];
+    var label=t.charAt(0).toUpperCase()+t.slice(1);
+    if(doses.length===1){
+      var d=doses[0];
+      return label+': '+_refDoseDisplay(d,def)+(d.prn?' (PRN)':'');
+    }
+    var totals=doses.map(function(d){return _refDoseDisplay(d,def);});
+    var unit=def.unit||'mg';
+    var sum=Math.round(doses.reduce(function(a,d){return a+(d.q||0)*(d.s||0);},0)*100)/100;
+    return label+': '+totals.join(' + ')+' ('+sum+unit+' total)';
+  }).join(' · ');
+}
+function _refTitCard(def, proto){
+  var heading=def.name+(proto.label&&proto.label!=='Standard'?' — '+proto.label:'');
+  var rowsHtml='<tr><th>Phase</th><th>Duration</th><th>Dosing</th><th>Note</th></tr>';
+  proto.steps.forEach(function(st,si){
+    var lbl=titAutoLabel(proto.steps,si);
+    var dur=st.ongoing?'—':(st.dur?st.dur+' '+st.unit:'');
+    var dosing=_refStepDosing(st,def);
+    var note=st.note?'<td class="tit-pg-note-cell">'+esc(st.note)+'</td>':'<td></td>';
+    rowsHtml+='<tr><td class="tit-pg-phase">'+esc(lbl)+'</td><td>'+esc(dur)+'</td><td>'+esc(dosing)+'</td>'+note+'</tr>';
+  });
+  return '<div class="tit-pg-card">'
+    +'<div class="tit-pg-head">'+esc(heading)+'</div>'
+    +'<table class="tit-pg-table">'+rowsHtml+'</table>'
+    +'</div>';
 }
 function renderTitReference(){
   var el=document.getElementById('tit-ref-body');if(!el)return;
   var groups=[
-    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse']},
-    {label:'Non-stimulants',keys:['strattera','intuniv','catnanight','catnaday']}
+    {label:'Stimulants — Amphetamine-based', keys:['dex','vyvanse']},
+    {label:'Stimulants — Methylphenidate', keys:['ritalinIR','ritalinLA','concerta']},
+    {label:'Non-stimulants', keys:['strattera','intuniv','catnanight','catnaday']}
   ];
   var html='';
   groups.forEach(function(g){
-    html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:14px 0 6px">'+esc(g.label)+'</div>';
+    html+='<p class="tit-pg-section">'+esc(g.label)+'</p>';
     g.keys.forEach(function(k){
       var def=TIT_MEDS[k];if(!def)return;
-      html+='<div style="border:1px solid #e2e6ed;border-radius:10px;background:#fff;padding:11px 13px;margin-bottom:8px">';
-      html+='<div style="font-size:14px;font-weight:700;color:#1e3a5f">'+esc(def.name)+'</div>';
-      if(def.brand)html+='<div style="font-size:11px;color:#64748b;margin-bottom:4px">'+esc(def.brand)+'</div>';
-      var protos=getProtocols(k);
-      if(protos&&protos.length){
-        html+='<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#1e3a5f;margin:8px 0 4px">Titration protocols</div>';
-        html+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
-        protos.forEach(function(p,pi){
-          var id='tit-ref-'+k+'-proto-'+pi;
-          html+='<button class="tit-ref-btn" onclick="toggleTitRefSchedule(\''+id+'\',this)">'+esc(p.label)+'</button>';
-        });
-        html+='</div>';
-        protos.forEach(function(p,pi){
-          var id='tit-ref-'+k+'-proto-'+pi;
-          html+='<div id="'+id+'" style="display:none">'+_refSchedule(def,p.steps)+'</div>';
-        });
-      }
-      var regs=REGULAR_REGIMENS[k];
-      if(regs&&regs.length){
-        html+='<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#047857;margin:10px 0 4px">Regular regimens</div>';
-        html+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
-        regs.forEach(function(r,ri){
-          var id='tit-ref-'+k+'-reg-'+ri;
-          html+='<button class="tit-ref-btn tit-ref-btn-reg" onclick="toggleTitRefSchedule(\''+id+'\',this)">'+esc(r.label)+'</button>';
-        });
-        html+='</div>';
-        regs.forEach(function(r,ri){
-          var id='tit-ref-'+k+'-reg-'+ri;
-          var step={label:'Ongoing',dur:0,unit:'days',ongoing:true,note:'',doses:r.doses.map(function(d){
-            var dose={t:d.t,type:'str',s:d.s,q:d.q};
-            dose.l=buildDoseLabel({def:def},dose);
-            return dose;
-          })};
-          html+='<div id="'+id+'" style="display:none">'+_refSchedule(def,[step])+'</div>';
-        });
-      }
-      html+='</div>';
+      var protocols=getProtocols(k);
+      protocols.forEach(function(proto){
+        html+=_refTitCard(def,proto);
+      });
     });
   });
   el.innerHTML=html;
@@ -6171,7 +6204,7 @@ function renderHandoverReference(){
       <button class="pg-close" onclick="document.getElementById('tit-ov').classList.remove('open')">×</button>
     </div>
     <div class="pg-scroll">
-      <p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f">Reference only — tap any option to expand its dose schedule. Nothing here changes the active titration plan.</p>
+      <p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f">Reference titration schedules. Modify as needed based on clinical response and tolerability — nothing here affects the active plan.</p>
       <div id="tit-ref-body"></div>
     </div>
   </div>
