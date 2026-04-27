@@ -32,6 +32,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .tab-guide{margin-left:auto;padding:8px 11px;font-size:16px;border:none;background:none;color:#cbd5e1;cursor:pointer;font-family:var(--sans);flex-shrink:0;line-height:1}
 .tab-guide+.tab-guide{margin-left:0}
 .tab-guide:hover{background:#0f172a}
+
+/* Titration reference chips inside the tit-ov overlay */
+.tit-ref-btn{padding:5px 11px;border-radius:6px;border:1.5px solid var(--border);background:#fafbfc;color:var(--text);font:600 12px var(--sans);cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent}
+.tit-ref-btn:hover{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
+.tit-ref-btn.on{background:var(--primary);border-color:var(--primary);color:#fff}
+.tit-ref-btn-reg{border-color:#bbf7d0}
+.tit-ref-btn-reg:hover{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.tit-ref-btn-reg.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* Reference ribbon — sits above the section tabs */
+.refbar{background:#0f1d33;border-bottom:1px solid #1e3252;display:flex;align-items:stretch;gap:0;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.refbar-btn{flex:1 1 auto;display:flex;align-items:center;justify-content:center;gap:6px;background:none;border:none;color:#cbd5e1;font:600 11px var(--sans);text-transform:uppercase;letter-spacing:.05em;padding:7px 10px;cursor:pointer;white-space:nowrap;border-right:1px solid #1e3252;transition:background .12s,color .12s;-webkit-tap-highlight-color:transparent}
+.refbar-btn:last-child{border-right:none}
+.refbar-btn:hover{background:#1e2d4a;color:#fff}
+.refbar-btn:focus{outline:none}
+.refbar-icon{font-size:16px;line-height:1}
+.refbar-label{display:inline}
+@media(max-width:680px){.refbar-label{display:none}.refbar-btn{padding:8px 10px}}
 .tbadge{display:inline-block;margin-left:5px;font-size:10px;background:#334155;color:#94a3b8;padding:1px 5px;border-radius:999px;font-weight:700;vertical-align:middle;min-width:18px;text-align:center}
 .tbadge.ok{background:#14532d;color:#86efac}
 .tbadge.warn{background:#78350f;color:#fcd34d}
@@ -427,6 +445,15 @@ select.inp{appearance:none}
     </div>
   </div>
   </div>
+</div>
+
+<div class="refbar" id="refbar">
+  <button class="refbar-btn" onclick="document.getElementById('how-ov').classList.add('open')" title="GUIDE — How to use this tool"><span class="refbar-icon">🦮</span><span class="refbar-label">Guide</span></button>
+  <button class="refbar-btn" onclick="document.getElementById('pg-ov').classList.add('open')" title="PRESCRIBING — Prescriber guide"><span class="refbar-icon">✍️</span><span class="refbar-label">Prescribing</span></button>
+  <button class="refbar-btn" onclick="document.getElementById('tit-ov').classList.add('open')" title="TITRATION — Reference titrations / regular regimens"><span class="refbar-icon">💊</span><span class="refbar-label">Titration</span></button>
+  <button class="refbar-btn" onclick="document.getElementById('bill-ov').classList.add('open')" title="BILLING — MBS item numbers"><span class="refbar-icon">💵</span><span class="refbar-label">Billing</span></button>
+  <button class="refbar-btn" onclick="document.getElementById('fu-ov').classList.add('open')" title="FOLLOW-UP — Follow-up styles"><span class="refbar-icon">📅</span><span class="refbar-label">Follow-up</span></button>
+  <button class="refbar-btn" onclick="document.getElementById('ho-ov').classList.add('open')" title="HANDOVER — GP handover letter and prescribing guide"><span class="refbar-icon">🤝</span><span class="refbar-label">Handover</span></button>
 </div>
 
 <div class="tabs">
@@ -5354,8 +5381,150 @@ function init(){
   var dtEl=$('ptDate');if(dtEl&&!dtEl.value)dtEl.value=new Date().toISOString().slice(0,10);
   refresh();
   initScrollSpy();
+  // Reference overlays — render once on init since they only depend on static data
+  renderTitReference();
+  renderBillingReference();
+  renderHandoverReference();
 }
 document.addEventListener('DOMContentLoaded',init);
+
+// ─── REFERENCE OVERLAYS (Titration / Billing / Handover) ─────────────────────
+function _refSchedule(def, steps){
+  var rows=steps.map(function(st,si){
+    var lbl=titAutoLabel(steps,si);
+    var dur=st.ongoing?'Ongoing':st.dur?st.dur+' '+st.unit:'';
+    var dl=st.doses.map(function(d){return '<strong>'+esc(d.t)+':</strong> '+esc(titGetDoseDisplay(d))+(d.prn?' <em>(PRN)</em>':'');}).join('<br>');
+    return '<tr><td style="padding:5px 8px;border:1px solid #e5e7eb;font-weight:600;color:#1e3a5f;vertical-align:top;white-space:nowrap">'+esc(lbl)+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;white-space:nowrap;color:#555;font-size:12px">'+esc(dur)+'</td>'
+      +'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;line-height:1.5">'+dl+'</td>'
+      +(st.note?'<td style="padding:5px 8px;border:1px solid #e5e7eb;vertical-align:top;font-style:italic;color:#555;font-size:12px">'+esc(st.note)+'</td>':'<td style="border:1px solid #e5e7eb"></td>')+'</tr>';
+  }).join('');
+  return '<table style="border-collapse:collapse;width:100%;margin:6px 0 2px;font-size:12.5px"><thead><tr>'
+    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Step</th>'
+    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Duration</th>'
+    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Dose</th>'
+    +'<th style="background:#e7eef9;color:#1e3a5f;padding:5px 8px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid #cfe1f9">Note</th>'
+    +'</tr></thead><tbody>'+rows+'</tbody></table>';
+}
+function toggleTitRefSchedule(id, btn){
+  var el=document.getElementById(id);if(!el)return;
+  var open=el.style.display!=='none';
+  el.style.display=open?'none':'block';
+  if(btn){
+    if(open)btn.classList.remove('on'); else btn.classList.add('on');
+  }
+}
+function renderTitReference(){
+  var el=document.getElementById('tit-ref-body');if(!el)return;
+  var groups=[
+    {label:'Stimulants',keys:['dex','ritalinIR','ritalinLA','concerta','vyvanse']},
+    {label:'Non-stimulants',keys:['strattera','intuniv','catnanight','catnaday']}
+  ];
+  var html='';
+  groups.forEach(function(g){
+    html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:14px 0 6px">'+esc(g.label)+'</div>';
+    g.keys.forEach(function(k){
+      var def=TIT_MEDS[k];if(!def)return;
+      html+='<div style="border:1px solid #e2e6ed;border-radius:10px;background:#fff;padding:11px 13px;margin-bottom:8px">';
+      html+='<div style="font-size:14px;font-weight:700;color:#1e3a5f">'+esc(def.name)+'</div>';
+      if(def.brand)html+='<div style="font-size:11px;color:#64748b;margin-bottom:4px">'+esc(def.brand)+'</div>';
+      var protos=getProtocols(k);
+      if(protos&&protos.length){
+        html+='<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#1e3a5f;margin:8px 0 4px">Titration protocols</div>';
+        html+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
+        protos.forEach(function(p,pi){
+          var id='tit-ref-'+k+'-proto-'+pi;
+          html+='<button class="tit-ref-btn" onclick="toggleTitRefSchedule(\''+id+'\',this)">'+esc(p.label)+'</button>';
+        });
+        html+='</div>';
+        protos.forEach(function(p,pi){
+          var id='tit-ref-'+k+'-proto-'+pi;
+          html+='<div id="'+id+'" style="display:none">'+_refSchedule(def,p.steps)+'</div>';
+        });
+      }
+      var regs=REGULAR_REGIMENS[k];
+      if(regs&&regs.length){
+        html+='<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#047857;margin:10px 0 4px">Regular regimens</div>';
+        html+='<div style="display:flex;flex-wrap:wrap;gap:5px">';
+        regs.forEach(function(r,ri){
+          var id='tit-ref-'+k+'-reg-'+ri;
+          html+='<button class="tit-ref-btn tit-ref-btn-reg" onclick="toggleTitRefSchedule(\''+id+'\',this)">'+esc(r.label)+'</button>';
+        });
+        html+='</div>';
+        regs.forEach(function(r,ri){
+          var id='tit-ref-'+k+'-reg-'+ri;
+          var step={label:'Ongoing',dur:0,unit:'days',ongoing:true,note:'',doses:r.doses.map(function(d){
+            var dose={t:d.t,type:'str',s:d.s,q:d.q};
+            dose.l=buildDoseLabel({def:def},dose);
+            return dose;
+          })};
+          html+='<div id="'+id+'" style="display:none">'+_refSchedule(def,[step])+'</div>';
+        });
+      }
+      html+='</div>';
+    });
+  });
+  el.innerHTML=html;
+}
+function renderBillingReference(){
+  var el=document.getElementById('bill-body');if(!el)return;
+  var sel=document.getElementById('mbsItem');
+  if(!sel){el.innerHTML='<p>MBS dropdown not found.</p>';return;}
+  // Collect items per optgroup
+  var groups={Telehealth:[],Phone:[],'In-person':[]};
+  Array.from(sel.querySelectorAll('optgroup')).forEach(function(og){
+    var label=og.getAttribute('label')||'';
+    var bucket=label.indexOf('Telehealth')===0?'Telehealth':label.indexOf('Phone')===0?'Phone':'In-person';
+    var sub=label.replace(/^[^—]+—\s*/,'');
+    var items=Array.from(og.querySelectorAll('option')).map(function(o){
+      var v=o.value, t=o.textContent.trim();
+      // text format: "92435 — GP mgmt plan, video — $455.60"
+      var parts=t.split(' — ');
+      var num=parts[0]||v, desc=parts[1]||'', fee=parts[2]||'';
+      return {num:num,desc:desc,fee:fee};
+    });
+    groups[bucket].push({sub:sub,items:items});
+  });
+  function renderGroup(name){
+    var blocks=groups[name];
+    if(!blocks.length)return '';
+    var html='<details class="pg-details" open><summary>'+esc(name)+'</summary><div class="pg-content">';
+    blocks.forEach(function(b){
+      html+='<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#1e3a5f;margin:8px 0 4px">'+esc(b.sub)+'</div>';
+      html+='<table style="border-collapse:collapse;width:100%;font-size:12.5px;margin-bottom:6px">';
+      html+='<thead><tr><th style="background:#e7eef9;color:#1e3a5f;padding:4px 8px;text-align:left;font-size:11px;font-weight:700;border:1px solid #cfe1f9;width:90px">Item</th><th style="background:#e7eef9;color:#1e3a5f;padding:4px 8px;text-align:left;font-size:11px;font-weight:700;border:1px solid #cfe1f9">Description</th><th style="background:#e7eef9;color:#1e3a5f;padding:4px 8px;text-align:left;font-size:11px;font-weight:700;border:1px solid #cfe1f9;width:90px">Fee</th></tr></thead><tbody>';
+      b.items.forEach(function(it,i){
+        var bg=i%2===0?'#fff':'#f9fafb';
+        html+='<tr style="background:'+bg+'"><td style="padding:5px 8px;border:1px solid #e5e7eb;font-weight:700;color:#1e3a5f;font-family:var(--mono)">'+esc(it.num)+'</td><td style="padding:5px 8px;border:1px solid #e5e7eb">'+esc(it.desc)+'</td><td style="padding:5px 8px;border:1px solid #e5e7eb;color:#047857;font-weight:600;white-space:nowrap">'+esc(it.fee)+'</td></tr>';
+      });
+      html+='</tbody></table>';
+    });
+    html+='</div></details>';
+    return html;
+  }
+  el.innerHTML='<p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f">MBS items grouped by consultation modality. Same numbers as the Patient & Session card dropdown.</p>'
+    +renderGroup('Telehealth')+renderGroup('Phone')+renderGroup('In-person');
+}
+function renderHandoverReference(){
+  var el=document.getElementById('ho-body');if(!el)return;
+  var html='';
+  html+='<p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f"><strong>When to use:</strong> Once a patient is stable and happy on their regimen, and willing to be followed up by their GP, this letter endorses the GP to apply to be a continuation prescriber under their state framework.</p>';
+  html+='<p style="font-size:13px;line-height:1.6;color:#1f2937">Each Australian state has its own rules — the prescribing-guide section below covers all of them, plus practical guidance for managing common issues. GPs see far more ADHD patients than private psychiatrists once you add up the patients they refer <em>and</em> the patients they manage themselves. Empowering the GP helps everybody.</p>';
+  html+='<p style="font-size:13px;line-height:1.6;color:#1f2937;margin-bottom:14px"><strong>Handover is not discharge.</strong> Handing over care means the GP continues prescribing, but the patient stays on your books and can be re-referred at any time. Discharging means ending the therapeutic relationship. In day-to-day practice these can look the same, but the patient&rsquo;s availability to come back to you is very different.</p>';
+  html+='<details class="pg-details" open><summary>GP Handover Letter (template)</summary><div class="pg-content"><p style="font-size:12px;color:#64748b;margin-bottom:8px">Below is the template the tool generates as part of the Patient Document. Fields auto-populate from the active session — names, doses, comorbidities, monitoring requirements.</p>';
+  html+='<div style="background:#fff;border:1px solid #e2e6ed;border-radius:8px;padding:14px 16px;font-size:13px;line-height:1.55;color:#1f2937">';
+  html+='<p><strong>Re: [Patient Name]</strong></p>';
+  html+='<p>Thank you for your ongoing care of <strong>[Patient]</strong>. I am writing to confirm their diagnosis, current treatment, and to provide my written specialist recommendation supporting you as the ongoing prescriber of their stimulant medication, in accordance with your state or territory prescribing framework.</p>';
+  html+='<p><strong>Diagnosis:</strong> [Patient] meets DSM-5-TR criteria for [Diagnosis], established following a comprehensive psychiatric assessment.</p>';
+  html+='<p><strong>Current regimen:</strong> See medication table — carefully titrated and well tolerated.</p>';
+  html+='<p><strong>Specialist recommendation:</strong> I support [Dr GP] taking over ongoing prescribing under the applicable state framework. This letter confirms specialist diagnosis, initiation and stabilisation, and serves as the written specialist recommendation required for any state authority, permit, notification, or approval.</p>';
+  html+='<p><strong>Recommended monitoring:</strong> therapeutic benefit, adherence, adverse effects, mental state, substance use risk, BP/HR/weight at least 6&ndash;12 monthly, ECG as clinically indicated.</p>';
+  html+='<p style="font-size:12px;color:#64748b;font-style:italic">The full letter (auto-populated with the patient&rsquo;s details) is generated when the &ldquo;+ GP handover letter&rdquo; toggle is enabled in the Patient Document section of the Letters tab.</p>';
+  html+='</div></div></details>';
+  // GP prescribing guide content from buildGPGuide()
+  html+='<details class="pg-details"><summary>State-by-state prescribing guide + side-effect & insomnia management</summary><div class="pg-content">'+buildGPGuide()+'</div></details>';
+  el.innerHTML=html;
+}
 
 </script>
 
@@ -5993,5 +6162,111 @@ document.addEventListener('DOMContentLoaded',init);
     </div>
   </div>
 </div>
+
+<!-- TITRATION REFERENCE OVERLAY -->
+<div class="pg-ov" id="tit-ov" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="pg-box">
+    <div class="pg-head">
+      <span class="pg-head-title">💊 Titration Reference</span>
+      <button class="pg-close" onclick="document.getElementById('tit-ov').classList.remove('open')">×</button>
+    </div>
+    <div class="pg-scroll">
+      <p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f">Reference only — tap any option to expand its dose schedule. Nothing here changes the active titration plan.</p>
+      <div id="tit-ref-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BILLING REFERENCE OVERLAY -->
+<div class="pg-ov" id="bill-ov" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="pg-box">
+    <div class="pg-head">
+      <span class="pg-head-title">💵 Billing — MBS Item Numbers</span>
+      <button class="pg-close" onclick="document.getElementById('bill-ov').classList.remove('open')">×</button>
+    </div>
+    <div class="pg-scroll" id="bill-body"></div>
+  </div>
+</div>
+
+<!-- FOLLOW-UP STYLES OVERLAY -->
+<div class="pg-ov" id="fu-ov" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="pg-box">
+    <div class="pg-head">
+      <span class="pg-head-title">📅 Follow-Up Styles</span>
+      <button class="pg-close" onclick="document.getElementById('fu-ov').classList.remove('open')">×</button>
+    </div>
+    <div class="pg-scroll">
+      <p style="background:#eff6ff;border-left:3px solid #3b82f6;padding:10px 14px;border-radius:6px;margin-bottom:14px;font-size:13px;color:#1e3a5f">A reference for choosing review cadences once a patient is started on treatment. Tailor to the individual.</p>
+
+      <details class="pg-details" open>
+        <summary>Standard titration follow-up (4–6 weeks)</summary>
+        <div class="pg-content">
+          <p>For a patient newly started on a stimulant. Review at <strong>4 weeks</strong> for short-acting agents (Dex IR, Ritalin IR) where dose adjustments happen weekly — or at <strong>6 weeks</strong> for long-acting agents where steps are slower.</p>
+          <ul style="margin-left:18px"><li>Confirm response, tolerability, and adherence</li><li>BP, HR, weight</li><li>Adjust dose, reduce interdose gap, or switch class as needed</li><li>If stable, move to 3-monthly</li></ul>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>Stable patient (3-monthly)</summary>
+        <div class="pg-content">
+          <p>Once dose is settled and tolerated. Review every <strong>3 months</strong> for the first year, then consider stretching to 6-monthly if completely stable.</p>
+          <ul style="margin-left:18px"><li>Confirm continued benefit and absence of side effects</li><li>Vitals each visit</li><li>Discuss substance use, mental state, and life context</li><li>Document continued indication for ongoing prescribing</li></ul>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>Long-term stable (6-monthly)</summary>
+        <div class="pg-content">
+          <p>Consider once a patient has been stable on the same regimen for 12+ months with no concerns.</p>
+          <ul style="margin-left:18px"><li>Same content as 3-monthly review, less frequently</li><li>Patient knows to contact rooms sooner if anything changes</li><li>Suitable for patients who self-monitor reliably</li></ul>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>GP shared care</summary>
+        <div class="pg-content">
+          <p>Once stable, GP manages day-to-day prescribing while psychiatrist remains available for review.</p>
+          <ul style="margin-left:18px"><li>Annual psychiatrist review (or sooner if needed)</li><li>GP handles routine scripts under their state framework</li><li>GP refers back for dose changes, new symptoms, or significant side effects</li><li>Provide a GP handover letter — see the Handover overlay</li></ul>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>Full handover to GP</summary>
+        <div class="pg-content">
+          <p>Patient is stable, happy, and the GP is willing and able to take over ongoing prescribing under the relevant state framework. The patient remains on your books and can be re-engaged at any time.</p>
+          <ul style="margin-left:18px"><li>Provide GP handover letter (see Handover overlay)</li><li>Confirm GP has applied for the relevant authority/permit/notification in their state</li><li>Patient knows to ask the GP to re-refer if any concerns</li></ul>
+          <p style="font-size:12px;color:#64748b;margin-top:6px"><em>Handover ≠ discharge. The therapeutic relationship remains; only the routine prescribing is delegated.</em></p>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>PRN review</summary>
+        <div class="pg-content">
+          <p>Reserved for patients fully managed by their GP under shared care, where the psychiatrist is contacted only as needed. Document the trigger that would warrant re-review.</p>
+        </div>
+      </details>
+
+      <details class="pg-details">
+        <summary>Discharge from care</summary>
+        <div class="pg-content">
+          <p>True discharge ends the therapeutic relationship. Use only when the patient no longer requires specialist input and the GP can fully manage long-term, or when the patient relocates and is being transferred to another service.</p>
+          <p>Send a discharge summary to the GP. Make clear how the patient can re-refer if needed.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- HANDOVER OVERLAY -->
+<div class="pg-ov" id="ho-ov" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="pg-box">
+    <div class="pg-head">
+      <span class="pg-head-title">🤝 GP Handover — Letter & Guide</span>
+      <button class="pg-close" onclick="document.getElementById('ho-ov').classList.remove('open')">×</button>
+    </div>
+    <div class="pg-scroll" id="ho-body"></div>
+  </div>
+</div>
+
 </body>
 </html>
