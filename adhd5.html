@@ -1555,11 +1555,12 @@ const TIT_MEDS={
       {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}],
     protocols:[
       {key:'flex_2030',label:'Flexible 20+30 caps',
-        auth:'Stimulant authority script. Add CA2023 (NSW). Prescribe 20mg AND 30mg capsules together.',
+        auth:'Stimulant authority script. Add CA2023 (NSW). Prescribe 20mg AND 30mg capsules together. At follow-up, simplify to a single best-dose capsule.',
+        scriptOverride:{perStrength:{20:{repeats:1},30:{repeats:1}}},
         steps:[
           {label:'Week 1',dur:7,unit:'days',ongoing:false,note:'30mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
           {label:'Weeks 2-3',dur:14,unit:'days',ongoing:false,note:'30mg + 20mg on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:1,l:'1 cap (20mg)'}]},
-          {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}
+          {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic. At follow-up, simplify to a single best-dose capsule.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}
         ]},
       {key:'simple_3050',label:'30 → 50mg',
         auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA.',
@@ -1606,24 +1607,27 @@ const TIT_MEDS={
     ]},
   strattera:{name:'Atomoxetine',brand:'Atomoxetine hydrochloride (Strattera)',auth:'Streamlined 7876 (initiation), 7890 (continuation). NOT a controlled substance. Full effect 4-12 weeks.',
     unit:'mg',form:'cap',strengths:[10,18,25,40,60,80],
-    steps:[{label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
-      {label:'Weeks 2-5',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
-      {label:'Weeks 6-9',dur:28,unit:'days',ongoing:false,note:'Allow 4 weeks at 80mg to assess effect.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
+    steps:[{label:'Weeks 1-4',dur:28,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
+      {label:'Weeks 5-8',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
+      {label:'Weeks 9-12',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
       {label:'Ongoing - max 80mg',dur:0,unit:'days',ongoing:true,note:'Do not exceed without review.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]}],
     protocols:[
       {key:'standard_80',label:'Standard — up to 80mg',
+        scriptOverride:{repeats:1},
         steps:[
-          {label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
-          {label:'Weeks 2-5',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
-          {label:'Weeks 6-9',dur:28,unit:'days',ongoing:false,note:'Allow 4 weeks at 80mg to assess effect.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
+          {label:'Weeks 1-4',dur:28,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
+          {label:'Weeks 5-8',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
+          {label:'Weeks 9-12',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
           {label:'Ongoing - max 80mg',dur:0,unit:'days',ongoing:true,note:'Do not exceed without review.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]}
         ]},
       {key:'extend_100',label:'Extension — up to 100mg (40+60 caps)',
+        scriptOverride:{repeats:1},
         steps:[
-          {label:'Week 1',dur:7,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
-          {label:'Weeks 2-5',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
-          {label:'Weeks 6-11',dur:42,unit:'days',ongoing:false,note:'6 weeks at 80mg before considering increase. Take with food.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
-          {label:'Ongoing - 100mg (40+60)',dur:0,unit:'days',ongoing:true,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'},{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]}
+          {label:'Weeks 1-4',dur:28,unit:'days',ongoing:false,note:'Take with food to reduce nausea.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'}]},
+          {label:'Weeks 5-8',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
+          {label:'Weeks 9-12',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:80,q:1,l:'1 cap (80mg)'}]},
+          {label:'Weeks 13-16',dur:28,unit:'days',ongoing:false,note:'Increase if tolerating.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'},{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]},
+          {label:'Ongoing - 100mg (40+60)',dur:0,unit:'days',ongoing:true,note:'Continue at 100mg if tolerated and effective.',doses:[{t:'morning',type:'str',s:40,q:1,l:'1 cap (40mg)'},{t:'morning',type:'str',s:60,q:1,l:'1 cap (60mg)'}]}
         ]}
     ]},
   intuniv:{name:'Guanfacine XR',brand:'Intuniv',auth:'Not a controlled drug. Do NOT stop abruptly - taper on cessation. Monitor BP regularly.',
@@ -1725,7 +1729,7 @@ const SCRIPT_DEFAULTS={
   ritalinLA:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg'},
   concerta:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
   vyvanse:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
-  intuniv:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg'},
+  intuniv:{tabs:30,repeats:5,interval:20,form:'tab',unit:'mg',perStrength:true},
   strattera:{tabs:30,repeats:5,interval:20,form:'cap',unit:'mg',perStrength:true},
   catnanight:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mcg',strengthOpts:[100,150]},
   catnaday:{tabs:100,repeats:5,interval:20,form:'tab',unit:'mcg',strengthOpts:[100,150]},
@@ -1785,14 +1789,17 @@ function _bdProtocolSteps(s,name){
 }
 
 (function attachIRProtocols(){
+  // BD/TDS protocols where ongoing daily tabs ≥5 need 200-tab packs;
+  // afternoon add-on is small so 100 tabs is enough.
+  var BIG_PACK={tabs:200};
   // Dexamfetamine 5mg
   var dexS=_bdProtocolSteps(5,'dex');
   TIT_MEDS.dex.protocols=[
     {key:'bd_normal',label:'BD normal',steps:dexS.bd_normal},
     {key:'bd_fast',label:'BD fast',steps:dexS.bd_fast},
     {key:'bd_slow',label:'BD slow',steps:dexS.bd_slow},
-    {key:'bd_to_tds',label:'BD → TDS',steps:dexS.bd_to_tds},
-    {key:'tds_normal',label:'TDS normal',steps:dexS.tds_normal},
+    {key:'bd_to_tds',label:'BD → TDS',steps:dexS.bd_to_tds,scriptOverride:BIG_PACK},
+    {key:'tds_normal',label:'TDS normal',steps:dexS.tds_normal,scriptOverride:BIG_PACK},
     {key:'afternoon',label:'Afternoon add-on',steps:dexS.afternoon}
   ];
   // Methylphenidate IR 10mg — same protocols + TDS fast
@@ -1801,9 +1808,9 @@ function _bdProtocolSteps(s,name){
     {key:'bd_normal',label:'BD normal',steps:ritS.bd_normal},
     {key:'bd_fast',label:'BD fast',steps:ritS.bd_fast},
     {key:'bd_slow',label:'BD slow',steps:ritS.bd_slow},
-    {key:'bd_to_tds',label:'BD → TDS',steps:ritS.bd_to_tds},
-    {key:'tds_normal',label:'TDS normal',steps:ritS.tds_normal},
-    {key:'tds_fast',label:'TDS fast',steps:ritS.tds_fast},
+    {key:'bd_to_tds',label:'BD → TDS',steps:ritS.bd_to_tds,scriptOverride:BIG_PACK},
+    {key:'tds_normal',label:'TDS normal',steps:ritS.tds_normal,scriptOverride:BIG_PACK},
+    {key:'tds_fast',label:'TDS fast',steps:ritS.tds_fast,scriptOverride:BIG_PACK},
     {key:'afternoon',label:'Afternoon add-on',steps:ritS.afternoon}
   ];
 })();
@@ -2429,8 +2436,12 @@ function ensureScripts(m){
     if(protoOverride.perStrength&&protoOverride.perStrength[scriptObj.strength]){
       var ov=protoOverride.perStrength[scriptObj.strength];
       Object.keys(ov).forEach(function(k){scriptObj[k]=ov[k];});
-    } else if(protoOverride.repeats!=null){
-      scriptObj.repeats=protoOverride.repeats;
+    } else {
+      // Apply any non-perStrength keys (tabs, repeats, interval, escript) to every script
+      Object.keys(protoOverride).forEach(function(k){
+        if(k==='perStrength')return;
+        scriptObj[k]=protoOverride[k];
+      });
     }
     return scriptObj;
   }
@@ -5562,11 +5573,16 @@ function _refScriptsLine(def, proto){
   var entries=sd.perStrength?used.slice():[used[used.length-1]];
   var ov=proto.scriptOverride||{};
   function descFor(s){
-    var rep=sd.repeats;
-    if(ov.perStrength&&ov.perStrength[s]&&ov.perStrength[s].repeats!=null)rep=ov.perStrength[s].repeats;
-    else if(ov.repeats!=null)rep=ov.repeats;
+    var rep=sd.repeats, tabs=sd.tabs;
+    if(ov.perStrength&&ov.perStrength[s]){
+      if(ov.perStrength[s].repeats!=null)rep=ov.perStrength[s].repeats;
+      if(ov.perStrength[s].tabs!=null)tabs=ov.perStrength[s].tabs;
+    } else {
+      if(ov.repeats!=null)rep=ov.repeats;
+      if(ov.tabs!=null)tabs=ov.tabs;
+    }
     var repTxt=rep===0?'no repeats':rep+' rpt'+(rep===1?'':'s');
-    return s+unit+' '+form+' ('+repTxt+')';
+    return s+unit+' × '+tabs+' '+form+(tabs===1?'':'s')+' ('+repTxt+')';
   }
   return entries.map(descFor).join(' · ');
 }
