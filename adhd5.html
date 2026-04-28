@@ -1563,10 +1563,11 @@ const TIT_MEDS={
           {label:'Week 4+ if needed',dur:0,unit:'days',ongoing:true,note:'30+20+20mg if still symptomatic. At follow-up, simplify to a single best-dose capsule.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'},{t:'morning',type:'str',s:20,q:2,l:'2 caps (40mg)'}]}
         ]},
       {key:'simple_3050',label:'30 → 50mg',
-        auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA.',
+        auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA. Follow up with psychiatrist to determine ongoing dosing.',
+        scriptOverride:{perStrength:{30:{repeats:1},50:{repeats:0}}},
         steps:[
           {label:'Days 1-21',dur:21,unit:'days',ongoing:false,note:'Take 30mg each morning on waking.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]},
-          {label:'Ongoing - 50mg',dur:0,unit:'days',ongoing:true,note:'Increase to 50mg only if tolerating 30mg well but still symptomatic.',doses:[{t:'morning',type:'str',s:50,q:1,l:'1 cap (50mg)'}]}
+          {label:'Ongoing - 50mg',dur:0,unit:'days',ongoing:true,note:'Increase to 50mg only if tolerating 30mg well but still symptomatic. Follow up with psychiatrist to confirm ongoing dose.',doses:[{t:'morning',type:'str',s:50,q:1,l:'1 cap (50mg)'}]}
         ]},
       {key:'water',label:'Water method',
         auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA. Dissolve one 70mg capsule in exactly 70mL water (1mg/mL). Draw up prescribed volume and drink immediately. Discard remainder. Switch to standard capsule once optimal dose found.',
@@ -1579,6 +1580,7 @@ const TIT_MEDS={
         ]},
       {key:'guided_30',label:'30mg guided',
         auth:'Stimulant authority script. Add CA2023 (NSW). Authority via PRODA. Review every 2-3 weeks; titrate up by 10-20mg per review based on response and tolerance.',
+        scriptOverride:{repeats:0},
         steps:[
           {label:'Ongoing',dur:0,unit:'days',ongoing:true,note:'Start 30mg. Review every 2-3 weeks and titrate up by 10-20mg per review based on response and tolerance.',doses:[{t:'morning',type:'str',s:30,q:1,l:'1 cap (30mg)'}]}
         ]},
@@ -5572,6 +5574,8 @@ function _refScriptsLine(def, proto){
   // perStrength meds get one script per used strength; otherwise a single script (use last/highest).
   var entries=sd.perStrength?used.slice():[used[used.length-1]];
   var ov=proto.scriptOverride||{};
+  // Dex IR and Ritalin IR repeats vary with the follow-up cadence — show range
+  var flexRepeats=key==='dex'||key==='ritalinIR';
   function descFor(s){
     var rep=sd.repeats, tabs=sd.tabs;
     if(ov.perStrength&&ov.perStrength[s]){
@@ -5581,27 +5585,44 @@ function _refScriptsLine(def, proto){
       if(ov.repeats!=null)rep=ov.repeats;
       if(ov.tabs!=null)tabs=ov.tabs;
     }
-    var repTxt=rep===0?'no repeats':rep+' rpt'+(rep===1?'':'s');
+    var repTxt=flexRepeats?'0–5 rpts per follow-up':(rep===0?'no repeats':rep+' rpt'+(rep===1?'':'s'));
     return s+unit+' × '+tabs+' '+form+(tabs===1?'':'s')+' ('+repTxt+')';
   }
   return entries.map(descFor).join(' · ');
 }
 function _refTitCard(def, proto){
+  var key=null;for(var kk in TIT_MEDS){if(TIT_MEDS[kk]===def){key=kk;break;}}
+  var color=(typeof MED_COLORS!=='undefined'&&MED_COLORS[key])||'#1e3a5f';
   var heading=def.name+(proto.label&&proto.label!=='Standard'?' — '+proto.label:'');
   var scriptsLine=_refScriptsLine(def,proto);
-  var rowsHtml='<tr><th>Phase</th><th>Duration</th><th>Dosing</th><th>Note</th></tr>';
+  var rowsHtml='<tr><th style="background:'+color+'">Phase</th><th style="background:'+color+'">Duration</th><th style="background:'+color+'">Dosing</th><th style="background:'+color+'">Note</th></tr>';
   proto.steps.forEach(function(st,si){
     var lbl=titAutoLabel(proto.steps,si);
     var dur=st.ongoing?'—':(st.dur?st.dur+' '+st.unit:'');
     var dosing=_refStepDosing(st,def);
     var note=st.note?'<td class="tit-pg-note-cell">'+esc(st.note)+'</td>':'<td></td>';
-    rowsHtml+='<tr><td class="tit-pg-phase">'+esc(lbl)+'</td><td>'+esc(dur)+'</td><td>'+esc(dosing)+'</td>'+note+'</tr>';
+    rowsHtml+='<tr><td class="tit-pg-phase" style="color:'+color+'">'+esc(lbl)+'</td><td>'+esc(dur)+'</td><td>'+esc(dosing)+'</td>'+note+'</tr>';
   });
-  return '<div class="tit-pg-card">'
-    +'<div class="tit-pg-head">'+esc(heading)+'</div>'
-    +(scriptsLine?'<div style="background:#dbeafe;color:#1e3a5f;padding:6px 12px;font-size:.78rem;border-bottom:1px solid #bfdbfe"><strong style="text-transform:uppercase;letter-spacing:.04em;font-size:.7rem">Scripts:</strong> '+esc(scriptsLine)+'</div>':'')
+  return '<div class="tit-pg-card" style="border-color:'+color+'33;background:'+color+'0d">'
+    +'<div class="tit-pg-head" style="background:'+color+'">'+esc(heading)+'</div>'
+    +(scriptsLine?'<div style="background:'+color+'1a;color:#0f172a;padding:6px 12px;font-size:.78rem;border-bottom:1px solid '+color+'33"><strong style="text-transform:uppercase;letter-spacing:.04em;font-size:.7rem;color:'+color+'">Scripts:</strong> '+esc(scriptsLine)+'</div>':'')
     +'<table class="tit-pg-table">'+rowsHtml+'</table>'
     +'</div>';
+}
+function _mphConversionTable(){
+  return '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;margin-bottom:14px">'
+    +'<p style="font-size:.8rem;font-weight:700;color:#92400e;margin:0 0 6px">Methylphenidate IR → Long-Acting Conversion</p>'
+    +'<p style="font-size:.76rem;color:#374151;margin:0 0 8px;font-style:italic">Ritalin LA available: 10, 20, 30, 40, 60mg. Concerta available: 18, 27, 36, 54mg. * = nearest available dose — reassess at follow-up.</p>'
+    +'<table style="width:100%;border-collapse:collapse;font-size:.78rem">'
+    +'<tr><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Daily IR dose</th><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Ritalin LA</th><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Concerta</th></tr>'
+    +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>10mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">10mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">18mg once daily</td></tr>'
+    +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>20mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">20mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">18mg once daily *</td></tr>'
+    +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>30mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">30mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">27mg once daily</td></tr>'
+    +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>40mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">40mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">36mg once daily</td></tr>'
+    +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>50mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">40mg once daily *</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">54mg once daily *</td></tr>'
+    +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>60mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">60mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">54mg once daily</td></tr>'
+    +'<tr><td style="padding:5px 8px"><strong>80mg/day</strong></td><td style="padding:5px 8px">60mg once daily *</td><td style="padding:5px 8px">54mg once daily *</td></tr>'
+    +'</table></div>';
 }
 function renderTitReference(){
   var el=document.getElementById('tit-ref-body');if(!el)return;
@@ -5613,6 +5634,10 @@ function renderTitReference(){
   var html='';
   groups.forEach(function(g){
     html+='<p class="tit-pg-section">'+esc(g.label)+'</p>';
+    if(g.label==='Stimulants — Methylphenidate'){
+      html+='<p style="font-size:.83rem;color:#374151;margin:0 0 12px;font-style:italic">Preferred approach: start with short-acting Ritalin IR to establish an effective daily dose, then convert to a long-acting agent. Direct titration with Ritalin LA or Concerta is also reasonable, though they are not formally TGA-approved as first-line in adult ADHD.</p>';
+      html+=_mphConversionTable();
+    }
     g.keys.forEach(function(k){
       var def=TIT_MEDS[k];if(!def)return;
       var protocols=getProtocols(k);
@@ -5620,21 +5645,6 @@ function renderTitReference(){
         html+=_refTitCard(def,proto);
       });
     });
-    if(g.label==='Stimulants — Methylphenidate'){
-      html+='<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;margin-bottom:14px">'
-        +'<p style="font-size:.8rem;font-weight:700;color:#92400e;margin:0 0 6px">Methylphenidate IR → Long-Acting Conversion</p>'
-        +'<p style="font-size:.76rem;color:#374151;margin:0 0 8px;font-style:italic">Ritalin LA available: 10, 20, 30, 40, 60mg. Concerta available: 18, 27, 36, 54mg. * = nearest available dose — reassess at follow-up.</p>'
-        +'<table style="width:100%;border-collapse:collapse;font-size:.78rem">'
-        +'<tr><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Daily IR dose</th><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Ritalin LA</th><th style="background:#1e3a5f;color:#fff;padding:5px 8px;text-align:left;font-size:.75rem;font-weight:600">Concerta</th></tr>'
-        +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>10mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">10mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">18mg once daily</td></tr>'
-        +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>20mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">20mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">18mg once daily *</td></tr>'
-        +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>30mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">30mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">27mg once daily</td></tr>'
-        +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>40mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">40mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">36mg once daily</td></tr>'
-        +'<tr><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>50mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">40mg once daily *</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">54mg once daily *</td></tr>'
-        +'<tr style="background:#eff6ff"><td style="padding:5px 8px;border-bottom:1px solid #dbeafe"><strong>60mg/day</strong></td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">60mg once daily</td><td style="padding:5px 8px;border-bottom:1px solid #dbeafe">54mg once daily</td></tr>'
-        +'<tr><td style="padding:5px 8px"><strong>80mg/day</strong></td><td style="padding:5px 8px">60mg once daily *</td><td style="padding:5px 8px">54mg once daily *</td></tr>'
-        +'</table></div>';
-    }
   });
   el.innerHTML=html;
 }
