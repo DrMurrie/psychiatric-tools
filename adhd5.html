@@ -292,6 +292,15 @@ select.inp{appearance:none}
 .fu-q-btn.fu-q-num{padding:0;width:32px}
 .fu-q-add{padding:0 14px;height:32px;border-radius:7px;background:var(--primary);color:#fff;border:none;font:700 12px var(--sans);cursor:pointer;line-height:1;display:inline-flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .fu-q-add:hover{filter:brightness(1.08)}
+.fu-tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.fu-tile{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;cursor:pointer;font:600 12px var(--sans);color:#334155;text-align:left;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .12s;min-height:40px;line-height:1.25}
+.fu-tile:hover{border-color:var(--primary)}
+.fu-tile-box{width:18px;height:18px;border:1.5px solid #94a3b8;border-radius:4px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:transparent;background:#fff;line-height:1;font-weight:800}
+.fu-tile.on{border-color:var(--green);background:var(--green-bg);color:#166534}
+.fu-tile.on .fu-tile-box{border-color:var(--green);background:var(--green);color:#fff}
+.fu-tile.fu-tile-warn.on{border-color:#dc2626;background:#fee2e2;color:#991b1b}
+.fu-tile.fu-tile-warn.on .fu-tile-box{border-color:#dc2626;background:#dc2626}
+@media(max-width:380px){.fu-tile-grid{grid-template-columns:1fr}}
 .fu-chip{padding:5px 10px;border-radius:15px;font:500 11px var(--sans);border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);cursor:pointer;transition:all .12s}
 .fu-chip:hover{border-color:var(--primary);color:var(--primary)}
 .fu-chip.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
@@ -1110,8 +1119,8 @@ select.inp{appearance:none}
             <button type="button" class="fu-q-btn fu-q-num" data-q="duration" data-v="60" onclick="fuQuickPick(this,'duration',60)">60</button>
             <span style="font:600 11px var(--sans);color:#64748b">min</span>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:2px;flex-wrap:wrap">
-            <span id="fuq-preview" style="flex:1 1 200px;font:500 12px var(--sans);color:#475569;line-height:1.4"></span>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap">
+            <span id="fuq-preview" style="flex:1 1 200px;font:600 13px var(--sans);color:#0f172a;background:#fff;border:2px dashed #1e293b;border-radius:8px;padding:8px 12px;line-height:1.4"></span>
             <button type="button" class="fu-q-add" onclick="fuQuickAdd()">+ Add</button>
           </div>
         </div>
@@ -1123,35 +1132,35 @@ select.inp{appearance:none}
       </div>
       <div style="padding:0 13px 10px;border-top:1px solid var(--border)">
         <div class="fl" style="margin-top:8px">Patient to arrange / provide</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:4px" id="fu-provide-chips">
-          <button class="fu-chip" data-k="bp" onclick="toggleFuChip(this,'provide')">Blood pressure check</button>
-          <button class="fu-chip" data-k="hr" onclick="toggleFuChip(this,'provide')">Heart rate check</button>
-          <button class="fu-chip" data-k="ecg" onclick="toggleFuChip(this,'provide')">ECG</button>
-          <button class="fu-chip" data-k="uds" onclick="toggleFuChip(this,'provide')">Urine drug screen (UDS)</button>
-          <button class="fu-chip" data-k="bloods" onclick="toggleFuChip(this,'provide')">Other bloods</button>
-          <button class="fu-chip" data-k="obs_asrs" onclick="toggleFuChip(this,'provide')">Observer ASRS</button>
-          <button class="fu-chip" data-k="school_rep" onclick="toggleFuChip(this,'provide')">School reports</button>
-          <button class="fu-chip" data-k="psych_rep" onclick="toggleFuChip(this,'provide')">Psychologist report</button>
-          <button class="fu-chip" data-k="vanderbilt" onclick="toggleFuChip(this,'provide')">Vanderbilt scales</button>
-          <button class="fu-chip" data-k="collateral" onclick="toggleFuChip(this,'provide')">Collateral history</button>
+        <div class="fu-tile-grid" id="fu-provide-chips">
+          <button type="button" class="fu-tile" data-k="bp" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Blood pressure check</button>
+          <button type="button" class="fu-tile" data-k="hr" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Heart rate check</button>
+          <button type="button" class="fu-tile" data-k="ecg" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>ECG</button>
+          <button type="button" class="fu-tile" data-k="uds" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Urine drug screen</button>
+          <button type="button" class="fu-tile" data-k="bloods" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Other bloods</button>
+          <button type="button" class="fu-tile" data-k="obs_asrs" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Observer ASRS</button>
+          <button type="button" class="fu-tile" data-k="school_rep" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>School reports</button>
+          <button type="button" class="fu-tile" data-k="psych_rep" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Psychologist report</button>
+          <button type="button" class="fu-tile" data-k="vanderbilt" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Vanderbilt scales</button>
+          <button type="button" class="fu-tile" data-k="collateral" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Collateral history</button>
         </div>
         <input class="inp" id="fu-provide-other" placeholder="Other tasks..." style="margin-top:6px;font-size:12px;width:100%" oninput="save();refresh()">
         <input class="inp" id="fu-provide-timeframe" placeholder="Prior to next review or as soon as possible" style="margin-top:5px;font-size:12px;width:100%" oninput="save();refresh()">
       </div>
       <div style="padding:0 13px 8px;border-top:1px solid var(--border)">
         <div class="fl" style="margin-top:8px">Monitoring (GP to check)</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px" id="fu-mon-chips">
-          <button class="fu-chip" data-k="bp" onclick="toggleFuChip(this,'mon')">Blood pressure</button>
-          <button class="fu-chip" data-k="hr" onclick="toggleFuChip(this,'mon')">Heart rate</button>
-          <button class="fu-chip" data-k="ecg" onclick="toggleFuChip(this,'mon')">ECG</button>
-          <button class="fu-chip" data-k="weight" onclick="toggleFuChip(this,'mon')">Weight</button>
-          <button class="fu-chip" data-k="bmi" onclick="toggleFuChip(this,'mon')">BMI</button>
-          <button class="fu-chip" data-k="bloods" onclick="toggleFuChip(this,'mon')">FBC / bloods</button>
-          <button class="fu-chip" data-k="lft" onclick="toggleFuChip(this,'mon')">Liver function</button>
-          <button class="fu-chip" data-k="uds" onclick="toggleFuChip(this,'mon')">UDS</button>
-          <button class="fu-chip" data-k="thyroid" onclick="toggleFuChip(this,'mon')">TSH</button>
-          <button class="fu-chip" data-k="sleep" onclick="toggleFuChip(this,'mon')">Sleep review</button>
-          <button class="fu-chip" data-k="mood" onclick="toggleFuChip(this,'mon')">Mood review</button>
+        <div class="fu-tile-grid" id="fu-mon-chips">
+          <button type="button" class="fu-tile" data-k="bp" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Blood pressure</button>
+          <button type="button" class="fu-tile" data-k="hr" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Heart rate</button>
+          <button type="button" class="fu-tile" data-k="ecg" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>ECG</button>
+          <button type="button" class="fu-tile" data-k="weight" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Weight</button>
+          <button type="button" class="fu-tile" data-k="bmi" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>BMI</button>
+          <button type="button" class="fu-tile" data-k="bloods" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>FBC / bloods</button>
+          <button type="button" class="fu-tile" data-k="lft" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Liver function</button>
+          <button type="button" class="fu-tile" data-k="uds" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>UDS</button>
+          <button type="button" class="fu-tile" data-k="thyroid" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>TSH</button>
+          <button type="button" class="fu-tile" data-k="sleep" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Sleep review</button>
+          <button type="button" class="fu-tile" data-k="mood" onclick="toggleFuChip(this,'mon')"><span class="fu-tile-box">✓</span>Mood review</button>
         </div>
         <input class="inp" id="fu-mon-custom-inp" placeholder="Custom monitoring..." style="margin-top:5px;font-size:12px" onkeydown="if(event.key==='Enter'){fuAddCustomMon();}">
         <div id="fu-mon-custom-list" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
@@ -1159,17 +1168,17 @@ select.inp{appearance:none}
 
       <div style="padding:0 13px 8px;border-top:1px solid var(--border)">
         <div class="fl" style="margin-top:8px">Safety scenarios to include in patient document</div>
-        <div style="display:flex;flex-wrap:wrap;gap:5px" id="fu-con-chips">
-          <button class="fu-chip" data-k="sideEffects" onclick="toggleFuChip(this,'con')">Side effects</button>
-          <button class="fu-chip" data-k="noEffect" onclick="toggleFuChip(this,'con')">No effect yet</button>
-          <button class="fu-chip" data-k="tooStrong" onclick="toggleFuChip(this,'con')">Too strong</button>
-          <button class="fu-chip" data-k="sleep" onclick="toggleFuChip(this,'con')">Sleep</button>
-          <button class="fu-chip" data-k="appetite" onclick="toggleFuChip(this,'con')">Appetite</button>
-          <button class="fu-chip" data-k="mood" onclick="toggleFuChip(this,'con')">Mood</button>
-          <button class="fu-chip fu-chip-warn" data-k="chest" onclick="toggleFuChip(this,'con')">Chest / heart</button>
-          <button class="fu-chip fu-chip-warn" data-k="crisis" onclick="toggleFuChip(this,'con')">Crisis</button>
-          <button class="fu-chip" data-k="runOut" onclick="toggleFuChip(this,'con')">Running out</button>
-          <button class="fu-chip" data-k="script" onclick="toggleFuChip(this,'con')">20-day rule</button>
+        <div class="fu-tile-grid" id="fu-con-chips">
+          <button type="button" class="fu-tile" data-k="sideEffects" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Side effects</button>
+          <button type="button" class="fu-tile" data-k="noEffect" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>No effect yet</button>
+          <button type="button" class="fu-tile" data-k="tooStrong" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Too strong</button>
+          <button type="button" class="fu-tile" data-k="sleep" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Sleep</button>
+          <button type="button" class="fu-tile" data-k="appetite" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Appetite</button>
+          <button type="button" class="fu-tile" data-k="mood" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Mood</button>
+          <button type="button" class="fu-tile fu-tile-warn" data-k="chest" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Chest / heart</button>
+          <button type="button" class="fu-tile fu-tile-warn" data-k="crisis" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Crisis</button>
+          <button type="button" class="fu-tile" data-k="runOut" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>Running out</button>
+          <button type="button" class="fu-tile" data-k="script" onclick="toggleFuChip(this,'con')"><span class="fu-tile-box">✓</span>20-day rule</button>
         </div>
       </div>
       <input type="hidden" id="fu-gp-name">
@@ -1875,14 +1884,30 @@ function loadFUTemplate(key, btn) {
   fuCon.clear(); tmpl.con.forEach(function(c){fuCon.add(c);});
   fuProvide.clear(); if(tmpl.provide)tmpl.provide.forEach(function(p){fuProvide.add(p);});
   document.querySelectorAll('.fu-tmpl-btn').forEach(function(b){b.classList.remove('on');}); btn.classList.add('on');
-  document.querySelectorAll('#fu-mon-chips .fu-chip').forEach(function(b){b.classList.toggle('on', fuMon.has(b.getAttribute('data-k')));});
-  document.querySelectorAll('#fu-con-chips .fu-chip').forEach(function(b){b.classList.toggle('on', fuCon.has(b.getAttribute('data-k')));});
-  document.querySelectorAll('#fu-provide-chips .fu-chip').forEach(function(b){b.classList.toggle('on', fuProvide.has(b.getAttribute('data-k')));});
+  document.querySelectorAll('#fu-mon-chips [data-k]').forEach(function(b){b.classList.toggle('on', fuMon.has(b.getAttribute('data-k')));});
+  document.querySelectorAll('#fu-con-chips [data-k]').forEach(function(b){b.classList.toggle('on', fuCon.has(b.getAttribute('data-k')));});
+  document.querySelectorAll('#fu-provide-chips [data-k]').forEach(function(b){b.classList.toggle('on', fuProvide.has(b.getAttribute('data-k')));});
   renderFuAppts(); save(); refresh();
 }
 
 function fuAddAppt(obj) {
   fuAppts.push(obj || {with:'',num:4,unit:'weeks',duration:30}); renderFuAppts();
+}
+
+// ─── AUTO-TICK PROVIDE FROM SAFETY ──────────────────────────────────────────
+// Track previous safety state so we only auto-add on the transition into "Not
+// done" — a user who manually unticks the provide chip won't get it added back.
+var fuAutoState={ecg:'',uds:''};
+function fuAutoFromSafety(){
+  ['ecg','uds'].forEach(function(k){
+    var cur = (S && S[k]) || '';
+    if(cur==='Not done' && fuAutoState[k]!=='Not done'){
+      fuProvide.add(k);
+      var t=document.querySelector('#fu-provide-chips [data-k="'+k+'"]');
+      if(t)t.classList.add('on');
+    }
+    fuAutoState[k]=cur;
+  });
 }
 
 // ─── QUICK-ADD APPOINTMENT ──────────────────────────────────────────────────
@@ -5567,6 +5592,7 @@ function refresh(){
     if(docSections[sec])b.classList.add('on'); else b.classList.remove('on');
   });
   autoDSM();
+  fuAutoFromSafety();
   renderFlags();updateBadges();
   refreshTitOutputs();
 }
