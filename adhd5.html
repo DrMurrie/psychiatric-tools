@@ -301,6 +301,19 @@ select.inp{appearance:none}
 .fu-tile.on .fu-tile-box{border-color:var(--green);background:var(--green);color:#fff}
 .fu-tile.fu-tile-warn.on{border-color:#dc2626;background:#fee2e2;color:#991b1b}
 .fu-tile.fu-tile-warn.on .fu-tile-box{border-color:#dc2626;background:#dc2626}
+#out-report h2{font-size:12pt;margin:14px 0 4px}
+#out-report h3{font-size:10pt;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:10px 0 4px;border-bottom:1px solid #e5e7eb;padding-bottom:2px}
+#out-report p{margin:0 0 6px}
+#out-report ul{margin:2px 0 8px 18px}
+#out-report li{margin-bottom:2px;line-height:1.4}
+#out-report table{font-size:9pt;margin:4px 0 10px}
+#out-report th,#out-report td{padding:4px 7px}
+.dx-callout{display:inline-block;background:#dcfce7;border:1.5px solid #16a34a;color:#166534;padding:6px 13px;border-radius:10px;font-size:11pt;font-weight:700;margin:4px 0 10px}
+.dx-callout.no-dx{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+.dx-callout.deferred{background:#e0e7ff;border-color:#6366f1;color:#3730a3}
+.fmln-btn{padding:6px 12px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:#475569;font:600 12px var(--sans);cursor:pointer;transition:all .12s}
+.fmln-btn:hover{border-color:var(--primary);color:var(--primary)}
+.fmln-btn.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .ps-tile{background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
 .ps-tile-label{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:#475569;margin:0}
 .ps-tile .rbtns{margin:0;gap:4px}
@@ -908,7 +921,14 @@ select.inp{appearance:none}
           <button class="rb" onclick="setV('subtype','Inattentive',this,'ay')">Inattentive</button>
           <button class="rb" onclick="setV('subtype','Hyperactive-Impulsive',this,'ay')">Hyperactive-Impulsive</button>
         </div>
-        <textarea class="nf" id="dxNotes" placeholder="Formulation, comorbidities, reasoning..." oninput="save();refresh()" rows="3" style="margin-top:8px"></textarea>
+        <label class="fl" style="margin-top:10px">Formulation</label>
+        <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center">
+          <button type="button" class="fmln-btn" data-style="clinical" onclick="pickFormulation('clinical')">Clinical</button>
+          <button type="button" class="fmln-btn" data-style="narrative" onclick="pickFormulation('narrative')">Narrative</button>
+          <button type="button" class="fmln-btn" data-style="functional" onclick="pickFormulation('functional')">Functional</button>
+          <span id="fmln-edited-tag" style="display:none;font-size:10px;color:#b45309;font-weight:600">✎ edited — picking a style overwrites</span>
+        </div>
+        <textarea class="nf" id="dxNotes" placeholder="Pick a style above, or write your own…" oninput="onDxNotesEdit()" rows="6"></textarea>
       </div>
     </div>
   </div>
@@ -1200,7 +1220,7 @@ select.inp{appearance:none}
         <button class="cbtn" onclick="copyReportPlain()">Copy plain text</button>
       </div>
     </div>
-    <div id="out-report" style="background:#fff;color:#000;padding:22px 26px;font-family:Arial,sans-serif;font-size:11pt;line-height:1.5"></div>
+    <div id="out-report" style="background:#fff;color:#000;padding:18px 22px;font-family:Arial,sans-serif;font-size:9.5pt;line-height:1.45"></div>
   </div>
 
   <!-- PATIENT DOCUMENT BUILDER -->
@@ -1845,6 +1865,84 @@ function getCurrentDifferentials(){
 }
 function getPastDifferentials(){
   return DIFFS.filter(function(d){return S.differentials&&S.differentials[d.id]==='Past';});
+}
+
+// ─── FORMULATION STYLES ─────────────────────────────────────────────────────
+function getFormulationContext(){
+  var name=f('ptName')||'The patient';
+  var age=f('ptAge');
+  var gender=f('ptGender')||'';
+  var pr=pron(gender),po=poss(gender);
+  var sub=S.subtype||'';
+  var subPhrase=sub==='Combined'?'combined inattentive and hyperactive-impulsive':sub==='Inattentive'?'predominantly inattentive':sub==='Hyperactive-Impulsive'?'predominantly hyperactive-impulsive':'';
+  var diffs=DIFFICULTIES.filter(function(d){return S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')];});
+  var top=diffs.slice(0,3).map(function(d){return d.toLowerCase();});
+  var current=getCurrentDifferentials().map(function(d){return d.label.toLowerCase();});
+  var past=getPastDifferentials().map(function(d){return d.label.toLowerCase();});
+  var asrs=(S.screening&&S.screening.asrs)||'';
+  var diva=(S.screening&&S.screening.diva)||'';
+  var dx=dxFull();
+  return {name:name,age:age,gender:gender,pron:pr,poss:po,sub:sub,subPhrase:subPhrase,diffs:diffs,top:top,current:current,past:past,asrs:asrs,diva:diva,dx:dx};
+}
+function _joinList(arr){
+  if(!arr.length)return '';
+  if(arr.length===1)return arr[0];
+  if(arr.length===2)return arr[0]+' and '+arr[1];
+  return arr.slice(0,-1).join(', ')+', and '+arr[arr.length-1];
+}
+function formulationClinical(c){
+  var bits=[];
+  var who=(c.age?c.age+'-year-old ':'')+(c.gender?c.gender.toLowerCase()+' ':'')+'patient';
+  bits.push(c.name+' is a '+who+' presenting with a longstanding pattern of '+(c.subPhrase?c.subPhrase+' symptoms ':'attentional and self-regulatory symptoms ')+'consistent with Attention Deficit Hyperactivity Disorder'+(c.sub?', '+c.sub+' presentation':'')+'.');
+  bits.push('Symptoms have been present since childhood, are pervasive across multiple settings, and cause clinically significant impairment'+(c.top.length?' — particularly in the areas of '+_joinList(c.top)+'':'')+'.');
+  var screen=[];
+  if(c.asrs)screen.push('Patient ASRS '+c.asrs.toLowerCase());
+  if(c.diva)screen.push('DIVA-5 '+c.diva.replace(/^Completed - /i,'').toLowerCase());
+  if(screen.length)bits.push('Pre-screening ('+_joinList(screen)+') supports the diagnosis.');
+  if(c.past.length)bits.push('Past psychiatric considerations including '+_joinList(c.past)+' have been considered and are not better accounted for by another disorder.');
+  if(c.current.length)bits.push('Comorbid '+_joinList(c.current)+' '+(c.current.length>1?'are':'is')+' present and will be addressed alongside ADHD treatment.');
+  return bits.join(' ');
+}
+function formulationNarrative(c){
+  var pron=c.pron||'they',poss=c.poss||'their';
+  var bits=[];
+  var who=c.name+(c.age?', a '+c.age+'-year-old'+(c.gender?' '+c.gender.toLowerCase():''):'');
+  var topPhrase=c.top.length?_joinList(c.top):'difficulty regulating attention, organisation, and internal restlessness';
+  bits.push(who+', describes a lifelong difficulty with '+topPhrase+'.');
+  bits.push('These patterns were present from childhood and have persisted into '+poss+' adult life, where they continue to interfere with work, relationships, and day-to-day self-management.');
+  bits.push('The clinical picture is consistent with adult ADHD'+(c.sub?', '+c.sub+' presentation':'')+'.');
+  if(c.current.length)bits.push('Alongside the core ADHD picture, '+pron+' '+(pron==='they'?'are':'is')+' also experiencing '+_joinList(c.current)+', which will be considered as part of the broader treatment plan.');
+  bits.push('Treatment will target the core attentional and regulatory difficulties while supporting '+poss+' broader functional picture.');
+  return bits.join(' ');
+}
+function formulationFunctional(c){
+  var bits=[];
+  bits.push(c.name+' meets DSM-5-TR criteria for ADHD'+(c.sub?' ('+c.sub+' presentation)':'')+'.');
+  if(c.top.length)bits.push('The most disabling features at present are '+_joinList(c.top)+', with substantial functional impact across work, study, and daily routines.');
+  var screen=[];
+  if(c.asrs)screen.push('ASRS '+c.asrs.toLowerCase());
+  if(c.diva)screen.push('DIVA-5 '+c.diva.replace(/^Completed - /i,'').toLowerCase());
+  if(screen.length)bits.push('Pre-screening ('+_joinList(screen)+') and collateral information support the diagnosis.');
+  if(c.current.length)bits.push('Comorbid '+_joinList(c.current)+' '+(c.current.length>1?'are':'is')+' also present and will be managed in parallel.');
+  bits.push('Treatment is indicated to reduce these functional impacts; the proposed plan is detailed in the management section.');
+  return bits.join(' ');
+}
+var FORMULATION_BUILDERS={clinical:formulationClinical,narrative:formulationNarrative,functional:formulationFunctional};
+var _fmlnEdited=false,_fmlnActiveStyle=null;
+function pickFormulation(style){
+  var fn=FORMULATION_BUILDERS[style];if(!fn)return;
+  var ta=$('dxNotes');if(!ta)return;
+  ta.value=fn(getFormulationContext());
+  _fmlnEdited=false;_fmlnActiveStyle=style;
+  document.querySelectorAll('.fmln-btn').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-style')===style);});
+  var tag=$('fmln-edited-tag');if(tag)tag.style.display='none';
+  if(typeof save==='function')save();
+  if(typeof refresh==='function')refresh();
+}
+function onDxNotesEdit(){
+  if(_fmlnActiveStyle){_fmlnEdited=true;var tag=$('fmln-edited-tag');if(tag)tag.style.display='inline';}
+  if(typeof save==='function')save();
+  if(typeof refresh==='function')refresh();
 }
 
 
@@ -4369,7 +4467,13 @@ function buildFullReport(){
   if(notPres.length){ h+=p('<strong>Differentials excluded:</strong> '+notPres.map(function(d){return esc(d.label);}).join(', ')); }
   if(f('diffNotes')) h+=p(nl(f('diffNotes')));
   var dx=(typeof dxFull==='function')?dxFull():'';
-  if(dx) h+=p('<strong>Diagnosis:</strong> '+esc(dx));
+  if(dx){
+    var calloutCls='dx-callout';
+    var calloutPrefix='✓ ';
+    if(S.dx==='No'){calloutCls+=' no-dx';calloutPrefix='';}
+    else if(S.dx==='Insufficient evidence'||S.dx==='Deferred'){calloutCls+=' deferred';calloutPrefix='';}
+    h+='<div class="'+calloutCls+'">'+calloutPrefix+esc(dx)+'</div>';
+  }
   if(f('dxNotes')) h+=p('<strong>Formulation:</strong> '+nl(f('dxNotes')));
 
   // Management plan
