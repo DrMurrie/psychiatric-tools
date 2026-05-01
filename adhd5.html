@@ -33,6 +33,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .tab{padding:10px 15px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#64748b;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--sans);flex-shrink:0}
 .tab:hover{color:#cbd5e1}
 .tab.active{color:#f1f5f9;border-bottom-color:var(--primary)}
+@media(min-width:600px){.tabs .tab{flex:1 1 auto;text-align:center}}
 .tab-guide{margin-left:auto;padding:8px 11px;font-size:16px;border:none;background:none;color:#cbd5e1;cursor:pointer;font-family:var(--sans);flex-shrink:0;line-height:1}
 .tab-guide+.tab-guide{margin-left:0}
 .tab-guide:hover{background:#0f172a}
@@ -61,7 +62,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .content{flex:1;padding:10px}
 .panel{display:block;scroll-margin-top:60px;padding-top:4px}
 .panel.active{display:block}
-.section-header{background:linear-gradient(90deg,#1e293b,#1e3a5f);color:#f1f5f9;padding:10px 14px;border-radius:var(--r) var(--r) 0 0;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin:18px 0 0;border-left:4px solid var(--primary);display:flex;align-items:center;gap:8px}
+.section-header{background:linear-gradient(90deg,#1e293b,#1e3a5f);color:#f1f5f9;padding:10px 14px;border-radius:var(--r) var(--r) 0 0;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin:18px 0 0;border-left:4px solid var(--primary);display:flex;align-items:center;gap:8px;scroll-margin-top:120px}
 .section-header:first-child{margin-top:0}
 .section-header .sh-num{background:var(--primary);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
 .section-header .sh-badge{margin-left:auto;font-size:10px;background:#334155;color:#94a3b8;padding:2px 8px;border-radius:999px;font-weight:700;min-width:20px;text-align:center}
@@ -506,7 +507,7 @@ select.inp{appearance:none}
   <button class="tab" onclick="showTab('alerts',this)">Alerts <span class="tbadge" id="tb-alerts">--</span></button>
 </div>
 <div class="tabs tabs-plan">
-  <button class="tab" onclick="showTab('education',this)">Education</button>
+  <button class="tab" onclick="showTab('education',this)">EDU</button>
   <button class="tab" onclick="showTab('medplan',this)">Med Plan</button>
   <button class="tab" onclick="showTab('followup',this)">Follow-up</button>
   <button class="tab" onclick="showTab('outputs',this)">Reports</button>
@@ -700,72 +701,56 @@ select.inp{appearance:none}
   </div>
 <div class="card" data-initial-only>
     <div class="ch teal">Pre-screening &amp; Collateral</div>
-    <div class="cb" style="padding:0">
-      <div class="inner-split">
-      <div><!-- patient side -->
-
-      <!-- ASRS -->
-      <div style="padding:8px 13px 6px">
-        <div class="fl" style="margin-top:0">Patient ASRS</div>
-        <div class="rbtns" id="asrs-btns" style="margin-bottom:5px">
-          <button class="rb" onclick="toggleScreening('asrs','Positive',this,'ay')">Positive</button>
-          <button class="rb" onclick="toggleScreening('asrs','Negative',this,'an')">Negative</button>
-          <button class="rb" onclick="toggleScreening('asrs','Not provided',this,'ap')">Not provided</button>
+    <div class="cb">
+      <div class="pe-group-label" style="padding:0 0 4px;margin:0">Patient-reported</div>
+      <div class="inner-2col-sm">
+        <div>
+          <div class="fl" style="margin-top:0">Patient ASRS</div>
+          <div class="rbtns" id="asrs-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
+            <button class="rb" onclick="toggleScreening('asrs','Positive',this,'ay')">Positive</button>
+            <button class="rb" onclick="toggleScreening('asrs','Negative',this,'an')">Negative</button>
+            <button class="rb" onclick="toggleScreening('asrs','Not provided',this,'ap')">Not provided</button>
+          </div>
+          <div class="rbtns" id="asrs-mode-btns" style="gap:4px;flex-wrap:wrap">
+            <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('asrsMode','Patient completed',this,'ap')">Patient completed</button>
+            <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('asrsMode','Clinician administered',this,'ap')">Clinician administered</button>
+          </div>
         </div>
-        <div class="rbtns" id="asrs-mode-btns" style="gap:4px">
-          <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('asrsMode','Patient completed',this,'ap')">Patient completed</button>
-          <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('asrsMode','Clinician administered',this,'ap')">Clinician administered</button>
+        <div>
+          <div class="fl" style="margin-top:0">DIVA-5 outcome</div>
+          <div class="rbtns" id="diva-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
+            <button class="rb" onclick="toggleScreening('diva','Completed - positive',this,'ay')">Positive</button>
+            <button class="rb" onclick="toggleScreening('diva','Completed - negative',this,'an')">Negative</button>
+            <button class="rb" onclick="toggleScreening('diva','Not provided',this,'ap')">Not provided</button>
+          </div>
+          <div class="rbtns" id="diva-mode-btns" style="gap:4px;flex-wrap:wrap">
+            <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('divaMode','Patient completed',this,'ap')">Patient completed</button>
+            <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('divaMode','Clinician administered',this,'ap')">Clinician administered</button>
+          </div>
+        </div>
+        <div>
+          <div class="fl" style="margin-top:0">DIVA-5 symptom count</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:12px;color:var(--muted)">Inattention:</span>
+            <select class="inp" id="diva-inatt" style="width:60px" onchange="save();refresh()">
+              <option value="">--</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+            </select>
+            <span style="font-size:12px;color:var(--muted)">/9 &nbsp; H/I:</span>
+            <select class="inp" id="diva-hi" style="width:60px" onchange="save();refresh()">
+              <option value="">--</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+            </select>
+            <span style="font-size:12px;color:var(--muted)">/9</span>
+          </div>
+        </div>
+        <div>
+          <div class="fl" style="margin-top:0">Other screening</div>
+          <input class="inp" id="otherScreening" placeholder="e.g. Conners, CAARS, other tool and outcome..." oninput="save();refresh()">
         </div>
       </div>
 
-      <!-- DIVA-5 outcome -->
-      <div style="padding:0 13px 6px;border-top:1px solid var(--border)">
-        <div class="fl" style="margin-top:8px">DIVA-5 outcome</div>
-        <div class="rbtns" id="diva-btns" style="margin-bottom:5px">
-          <button class="rb" onclick="toggleScreening('diva','Completed - positive',this,'ay')">Positive</button>
-          <button class="rb" onclick="toggleScreening('diva','Completed - negative',this,'an')">Negative</button>
-          <button class="rb" onclick="toggleScreening('diva','Not provided',this,'ap')">Not provided</button>
-        </div>
-        <div class="rbtns" id="diva-mode-btns" style="gap:4px">
-          <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('divaMode','Patient completed',this,'ap')">Patient completed</button>
-          <button class="rb" style="font-size:10px;padding:2px 7px" onclick="toggleScreening('divaMode','Clinician administered',this,'ap')">Clinician administered</button>
-        </div>
-      </div>
-
-      <!-- DIVA-5 symptom count -->
-      <div style="padding:0 13px 8px;border-top:1px solid var(--border)">
-        <div class="fl" style="margin-top:8px">DIVA-5 symptom count</div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <span style="font-size:12px;color:var(--muted)">Inattention:</span>
-          <select class="inp" id="diva-inatt" style="width:60px" onchange="save();refresh()">
-            <option value="">--</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-          </select>
-          <span style="font-size:12px;color:var(--muted)">/9 &nbsp; H/I:</span>
-          <select class="inp" id="diva-hi" style="width:60px" onchange="save();refresh()">
-            <option value="">--</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option>
-          </select>
-          <span style="font-size:12px;color:var(--muted)">/9</span>
-        </div>
-      </div>
-
-      <!-- Other screening -->
-      <div style="padding:0 13px 10px;border-top:1px solid var(--border)">
-        <div class="fl" style="margin-top:8px">Other screening</div>
-        <input class="inp" id="otherScreening" placeholder="e.g. Conners, CAARS, other tool and outcome..." oninput="save();refresh()">
-      </div>
-
-      </div><!-- /patient side -->
-      <div><!-- collateral side -->
-      <!-- Collateral heading -->
-      <div style="padding:8px 14px 4px;border-top:1px solid #eef0f5">
-        <div style="font-size:12px;font-weight:700;color:#475569">Collateral</div>
-      </div>
-
-      <!-- 2-col inner grid for collateral items -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0">
-
-        <!-- Observer ASRS -->
-        <div style="padding:6px 10px 6px 13px;border-right:1px solid var(--border)">
+      <div class="pe-group-label" style="padding:14px 0 4px;margin:0">Collateral</div>
+      <div class="inner-2col-sm">
+        <div>
           <div class="fl" style="margin-top:0">Observer ASRS</div>
           <div class="rbtns" id="obs-btns" style="flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="toggleScreening('obs','Supportive',this,'ay')">Supportive</button>
@@ -773,9 +758,7 @@ select.inp{appearance:none}
             <button class="rb" onclick="toggleScreening('obs','Not provided',this,'ap')">Not provided</button>
           </div>
         </div>
-
-        <!-- GP referral -->
-        <div style="padding:6px 13px 6px 10px">
+        <div>
           <div class="fl" style="margin-top:0">GP referral</div>
           <div class="rbtns" id="gp-referral-btns" style="flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="setScreening('gpReferral','Supportive',this,'ay')">Supportive</button>
@@ -783,9 +766,7 @@ select.inp{appearance:none}
             <button class="rb" onclick="setScreening('gpReferral','N/A',this,'ap')">N/A</button>
           </div>
         </div>
-
-        <!-- School reports -->
-        <div style="padding:6px 10px 6px 13px;border-top:1px solid var(--border);border-right:1px solid var(--border)">
+        <div>
           <div class="fl" style="margin-top:0">School reports</div>
           <div class="rbtns" id="school-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="setScreening('schoolReports','Supportive',this,'ay')">Supportive</button>
@@ -794,9 +775,7 @@ select.inp{appearance:none}
           </div>
           <input class="inp" id="schoolNotes" placeholder="Comments..." oninput="save();refresh()">
         </div>
-
-        <!-- Psychologist report -->
-        <div style="padding:6px 13px 6px 10px;border-top:1px solid var(--border)">
+        <div>
           <div class="fl" style="margin-top:0">Psych / neuropsych report</div>
           <div class="rbtns" id="psych-report-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="setScreening('psychReport','Supportive',this,'ay')">Supportive</button>
@@ -805,9 +784,7 @@ select.inp{appearance:none}
           </div>
           <input class="inp" id="psychReportNotes" placeholder="Comments..." oninput="save();refresh()">
         </div>
-
-        <!-- Vanderbilt (Parents) -->
-        <div style="padding:6px 10px 6px 13px;border-top:1px solid var(--border);border-right:1px solid var(--border)">
+        <div>
           <div class="fl" style="margin-top:0">Vanderbilt (parents)</div>
           <div class="rbtns" id="vanderbilt-parent-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="setScreening('vanderbiltParent','Positive',this,'ay')">Positive</button>
@@ -816,9 +793,7 @@ select.inp{appearance:none}
           </div>
           <input class="inp" id="vanderbiltParentNotes" placeholder="Comments..." oninput="save();refresh()">
         </div>
-
-        <!-- Vanderbilt (Teacher) -->
-        <div style="padding:6px 13px 6px 10px;border-top:1px solid var(--border)">
+        <div>
           <div class="fl" style="margin-top:0">Vanderbilt (teacher)</div>
           <div class="rbtns" id="vanderbilt-teacher-btns" style="margin-bottom:5px;flex-wrap:wrap;gap:3px">
             <button class="rb" onclick="setScreening('vanderbiltTeacher','Positive',this,'ay')">Positive</button>
@@ -827,17 +802,12 @@ select.inp{appearance:none}
           </div>
           <input class="inp" id="vanderbiltTeacherNotes" placeholder="Comments..." oninput="save();refresh()">
         </div>
+      </div>
 
-      </div><!-- /collateral 2-col grid -->
-
-      <!-- Other collateral — full width -->
-      <div style="padding:6px 13px 10px;border-top:1px solid var(--border)">
-        <div class="fl" style="margin-top:0">Other collateral</div>
+      <div style="margin-top:10px">
+        <div class="fl">Other collateral</div>
         <textarea class="nf" id="screenNotes" placeholder="Other collateral sources, informant interviews, records..." oninput="save();refresh()" rows="2"></textarea>
       </div>
-      </div><!-- /collateral side -->
-      </div><!-- /inner-split -->
-
     </div>
   </div>
 <div class="card" data-initial-only>
@@ -1853,6 +1823,12 @@ function pronCap(g){var p=pron(g);return p[0].toUpperCase()+p.slice(1);}
 function dxFull(){
   var sub=S.subtype,code=sub==='Combined'?'F90.2':sub==='Inattentive'?'F90.0':sub==='Hyperactive-Impulsive'?'F90.1':'';
   return S.dx==='Yes'?'ADHD'+(sub?' - '+sub+' Presentation':'')+(code?' (DSM-5-TR '+code+')':''):S.dx==='No'?'ADHD criteria not met':S.dx||'';
+}
+function getCurrentDifferentials(){
+  return DIFFS.filter(function(d){return S.differentials&&S.differentials[d.id]==='Current';});
+}
+function getPastDifferentials(){
+  return DIFFS.filter(function(d){return S.differentials&&S.differentials[d.id]==='Past';});
 }
 
 
@@ -3583,7 +3559,10 @@ function buildHeidi(){
   if(f('referralReason'))o+='Referral reason: '+f('referralReason')+'\n';o+='\n';
   var diffs=DIFFICULTIES.filter(function(d){return S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')];});
   if(diffs.length){o+='PRESENTING DIFFICULTIES:\n';diffs.forEach(function(d){o+='- '+d+'\n';});}
-  if(f('presentNotes'))o+=f('presentNotes')+'\n';o+='\n';
+  if(f('presentNotes'))o+=f('presentNotes')+'\n';
+  var curDiffs=getCurrentDifferentials();
+  if(curDiffs.length)o+='Comorbid issues endorsed with ADHD: '+curDiffs.map(function(d){return d.label;}).join(', ')+'\n';
+  o+='\n';
   o+='PRE-SCREENING:\n';
   if(S.screening.asrs&&S.screening.asrs!=='N/A'){
     var asrsMode=S.screening.asrsMode?(' ('+S.screening.asrsMode+')'):'';
@@ -3653,8 +3632,12 @@ function buildHeidi(){
   if(pastSubs.length)o+='- Past substance use: '+pastSubs.join(', ')+'\n';
   if(f('subNotes'))o+=f('subNotes')+'\n';
   var medFlagged=MEDICAL.filter(function(m){return S.medical[m.id];});
-  if(medFlagged.length)o+='- Medical: '+medFlagged.map(function(m){return m.label;}).join(', ')+'\n';
-  if(f('medHistory'))o+='- Past medical / psychiatric history: '+f('medHistory')+'\n';
+  var medParts=[];
+  if(medFlagged.length)medParts.push(medFlagged.map(function(m){return m.label;}).join(', '));
+  if(f('medHistory'))medParts.push(f('medHistory'));
+  o+='- Medical history: '+(medParts.length?medParts.join('; '):'Nil')+'\n';
+  var pastDiffs=getPastDifferentials();
+  o+='- Past psychiatric history: '+(pastDiffs.length?pastDiffs.map(function(d){return d.label;}).join(', '):'Nil')+'\n';
   if(f('currentMeds'))o+='- Current medications: '+f('currentMeds')+'\n';
   if(f('allergies'))o+='- Allergies: '+f('allergies')+'\n';
   if(f('medNotes'))o+=f('medNotes')+'\n';
@@ -4195,6 +4178,8 @@ function buildFullReport(){
   var diffs=DIFFICULTIES.filter(function(d){return S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')];});
   if(diffs.length){ h+=p('<strong>Difficulties endorsed:</strong>'); h+=list(diffs.map(esc)); }
   if(f('presentNotes')) h+=p(nl(f('presentNotes')));
+  var curDiffsRep=getCurrentDifferentials();
+  if(curDiffsRep.length) h+=p('<strong>Comorbid issues endorsed with ADHD:</strong> '+curDiffsRep.map(function(d){return esc(d.label);}).join(', '));
 
   // 2. Screening & Collateral
   var screenItems=[];
@@ -4241,14 +4226,19 @@ function buildFullReport(){
 
   // 5. Medical history and medications
   var medFlagged=MEDICAL.filter(function(m){return S.medical[m.id];});
-  if(medFlagged.length||f('medHistory')||f('currentMeds')||f('allergies')||f('medNotes')){
+  var pastDiffsRep=getPastDifferentials();
+  var hasMedSection=medFlagged.length||f('medHistory')||f('currentMeds')||f('allergies')||f('medNotes')||pastDiffsRep.length;
+  if(hasMedSection){
     h+=sec('Medical History and Medications');
     var medItems=[];
-    if(medFlagged.length) medItems.push('<strong>Medical conditions:</strong> '+medFlagged.map(function(m){return esc(m.label);}).join(', '));
-    if(f('medHistory')) medItems.push('<strong>Past medical / psychiatric history:</strong> '+esc(f('medHistory')));
+    var medHxParts=[];
+    if(medFlagged.length) medHxParts.push(medFlagged.map(function(m){return esc(m.label);}).join(', '));
+    if(f('medHistory')) medHxParts.push(esc(f('medHistory')));
+    medItems.push('<strong>Medical history:</strong> '+(medHxParts.length?medHxParts.join('; '):'Nil'));
+    medItems.push('<strong>Past psychiatric history:</strong> '+(pastDiffsRep.length?pastDiffsRep.map(function(d){return esc(d.label);}).join(', '):'Nil'));
     if(f('currentMeds')) medItems.push('<strong>Current medications:</strong> '+esc(f('currentMeds')));
     if(f('allergies')) medItems.push('<strong>Allergies:</strong> '+esc(f('allergies')));
-    if(medItems.length) h+=list(medItems);
+    h+=list(medItems);
     if(f('medNotes')) h+=p(nl(f('medNotes')));
   }
 
