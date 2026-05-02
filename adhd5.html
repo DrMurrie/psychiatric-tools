@@ -598,6 +598,7 @@ select.inp{appearance:none}
           <label class="fl" style="margin-top:0">MBS item</label>
           <select class="inp" id="mbsItem" style="width:100%" onchange="save();refresh()">
       <option value="">MBS item —</option>
+      <option value="none">No rebate</option>
       <optgroup label="Telehealth — GP management plan">
         <option value="92435">92435 — GP mgmt plan, video — $455.60</option>
         <option value="92436">92436 — GP mgmt plan follow-up, video — $284.80</option>
@@ -684,11 +685,12 @@ select.inp{appearance:none}
   </div>
 
 <!-- Follow-Up Assessment (shown when review type != Initial) -->
-<div class="card" data-followup-only style="display:none">
+<div class="card" data-followup-only id="card-fu-assessment" style="display:none">
   <div class="ch teal">Follow-Up Assessment</div>
   <div class="cb">
     <label class="fl" style="margin-top:0">Medication response / efficacy</label>
     <div class="rbtns" id="med-response-btns">
+      <button class="rb" onclick="setFuRating('medResponse','Not started',this,'ap')">Not started</button>
       <button class="rb" onclick="setFuRating('medResponse','Excellent',this,'ay')">Excellent</button>
       <button class="rb" onclick="setFuRating('medResponse','Good',this,'ay')">Good</button>
       <button class="rb" onclick="setFuRating('medResponse','Partial',this,'ap')">Partial</button>
@@ -727,6 +729,16 @@ select.inp{appearance:none}
 
     <label class="fl">Additional information</label>
     <textarea class="nf" id="reviewNotes" oninput="save();refresh()" rows="6" placeholder="Reason for review, MSE changes, side-effect detail, observations..."></textarea>
+
+    <label class="fl">Treatment decision today</label>
+    <div class="rbtns" id="fu-decision-btns" style="flex-wrap:wrap">
+      <button class="rb" onclick="setFuRating('fuDecision','Up-titrate',this,'ay')">Up-titrate</button>
+      <button class="rb" onclick="setFuRating('fuDecision','Down-titrate',this,'ap')">Down-titrate</button>
+      <button class="rb" onclick="setFuRating('fuDecision','Keep same',this,'ay')">Keep same</button>
+      <button class="rb" onclick="setFuRating('fuDecision','Cease',this,'af')">Cease</button>
+      <button class="rb" onclick="setFuRating('fuDecision','Switch / change',this,'an')">Switch / change</button>
+      <button class="rb" onclick="setFuRating('fuDecision','Add-on',this,'ap')">Add-on</button>
+    </div>
   </div>
 </div>
 
@@ -1857,7 +1869,7 @@ const TIT_SCEN={
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:''};
+const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:'',fuDecision:''};
 const SIDE_FX=[{id:'appetite',label:'Reduced appetite'},{id:'insomnia',label:'Insomnia / sleep disturbance'},{id:'headache',label:'Headache'},{id:'dryMouth',label:'Dry mouth'},{id:'hrBp',label:'Elevated HR / BP'},{id:'anxiety',label:'Anxiety / jitteriness'},{id:'mood',label:'Mood changes / irritability'},{id:'gi',label:'GI upset / nausea'},{id:'rebound',label:'Rebound / afternoon crash'},{id:'weight',label:'Weight loss'},{id:'tics',label:'Tics'},{id:'libido',label:'Sexual / libido changes'},{id:'none',label:'Nil reported'}];
 var titMeds=[];
 var titCurTab='rich';
@@ -4315,23 +4327,20 @@ function applyReviewType(){
   // SafeScript: always expanded (must be checked every visit)
   var ss=document.getElementById('card-safescript');
   if(ss){ss.style.display='';ss.classList.remove('collapsed');}
-  // Move the Follow-Up Plan card to the very top of the document on FU /
-  // Titration / Script reviews so it's the first thing the user sees after
-  // the Session info card. Restore to its native panel-followup container
-  // when back on Initial.
-  var fuCard=document.getElementById('card-fu-plan');
-  var fuHomePanel=document.getElementById('panel-followup');
+  // On Follow-up / Titration / Script reviews, move the Follow-Up
+  // Assessment card up to right after the Session info card so it's the
+  // first thing the user sees. The Follow-Up Plan card stays in its native
+  // panel-followup location at the bottom of the page (unchanged).
+  var fuAssess=document.getElementById('card-fu-assessment');
   var historyPanel=document.getElementById('panel-history');
-  if(fuCard&&fuHomePanel&&historyPanel){
+  if(fuAssess&&historyPanel){
     if(isFu){
-      // Insert as the second card in panel-history (right after the Session info card)
       var firstCard=historyPanel.querySelector('.card');
-      if(firstCard&&firstCard.parentNode){
-        firstCard.parentNode.insertBefore(fuCard,firstCard.nextSibling);
+      if(firstCard&&firstCard.parentNode&&fuAssess.parentNode!==historyPanel){
+        firstCard.parentNode.insertBefore(fuAssess,firstCard.nextSibling);
+      } else if(firstCard&&firstCard.nextSibling!==fuAssess){
+        firstCard.parentNode.insertBefore(fuAssess,firstCard.nextSibling);
       }
-    } else {
-      // Restore to original location
-      if(fuCard.parentNode!==fuHomePanel)fuHomePanel.insertBefore(fuCard,fuHomePanel.firstChild);
     }
   }
   document.querySelectorAll('#review-type-btns .rb').forEach(function(b){
