@@ -289,11 +289,12 @@ select.inp{appearance:none}
 .fu-tmpl-btn.on{background:var(--primary);border-color:var(--primary);color:#fff}
 .inv-row{margin-top:12px}
 .inv-row:first-child{margin-top:0}
-.inv-row-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
-.inv-row-head .fl{margin:0!important}
+.inv-row .fl{margin:0 0 4px!important;display:block}
+.inv-input-row{display:flex;gap:6px;align-items:center}
+.inv-input-row > .inp:first-child{flex:1;min-width:0}
 .inv-auto{color:var(--muted);font-weight:400;font-size:11px;text-transform:none;letter-spacing:0;margin-left:4px}
 .inv-auto-display{padding:6px 10px;border-radius:7px;font-size:13px;background:#f1f5f9;color:#64748b;min-height:34px;display:flex;align-items:center;border:1px dashed #cbd5e1}
-.inv-np{padding:5px 11px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;color:#64748b;font:700 11px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .12s;white-space:nowrap}
+.inv-np{padding:0 12px;height:34px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;color:#64748b;font:700 11px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .12s;white-space:nowrap;flex-shrink:0}
 .inv-np:hover{border-color:#fdba74;color:#9a3412}
 .inv-np.on{background:#fff7ed;border-color:#fdba74;color:#9a3412}
 .fu-q-row{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
@@ -1018,39 +1019,43 @@ select.inp{appearance:none}
     <div class="ch sky">Investigations</div>
     <div class="cb">
       <div class="inv-row">
-        <div class="inv-row-head"><label class="fl">Weight (kg)</label></div>
-        <input class="inp" id="ptWeight" oninput="calcBMI();save();refresh()">
+        <label class="fl">Weight (kg)</label>
+        <div class="inv-input-row">
+          <input class="inp" id="ptWeight" oninput="_clearInvNP('weight');calcBMI();save();refresh()">
+          <button type="button" class="inv-np" data-k="weight" onclick="toggleInvNP('weight',this)">Not provided</button>
+        </div>
       </div>
       <div class="inv-row">
-        <div class="inv-row-head"><label class="fl">Height (cm)</label></div>
-        <input class="inp" id="ptHeight" oninput="calcBMI();save();refresh()">
+        <label class="fl">Height (cm)</label>
+        <div class="inv-input-row">
+          <input class="inp" id="ptHeight" oninput="_clearInvNP('height');calcBMI();save();refresh()">
+          <button type="button" class="inv-np" data-k="height" onclick="toggleInvNP('height',this)">Not provided</button>
+        </div>
       </div>
       <div class="inv-row">
-        <div class="inv-row-head"><label class="fl">BMI <span class="inv-auto">(Auto)</span></label></div>
+        <label class="fl">BMI <span class="inv-auto">(Auto)</span></label>
         <div id="bmi-display" class="inv-auto-display">—</div>
       </div>
       <div class="inv-row">
-        <div class="inv-row-head">
-          <label class="fl">BP (sitting)</label>
-          <button type="button" class="inv-np" data-k="bp" onclick="toggleInvNP('bp',this)">Not provided</button>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center">
-          <input class="inp" id="bpSystolic" type="number" min="50" max="260" placeholder="systolic" style="flex:1;min-width:70px" oninput="_clearInvNP('bp');save();refresh()">
+        <label class="fl">BP (sitting)</label>
+        <div class="inv-input-row">
+          <input class="inp" id="bpSystolic" type="number" min="50" max="260" placeholder="systolic" style="flex:1;min-width:0" oninput="_clearInvNP('bp');save();refresh()">
           <span style="color:var(--muted);font-weight:600">/</span>
-          <input class="inp" id="bpDiastolic" type="number" min="30" max="160" placeholder="diastolic" style="flex:1;min-width:70px" oninput="_clearInvNP('bp');save();refresh()">
+          <input class="inp" id="bpDiastolic" type="number" min="30" max="160" placeholder="diastolic" style="flex:1;min-width:0" oninput="_clearInvNP('bp');save();refresh()">
           <span style="font-size:11px;color:var(--muted)">mmHg</span>
+          <button type="button" class="inv-np" data-k="bp" onclick="toggleInvNP('bp',this)">Not provided</button>
         </div>
         <input type="hidden" id="bpReading">
       </div>
       <div class="inv-row">
-        <div class="inv-row-head">
-          <label class="fl">Resting HR</label>
+        <label class="fl">Resting HR</label>
+        <div class="inv-input-row">
+          <input class="inp" id="hrReading" placeholder="e.g. 72 bpm" oninput="_clearInvNP('hr');save();refresh()">
           <button type="button" class="inv-np" data-k="hr" onclick="toggleInvNP('hr',this)">Not provided</button>
         </div>
-        <input class="inp" id="hrReading" placeholder="e.g. 72 bpm" oninput="_clearInvNP('hr');save();refresh()">
       </div>
       <div class="inv-row">
-        <div class="inv-row-head"><label class="fl">ECG</label></div>
+        <label class="fl">ECG</label>
         <div class="rbtns" id="ecg-btns" style="flex-wrap:wrap">
           <button class="rb" onclick="setV('ecg','Normal',this,'ay')">Normal</button>
           <button class="rb" onclick="setV('ecg','Abnormal',this,'af')">Abnormal</button>
@@ -1060,7 +1065,7 @@ select.inp{appearance:none}
         <input class="inp" id="ecgDetail" placeholder="ECG detail — date, findings, rate, rhythm..." style="margin-top:8px" oninput="save();refresh()">
       </div>
       <div class="inv-row">
-        <div class="inv-row-head"><label class="fl">UDS</label></div>
+        <label class="fl">UDS</label>
         <div class="rbtns" id="uds-btns" style="flex-wrap:wrap">
           <button class="rb" onclick="setV('uds','Negative',this,'ay')">Negative</button>
           <button class="rb" onclick="setV('uds','Positive',this,'af')">Positive</button>
@@ -1070,11 +1075,11 @@ select.inp{appearance:none}
         <input class="inp" id="udsDetail" placeholder="UDS detail — substances detected, date, lab..." style="margin-top:8px" oninput="save();refresh()">
       </div>
       <div class="inv-row">
-        <div class="inv-row-head">
-          <label class="fl">Other investigations</label>
+        <label class="fl">Other investigations</label>
+        <div class="inv-input-row">
+          <input class="inp" id="otherInvest" placeholder="e.g. Bloods, neuropsychological testing, neuroimaging..." oninput="_clearInvNP('otherInv');save();refresh()">
           <button type="button" class="inv-np" data-k="otherInv" onclick="toggleInvNP('otherInv',this)">Not provided</button>
         </div>
-        <input class="inp" id="otherInvest" placeholder="e.g. Bloods, neuropsychological testing, neuroimaging..." oninput="_clearInvNP('otherInv');save();refresh()">
       </div>
     </div>
   </div>
@@ -1204,6 +1209,8 @@ select.inp{appearance:none}
         <div class="fu-tile-grid" id="fu-provide-chips">
           <button type="button" class="fu-tile" data-k="bp" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Blood pressure check</button>
           <button type="button" class="fu-tile" data-k="hr" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Heart rate check</button>
+          <button type="button" class="fu-tile" data-k="weight" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Weight check</button>
+          <button type="button" class="fu-tile" data-k="height" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Height check</button>
           <button type="button" class="fu-tile" data-k="ecg" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>ECG</button>
           <button type="button" class="fu-tile" data-k="uds" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Urine drug screen</button>
           <button type="button" class="fu-tile" data-k="bloods" onclick="toggleFuChip(this,'provide')"><span class="fu-tile-box">✓</span>Other bloods</button>
@@ -2313,6 +2320,8 @@ function fuAutoFromSafety(){
     var inp=S.invNotProvided||{};
     var bpMissing=!!inp.bp;
     var hrMissing=!!inp.hr;
+    var weightMissing=!!inp.weight;
+    var heightMissing=!!inp.height;
     var ecgMissing=S.ecg==='Not done';
     var udsMissing=S.uds==='Not done';
     var bloodsMissing=!!inp.otherInv;
@@ -2325,6 +2334,8 @@ function fuAutoFromSafety(){
     var pairs=[
       ['bp',bpMissing],
       ['hr',hrMissing],
+      ['weight',weightMissing],
+      ['height',heightMissing],
       ['ecg',ecgMissing],
       ['uds',udsMissing],
       ['bloods',bloodsMissing],
@@ -2491,7 +2502,7 @@ function getFuMonStr() {
 }
 function getFuApptStr() { return fuAppts.filter(Boolean).map(apptStr).join('; '); }
 function getFuNPList() { return Array.from(fuNP).map(function(k){return FU_NP_LABELS[k]||k;}); }
-var FU_PROVIDE_LABELS={bp:'Blood pressure check',hr:'Heart rate check',ecg:'ECG',uds:'Urine drug screen',bloods:'Other bloods',obs_asrs:'Observer ASRS',school_rep:'School reports',psych_rep:'Psychologist report',vanderbilt:'Vanderbilt scales',collateral:'Collateral history'};
+var FU_PROVIDE_LABELS={bp:'Blood pressure check',hr:'Heart rate check',weight:'Weight check',height:'Height check',ecg:'ECG',uds:'Urine drug screen',bloods:'Other bloods',obs_asrs:'Observer ASRS',school_rep:'School reports',psych_rep:'Psychologist report',vanderbilt:'Vanderbilt scales',collateral:'Collateral history'};
 function getFuProvideList(){return Array.from(fuProvide).map(function(k){return FU_PROVIDE_LABELS[k]||k;});}
 
 // Build GP handover letter HTML
