@@ -4033,6 +4033,12 @@ function setDiffVal(id,val,btn){
 }
 function setDiff(id,val,btn){setDiffVal(id,val,btn);}
 
+function _bmiStr(){
+  var w=parseFloat(f('ptWeight')),h=parseFloat(f('ptHeight'));
+  if(!w||!h||h<=0)return '';
+  var b=w/((h/100)*(h/100));
+  return b.toFixed(1)+(b<18.5?' (underweight)':'');
+}
 function calcBMI(){
   var w=parseFloat(f('ptWeight')), h=parseFloat(f('ptHeight'));
   var el=document.getElementById('bmi-display');if(!el)return;
@@ -4905,6 +4911,7 @@ function buildFullReportFollowUp(rt){
   if(f('hrReading')) invItems.push('<strong>HR:</strong> '+esc(f('hrReading')));
   if(f('ptWeight')) invItems.push('<strong>Weight:</strong> '+esc(f('ptWeight'))+' kg');
   if(f('ptHeight')) invItems.push('<strong>Height:</strong> '+esc(f('ptHeight'))+' cm');
+  var _bmiFu=_bmiStr(); if(_bmiFu) invItems.push('<strong>BMI:</strong> '+esc(_bmiFu));
   if(S.ecg&&S.ecg!=='Not done') invItems.push('<strong>ECG:</strong> '+esc(S.ecg)+(f('ecgDetail')?' ('+esc(f('ecgDetail'))+')':''));
   if(S.uds&&S.uds!=='Not done') invItems.push('<strong>UDS:</strong> '+esc(S.uds)+(f('udsDetail')?' ('+esc(f('udsDetail'))+')':''));
   if(invItems.length){
@@ -4959,11 +4966,6 @@ function buildFullReportFollowUp(rt){
   if(peDone.length){
     h+=sec('Educational Material Provided');
     h+=list(peDone.map(esc));
-  }
-
-  if(f('reviewNotes')){
-    h+=sec('Additional Notes');
-    h+=p(nl(f('reviewNotes')));
   }
 
   // Signature
@@ -5138,6 +5140,7 @@ function buildFullReport(){
   if(f('hrReading')) safeItems.push('<strong>HR:</strong> '+esc(f('hrReading')));
   if(f('ptWeight')) safeItems.push('<strong>Weight:</strong> '+esc(f('ptWeight'))+' kg');
   if(f('ptHeight')) safeItems.push('<strong>Height:</strong> '+esc(f('ptHeight'))+' cm');
+  var _bmiInit=_bmiStr(); if(_bmiInit) safeItems.push('<strong>BMI:</strong> '+esc(_bmiInit));
   var cardFlagged=CARDIAC.filter(function(c){return c.flag&&S.cardiac[c.id];});
   if(cardFlagged.length) safeItems.push('<strong>Cardiac flags:</strong> '+cardFlagged.map(function(c){return esc(c.label);}).join('; '));
   h+=sec('Safety and Prescribing Screen');
@@ -5312,6 +5315,24 @@ function buildLetterReport(){
     h+=prCap+' '+was+' reviewed on '+esc(dateStr)+' for a comprehensive assessment, including detailed clinical history, review of standardised rating scales, examination of collateral information where available, and consideration of differential diagnoses. The assessment and management plan are summarised below.</p>';
   } else {
     h+='<p>I saw '+esc(name)+demoClause+' on '+esc(dateStr)+' for a '+esc(visitLabel)+'. The outcome and updated management plan are summarised below.</p>';
+
+    // Clinical review — review notes + medication response (follow-up only)
+    var revNotes=f('reviewNotes');
+    var mrBits=[];
+    if(S.medResponse) mrBits.push('response to medication '+_smartLower(S.medResponse));
+    if(S.coverage) mrBits.push('daytime coverage '+_smartLower(S.coverage));
+    if(S.adherence) mrBits.push('adherence '+_smartLower(S.adherence));
+    if(S.sideFxRating) mrBits.push('side-effect burden '+_smartLower(S.sideFxRating));
+    var sfxList=SIDE_FX.filter(function(s){return S.sideFx&&S.sideFx[s.id];}).map(function(s){return _smartLower(s.label);});
+    if(revNotes||mrBits.length||sfxList.length){
+      h+='<h3>Clinical review</h3>';
+      if(revNotes)h+=_letterParas(revNotes);
+      if(mrBits.length){
+        var firstMr=mrBits[0].charAt(0).toUpperCase()+mrBits[0].slice(1);
+        h+='<p>'+firstMr+(mrBits.length>1?'; '+mrBits.slice(1).join('; '):'')+'.</p>';
+      }
+      if(sfxList.length)h+='<p>Side effects reported: '+_joinList(sfxList)+'.</p>';
+    }
   }
 
   // History of presentation
