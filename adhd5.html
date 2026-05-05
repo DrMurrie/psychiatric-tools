@@ -60,6 +60,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .tbadge.warn{background:#78350f;color:#fcd34d}
 .tbadge.rd{background:#7f1d1d;color:#fca5a5}
 .content{flex:1;padding:10px;max-width:1180px;width:100%;margin:0 auto;box-sizing:border-box}
+.intro-box{background:linear-gradient(135deg,#eef2ff 0%,#f0f9ff 100%);border:1px solid #c7d2fe;border-radius:12px;padding:14px 18px;margin:6px 4px 14px;color:#1e293b;font-size:13.5px;line-height:1.55;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.intro-box .intro-title{font:700 16px var(--sans);color:#1e3a8a;margin-bottom:6px}
+.intro-box p{margin:6px 0}
+.intro-box ul{margin:6px 0 6px 18px;padding:0}
+.intro-box li{margin:3px 0}
+.intro-box .intro-have-fun{font-weight:600;color:#1e3a8a;margin-top:8px}
 .panel{display:block;scroll-margin-top:60px;padding-top:4px}
 .panel.active{display:block}
 .section-header{background:linear-gradient(90deg,#1e293b,#1e3a5f);color:#f1f5f9;padding:10px 14px;border-radius:var(--r) var(--r) 0 0;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin:18px 0 0;border-left:4px solid var(--primary);display:flex;align-items:center;gap:8px;scroll-margin-top:120px}
@@ -547,8 +553,6 @@ select.inp{appearance:none}
     <input class="ti" id="drQuals" placeholder="FRANZCP / RANZCP" oninput="save();refresh()" style="flex:0 1 130px;min-width:80px">
     <input class="ti" id="ptDate" type="date" style="flex:0 0 120px" oninput="save();refresh()">
     <div style="display:flex;gap:4px;align-items:center;margin-left:auto;flex-shrink:0">
-      <span class="pill" id="pill-flags">0 flags</span>
-      <span class="pill" id="pill-gaps">0 gaps</span>
       <button onclick="window.location.reload()" style="padding:3px 9px;border-radius:999px;border:1.5px solid #dc2626;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Reset</button>
     </div>
   </div>
@@ -579,6 +583,18 @@ select.inp{appearance:none}
 </div>
 
 <div class="content">
+
+<div class="intro-box">
+  <div class="intro-title">Thanks for stopping by 👋</div>
+  <p>Use this however suits you. Treat it as a structured guide with prompts, fill it all out and let it flag any safety concerns, or jump straight to the bits you need.</p>
+  <ul>
+    <li>Generate a <strong>GP letter</strong> or a <strong>plain-text output</strong> ready to drop into your AI scribe.</li>
+    <li>Build a <strong>patient letter</strong> with psychoeducation tailored to the assessment.</li>
+    <li>Use the <strong>titration plan builder</strong> for stimulant and non-stimulant regimens, with auto-generated scripts.</li>
+    <li>Open the icons up the top for <strong>state-specific prescribing requirements</strong>, <strong>MBS billing</strong>, <strong>example titration regimens</strong>, and <strong>GP handover</strong> templates.</li>
+  </ul>
+  <p class="intro-have-fun">Have fun!</p>
+</div>
 
 <!-- HISTORY -->
 <div class="section-header" id="sec-history"><span class="sh-num">1</span>Psychiatric History<span class="sh-badge" id="sh-badge-history">--</span></div>
