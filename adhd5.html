@@ -1381,7 +1381,7 @@ select.inp{appearance:none}
 <script>
 'use strict';
 
-const DIFFICULTIES=['Difficulty focusing','Difficulty concentrating','Poor organisation','Poor time management','Procrastination','Difficulty initiating tasks','Forgetfulness','Memory difficulties','Restlessness','Internal hyperactivity','Emotional dysregulation','Mood swings','Impulsive behaviour or decisions','Time blindness','Sleep difficulties','Underperformance at work or study despite effort','Relationship difficulties','Hyperfocus on preferred tasks'];
+const DIFFICULTIES=['Anger or irritability','Anxiety or worry','Avoidance of difficult tasks','Binge eating or disordered eating','Burnout or chronic exhaustion','Conflict at work or in study settings','Difficulty concentrating','Difficulty finishing tasks','Difficulty focusing','Difficulty initiating tasks','Difficulty managing finances','Difficulty managing household tasks','Difficulty parenting / caregiving','Difficulty regulating substance use','Driving difficulties (inattention, speeding)','Emotional dysregulation','Family or partner conflict','Forgetfulness','Hyperfocus on preferred tasks','Impulsive behaviour or decisions','Internal hyperactivity','Job loss or job instability','Low mood','Low self-esteem','Memory difficulties','Mood swings','Overcommitting or saying yes too easily','Overspending or impulsive purchases','Poor organisation','Poor sleep routine','Poor time management','Procrastination','Rejection sensitivity','Relationship difficulties','Restlessness','Risk-taking behaviour','Sensory sensitivities','Sleep difficulties','Social difficulties or withdrawal','Time blindness','Underperformance at work or study despite effort'];
 const SCREENING=[{id:'asrs',label:'Patient ASRS',opts:['Positive','Negative','Not provided']},{id:'diva',label:'DIVA-5',opts:['Completed - positive','Completed - negative','Not provided']},{id:'obs',label:'Observer ASRS',opts:['Supportive','Not supportive','Not provided']},{id:'gpReferral',label:'GP referral',opts:['Supportive','Not supportive','N/A']},{id:'schoolReports',label:'School reports',opts:['Supportive','Not supportive','Not provided']},{id:'psychReport',label:'Psychologist / neuropsychological report',opts:['Supportive','Not supportive','Not provided']},{id:'vanderbiltParent',label:'Vanderbilt (parents)',opts:['Positive','Negative','Not provided']},{id:'vanderbiltTeacher',label:'Vanderbilt (teacher)',opts:['Positive','Negative','Not provided']}];
 const DEV=[
   {id:'childhood',label:'Clear childhood ADHD pattern (pre-age 12)',qs:['When you picture yourself in primary school, what sort of child were you at school and at home?','What did adults keep correcting you for, over and over?','Were you often described as bright but not applying yourself, careless, messy, chatty, daydreamy, or always on the go?','Did things seem inconsistent rather than impossible - you could do it sometimes but not reliably?','What themes would I expect to see repeatedly in your primary school reports?','Were there clear examples of inattention, hyperactivity, or impulsivity before age 12?']},
@@ -1455,7 +1455,9 @@ const CARDIAC=[
     note:'Do not prescribe stimulants or atomoxetine until an appropriate washout period is completed. This is an absolute contraindication.'},
 ];
 const FAM_PSYCH=[
-  {id:'fam_neurodevel',label:'Neurodevelopmental disorders'},
+  {id:'fam_adhd',label:'ADHD'},
+  {id:'fam_asd',label:'Autism spectrum disorder'},
+  {id:'fam_neurodevel',label:'Other neurodevelopmental disorder'},
   {id:'fam_schiz',label:'Psychotic disorder'},
   {id:'fam_bipolar',label:'Bipolar disorder'},
   {id:'fam_depression',label:'Depression'},
@@ -1928,7 +1930,7 @@ const TIT_SCEN={
 };
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'Not checked',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:'',fuDecision:'',safetyOverrides:{},noPastPsych:false,noMedHistory:false,noCardiacRisk:false,noFamPsych:false,noSubHistory:false,diffDetail:{},subDetail:{},famDetail:{},userTouchedProvide:{},invNotProvided:{}};
+const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:'',fuDecision:'',safetyOverrides:{},noPastPsych:false,noMedHistory:false,noCardiacRisk:false,noFamPsych:false,noSubHistory:false,diffDetail:{},subDetail:{},famDetail:{},userTouchedProvide:{},invNotProvided:{}};
 const SIDE_FX=[{id:'appetite',label:'Reduced appetite'},{id:'insomnia',label:'Insomnia / sleep disturbance'},{id:'headache',label:'Headache'},{id:'dryMouth',label:'Dry mouth'},{id:'hrBp',label:'Elevated HR / BP'},{id:'anxiety',label:'Anxiety / jitteriness'},{id:'mood',label:'Mood changes / irritability'},{id:'gi',label:'GI upset / nausea'},{id:'rebound',label:'Rebound / afternoon crash'},{id:'weight',label:'Weight loss'},{id:'tics',label:'Tics'},{id:'libido',label:'Sexual / libido changes'},{id:'none',label:'Nil reported'}];
 var titMeds=[];
 var titCurTab='rich';
@@ -3658,6 +3660,9 @@ function setDiffDetail(id,val){
 }
 function toggleNoSection(key){
   S[key]=!S[key];
+  // Toggling "No substance use history" ON also implies Nil for SUD differential
+  // and No for drug dependence (clinician can override afterwards).
+  if(key==='noSubHistory'&&S.noSubHistory){S.sudDiff='Nil';S.drugDep='No';}
   save();refresh();
   if(key==='noPastPsych')renderDiffRows();
   if(key==='noMedHistory')renderMedical();
@@ -3786,6 +3791,8 @@ function renderSubs(){
   }).join('');
   var sd=$('suddiff-btns');
   if(sd){var cur=S.sudDiff||'';sd.querySelectorAll('.rb').forEach(function(b){b.className='rb';var l=b.textContent.trim();if(l===cur)b.classList.add(cur==='Nil'?'ay':cur==='Past'?'ap':'af');});}
+  var dd=$('drugdep-btns');
+  if(dd){var dcur=S.drugDep||'';dd.querySelectorAll('.rb').forEach(function(b){b.className='rb';var l=b.textContent.trim();if(l===dcur)b.classList.add(dcur==='No'?'ay':dcur==='Yes'?'af':'ap');});}
 }
 function renderMal(){$('mal-checks').innerHTML=MAL.map(function(m){var on=!!S.malingering[m.id];return '<div class="crow" onclick="toggleMal(\''+m.id+'\',this)"><div class="cbox'+(on?' flag':'')+'"></div><div class="clabel">'+m.label+'</div></div>';}).join('');}
 function renderPE(){
@@ -4011,7 +4018,7 @@ function selectAllMSENormal(){MSE.forEach(function(sec){S.mse[sec.id]=sec.opts[0
 function deselectAllMSE(){MSE.forEach(function(sec){S.mse[sec.id]=[];});renderMSE();save();refresh();}
 function selectAllDiffsNil(){DIFFS.forEach(function(d){S.differentials[d.id]='Nil';});renderDiffRows();save();refresh();}
 function deselectAllDiffs(){DIFFS.forEach(function(d){S.differentials[d.id]='';});renderDiffRows();save();refresh();}
-function selectAllSubsNil(){SUBS.forEach(function(s){S.substances['sub_'+s.replace(/\W/g,'_')]='Nil';});renderSubs();save();refresh();}
+function selectAllSubsNil(){SUBS.forEach(function(s){S.substances['sub_'+s.replace(/\W/g,'_')]='Nil';});S.sudDiff='Nil';S.drugDep='No';renderSubs();save();refresh();}
 function selectAllDifficulties(){DIFFICULTIES.forEach(function(d){S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')]=true;});renderDiffChecks();save();refresh();}
 function selectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=true;});renderDev();save();refresh();}
 function selectAllDSM(){DSM.forEach(function(d){S.dsm[d.id]=true;S.dsmManual[d.id]=true;});renderDSM();save();refresh();}
@@ -6952,8 +6959,6 @@ function initScrollSpy(){
 function init(){
   loadSaved();
 
-  if(!S.safeScript)S.safeScript='Not checked';
-  if(S.safeScript==='Not checked'){var g=document.getElementById('ss-btns');if(g)g.querySelectorAll('.rb').forEach(function(b){if(b.textContent.trim()==='Not checked')b.classList.add('an');});}
   renderDiffChecks();renderScreening();renderDev();renderDSM();renderDiffRows();
   autoDSM();renderMSE();renderCardiac();renderMedical();renderSubs();renderMal();renderPE();renderFam();renderPrevPsych();
   renderTitMeds();
