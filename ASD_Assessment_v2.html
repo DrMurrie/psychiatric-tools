@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>ASD Assessment v2</title>
+<style>
+:root{--bg:#f0f2f5;--surface:#fff;--border:#e2e6ed;--text:#1a1d23;--muted:#6b7280;--primary:#0d9488;--primary-bg:#ccfbf1;--green:#16a34a;--green-bg:#dcfce7;--amber:#b45309;--amber-bg:#fef3c7;--red:#dc2626;--red-bg:#fee2e2;--purple:#7c3aed;--purple-bg:#ede9fe;--navy:#0f172a;--r:10px;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;height:100%;overflow:hidden;display:flex;flex-direction:column}
+.topbar{background:var(--navy);padding:6px 10px;display:flex;flex-direction:column;gap:5px;border-bottom:2px solid var(--primary);flex-shrink:0}
+.tb-row{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;min-width:0}
+.tb-row2{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;min-width:0}
+.topbar-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5eead4;white-space:nowrap;flex-shrink:0}
+.ti{background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:4px 8px;border-radius:7px;font:inherit;font-size:13px;min-width:0}
+.ti::placeholder{color:#64748b}
+.ti:focus{outline:1px solid var(--primary)}
+.ti-sm{flex:0 0 56px}
+.ti-md{flex:0 0 78px}
+.topbar-pills{display:flex;gap:4px;flex-shrink:0;margin-left:auto;align-items:center}
+.pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:#1e293b;color:#64748b;white-space:nowrap}
+.pill.green{background:#14532d;color:#86efac}
+.pill.amber{background:#431407;color:#fcd34d}
+.pill.red{background:#450a0a;color:#fca5a5}
+.scrollnav{background:#1e293b;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-bottom:1px solid #334155;flex-shrink:0}
+.scrollnav::-webkit-scrollbar{display:none}
+.snav{padding:9px 14px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#64748b;cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--sans);flex-shrink:0}
+.snav:hover{color:#cbd5e1}
+.snav.active{color:#f1f5f9;border-bottom-color:var(--primary)}
+.tbadge{display:inline-block;margin-left:5px;font-size:10px;background:#334155;color:#94a3b8;padding:1px 5px;border-radius:999px;font-weight:700;vertical-align:middle;min-width:18px;text-align:center}
+.tbadge.ok{background:#14532d;color:#86efac}
+.tbadge.warn{background:#78350f;color:#fcd34d}
+.tbadge.rd{background:#7f1d1d;color:#fca5a5}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px;padding-bottom:40px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.g2{grid-template-columns:1fr}}
+.g2-flow{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.g2-flow>.card:nth-child(odd){grid-column:1}
+.g2-flow>.card:nth-child(even){grid-column:2}
+@media(max-width:640px){.g2-flow{grid-template-columns:1fr}.g2-flow>.card:nth-child(odd),.g2-flow>.card:nth-child(even){grid-column:1}}
+.g2-single{display:flex;flex-direction:column;gap:0}
+.section-anchor{display:block;margin:16px 0 8px;padding:8px 12px;background:#1e3a5f;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#93c5fd;border-left:3px solid var(--primary)}
+
+.inner-2col{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0}
+.inner-2col-sm{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px;overflow:hidden}
+.ch{padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:#134e4a}
+.ch.danger{background:#7f1d1d}
+.ch.warning{background:#78350f}
+.ch.green{background:#14532d}
+.ch.gold{background:#b45309;color:#fefce8}
+.ch.purple{background:#4c1d95}
+.ch.blue{background:#1e3a5f}
+.cb{padding:8px 12px}
+.crow{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #f1f5f9;cursor:pointer;user-select:none;-webkit-user-select:none;min-height:36px}
+.crow:last-child{border-bottom:none}
+.crow:active{background:#f0fdf4;margin:0 -13px;padding:7px 13px}
+.cbox{width:20px;height:20px;border:2px solid #cbd5e1;border-radius:5px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:#fff}
+.cbox.yes{background:var(--green);border-color:var(--green);color:#fff}
+.cbox.yes::after{content:'✓'}
+.cbox.flag{background:var(--red);border-color:var(--red);color:#fff}
+.cbox.flag::after{content:'!'}
+.clabel{flex:1;font-size:13px;line-height:1.4}
+.qbtn{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;font-family:var(--sans)}
+.qbtn:hover{border-color:var(--primary);color:var(--primary)}
+.rrow{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f1f5f9;flex-wrap:wrap}
+.rrow:last-child{border-bottom:none}
+.rlabel{flex:1;font-size:13px;min-width:110px}
+.rbtns{display:flex;gap:4px;flex-wrap:wrap}
+.rb{padding:4px 10px;border-radius:6px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans);white-space:nowrap}
+.rb.ay{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.rb.an{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.rb.ap{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+.rb.aq{background:var(--purple-bg);border-color:var(--purple);color:var(--purple)}
+.rb.at{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
+.nf{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font:inherit;font-size:13px;resize:vertical;min-height:52px;color:var(--text);background:#fafbff;margin-top:7px}
+.nf:focus{outline:1px solid var(--primary);background:#fff}
+.fl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px;display:block;margin-top:9px}
+.inp{width:100%;border:1px solid var(--border);border-radius:7px;padding:6px 10px;font:inherit;font-size:13px;color:var(--text);background:#fafbff}
+.inp:focus{outline:1px solid var(--primary);background:#fff}
+select.inp{appearance:none}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.drawer{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:640px;max-height:80vh;display:flex;flex-direction:column;animation:slideUp .2s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.dhead{padding:14px 18px 10px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0}
+.dtitle{font-size:14px;font-weight:700;color:var(--text);flex:1;line-height:1.4}
+.dclose{width:28px;height:28px;border-radius:50%;border:none;background:#f1f5f9;color:#64748b;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.dbody{padding:14px 18px 28px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.dbody li{font-size:13.5px;line-height:1.65;color:#374151;margin-bottom:9px;padding-left:4px}
+.chip-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chip{border-radius:999px;padding:6px 13px;font-size:12px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;font-family:var(--sans);transition:all .12s}
+.chip.chip-active{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:600}
+.dsm-row{padding:9px 0;border-bottom:1px solid #f1f5f9}
+.dsm-row:last-child{border-bottom:none}
+.dsm-row-header{margin-bottom:6px}
+.dsm-label{font-size:13px;font-weight:700;color:var(--text)}
+.dsm-detail{font-size:11px;color:var(--muted);line-height:1.4;margin-top:2px}
+.dsm-btns{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.dsm-met{background:var(--green-bg)!important;border-color:var(--green)!important;color:var(--green)!important;font-weight:700!important}
+.dsm-partial{background:var(--amber-bg)!important;border-color:var(--amber)!important;color:var(--amber)!important;font-weight:700!important}
+.dsm-notmet{background:var(--red-bg)!important;border-color:var(--red)!important;color:var(--red)!important;font-weight:700!important}
+.dsm-na{background:#f3f4f6!important;border-color:#9ca3af!important;color:#6b7280!important}
+.diff-card{background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-bottom:7px}
+.diff-card-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px}
+.diff-card-q{font-size:11px;color:#374151;line-height:1.45;margin-bottom:3px}
+.diff-card-note{font-size:10.5px;color:#6b7280;background:#f8faff;border-left:2px solid #93c5fd;padding:5px 8px;margin:5px 0;border-radius:0 4px 4px 0}
+.diff-card-btns{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.out-panel{background:#0f172a;border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.out-head{display:flex;align-items:center;justify-content:space-between;padding:8px 13px;border-bottom:1px solid #1e293b}
+.out-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#64748b}
+.cbtn{padding:4px 11px;border-radius:6px;border:1px solid #334155;background:#1e293b;color:#94a3b8;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.cbtn:hover{background:#334155;color:#f1f5f9}
+.cbtn.copied{background:#14532d;color:#86efac;border-color:#166534}
+.out-text{padding:13px;color:#cbd5e1;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto;min-height:50px}
+.abtn{padding:7px 13px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+.abtn:hover{background:#f3f4f6}
+.abtn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.pe-section{border:1px solid var(--border);border-radius:10px;background:#fff;overflow:hidden;margin-bottom:5px}
+.pe-section.pe-optional{border-style:dashed;opacity:.85}
+.pe-section.pe-done{border-color:var(--green)}
+.pe-section.pe-done .pe-header{background:var(--green-bg)}
+.pe-header{display:flex;align-items:center;gap:8px;padding:9px 11px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.pe-header:hover{background:#f0fdf4}
+.pe-tick{font-size:1.1rem;color:var(--muted);flex-shrink:0;line-height:1;min-width:20px;text-align:center}
+.pe-section.pe-done .pe-tick{color:var(--green)}
+.pe-label-group{flex:1;min-width:0}
+.pe-title{font-weight:600;font-size:12px;color:var(--text)}
+.pe-section.pe-done .pe-title{color:var(--green)}
+.pe-arrow{font-size:9px;color:var(--muted);flex-shrink:0;transition:transform .15s}
+.pe-section.pe-open .pe-arrow{transform:rotate(90deg)}
+.pe-body{display:none;border-top:1px solid var(--border);padding:10px 12px;font-size:12px;line-height:1.6;color:#374151}
+.pe-section.pe-open .pe-body{display:block}
+.pe-body p{margin:0 0 6px}
+.pe-body p:last-child{margin:0}
+.pe-body ul{margin:3px 0 6px 14px}
+.pe-body li{margin-bottom:3px}
+.pe-body table{width:100%;border-collapse:collapse;font-size:11px;margin:5px 0 7px}
+.pe-body th{background:#f1f5f9;padding:4px 7px;text-align:left;border:1px solid var(--border)}
+.pe-body td{padding:3px 7px;border:1px solid var(--border)}
+.pe-body tr:nth-child(even) td{background:#f8fafc}
+.pe-body a{color:var(--primary)}
+.pe-group-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:8px 2px 4px;margin-top:4px}
+.mse-row{padding:5px 0;border-bottom:1px solid #f1f5f9}
+.mse-row:last-child{border-bottom:none}
+.mse-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.mse-opts{display:flex;flex-wrap:wrap;gap:4px}
+.obs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:7px;margin-top:8px}
+.obs-item{background:#f8faff;border:1px solid #e8eef7;border-radius:8px;padding:7px 9px}
+.obs-item-label{font-size:11px;font-weight:700;color:#374151;margin-bottom:5px}
+.obs-item-btns{display:flex;flex-wrap:wrap;gap:3px}
+.sev-btns{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.sev-l1{background:#dbeafe!important;border-color:#3b82f6!important;color:#1e40af!important;font-weight:700!important}
+.sev-l2{background:var(--amber-bg)!important;border-color:var(--amber)!important;color:var(--amber)!important;font-weight:700!important}
+.sev-l3{background:var(--red-bg)!important;border-color:var(--red)!important;color:var(--red)!important;font-weight:700!important}
+.fu-chip{padding:5px 10px;border-radius:15px;font:500 11px var(--sans);border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);cursor:pointer;transition:all .12s}
+.fu-chip.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
+.fu-chip-warn.on{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.fu-appt-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.fu-appt-inp{flex:1;border:1px solid var(--border);border-radius:7px;color:var(--text);padding:6px 9px;font:13px var(--sans);background:#fafbfc}
+.fu-appt-inp:focus{outline:1px solid var(--primary);background:#fff}
+.fu-appt-rm{background:none;border:none;color:#c8cdd9;font-size:14px;cursor:pointer;padding:2px 4px;flex-shrink:0}
+.fu-appt-rm:hover{color:var(--red)}
+.med-plan-table{width:100%;border-collapse:collapse;font-size:12px}
+.med-plan-table th{padding:6px 10px;background:#134e4a;color:#fff;text-align:left;border:1px solid #134e4a;font-size:11px}
+.med-plan-table td{padding:5px 10px;border:1px solid var(--border);vertical-align:top}
+.med-plan-table tr:nth-child(even) td{background:#f0fdf4}
+.med-row-input{width:100%;border:1.5px solid #c8d8ee;border-radius:5px;padding:3px 6px;font-size:11px;font-family:inherit;background:#fff;color:var(--text)}
+.remove-med-btn{background:var(--red-bg)!important;border:1px solid #fca5a5!important;color:#991b1b!important;border-radius:5px!important;padding:3px 7px!important;font-size:10px!important;cursor:pointer}
+.doc-toggle{padding:5px 11px;border-radius:15px;font:500 11px var(--sans);border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);cursor:pointer;transition:all .12s}
+.doc-toggle.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
+.output-tabs{display:flex;border-bottom:2px solid #e8eef7;flex-wrap:wrap;margin-bottom:8px}
+.output-tab{padding:8px 14px;cursor:pointer;font-weight:600;font-size:11px;color:var(--muted);border:none;background:none;font-family:var(--sans);border-bottom:3px solid transparent;margin-bottom:-2px}
+.output-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.letter{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;font-size:13px;line-height:1.8;color:var(--text)}
+.nonpharm-btn{border-radius:999px;padding:6px 12px;font-size:11.5px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;transition:all .12s;font-family:var(--sans)}
+.nonpharm-btn.active{background:var(--primary-bg)!important;border-color:var(--primary)!important;color:var(--primary)!important;font-weight:600}
+.concern-btn{border-radius:999px;padding:6px 12px;font-size:11.5px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;font-family:var(--sans)}
+.concern-btn.active{background:var(--amber-bg)!important;border-color:var(--amber)!important;color:var(--amber)!important;font-weight:600}
+.coll-tr{padding:8px 12px;border-bottom:1px solid #f1f5f9}
+.coll-tr:last-child{border-bottom:none}
+.coll-tr:nth-child(even){background:#f9fbff}
+.coll-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px}
+.coll-right{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.coll-detail{width:100%;padding:4px 7px;border:1px solid var(--border);border-radius:5px;font:12px var(--sans);color:var(--text);background:#fff;height:26px}
+.coll-na-active{background:#e5e7eb!important;border-color:#9ca3af!important;color:#374151!important;font-weight:700!important}
+.coll-yes-active{background:var(--green-bg)!important;border-color:#86efac!important;color:#166534!important;font-weight:700!important}
+.coll-part-active{background:var(--amber-bg)!important;border-color:var(--amber)!important;color:#854d0e!important;font-weight:700!important}
+.coll-no-active{background:var(--red-bg)!important;border-color:#fca5a5!important;color:#991b1b!important;font-weight:700!important}
+.coll-todo-active{background:var(--purple-bg)!important;border-color:#a78bfa!important;color:#5b21b6!important;font-weight:700!important}
+.tog-yes{background:var(--green-bg)!important;border-color:var(--green)!important;color:#166534!important;font-weight:600!important}
+.tog-no{background:var(--red-bg)!important;border-color:var(--red)!important;color:#991b1b!important}
+.tog-partial{background:var(--amber-bg)!important;border-color:var(--amber)!important;color:#854d0e!important;font-weight:600!important}
+.tog-na{background:#e5e7eb!important;border-color:#9ca3af!important;color:#374151!important}
+.tog-active{background:var(--primary-bg)!important;border-color:var(--primary)!important;color:var(--primary)!important;font-weight:600!important}
+.add-row-btn{display:flex;align-items:center;gap:6px;background:none;border:2px dashed #5eead4;color:var(--primary);border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer;width:100%;justify-content:center;font-size:12px;margin-top:4px;font-family:var(--sans)}
+.add-row-btn:hover{background:var(--primary-bg)}
+.dx-box{padding:13px 16px;border-radius:12px;margin-top:10px;margin-bottom:10px}
+.dx-confirmed{background:#f0fdf4;border:2px solid #4ade80}
+.dx-partial{background:#fff7ed;border:2px solid #fb923c}
+.dx-notmet{background:var(--red-bg);border:2px solid var(--red)}
+.dx-pending{background:#f1f5f9;border:2px solid #94a3b8}
+.toggle-group{display:flex;flex-wrap:wrap;gap:5px}
+.toggle-group button{border-radius:999px;padding:5px 12px;font-size:11.5px;border:1.5px solid var(--border);background:#fff;color:var(--muted);cursor:pointer;font-family:var(--sans)}
+.report-h1{font-size:1.2rem;font-weight:800;color:#1e3a5f;margin:18px 0 5px;border-bottom:2px solid #d1dce8;padding-bottom:3px}
+.report-h2{font-size:1rem;font-weight:700;color:#1f2937;margin:13px 0 3px}
+.report-p{margin-bottom:7px;font-size:13px;line-height:1.6}
+.report-ul{margin:3px 0 9px 16px}
+.report-ul li{margin-bottom:3px;font-size:12.5px;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-row">
+    <span class="topbar-title">ASD</span>
+    <input class="ti" id="drName" placeholder="Psychiatrist name" oninput="saveClin();refresh()" style="flex:1 1 120px">
+    <input class="ti" id="drQuals" placeholder="FRANZCP" oninput="saveClin();refresh()" style="flex:0 1 100px">
+    <div class="topbar-pills">
+      <span class="pill" id="pill-crita">A: 0/3</span>
+      <span class="pill" id="pill-critb">B: 0/4</span>
+      <span class="pill" id="pill-dx">Dx: ?</span>
+      <button onclick="window.location.reload()" style="padding:3px 8px;border-radius:999px;border:1.5px solid #dc2626;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Reset</button>
+    </div>
+  </div>
+  <div class="tb-row2">
+    <input class="ti" id="drAHPRA" placeholder="AHPRA" oninput="saveClin()" style="flex:1 1 100px">
+    <input class="ti" id="drProvider" placeholder="Provider #" oninput="saveClin()" style="flex:1 1 80px">
+    <input class="ti" id="ptDate" type="date" oninput="save();refresh()" style="flex:1 1 120px">
+  </div>
+</div>
+
+<div class="scrollnav" id="scrollnav">
+  <button class="snav" data-sec="s-session" onclick="scrollToSection('s-session')">Session</button>
+  <button class="snav" data-sec="s-family" onclick="scrollToSection('s-family')">Family Hx</button>
+  <button class="snav" data-sec="s-presenting" onclick="scrollToSection('s-presenting')">Presenting</button>
+  <button class="snav" data-sec="s-crita" onclick="scrollToSection('s-crita')">Crit A</button>
+  <button class="snav" data-sec="s-critb" onclick="scrollToSection('s-critb')">Crit B</button>
+  <button class="snav" data-sec="s-critc" onclick="scrollToSection('s-critc')">Crit C &amp; Dev</button>
+  <button class="snav" data-sec="s-critde" onclick="scrollToSection('s-critde')">Crit D–E</button>
+  <button class="snav" data-sec="s-mse" onclick="scrollToSection('s-mse')">MSE</button>
+  <button class="snav" data-sec="s-risk" onclick="scrollToSection('s-risk')">Risk</button>
+  <button class="snav" data-sec="s-differentials" onclick="scrollToSection('s-differentials')">Differentials</button>
+  <button class="snav" data-sec="s-dxedu" onclick="scrollToSection('s-dxedu')">Dx &amp; Edu</button>
+  <button class="snav" data-sec="s-plan" onclick="scrollToSection('s-plan')">Plan</button>
+  <button class="snav" data-sec="s-outputs" onclick="scrollToSection('s-outputs')">Outputs</button>
+</div>
+
+<div class="content">
+
+<!-- ═══ TAB: HISTORY ═══ -->
+<div class="content"><div class="g2-single">
+
+<div id="s-session"></div>
+<div class="card">
+  <div class="ch blue">Patient &amp; Session</div>
+  <div class="cb">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:8px">
+      <div><label class="fl" style="margin-top:0">Patient name</label><input class="inp" id="ptName" placeholder="Full name" oninput="save();refresh()"></div>
+      <div><label class="fl" style="margin-top:0">Date of birth</label><input class="inp" id="ptDOB" placeholder="DD/MM/YYYY" oninput="save()"></div>
+      <div><label class="fl" style="margin-top:0">Gender</label>
+        <select class="inp" id="ptGender" onchange="save();refresh()">
+          <option value="">—</option><option>Male</option><option>Female</option><option>Non-binary</option><option>Other</option>
+        </select>
+      </div>
+      <div><label class="fl" style="margin-top:0">State</label>
+        <select class="inp" id="ptState" onchange="save()">
+          <option value="">—</option><option>ACT</option><option>NSW</option><option>NT</option><option>QLD</option><option>SA</option><option>TAS</option><option>VIC</option><option>WA</option>
+        </select>
+      </div>
+      <div><label class="fl" style="margin-top:0">Occupation</label><input class="inp" id="ptOcc" placeholder="e.g. Teacher" oninput="save()"></div>
+      <div><label class="fl" style="margin-top:0">Referrer</label><input class="inp" id="ptRef" placeholder="GP name" oninput="save()"></div>
+      <div><label class="fl" style="margin-top:0">Living situation</label>
+        <select class="inp" id="ptLiving" onchange="save()">
+          <option value="">—</option><option>Lives alone</option><option>With partner</option><option>With partner &amp; children</option><option>With parents / family</option><option>With housemates</option><option>Supported accommodation</option><option>Other</option>
+        </select>
+      </div>
+      <div><label class="fl" style="margin-top:0">Employment status</label>
+        <select class="inp" id="ptEmployment" onchange="save()">
+          <option value="">—</option><option>Full-time employed</option><option>Part-time employed</option><option>Casual / variable</option><option>Self-employed</option><option>Student</option><option>Unemployed — seeking</option><option>Unemployed — not seeking</option><option>Unable to work</option><option>Retired</option>
+        </select>
+      </div>
+      <div><label class="fl" style="margin-top:0">Supports in place</label>
+        <select class="inp" id="ptSupports" onchange="save()">
+          <option value="">—</option><option>None</option><option>GP only</option><option>Psychologist</option><option>Psychiatrist</option><option>NDIS supports</option><option>Informal / family supports</option><option>Multiple supports</option>
+        </select>
+      </div>
+    </div>
+    <label class="fl">Who present</label>
+    <input class="inp" id="ptWhoPresent" placeholder="e.g. Patient alone; partner present" oninput="save()">
+    <label class="fl">MBS item</label>
+    <select class="inp" id="ptMBS" onchange="save()">
+      <option value="">— MBS item —</option>
+      <optgroup label="Telehealth — Initial">
+        <option value="92437">92437 — Initial, ongoing reviews, video (296 equiv) — $262.10</option>
+        <option value="92435">92435 — GP mgmt plan, video — $455.60</option>
+      </optgroup>
+      <optgroup label="Telehealth — Follow-up (video)">
+        <option value="92436">92436 — GP mgmt plan follow-up, video — $227.80</option>
+        <option value="91827">91827 — Follow-up ≤15 min, video (300 equiv) — $43.65</option>
+        <option value="91828">91828 — Follow-up 15–30 min, video (302 equiv) — $87.05</option>
+        <option value="91829">91829 — Follow-up 30–45 min, video (304 equiv) — $134.00</option>
+        <option value="91830">91830 — Follow-up 45–75 min, video (306 equiv) — $184.90</option>
+        <option value="91831">91831 — Follow-up &gt;75 min, video (308 equiv) — $214.55</option>
+      </optgroup>
+      <optgroup label="Telehealth — NDD / Eating disorder">
+        <option value="92434">92434 — Complex NDD plan, video (289 equiv) — $265.60</option>
+        <option value="92162">92162 — Eating disorder plan, video (90260 equiv) — $444.90</option>
+      </optgroup>
+      <optgroup label="Telehealth — Person other than patient (video)">
+        <option value="91874">91874 — Non-patient ≤15 min, video (341 equiv) — $43.65</option>
+        <option value="91875">91875 — Non-patient 15–30 min, video (343 equiv) — $87.05</option>
+        <option value="91876">91876 — Non-patient 30–45 min, video (345 equiv) — $134.00</option>
+        <option value="91877">91877 — Non-patient 45–75 min, video (347 equiv) — $184.90</option>
+        <option value="91878">91878 — Non-patient &gt;75 min, video (349 equiv) — $214.55</option>
+      </optgroup>
+      <optgroup label="In-person — Initial">
+        <option value="296">296 — Initial, ongoing reviews, rooms — $262.10</option>
+        <option value="297">297 — Initial &gt;45 min, hospital — $225.80</option>
+        <option value="299">299 — Initial &gt;45 min, other place — $313.30</option>
+        <option value="291">291 — GP mgmt plan, in-person — $455.60</option>
+      </optgroup>
+      <optgroup label="In-person — Follow-up">
+        <option value="293">293 — GP mgmt plan follow-up, in-person — $227.80</option>
+        <option value="300">300 — Follow-up ≤15 min — $43.65</option>
+        <option value="302">302 — Follow-up 15–30 min — $87.05</option>
+        <option value="304">304 — Follow-up 30–45 min — $134.00</option>
+        <option value="306">306 — Follow-up 45–75 min — $184.90</option>
+        <option value="308">308 — Follow-up &gt;75 min — $214.55</option>
+        <option value="289">289 — Complex NDD plan — $265.60</option>
+      </optgroup>
+      <optgroup label="In-person — Person other than patient">
+        <option value="341">341 — Non-patient ≤15 min — $43.65</option>
+        <option value="343">343 — Non-patient 15–30 min — $87.05</option>
+        <option value="345">345 — Non-patient 30–45 min — $134.00</option>
+        <option value="347">347 — Non-patient 45–75 min — $184.90</option>
+        <option value="349">349 — Non-patient &gt;75 min — $214.55</option>
+      </optgroup>
+      <optgroup label="Phone — Follow-up">
+        <option value="91837">91837 — Follow-up ≤15 min, phone (300 equiv) — $43.65</option>
+        <option value="91838">91838 — Follow-up 15–30 min, phone (302 equiv) — $87.05</option>
+        <option value="91839">91839 — Follow-up 30–45 min, phone (304 equiv) — $134.00</option>
+      </optgroup>
+      <optgroup label="Phone — Person other than patient">
+        <option value="91882">91882 — Non-patient ≤15 min, phone (341 equiv) — $43.65</option>
+        <option value="91883">91883 — Non-patient 15–30 min, phone (343 equiv) — $87.05</option>
+        <option value="91884">91884 — Non-patient 30–45 min, phone (345 equiv) — $134.00</option>
+      </optgroup>
+    </select>
+    <label class="fl">Session notes</label>
+    <textarea class="nf" id="ptSessionNotes" placeholder="Brief session notes, consent confirmed, format..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div id="s-family"></div>
+<div class="card">
+  <div class="ch blue">Family History</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Genetic loading</label>
+    <div class="toggle-group" id="geneticLoadingMount"></div>
+    <label class="fl">Family history notes</label>
+    <textarea class="nf" id="familyHistoryNotes" placeholder="e.g. Father — likely undiagnosed ASD; sister — ADHD..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div id="s-presenting"></div>
+<div class="card">
+  <div class="ch">Presenting Concerns</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Reason(s) for seeking ASD assessment</label>
+    <div id="assessReasonMount" style="display:flex;flex-direction:column;gap:5px;margin-bottom:10px"></div>
+    <label class="fl">Presenting notes</label>
+    <textarea class="nf" id="presentingNotes" placeholder="Presenting narrative, referral context, patient's own words..." oninput="save()"></textarea>
+    <label class="fl">Masking / camouflaging / burnout history</label>
+    <textarea class="nf" id="maskingNotes" placeholder="History of masking, camouflaging, burnout, shutdowns, meltdowns..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Existing Diagnoses &amp; Prior Screens</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Existing diagnoses</label>
+    <div class="chip-grid" id="existingDxMount"></div>
+    <textarea class="nf" id="existingDxNotes" placeholder="Diagnoses, treating clinicians, current treatment status..." oninput="save()"></textarea>
+    <label class="fl">Prior ASD assessments / screens</label>
+    <div id="priorScreensMount"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Collateral History</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;padding:5px 12px;background:#f8faff;border-bottom:1px solid var(--border)">
+    <span style="font-size:10px;font-weight:700;color:#6b7280;align-self:center;text-transform:uppercase">Quick fill:</span>
+    <button class="rb" onclick="quickFillColl('N/A')">— All N/A</button>
+    <button class="rb" onclick="quickFillColl('Yes')">✓ All Yes</button>
+    <button class="rb" onclick="quickFillColl('Not Done')">Todo All</button>
+  </div>
+  <div class="cb" id="collTableMount"></div>
+</div>
+
+<div id="s-crita"></div>
+<div class="card">
+  <div class="ch green">Criterion A — Social Communication (all 3 required)</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;padding:5px 12px;background:#f0fdf4;border-bottom:1px solid #d1fae5">
+    <span style="font-size:10px;font-weight:700;color:#6b7280;align-self:center;text-transform:uppercase">Quick fill:</span>
+    <button class="rb" onclick="quickFillCrit(critADomains,S.critA,'Met')">✓ All Met</button>
+    <button class="rb" onclick="quickFillCrit(critADomains,S.critA,'Partial')">~ All Partial</button>
+    <button class="rb" onclick="quickFillCrit(critADomains,S.critA,'Not Met')">✗ All Not Met</button>
+    <button class="rb" onclick="quickFillCrit(critADomains,S.critA,'N/A')">— All N/A</button>
+  </div>
+  <div class="cb" id="critAMount"></div>
+</div>
+
+<div id="s-critb"></div>
+<div class="card">
+  <div class="ch green">Criterion B — Restricted &amp; Repetitive Behaviours (≥2 of 4)</div>
+  <div style="display:flex;gap:5px;flex-wrap:wrap;padding:5px 12px;background:#f0fdf4;border-bottom:1px solid #d1fae5">
+    <span style="font-size:10px;font-weight:700;color:#6b7280;align-self:center;text-transform:uppercase">Quick fill:</span>
+    <button class="rb" onclick="quickFillCrit(critBDomains,S.critB,'Met')">✓ All Met</button>
+    <button class="rb" onclick="quickFillCrit(critBDomains,S.critB,'Partial')">~ All Partial</button>
+    <button class="rb" onclick="quickFillCrit(critBDomains,S.critB,'Not Met')">✗ All Not Met</button>
+    <button class="rb" onclick="quickFillCrit(critBDomains,S.critB,'N/A')">— All N/A</button>
+  </div>
+  <div class="cb" id="critBMount"></div>
+</div>
+
+<div id="s-critc"></div>
+<div class="card">
+  <div class="ch blue">Criterion C — Early Developmental Onset &amp; Developmental History</div>
+  <div class="cb">
+    <div style="margin-bottom:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Developmental History</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+      <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Auto-fill:</span>
+      <button class="rb" onclick="autoFillDev('Yes')">✓ All Yes</button>
+      <button class="rb" onclick="autoFillDev('Partially')">~ All Partial</button>
+      <button class="rb" onclick="autoFillDev('No')">✗ All No</button>
+      <button class="rb" onclick="autoFillDev('N/A')">— All N/A</button>
+    </div>
+    <div id="devHistoryMount"></div>
+    <div style="margin-top:14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px">Criterion C Rating &amp; Observations</div>
+    <div id="critCMount"></div>
+  </div>
+</div>
+
+<div id="s-critde"></div>
+<div class="card">
+  <div class="ch blue">Criteria D–E, Specifiers &amp; Differentials</div>
+  <div class="cb">
+    <div id="critDEMount"></div>
+    <label class="fl" style="margin-top:12px">Intellectual impairment</label>
+    <div class="toggle-group" id="specIntellectMount"></div>
+    <label class="fl">Language impairment</label>
+    <div class="toggle-group" id="specLangMount"></div>
+    <label class="fl">Catatonia</label>
+    <div class="toggle-group" id="specCatatMount"></div>
+    <label class="fl">Associated medical/genetic/psychiatric conditions</label>
+    <textarea class="nf" id="associatedConditions" placeholder="e.g. Fragile X, epilepsy, ADHD, anxiety..." oninput="save()"></textarea>
+
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Current Medications &amp; Allergies</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Current medications</label>
+    <textarea class="nf" id="currentMeds" placeholder="List current medications, doses..." oninput="save()"></textarea>
+    <label class="fl">Allergies / adverse reactions</label>
+    <textarea class="nf" id="allergies" placeholder="Known allergies or adverse reactions..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div id="s-mse"></div>
+<div class="card">
+  <div class="ch">Additional Observations</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Additional MSE / observations</label>
+    <textarea class="nf" id="mseFreeText" placeholder="Any additional observations not captured in criteria above..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<!-- ═══ TAB: OTHER HX ═══ -->
+
+
+<div id="s-risk"></div>
+<div class="card">
+  <div class="ch danger">Risk, Safety &amp; Capacity</div>
+  <div class="cb">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px">
+      <span style="font-size:10px;font-weight:700;color:#6b7280;align-self:center;text-transform:uppercase">Quick fill:</span>
+      <button class="rb" onclick="quickFillRisk('none')">✓ All nil</button>
+      <button class="rb" onclick="quickFillRisk('flag')">⚠ Flag all</button>
+    </div>
+    <div id="riskMount"></div>
+    <label class="fl">Risk summary / safety plan</label>
+    <textarea class="nf" id="riskNotes" placeholder="Overall risk formulation, protective factors, safety plan, crisis plan..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div id="s-differentials"></div>
+<div class="card">
+  <div class="ch blue">Differential Diagnoses</div>
+  <div class="cb">
+    <p style="font-size:11px;color:var(--muted);margin-bottom:8px">For each condition consider key differentiating questions, then mark as: Ruled out, Comorbid, or Primary (if it better explains the presentation).</p>
+    <div id="differentialsMount"></div>
+    <label class="fl">Differential discussion / notes</label>
+    <textarea class="nf" id="differentialNotes" placeholder="Overall differential reasoning..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<!-- ═══ TAB: DX & EDU ═══ -->
+
+
+<div id="s-dxedu"></div>
+<div class="card">
+  <div class="ch">Diagnostic Formulation &amp; Severity</div>
+  <div class="cb">
+    <label class="fl" style="margin-top:0">Criteria summary</label>
+    <div id="criteriaSummaryBox" style="background:#f8faff;border:1px solid #d1dce8;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:12px;line-height:1.7"></div>
+    <label class="fl">Diagnostic call</label>
+    <div class="toggle-group" id="dxCallMount"></div>
+    <label class="fl">Formulation notes</label>
+    <textarea class="nf" id="formulationNotes" placeholder="Integrate developmental history, DSM A–E, observations, comorbidities, collateral. State whether ASD criteria are met, partially met, or not met and why..." oninput="save()"></textarea>
+
+    <div style="margin-top:14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px">SC Sanity Check</div>
+    <div style="background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:8px;font-size:11px;line-height:1.5">
+      <div style="margin-bottom:4px"><strong style="color:#1e40af">Level 1:</strong> Manages interactions independently; social issues cause missteps/exhaustion but not regular collapse. At least one or two meaningful relationships.</div>
+      <div style="margin-bottom:4px"><strong style="color:#854d0e">Level 2:</strong> Needs ongoing structured supports to cope socially. Avoids many everyday social situations; relies on others to organise or mediate social contact.</div>
+      <div><strong style="color:#991b1b">Level 3:</strong> Cannot reliably manage social demands even with supports; often unemployed or in sheltered settings. Very limited independent social contact.</div>
+    </div>
+    <label class="fl">SC severity level</label>
+    <div class="sev-btns" id="scLevelMount"></div>
+    <label class="fl">SC examples / rationale</label>
+    <textarea class="nf" id="scNotes" placeholder="Real-world examples supporting your SC level rating..." oninput="save()"></textarea>
+
+    <div style="margin-top:14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px">RRB Sanity Check</div>
+    <div style="background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:8px;font-size:11px;line-height:1.5">
+      <div style="margin-bottom:4px"><strong style="color:#1e40af">Level 1:</strong> Routines inconvenient but manageable; changes cause distress yet can be tolerated with support. Interests intense but containable.</div>
+      <div style="margin-bottom:4px"><strong style="color:#854d0e">Level 2:</strong> Routines frequently disrupt work/home. Interests repeatedly derail tasks, sleep, or relationships.</div>
+      <div><strong style="color:#991b1b">Level 3:</strong> Daily life dominated by rituals; small changes trigger extreme distress. Most of the day revolves around interests.</div>
+    </div>
+    <label class="fl">RRB severity level</label>
+    <div class="sev-btns" id="rrbLevelMount"></div>
+    <label class="fl">RRB examples / rationale</label>
+    <textarea class="nf" id="rrbNotes" placeholder="Real-world examples supporting your RRB level rating..." oninput="save()"></textarea>
+    <div id="overallSeverityBox" style="display:none;margin-top:12px;padding:11px 14px;background:#f5f3ff;border:2px solid #a78bfa;border-radius:10px">
+      <div style="font-weight:700;color:#1e3a5f;margin-bottom:3px;font-size:12px">Overall ASD Level</div>
+      <div id="overallSeverityText" style="font-size:12px;color:#1f2937;line-height:1.6"></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Psychoeducation</div>
+  <div class="cb">
+    <p style="font-size:11px;color:var(--muted);margin-bottom:8px">Tick &#9744; topics covered — ticked topics appear in the Patient Handout report.</p>
+    <div id="peList">
+      <div class="pe-section" data-label="what autism is — neurodevelopmental basis and key concepts">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">What autism is</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Key message:</strong> Autism is neurodevelopmental — your brain develops differently from an early age. It is not an illness, not a character flaw, and not something that happened to you. It is a different neurological profile that shapes how you process the world.</p>
+          <p><strong>What changes with a diagnosis:</strong> Clarity and self-understanding. Tools to reduce friction. Permission to adapt your environment — not permission to avoid challenges. An explanation for a lifelong pattern, not an excuse.</p>
+          <p><strong>Key facts:</strong> Autism affects approximately 1–2% of the population. It is highly heritable. It is present from birth, though diagnosis often comes later — especially in women, high-maskers, and those with high intellectual ability. Most adults diagnosed later are Level 1 — independent, but often fatigued and socially stressed.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="ASD levels and what they mean in daily life">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">ASD levels — what they mean in practice</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <table>
+            <thead><tr><th>Level</th><th>Functional description</th><th>Adult examples</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Level 1</strong><br><em>("Asperger's")</em></td><td>Minimal support needed</td><td>Works and lives independently; subtle social differences; social situations drain energy; masking fatigue common</td></tr>
+              <tr><td><strong>Level 2</strong></td><td>Substantial support needed</td><td>Needs structured guidance at work; frequent sensory breaks; support with household tasks; routine disruption causes significant distress</td></tr>
+              <tr><td><strong>Level 3</strong></td><td>Very substantial support needed</td><td>Nonverbal or minimal speech; high distress if routines disrupted; daily life requires carers or intensive support</td></tr>
+            </tbody>
+          </table>
+          <p><strong>Key point:</strong> Most adults diagnosed later are Level 1 — independent, but often running at a significant energy deficit due to masking and sensory demands.</p>
+          <p><strong>Levels are not fixed forever.</strong> Support needs can shift with life demands, burnout, ageing, or changes in environment.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="how autism treatment works — the big picture and core principles">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">How treatment works — the big picture</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Autism does not need fixing.</strong> Treatment is about self-understanding, skill-building, and practical strategies to function effectively and sustainably.</p>
+          <p><strong>Core principles:</strong></p>
+          <ul>
+            <li><strong>Know yourself:</strong> Attention, energy, social processing, sensory sensitivity — your specific profile matters more than any general description.</li>
+            <li><strong>Build skills:</strong> Social communication, executive function, emotional regulation — these can be learned and strengthened.</li>
+            <li><strong>Adapt the environment:</strong> Practical, realistic modifications to reduce demand and overload.</li>
+            <li><strong>Recovery and pacing:</strong> Scheduled downtime, sensory breaks, adequate sleep. These are medical requirements, not luxuries.</li>
+            <li><strong>Address co-occurring conditions:</strong> Anxiety, depression, ADHD, sleep disorders — these often drive more day-to-day impairment than autism itself.</li>
+            <li><strong>Psychotherapy:</strong> Focused on self-understanding, coping, and practical skills — not on changing your personality or making you neurotypical.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="masking and camouflaging — what it is and the cost">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Masking and camouflaging</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>What it is:</strong> Consciously or unconsciously suppressing autistic traits to appear neurotypical. This includes scripted conversation, forced eye contact, mimicking others' body language, and suppressing stimming.</p>
+          <p><strong>The cost:</strong> Masking is metabolically expensive. Sustained masking is associated with exhaustion, anxiety, depression, identity confusion, and autistic burnout. Many people are only diagnosed late because their masking was effective enough to hide their difficulties.</p>
+          <p><strong>Unmasking:</strong> Dropping the performance gradually, with support. Can feel liberating but relationships and workplaces may shift as people encounter the real you. Balance authenticity with real-world demands — this is not all-or-nothing.</p>
+          <p><strong>Strategy:</strong> Identify the settings where masking is genuinely necessary versus where it is habitual. Reduce it where you safely can. Build in recovery time after high-masking environments.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="autistic burnout — what it is, causes, and recovery">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Autistic burnout</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>What it is:</strong> A state of chronic exhaustion, reduced function, and withdrawal following prolonged overload, masking, or demand beyond capacity. Often misdiagnosed as depression.</p>
+          <p><strong>How it differs from depression:</strong></p>
+          <ul>
+            <li><em>Burnout:</em> Driven by accumulated overload; temporary drop in skills and function; improvement follows demand reduction and recovery.</li>
+            <li><em>Depression:</em> Lowered baseline mood and energy; involves anhedonia (loss of pleasure), negative thinking, hopelessness; requires different treatment.</li>
+          </ul>
+          <p><strong>Common triggers:</strong> Life transitions (starting university, new job, relationship changes), sustained masking, loss of routine, sensory overload over time, insufficient recovery between demands.</p>
+          <p><strong>Recovery strategy:</strong> Reduce demands, restore routine, increase sensory-safe time, protect sleep, reduce social performance requirements. Do not push through with social activation — that makes it worse. Time is the primary healer.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="interoception — sensing internal body signals in autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Interoception</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>What it is:</strong> The brain's ability to sense internal signals — hunger, thirst, fatigue, pain, anxiety, bladder fullness, temperature. In autism, these signals are often delayed, muted, or difficult to interpret accurately.</p>
+          <p><strong>What this looks like:</strong> Not noticing hunger until severely hungry; not realising how tired you are until collapse; missing early anxiety signals until a meltdown; poor pain sensitivity or oversensitivity; difficulty identifying what emotion you are feeling (alexithymia).</p>
+          <p><strong>Strategies:</strong></p>
+          <ul>
+            <li>Use <strong>external monitoring</strong> — alarms for meals, hydration reminders, scheduled toilet breaks, sleep timers.</li>
+            <li>Build a <strong>body check routine</strong> — several times a day, stop and systematically check: Am I hungry? Thirsty? Tired? Needing movement?</li>
+            <li>Use <strong>visual emotion wheels</strong> to identify feelings when they are difficult to name.</li>
+            <li>Track energy levels throughout the day to identify your personal patterns.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="sensory processing and sensory diet strategies for autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Sensory processing and the sensory diet</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Why it matters:</strong> The autistic nervous system escalates arousal faster and recovers slower. Sensory input regulates the nervous system's arousal level — both too much and too little can cause distress.</p>
+          <p><strong>Hyper-reactivity</strong> (oversensitive): Loud sounds intolerable, light touch uncomfortable, certain food textures or smells overwhelming, fluorescent lighting distressing.</p>
+          <p><strong>Hypo-reactivity</strong> (undersensitive): Seeking intense sensory input, not noticing pain or cold, enjoying very loud music, needing movement to focus.</p>
+          <p><strong>Sensory diet strategies:</strong></p>
+          <ul>
+            <li><strong>Proprioceptive input:</strong> Weighted blankets, compression clothing, heavy work (lifting, pushing, carrying), joint compression exercises.</li>
+            <li><strong>Vestibular input:</strong> Walking, swimming, cycling, rocking, indoor steppers — rhythmic movement is regulating.</li>
+            <li><strong>Auditory:</strong> Noise-cancelling headphones or earplugs (Loop earplugs — Switch 2 or Dream), background music at steady tempo, white noise.</li>
+            <li><strong>Visual:</strong> Reduce fluorescent lighting, use lamps or natural light, sunglasses outdoors.</li>
+            <li><strong>Sleep:</strong> Manta Sleep Sound mask; Re-Timer 3 light therapy for circadian rhythm and mood.</li>
+          </ul>
+          <p><strong>Stimming:</strong> Repetitive movements (rocking, hand movements, fidgeting) are self-regulatory — not something to suppress unless they are causing harm. Suppressing stimming increases internal stress. Safe stimming should be permitted wherever possible.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="executive function difficulties in autism and practical strategies">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Executive function</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>What it is:</strong> Planning, initiating, organising, prioritising, switching, tracking time, holding information in mind. Difficulties in these areas are common in autism (and especially when ADHD is also present).</p>
+          <p><strong>Why "just do it" doesn't work:</strong> Tasks are often driven by interest, routine, and urgent deadlines. Without motivation or clear structure, initiation fails — not because of laziness, but because of genuine executive dysfunction.</p>
+          <p><strong>Strategies:</strong></p>
+          <ul>
+            <li><strong>Stepwise task design:</strong> Break tasks into the smallest possible steps and write them out. Reduce the activation cost of starting.</li>
+            <li><strong>Hyperfocus windows:</strong> Schedule demanding work for times when you are naturally most focused. Protect these windows.</li>
+            <li><strong>Pair tasks with engagement:</strong> Background music, preferred environment, a warm drink — pair aversive tasks with something pleasant.</li>
+            <li><strong>Body doubling:</strong> Work alongside someone else — in person, via video call, or using services like Focusmate (free virtual body doubling).</li>
+            <li><strong>Visual timers:</strong> Time Timer and similar tools make the passing of time visible and reduce time blindness.</li>
+            <li><strong>Written systems:</strong> External checklists, calendars, and whiteboards reduce reliance on working memory.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="social communication and relationships in autism — strategies">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Relationships and social communication</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>The core challenge:</strong> Misalignment between autistic and non-autistic communication styles — not an inability to connect, but a different way of connecting that can be misread by both sides.</p>
+          <p><strong>What this can look like:</strong> Difficulty with small talk, appearing blunt or uninterested, missing implied meanings or sarcasm, difficulty navigating group dynamics, more comfortable 1:1, friendships that feel one-sided, workplace politics that seem illogical.</p>
+          <p><strong>Strategies:</strong></p>
+          <ul>
+            <li><strong>Explicitly state your communication preferences</strong> to people you trust — "I communicate better in writing," "I need time to process before responding," "I may seem blunt — I don't mean to be."</li>
+            <li><strong>Explain overload and shutdown behaviours</strong> to close contacts before they happen, not during.</li>
+            <li><strong>Be selective with masking energy</strong> — identify where it is genuinely necessary and where it is habitual.</li>
+            <li><strong>Quality over quantity:</strong> Deep 1:1 connections are more sustainable than large social networks for most autistic people.</li>
+            <li><strong>Romantic relationships:</strong> Look for partners who are curious about your experience, communicate directly, and respect your need for routine and recovery time.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="psychotherapy options for autism — what works and what to look for">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Psychotherapy — what works</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Key message:</strong> Not all therapies are equal, and not all therapists understand autism. The goal is self-understanding, coping skills, and practical strategies — not changing who you are.</p>
+          <p><strong>Approaches with evidence:</strong></p>
+          <ul>
+            <li><strong>Modified CBT for autism:</strong> Adapted to be concrete, structured, and directly skills-focused. Useful for anxiety, depression, and coping strategies.</li>
+            <li><strong>ACT (Acceptance and Commitment Therapy):</strong> Particularly well-suited to autism — focuses on values, flexibility, and reducing experiential avoidance rather than challenging thoughts.</li>
+            <li><strong>DBT skills:</strong> Emotion regulation, distress tolerance, mindfulness. Useful for emotional dysregulation and interpersonal difficulties.</li>
+            <li><strong>ADHD coaching / autism coaching:</strong> Practical, accountability-focused. Complements therapy.</li>
+            <li><strong>OT (Occupational Therapy):</strong> Sensory processing, daily living skills, environmental modifications, executive function supports.</li>
+          </ul>
+          <p><strong>What to avoid:</strong> Therapists who focus on making you seem neurotypical; ABA-based approaches in adults (designed for children); therapy that pathologises stimming, special interests, or direct communication style without good reason.</p>
+          <p><strong>Book suggestions:</strong> <em>NeuroTribes</em> (history and perspective); <em>Uniquely Human</em> (understanding autistic behaviour); <em>The Independent Woman's Handbook for Super Safe Living on the Autistic Spectrum</em> (practical strategies).</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="commonly asked questions about ASD diagnosis and what it means">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Commonly asked questions</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Does the diagnosis change who I am?</strong> No. It explains who you already are. People often describe relief — "it makes sense now" — rather than feeling defined or limited by it.</p>
+          <p><strong>Will I always need support?</strong> Autism is lifelong, but support needs change. Many people function well with the right strategies, environment, and understanding. Others need ongoing structured support. It depends on your profile and your life.</p>
+          <p><strong>Why wasn't I diagnosed as a child?</strong> Many adults were missed — especially women, high-maskers, and those who were academically capable. Understanding of autism has changed enormously, and late diagnosis is very common.</p>
+          <p><strong>Does everyone on social media have ASD now?</strong> Awareness has genuinely increased. But increased identification does not mean over-diagnosis — it means people who were previously missed are now being found. A thorough clinical assessment is still meaningful.</p>
+          <p><strong>Do I have ADHD too?</strong> ADHD and autism overlap in 50–70% of cases. If you have significant inattention, impulsivity, or time-blindness, it is worth specifically assessing for ADHD.</p>
+          <p><strong>My family doesn't believe in the diagnosis.</strong> You don't need to convince them. "I've had a thorough clinical assessment and I'm comfortable with the diagnosis." You don't owe anyone a debate.</p>
+          <p><strong>What if I'm still not sure?</strong> That is completely normal. A diagnostic assessment is the beginning of self-understanding, not a final verdict. Continue with what is useful.</p>
+        </div>
+      </div>
+
+      <div class="pe-section" data-label="things to avoid with autism — social media, substances, unhelpful advice">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Things to be cautious about</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <ul>
+            <li><strong>Excessive social media and online autism communities:</strong> While peer connection is valuable, online communities can amplify anxiety, create catastrophic identity narratives, or provide advice that doesn't fit your individual profile. Use selectively.</li>
+            <li><strong>Substance use:</strong> Cannabis is particularly problematic — it worsens anxiety, disrupts sleep, and impairs the cognitive clarity that good management depends on. Alcohol, while common socially, can worsen sensory sensitivity the next day and disrupt sleep architecture.</li>
+            <li><strong>Uncritical acceptance of online advice:</strong> Not everyone offering advice online has your context, your level, or your specific profile. Apply clinical judgement.</li>
+            <li><strong>ABA or compliance-based approaches:</strong> These are not recommended for autistic adults. They focus on suppressing autistic behaviours rather than building coping skills and self-understanding.</li>
+            <li><strong>Pushing through burnout:</strong> Rest is not weakness. Sustained overload without recovery leads to longer and deeper burnout. Pacing is a clinical skill.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-group-label">Products &amp; Resources</div>
+
+      <div class="pe-section pe-optional" data-label="sensory tools — Loop earplugs, weighted blankets, compression clothing">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Sensory tools</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Loop Earplugs</strong> — High-quality reusable earplugs. The Switch 2 or Dream models reduce volume without distorting sound — good for work, social, and transit environments. <a href="https://au.loopearplugs.com" target="_blank">au.loopearplugs.com</a></p>
+          <p><strong>Neptune Blanket</strong> — Weighted blankets for sleep onset and sensory regulation. Usually 35–36% off. <a href="https://neptuneblanket.com.au" target="_blank">neptuneblanket.com.au</a></p>
+          <p><strong>Compression clothing</strong> — Thompson tees for day-to-day use; compression base layers for sensory seeking. Provides proprioceptive input and reduces tactile sensitivity.</p>
+          <p><strong>Kaiko Fidgets</strong> — Quality fidget tools useful for managing restlessness, focus, and as substitutes for body-focused repetitive behaviours. <a href="https://kaikofidgets.com" target="_blank">kaikofidgets.com</a></p>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="sleep tools — Manta Sleep mask and Re-Timer light therapy">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Sleep tools</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Manta Sleep SOUND mask</strong> — Blackout eye mask with built-in audio. Useful for the autistic brain that struggles to disengage at bedtime. Use code <strong>SLEEPBETTER_15</strong> for 15% off at <a href="https://mantasleep.com.au" target="_blank">mantasleep.com.au</a></p>
+          <p><strong>Re-Timer 3</strong> — Light therapy glasses worn for 30–60 minutes each morning. Regulates circadian rhythm, improves mood, and advances delayed sleep phase (common in autism). Use code <strong>BMURRIE</strong> for 20% off at <a href="https://www.retimer.com.au/retimer-3/" target="_blank">retimer.com.au/retimer-3</a></p>
+          <p><strong>Music for regulation:</strong> Brain.fm (focus/sleep playlists), trance music at steady tempo (e.g. Anjunadeep), or metronome-based sound for rhythmic regulation during sleep or work.</p>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="focus and executive function tools — body doubling, visual timers, Focusmate">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Focus and executive function tools</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Time Timer</strong> — Visual timer that makes the passage of time visible. Reduces time blindness. Available in multiple sizes at <a href="https://timetimer.com" target="_blank">timetimer.com</a></p>
+          <p><strong>Focusmate</strong> — Free virtual body doubling service. Schedule 50-minute co-working sessions with a partner. Remarkably effective for task initiation. <a href="https://focusmate.com" target="_blank">focusmate.com</a></p>
+          <p><strong>Melodic Forest</strong> — Kalimba and tongue drums. The kalimba is an excellent phone replacement — stimulating enough to satisfy the urge to pick something up, and genuinely calming. <a href="https://www.melodicforest.com.au" target="_blank">melodicforest.com.au</a></p>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="recommended books about autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Recommended books</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>NeuroTribes</strong> — Steve Silberman. The definitive history of autism. Essential for understanding the cultural and scientific context of the diagnosis.</p>
+          <p><strong>Uniquely Human</strong> — Barry Prizant. Reframes autistic behaviour as meaningful communication rather than deficits. Compassionate and evidence-informed.</p>
+          <p><strong>The Independent Woman's Handbook for Super Safe Living on the Autistic Spectrum</strong> — Robyn Steward. Practical, real-world strategies for autistic women navigating adult life safely.</p>
+          <p><strong>I Think I Might Be Autistic</strong> — Cynthia Kim. A practical guide for late-diagnosed adults working out what the diagnosis means for their life.</p>
+          <p><strong>The Autistic Brain</strong> — Temple Grandin. Personal account combined with neuroscience — useful for understanding sensory and cognitive differences.</p>
+        </div>
+      </div>
+
+      <div class="pe-group-label">Additional Topics</div>
+
+      <div class="pe-section pe-optional" data-label="workplace accommodations and disclosure for autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Workplace accommodations and disclosure</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Disclosure:</strong> Not legally required. Consider whether the specific accommodation you need requires disclosure. Stigma remains real — proceed thoughtfully and selectively.</p>
+          <p><strong>Useful adjustments:</strong> Written instructions and meeting agendas in advance, permission to use headphones, flexible start times, reduced open-plan exposure, clear and explicit feedback, predictable routines, working from home where possible.</p>
+          <p><strong>Under the Disability Discrimination Act (Australia):</strong> Employers are required to make reasonable adjustments. You do not need a diagnosis to request adjustments, but having one strengthens your position if needed.</p>
+          <p><strong>If self-employed:</strong> Batch admin into one weekly block, automate invoicing, fixed daily start routine, external accountability via coach or colleague.</p>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="NDIS access — evidence, eligibility, and what it funds for autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">NDIS access</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Eligibility:</strong> ASD is a listed condition under the NDIS. You need evidence that your disability causes substantial functional impairment and the impairment is likely permanent.</p>
+          <p><strong>What the NDIS can fund:</strong> Support coordination, occupational therapy, speech pathology, psychology, social skills groups, daily life supports, assistive technology, community access, and more.</p>
+          <p><strong>Evidence needed:</strong> Diagnostic report (including severity levels), functional assessment from OT or psychologist, supporting letters from treating clinicians. The diagnostic level matters — Level 1 applications often require detailed functional evidence.</p>
+          <p><strong>Process:</strong> Apply via the NDIS Access Request Form. If declined, you can request an internal review. Supports are available through the NDIA, LAC (Local Area Coordinator), and community partners.</p>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="insomnia and sleep difficulties in autism">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Sleep difficulties</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Why sleep and autism intersect:</strong> Delayed sleep phase is more common in autism; sensory sensitivity makes sleep environment critical; difficulty disengaging the mind at bedtime; co-occurring anxiety and ADHD worsen sleep further; irregular melatonin secretion documented in autism research.</p>
+          <p><strong>What helps:</strong></p>
+          <ul>
+            <li>Consistent wake time (including weekends) — the single most powerful sleep intervention.</li>
+            <li>Morning bright light therapy (Re-Timer 3 — 30–60 mins on waking) to advance sleep timing.</li>
+            <li>Sensory-safe sleep environment: blackout (Manta Sleep mask), comfortable temperature, white noise or music if helpful.</li>
+            <li>Wind-down routine that starts 60–90 minutes before bed. Predictable and repeatable.</li>
+            <li>Avoid screens in the 60 minutes before sleep.</li>
+            <li>Melatonin (low dose, short-acting) can help with sleep onset — discuss with your psychiatrist.</li>
+            <li>Clonidine is sometimes used off-label for sleep in autism — discuss if insomnia is significantly impairing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pe-section pe-optional" data-label="emotional regulation in autism — strategies and DBT skills">
+        <div class="pe-header"><span class="pe-tick">&#9744;</span><span class="pe-title">Emotional regulation</span><span class="pe-arrow">&#9658;</span></div>
+        <div class="pe-body">
+          <p><strong>Why emotions can be intense:</strong> Many autistic people experience emotions with greater intensity and have fewer automatic regulatory resources. Interoception difficulties mean early signals are missed. Masking suppresses emotional expression, which increases internal pressure. Alexithymia (difficulty identifying emotions) is common — making it hard to name and respond to feelings early.</p>
+          <p><strong>In the moment (when already activated):</strong></p>
+          <ul>
+            <li><strong>Cold water:</strong> Submerge face in cold water for 15–30 seconds. Activates the mammalian dive reflex and rapidly reduces emotional arousal.</li>
+            <li><strong>Intense exercise:</strong> 60 seconds of jumping jacks or similar — burns physiological activation quickly.</li>
+            <li><strong>Paced breathing:</strong> Exhale longer than inhale (4 in, 6–7 out). Activates parasympathetic response.</li>
+            <li><strong>Remove the trigger environment:</strong> If possible, physically leave. Escalation does not always respond to talking.</li>
+          </ul>
+          <p><strong>Longer-term regulation:</strong></p>
+          <ul>
+            <li><strong>Predictable routines:</strong> Reduce the number of unexpected demands that deplete regulatory capacity.</li>
+            <li><strong>Emotion naming:</strong> Accurately labelling feelings activates the prefrontal cortex and reduces amygdala reactivity.</li>
+            <li><strong>Scheduled decompression:</strong> Build in daily quiet time after high-demand periods — not as a reward, but as a physiological requirement.</li>
+            <li><strong>Opposite Action (DBT):</strong> When the emotion is urging an action that makes things worse, do the opposite — gently and compassionately.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB: PLAN ═══ -->
+
+
+<div id="s-plan"></div>
+<div class="card">
+  <div class="ch">Non-Pharmacological &amp; Psychosocial</div>
+  <div class="cb">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="nonPharmMount"></div>
+    <div style="display:flex;gap:7px;align-items:center;margin-top:8px">
+      <input type="text" class="inp" id="nonPharmCustomInput" style="flex:1" placeholder="Add custom recommendation..." onkeydown="if(event.key==='Enter')addCustomNonPharm()">
+      <button class="rb" onclick="addCustomNonPharm()">+ Add</button>
+    </div>
+    <div id="nonPharmCustomList" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Medication Plan</div>
+  <div class="cb">
+    <div style="overflow-x:auto">
+      <table class="med-plan-table" id="medPlanTable">
+        <thead><tr><th>Medication</th><th>Indication / target</th><th>Dose / instructions</th><th>Notes</th><th style="width:36px"></th></tr></thead>
+        <tbody id="medPlanBody"></tbody>
+      </table>
+    </div>
+    <button class="add-row-btn" onclick="addMedRow()" style="margin-top:7px">+ Add Medication</button>
+    <label class="fl">Prescribing notes / SafeScript</label>
+    <textarea class="nf" id="prescribingNotes" placeholder="SafeScript checked — no concerns. Authority via PRODA..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Follow-Up Appointments</div>
+  <div class="cb">
+    <div id="fuApptList"></div>
+    <button class="add-row-btn" onclick="addFUAppt()">+ Add appointment</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Monitoring</div>
+  <div class="cb">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="monitoringMount"></div>
+    <div style="display:flex;gap:7px;align-items:center;margin-top:6px">
+      <input type="text" class="inp" id="monCustomInput" style="flex:1" placeholder="Add custom monitoring item..." onkeydown="if(event.key==='Enter')addCustomMon()">
+      <button class="rb" onclick="addCustomMon()">+ Add</button>
+    </div>
+    <div id="monCustomList" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:7px"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Referrals &amp; Supports</div>
+  <div class="cb">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="referralsMount"></div>
+    <label class="fl">Referral details / notes</label>
+    <textarea class="nf" id="referralNotes" placeholder="Referrals arranged, NDIS discussion, support groups, funding letters required..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch warning">If Any Concerns</div>
+  <div class="cb">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="concernsMount"></div>
+    <div style="background:#fff7ed;border:1px solid #fb923c;border-radius:8px;padding:9px 12px;margin-top:8px">
+      <label style="display:flex;align-items:center;gap:7px;font-size:12px;cursor:pointer">
+        <input type="checkbox" id="includeDisclaimer" style="width:14px;height:14px;accent-color:var(--primary)" checked>
+        Include standard disclaimer (see GP/ED for medical concerns; email for questions)
+      </label>
+      <div style="margin-top:6px;font-size:11px;color:var(--muted)">Contact email: <input type="text" class="inp" id="contactEmail" style="display:inline;width:240px;height:26px;font-size:11px;padding:2px 7px" placeholder="e.g. info@yourpractice.com.au" oninput="save()"></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch">Additional Notes</div>
+  <div class="cb">
+    <textarea class="nf" id="additionalPlanNotes" placeholder="Next steps for patient, documentation required, letters needed, NDIS evidence..." oninput="save()"></textarea>
+  </div>
+</div>
+
+<!-- ═══ TAB: OUTPUTS ═══ -->
+
+
+<div id="s-outputs"></div>
+<div class="card">
+  <div class="ch">Generate Report</div>
+  <div class="cb">
+    <label style="display:flex;align-items:center;gap:7px;margin-bottom:10px;font-size:12px;cursor:pointer;background:#f0fdfd;border:1.5px solid #4db8b8;padding:7px 11px;border-radius:8px">
+      <input type="checkbox" id="includeDokotelaLetterhead" style="width:14px;height:14px;accent-color:#1a6b7a">
+      <span><strong>Include Dokotela letterhead</strong> on all letters</span>
+    </label>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px">
+      <button class="abtn primary" onclick="generateReport('patient')">👤 Patient Report</button>
+      <button class="abtn" style="background:#1e3a5f;color:#fff;border-color:#1e3a5f" onclick="generateReport('full')">Full Clinical Report</button>
+      <button class="abtn" style="background:#134e4a;color:#fff;border-color:#134e4a" onclick="generateReport('letter')">GP / Referrer Letter</button>
+      <button class="abtn" style="background:#374151;color:#fff;border-color:#374151" onclick="generateReport('treatment')">Treatment Plan Only</button>
+      <button class="abtn" style="background:#065f46;color:#fff;border-color:#065f46" onclick="generateReport('ndis')">NDIS Support Letter</button>
+      <button class="abtn" style="background:#134e4a;color:#fff;border-color:#134e4a" onclick="generateReport('handout')">📚 Patient Handout</button>
+      <button class="abtn" style="background:#1e40af;color:#fff;border-color:#1e40af" onclick="generateReport('workplace')">🏢 Workplace Letter</button>
+      <button class="abtn" style="background:#4c1d95;color:#fff;border-color:#4c1d95" onclick="generateReport('study')">🎓 Study/Uni Letter</button>
+      <button class="abtn" style="background:#374151;color:#fff;border-color:#374151" onclick="generateReport('medcert')">📋 Medical Certificate</button>
+    </div>
+  </div>
+</div>
+
+<div id="reportArea" style="display:none">
+  <div class="card">
+    <div class="cb" style="padding:8px 13px">
+      <div class="output-tabs">
+        <button class="output-tab active" onclick="switchTab('patient',this)">Patient</button>
+        <button class="output-tab" onclick="switchTab('full',this)">Full</button>
+        <button class="output-tab" onclick="switchTab('letter',this)">GP Letter</button>
+        <button class="output-tab" onclick="switchTab('treatment',this)">Treatment</button>
+        <button class="output-tab" onclick="switchTab('ndis',this)">NDIS</button>
+        <button class="output-tab" onclick="switchTab('handout',this)">Handout</button>
+        <button class="output-tab" onclick="switchTab('workplace',this)">Workplace</button>
+        <button class="output-tab" onclick="switchTab('study',this)">Study</button>
+        <button class="output-tab" onclick="switchTab('medcert',this)">Med Cert</button>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px">
+        <button class="abtn" onclick="copyReport()">📋 Copy</button>
+        <button class="abtn" onclick="downloadWord()">⬇ Download Word</button>
+        <button class="abtn" onclick="printReport()">🖨 Print</button>
+      </div>
+      <div id="report-patient" class="letter" style="display:none"></div>
+      <div id="report-full" class="letter" style="display:none"></div>
+      <div id="report-letter" class="letter" style="display:none"></div>
+      <div id="report-treatment" class="letter" style="display:none"></div>
+      <div id="report-ndis" class="letter" style="display:none"></div>
+      <div id="report-handout" class="letter" style="display:none"></div>
+      <div id="report-workplace" class="letter" style="display:none"></div>
+      <div id="report-study" class="letter" style="display:none"></div>
+      <div id="report-medcert" class="letter" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div><!-- end content -->
+
+</div><!-- end .content -->
+
+<div id="toast" style="position:fixed;bottom:24px;right:24px;background:#166534;color:#fff;padding:10px 18px;border-radius:8px;font-weight:700;font-size:12px;box-shadow:0 4px 20px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999">Copied!</div>
+
+<script>
+
+// ═══ CONSTANTS ═══
+const STORAGE_KEY = 'asd_assessment_v2';
+const CLIN_KEY = 'asd_clinician_v2';
+
+// ═══ DATA ═══
+const assessReasons = [
+  'Wanting to understand myself better',
+  'People in my life have suggested I get assessed',
+  'A clinician suggested I get assessed',
+  'Wanting NDIS access or supports',
+  'Wanting workplace or study accommodations',
+  'My child or family member was diagnosed and I recognised myself',
+  'Struggling at work or study and want answers',
+  'Wanting confirmation after self-research or online screening',
+];
+const presentingConcerns = [
+  'Sensory sensitivities','Difficulties with social interaction','Communication differences','Repetitive behaviours / routines',
+  'Executive dysfunction / disorganisation','Difficulty maintaining relationships','Workplace / employment difficulties',
+  'Academic / study difficulties','Intense / all-consuming special interests','Literal thinking / difficulty with implication',
+  'Masking exhaustion','Anxiety / social anxiety','Depression / low mood','Insomnia / sleep difficulties','Chronic fatigue',
+];
+const existingDxList = [
+  'ADHD','Anxiety disorder','Depression / MDD','OCD','PTSD / complex trauma','Bipolar disorder',
+  'BPD / personality disorder','Specific learning disorder','Intellectual disability','Psychosis / schizophrenia',
+  'Epilepsy','POTS / dysautonomia','Ehlers-Danlos / hypermobility','Eating disorder','ARFID',
+];
+const priorScreensList = [
+  { id:'raads', label:'RAADS-R (self-rated)' },
+  { id:'aq', label:'AQ-10 / AQ-50' },
+  { id:'srs', label:'SRS-2' },
+  { id:'catq', label:'CAT-Q (masking)' },
+  { id:'ados', label:'ADOS-2 (clinician-administered)' },
+  { id:'adir', label:'ADI-R (informant interview)' },
+  { id:'psych', label:'Psych assessment (ASD)' },
+  { id:'other', label:'Other testing' },
+];
+const collSources = [
+  'Parent (biological)','Parent (adoptive/step)','Sibling','Partner / spouse',
+  'School reports (primary)','School reports (secondary)','Paediatric letter / report',
+  'Psychologist report','NDIS correspondence','Other written document',
+];
+const devHistorySections = [
+  { id:'prenatal', label:'Pregnancy, birth & early milestones', questions:['Any pregnancy or birth complications? Prematurity, early medical issues?','Motor and language milestones — typical, early, delayed, or regression?','Any regression in skills after initial development?'] },
+  { id:'earlyTemp', label:'Early temperament & behaviour', questions:['Was the child easy or difficult to console? Any unusual early sensory quirks?','Repetitive or stereotyped play in early childhood?','Insistence on sameness or rigid routines as a toddler?','Early social interest — did they engage with other children/adults?'] },
+  { id:'primarySchool', label:'Preschool / primary school', questions:['Friendships — any close friends, one-sided friendships, or preferred to play alone?','Imaginary play — typical, absent, or unusual?','Teacher concerns? What were they specifically?','Academic pattern — gifted in some areas, struggling in others?'] },
+  { id:'highSchool', label:'High school & adolescence', questions:['Peer group and social functioning — did they fit in?','Bullying — as target, witness, or participant?','Early mental health symptoms — anxiety, depression, meltdowns?','Masking — effort to fit in? Did this lead to exhaustion or eventual collapse?'] },
+];
+const critADomains = [
+  { id:'A1', label:'A1 — Social-emotional reciprocity',
+    detail:'Conversation initiation/maintenance, back-and-forth exchange, sharing emotions/interests, perceived as blunt/aloof/overly intense, difficulty with small talk, monologuing.',
+    probes:['How do you find conversations — starting them, keeping them going?','Do people ever say you overshare, or that you are hard to read?','How do you go with small talk and social scripts?'],
+    obs:[
+      { id:'obs_initiation', label:'Social initiation', opts:['N/A','Good','Reduced','Excessive','One-directional','Absent'] },
+      { id:'obs_responses', label:'Reciprocity / turn-taking', opts:['N/A','Good','Delayed','Monologuing','Misses cues','Scripted'] },
+      { id:'obs_affect_comm', label:'Communication of affect', opts:['N/A','Good','Reduced','Concrete','Intellectualised','Absent'] },
+      { id:'obs_insight_soc', label:'Insight into social difficulties', opts:['N/A','Good','Concrete/example-based','Theoretical only','Limited','Absent'] },
+      { id:'mse_speech', label:'Speech (MSE)', opts:['N/A','Normal','Reduced rate','Increased rate','Pedantic','Tangential','Poverty'] },
+      { id:'mse_thought_form', label:'Thought form (MSE)', opts:['N/A','Normal','Concrete','Circumstantial','Tangential','Perseverative','Disorganised'] },
+    ]
+  },
+  { id:'A2', label:'A2 — Nonverbal communication',
+    detail:'Eye contact (reduced/intense/oddly timed), facial expression, gestures, body language, prosody (monotone/odd rhythm), understanding of tone/sarcasm/jokes/indirect requests.',
+    probes:['What is eye contact like for you — does it feel natural?','Do people ever misread your facial expressions or tone?','How do you go with sarcasm, jokes, or indirect requests?'],
+    obs:[
+      { id:'obs_eyeContact', label:'Eye contact', opts:['N/A','Normal','Reduced','Intense','Oddly timed','Avoided'] },
+      { id:'obs_facialExpr', label:'Facial expression', opts:['N/A','Full range','Reduced range','Incongruent','Flat','Delayed'] },
+      { id:'obs_gestures', label:'Gestures', opts:['N/A','Normal','Minimal','Unusual','Excessive','Not integrated'] },
+      { id:'obs_prosody', label:'Prosody / speech rhythm', opts:['N/A','Normal','Monotone','Odd rhythm','Over-formal','Pressured'] },
+      { id:'mse_affect', label:'Affect (MSE)', opts:['N/A','Full range','Restricted','Blunted','Flat','Incongruent','Reactive'] },
+      { id:'mse_mood', label:'Mood (MSE)', opts:['N/A','Euthymic','Depressed','Anxious','Elevated','Irritable','Labile'] },
+    ]
+  },
+  { id:'A3', label:'A3 — Developing and maintaining relationships',
+    detail:'Childhood and adult friendships, acquaintances vs friends, group vs 1:1, romantic relationships, misreading signals, difficulty with workplace politics and unwritten social rules.',
+    probes:['Have you found it hard to make or keep friends throughout your life?','Tell me about a time a relationship ended or went wrong — what happened from your perspective?','How do you find workplace or group social dynamics?'],
+    obs:[
+      { id:'obs_relationship_insight', label:'Insight into relationship patterns', opts:['N/A','Good','Concrete/example-based','Theoretical only','Limited','Absent'] },
+      { id:'obs_empathy', label:'Observed empathy / other-awareness', opts:['N/A','Good','Reduced','Focused on self','Intellectual only','Absent'] },
+      { id:'obs_boundaries', label:'Awareness of social boundaries', opts:['N/A','Good','Overly formal','Overly familiar','Limited','Absent'] },
+    ]
+  },
+];
+const critBDomains = [
+  { id:'B1', label:'B1 — Stereotyped/repetitive movements or speech',
+    detail:'Stimming (rocking, hand flapping, finger movements, fidgeting), echolalia, unusual phrases, scripted speech patterns.',
+    probes:['Do you have any repetitive movements you do, especially when stressed, happy, or concentrating?','Do you ever use phrases or quotes from films/games/books in conversation?'],
+    obs:[
+      { id:'obs_stimming', label:'Observed stimming / RRBs', opts:['N/A','None observed','Mild','Moderate','Marked','Patient-reported only'] },
+      { id:'obs_echolalia', label:'Echolalia / scripted speech', opts:['N/A','None observed','Mild','Moderate','Marked'] },
+      { id:'obs_motor', label:'Motor mannerisms', opts:['N/A','None observed','Mild','Moderate','Marked'] },
+      { id:'mse_appearance', label:'Appearance / behaviour (MSE)', opts:['N/A','Unremarkable','Unusual grooming','Unusual clothing','Visible stims','Disorganised'] },
+    ]
+  },
+  { id:'B2', label:'B2 — Insistence on sameness, routines, rituals',
+    detail:'Rigid routines around timing, food, clothing; distress with unexpected changes; mental scripts for social situations; inflexibility when plans change.',
+    probes:['How do you cope when plans change unexpectedly?','Do you have specific routines that really matter to you — what happens if they are disrupted?','Do you have rules around food, clothing, routes, or specific ways of doing things?'],
+    obs:[
+      { id:'obs_rigidity', label:'Observed rigidity / inflexibility', opts:['N/A','None observed','Mild','Moderate','Marked'] },
+      { id:'obs_distress_change', label:'Distress with unexpected change (reported)', opts:['N/A','None / minimal','Mild','Moderate','Severe'] },
+      { id:'obs_scripted', label:'Scripted / formulaic responses', opts:['N/A','None observed','Mild','Moderate','Marked'] },
+    ]
+  },
+  { id:'B3', label:'B3 — Highly restricted, fixated interests',
+    detail:'Intense/special interests — their depth, dominance of time and conversation, difficulty disengaging, difference from usual hobbies in intensity.',
+    probes:['Tell me about your main hobbies or interests — how much of your time do they take?','Do people around you ever comment on how much you talk about or focus on particular things?','What happens if someone interrupts you when you are engaged in your interest?'],
+    obs:[
+      { id:'obs_topic_focus', label:'Topic dominance / difficulty redirecting', opts:['N/A','None observed','Mild','Moderate','Marked'] },
+      { id:'obs_interest_depth', label:'Depth / intensity of reported interests', opts:['N/A','Typical','Moderately intense','Highly intense','All-consuming'] },
+    ]
+  },
+  { id:'B4', label:'B4 — Sensory differences',
+    detail:'Hyper/hypo-reactivity to noise, light, touch, smell, taste; sensory seeking/avoidance; impact on environment choice, clothing, food textures.',
+    probes:['Are there sounds, lights, textures, smells, or tastes that really bother you?','Do you seek out particular sensory experiences?','How do you manage in busy/noisy environments like supermarkets or public transport?'],
+    obs:[
+      { id:'obs_sensory_reported', label:'Sensory sensitivities (reported)', opts:['N/A','None significant','Mild','Moderate','Severe'] },
+      { id:'obs_sensory_observed', label:'Sensory responses during interview', opts:['N/A','None observed','Mild sensitivity','Seeking behaviour','Avoidance behaviour'] },
+      { id:'obs_clothing_texture', label:'Clothing / texture issues (reported)', opts:['N/A','None','Mild','Moderate','Severe'] },
+    ]
+  },
+];
+const critCEItems = [
+  { id:'critC', label:'Criterion C — Early developmental onset',
+    detail:'Symptoms present from early childhood (may not have been fully manifest until social demands exceeded capacity — late unmasking).',
+    obs:[
+      { id:'obs_childhood_account', label:'Clarity of childhood account', opts:['N/A','Clear and consistent','Partial / some gaps','Limited recall','Contradictory'] },
+      { id:'obs_collateral_support', label:'Collateral support for childhood onset', opts:['N/A','Strong','Partial','Limited','None obtained'] },
+    ]
+  },
+  { id:'critD', label:'Criterion D — Clinically significant impairment',
+    detail:'Difficulties cause significant impairment in social, occupational, or other important areas of current functioning.',
+    obs:[
+      { id:'obs_work_impairment', label:'Occupational / academic impairment', opts:['N/A','None','Mild','Moderate','Severe'] },
+      { id:'obs_social_impairment', label:'Social / relationship impairment', opts:['N/A','None','Mild','Moderate','Severe'] },
+      { id:'obs_daily_impairment', label:'Daily living impairment', opts:['N/A','None','Mild','Moderate','Severe'] },
+      { id:'mse_insight', label:'Insight & judgement (MSE)', opts:['N/A','Good','Partial','Limited','Absent'] },
+      { id:'mse_thoughtContent', label:'Thought content (MSE)', opts:['N/A','No concerns','Obsessions','Over-valued ideas','Suicidal ideation','Paranoid ideation'] },
+      { id:'mse_cognition', label:'Cognition (MSE)', opts:['N/A','Intact','Mild impairment','Moderate impairment','Impaired attention','Memory concerns'] },
+    ]
+  },
+  { id:'critE', label:'Criterion E — Not better explained by ID/GDD',
+    detail:'Not better explained by intellectual disability or global developmental delay.',
+    probes:[
+      'Across most areas of everyday life — learning, reasoning, problem-solving — do things generally come fairly naturally to you, or have most things consistently been harder than for people around you?',
+      'Is the difficulty specifically with the social side of things — reading people, knowing what to say, fitting in — or is it more across the board?',
+      'Were there school supports for learning difficulties specifically (as opposed to behavioural or social supports)?',
+    ],
+    obs:[
+      { id:'obs_intellect_apparent', label:'Apparent intellectual level', opts:['N/A','Average or above','Low average','Borderline','Likely ID'] },
+    ]
+  },
+];
+
+const differentialsList = [
+  { id:'diff_sad', label:'Social anxiety disorder', q1:'When you feel anxious socially, is it mainly when you worry people are judging or criticising you — or do you feel uncomfortable even with close people you trust?', q2:'Is there ever a context where socialising feels genuinely relaxed and enjoyable? Or does it always feel effortful regardless?', note:'SAD: anxiety tied to fear of negative evaluation, with relief in safe company. ASD: social effort is pervasive even with trusted relationships. Both very commonly coexist.' },
+  { id:'diff_gad', label:'Generalised anxiety disorder', q1:'When you worry, does it jump between lots of different areas — health, money, relationships, work — or does it centre around specific things like change, unpredictability, or people being hard to read?', q2:'Do you recognise your worrying as excessive? Or does it feel like a reasonable response to genuinely difficult situations?', note:'GAD: diffuse, recognisably excessive worry across many domains. ASD anxiety: triggered by specific stressors (change, sensory overload, social ambiguity), often not experienced as anxiety per se.' },
+  { id:'diff_depression', label:'Depression / MDD', q1:'Has there been a period where you were significantly more social or engaged than you are now? Or has spending time alone always been your preference?', q2:'When you withdraw or feel flat, is that a change from your usual self — or is it basically how you have always been wired?', note:'Depression represents a change from baseline. ASD traits are stable and lifelong. Autistic burnout closely mimics depression; key distinction is trajectory and response to demand reduction.' },
+  { id:'diff_bipolar', label:'Bipolar disorder / hypomania', q1:'Have you had periods lasting days or weeks where you needed much less sleep, felt unusually energetic, and your thoughts were racing — clearly different from your normal self?', q2:'Between those episodes, does your social comfort level return to a consistent baseline — or has it always been roughly the same throughout your life?', note:'Bipolar: episodic elevated mood with clear onset/offset and return to baseline. ASD traits are stable, not episodic.' },
+  { id:'diff_ocd', label:'OCD', q1:'When you have repetitive thoughts or do things in a particular way, do those feel distressing or unwanted — like something you are fighting against? Or do they feel comfortable, natural, or even enjoyable?', q2:'Is there a specific fear behind the repetition — like something bad will happen — or is the routine more about order, comfort, or just the way you prefer things?', note:'OCD rituals are ego-dystonic — driven by anxiety, fought against. ASD RRBs are typically ego-syntonic — regulating, enjoyable, or simply preferred. Both can coexist.' },
+  { id:'diff_ptsd', label:'PTSD / complex trauma', q1:'Were there periods growing up where things felt significantly safer or easier socially, before things got harder? Or have these difficulties been consistent your whole life?', q2:'When you are startled, on edge, or avoid certain situations, does it feel connected to specific memories — or more like a general way your nervous system has always worked?', note:'Trauma can produce ASD-like presentations. Key is developmental trajectory — ASD features predate trauma. Complex PTSD and ASD frequently coexist.' },
+  { id:'diff_adhd', label:'ADHD (without ASD)', q1:'In conversations, do you lose track because your attention drifts, or because the back-and-forth itself feels hard to navigate — keeping track of cues, knowing when to speak, understanding what is implied?', q2:'Do you generally want to connect with people and feel the pull toward socialising — but find it hard to follow through — or does social interaction feel unrewarding even when it goes well?', note:'ADHD: social difficulties are secondary to dysregulation — the person wants to connect but loses the thread. ASD: social processing itself is different. Both coexist in 50-70% of cases.' },
+  { id:'diff_id', label:'Intellectual disability', q1:'In most areas of everyday life — reasoning, problem solving, learning new things — do things come fairly naturally to you, or have most things been harder than for people around you across the board?', q2:'Has it been learning and understanding generally that has been difficult, or is it specifically the social side — reading people, fitting in, knowing what to say?', note:'ID produces globally reduced function. ASD+ID: social communication disproportionately impaired beyond general developmental level, AND RRBs present. Criterion E directly addresses this.' },
+  { id:'diff_scd', label:'Social communication disorder', q1:'Do you have any strong interests that take up a lot of your time or that others comment on? Any repetitive habits or movements, particularly when stressed or absorbed in something?', q2:'Have you ever been bothered by particular sounds, textures, lights, or smells in ways that felt stronger than for most people?', note:'SCD is ASD Criterion A without Criterion B — pragmatic communication difficulties without RRBs or sensory differences. If ANY RRBs are present, ASD is the correct diagnosis. SCD is a diagnosis of exclusion.' },
+  { id:'diff_lang', label:'Language disorder', q1:'Have you ever had difficulty with the mechanics of language itself — finding words, understanding sentences, grammar — or has the harder part been more about knowing what to say and reading the social side?', q2:'When you are not sure what to say, do you show it through gesture, expression, or body language — or does that feel equally difficult?', note:'Language disorder: deficits in linguistic structure typically compensated by intact nonverbal communication. ASD: broader pragmatic and nonverbal communication differences.' },
+  { id:'diff_psychosis', label:'Psychosis / schizophrenia', q1:'Have you ever heard voices, seen things others could not see, or had the strong sense that people were sending you messages through the TV, radio, or strangers behaviour?', q2:'Has there been a period where your thinking felt very disorganised — where you could not hold a train of thought or others told you your speech stopped making sense?', note:'Psychosis: positive symptoms, deteriorating course, thought disorder. ASD: stable social differences from childhood, no true hallucinations or delusions. ASD is a risk factor for psychosis; both can coexist.' },
+  { id:'diff_schizotypal', label:'Schizotypal personality disorder', q1:'Do you have a sense that things happening around you — coincidences, numbers, strangers behaviour — sometimes feel personally meaningful or connected to you in ways that are hard to explain?', q2:'Does keeping to yourself feel like a relief and a preference, or does it also come with a sense of suspicion or unease about what might happen if you got closer to people?', note:'Schizotypal: magical thinking, ideas of reference, odd beliefs, social anxiety driven by suspicion. ASD: concrete/literal thinking, social exhaustion without paranoia.' },
+  { id:'diff_schizoid', label:'Schizoid personality disorder', q1:'Would you say you genuinely have no interest in close relationships — or is it more that relationships are something you find very effortful or difficult, and you have adapted by relying on yourself?', q2:'Do you experience much of a range of emotions in your day-to-day life — or does it feel like things generally do not affect you strongly, whether positively or negatively?', note:'Schizoid PD: genuine indifference to relationships and restricted emotional experience as core features. ASD: often wants connection but lacks the capacity/energy. Very high overlap.' },
+  { id:'diff_avoidant', label:'Avoidant personality disorder', q1:'When you avoid social situations, is it mainly because you are afraid of being rejected, embarrassed, or found inadequate — and would you jump at connection if you were sure of being liked?', q2:'Have you held back from things — jobs, relationships, activities — because of strong fear of criticism or feeling not good enough, even when others encouraged you?', note:'Avoidant PD: driven by intense fear of rejection and inadequacy. ASD: social avoidance driven by processing effort, sensory overload, or finding interactions unrewarding — not primarily fear of rejection.' },
+  { id:'diff_bpd', label:'Borderline personality disorder', q1:'Do you experience very intense, rapidly shifting emotions — particularly in relationships — including strong fear of being abandoned, even when the evidence does not support it?', q2:'Has your sense of who you are — your values, identity, goals — felt unstable or like it shifts depending on who you are with?', note:'BPD: frantic efforts to avoid abandonment, identity instability, splitting. ASD: social exhaustion, stable (often rigid) sense of identity. Misdiagnosis of ASD as BPD is very common, especially in women.' },
+  { id:'diff_narcissistic', label:'Narcissistic personality disorder', q1:'Do you think of yourself as more capable or special than most people — and feel frustrated when others do not recognise that? Or is it more that you have strong views and high standards?', q2:'When you talk about your interests or achievements, is it to impress others and get their admiration — or because those things genuinely fascinate you and you assume others will find them interesting too?', note:'NPD: grandiosity, entitlement, need for admiration as core features. ASD can appear similar when talking extensively about special interests. Key distinction is motivation.' },
+  { id:'diff_ocpd', label:'OCPD', q1:'Are you very focused on rules, order, and doing things the right way — to the point where it slows things down or frustrates others? Does getting things perfect feel more important than getting them done?', q2:'Do you find it hard to delegate or work with others because you are worried they will not do things correctly?', note:'OCPD: perfectionism, rigidity, preoccupation with control and rules — ego-syntonic, applied interpersonally. ASD: insistence on sameness driven by need for predictability and sensory comfort, not perfectionism.' },
+  { id:'diff_paranoid', label:'Paranoid personality disorder', q1:'Do you often find yourself suspicious of other people motivations — feeling that people are out to take advantage of you, deceive you, or harm your reputation?', q2:'Do you tend to hold grudges for a long time, or feel that attacks on your character require a strong response?', note:'Paranoid PD: pervasive distrust and suspicion of others motives. ASD: social misreading can look like suspicion but is driven by processing difficulty, not threat perception.' },
+];
+const mseItems = []; // perception moved to risk items
+const comorbidSections = [
+  { id:'mood', label:'Mood', items:['Depression / MDD','Bipolar I','Bipolar II','Cyclothymia','Persistent depressive disorder','Self-harm','Suicidal ideation','Past suicidal attempt'] },
+  { id:'anxiety', label:'Anxiety', items:['GAD','Social anxiety','Panic disorder','Specific phobia','OCD','Health anxiety','Avoidant behaviours'] },
+  { id:'adhd', label:'ADHD', items:['ADHD — childhood onset confirmed','ADHD — inattentive','ADHD — combined','Executive dysfunction','Working memory difficulties'] },
+  { id:'trauma', label:'Trauma', items:['Bullying (severe)','Childhood abuse / neglect','Workplace trauma','Medical trauma','PTSD','Complex PTSD'] },
+  { id:'psychosis', label:'Psychosis / mania', items:['Hallucinations','Delusions','Disorganised thinking','Mania symptoms','Decreased need for sleep'] },
+  { id:'substance', label:'Substance use', items:['Alcohol','Cannabis','Nicotine / vaping','Stimulants (illicit)','Benzodiazepines','Opioids','Other substances'] },
+  { id:'medical', label:'Medical', items:['Epilepsy / seizures','TBI','Sleep apnoea','Chronic pain','GI issues / IBS','Ehlers-Danlos / hypermobility','POTS / dysautonomia','Hypothyroidism','Other neurological'] },
+];
+const riskItems = [
+  { id:'risk_shi', label:'Self-harm / suicidal ideation', options:['None','Passive SI','Active SI','Plan / intent','Past attempt','Current SH'] },
+  { id:'risk_rto', label:'Risk to others', options:['None','Verbal aggression','Physical aggression','Forensic history'] },
+  { id:'risk_selfcare', label:'Self-care / neglect', options:['Adequate','Mild neglect','Moderate neglect','Severe neglect'] },
+  { id:'risk_perception', label:'Perception', options:['Normal','Hallucinations reported','Dissociation','Depersonalisation'] },
+  { id:'risk_capacity', label:'Capacity', options:['Capacity intact','Questionable','Lacks capacity','Needs assessment'] },
+  { id:'risk_telehealth', label:'Telehealth appropriateness', options:['Appropriate','Borderline — monitor','Requires in-person'] },
+];
+const nonPharmOptions = [
+  { key:'psychoed', label:'Psychoeducation — ASD profile, burnout, stress-vulnerability' },
+  { key:'cbt', label:'Psychology — Modified CBT for ASD' },
+  { key:'act', label:'Psychology — ACT (Acceptance & Commitment Therapy)' },
+  { key:'emreg', label:'Emotion regulation skills / DBT skills' },
+  { key:'exposure', label:'Graduated exposure (anxiety)' },
+  { key:'trauma', label:'Trauma-focused therapy' },
+  { key:'ot', label:'Occupational Therapy — sensory, ADLs, executive function' },
+  { key:'speech', label:'Speech pathology — social communication' },
+  { key:'coaching', label:'Autism/executive function coaching' },
+  { key:'workAccom', label:'Workplace accommodations / vocational support' },
+  { key:'uniAccom', label:'University / study accommodations' },
+  { key:'sensory', label:'Sensory environment planning' },
+  { key:'routines', label:'Routine and structure building' },
+  { key:'pacing', label:'Energy management / pacing' },
+  { key:'ndis', label:'NDIS application / support coordination' },
+  { key:'peer', label:'Peer support / autism community groups' },
+];
+const monitoringOptions = [
+  'BP and HR (if on medication)','Weight / BMI','Sleep review','Mood review (PHQ-9 / GAD-7)',
+  'ADHD symptoms (ASRS)','ASD burnout / wellbeing check','Medication tolerability review','FBC / bloods','LFTs','ECG','Urine drug screen',
+];
+const referralOptions = [
+  { key:'psych', label:'Psychologist' },
+  { key:'ot', label:'Occupational Therapist' },
+  { key:'speech', label:'Speech Pathologist' },
+  { key:'gp', label:'GP (monitoring / prescriptions)' },
+  { key:'paed', label:'Paediatrician' },
+  { key:'neuro', label:'Neurologist' },
+  { key:'voc', label:'Vocational rehabilitation' },
+  { key:'social', label:'Social worker' },
+  { key:'ndis', label:'NDIS planner / LAC' },
+  { key:'genetics', label:'Clinical genetics' },
+];
+const concernOptions = [
+  { key:'burnout', label:'Signs of burnout' },
+  { key:'meltdown', label:'Severe meltdown / shutdown' },
+  { key:'si', label:'Suicidal thoughts' },
+  { key:'med', label:'Medication side effects' },
+  { key:'crisis', label:'Mental health crisis' },
+  { key:'safeguarding', label:'Safeguarding concern' },
+];
+
+// ═══ STATE ═══
+function srcKey(s){ return s.replace(/[\s\/\.]+/g,'_'); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function createInitialState() {
+  const st = {
+    ptDate:'', ptName:'', ptDOB:'', ptGender:'', ptState:'', ptOcc:'', ptRef:'',
+    ptWhoPresent:'', ptMBS:'', ptSessionNotes:'',
+    presenting:{ concerns:{}, assessReasons:{}, notes:'', maskingNotes:'' },
+    priorAssessments:{ existingDx:{}, existingDxNotes:'', priorScreens:{}, priorScreenNotes:'' },
+    collateral:{},
+    developmental:{},
+    critA:{ ratings:{}, notes:{} },
+    critB:{ ratings:{}, notes:{} },
+    critCE:{ ratings:{}, notes:{} },
+    specifiers:{ intellectual:'', language:'', catatonia:'', associated:'' },
+    differentials:{},
+    differentialNotes:'',
+    familyHistory:{ notes:'', geneticLoading:'' },
+    obs:{},
+    mse:{},
+    mseFreeText:'',
+    comorbid:{},
+    currentMeds:'', allergies:'',
+    risk:{},
+    riskNotes:'',
+    dxCall:'',
+    formulationNotes:'',
+    scLevel:'', scNotes:'',
+    rrbLevel:'', rrbNotes:'',
+    nonPharm:{}, nonPharmCustom:[],
+    medPlan:[],
+    prescribingNotes:'',
+    fuAppts:[],
+    monitoring:{}, monCustom:[],
+    referrals:{}, referralNotes:'',
+    concerns:{},
+    includeDisclaimer:true,
+    contactEmail:'',
+    additionalPlanNotes:'',
+  };
+  assessReasons.forEach(r=>{ st.presenting.assessReasons[r]=false; });
+  presentingConcerns.forEach(c=>{ st.presenting.concerns[c]=false; });
+  existingDxList.forEach(d=>{ st.priorAssessments.existingDx[d]=false; });
+  priorScreensList.forEach(s=>{ st.priorAssessments.priorScreens[s.id]={ active:false, detail:'' }; });
+  collSources.forEach(s=>{ st.collateral[srcKey(s)]={ status:'N/A', detail:'' }; });
+  devHistorySections.forEach(s=>{ st.developmental[s.id]={ rating:'', notes:'', asdRep:'' }; });
+  critADomains.forEach(d=>{ st.critA.ratings[d.id]=''; st.critA.notes[d.id]=''; });
+  critBDomains.forEach(d=>{ st.critB.ratings[d.id]=''; st.critB.notes[d.id]=''; });
+  critCEItems.forEach(i=>{ st.critCE.ratings[i.id]=''; st.critCE.notes[i.id]=''; });
+  function initObs(domains){ (domains||[]).forEach(d=>{ (d.obs||[]).forEach(o=>{ if(st.obs[o.id]===undefined) st.obs[o.id]='N/A'; }); }); }
+  initObs(critADomains); initObs(critBDomains); initObs(critCEItems);
+  differentialsList.forEach(d=>{ st.differentials[d.id]=''; });
+  mseItems.forEach(m=>{ st.mse[m.id]=''; });
+  comorbidSections.forEach(sec=>{ sec.items.forEach(i=>{ st.comorbid[i]=false; }); });
+  riskItems.forEach(r=>{ st.risk[r.id]=''; });
+  nonPharmOptions.forEach(n=>{ st.nonPharm[n.key]=false; });
+  monitoringOptions.forEach(m=>{ st.monitoring[m]=false; });
+  referralOptions.forEach(r=>{ st.referrals[r.key]=false; });
+  concernOptions.forEach(c=>{ st.concerns[c.key]=false; });
+  return st;
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return createInitialState();
+    const saved=JSON.parse(raw);
+    const base=createInitialState();
+    ['ptDate','ptName','ptDOB','ptGender','ptState','ptOcc','ptRef','ptWhoPresent','ptMBS','ptSessionNotes',
+     'differentialNotes','mseFreeText','currentMeds','allergies','riskNotes','dxCall','formulationNotes',
+     'scLevel','scNotes','rrbLevel','rrbNotes','prescribingNotes','referralNotes','additionalPlanNotes',
+     'includeDisclaimer','contactEmail'].forEach(k=>{ if(saved[k]!==undefined) base[k]=saved[k]; });
+    if(saved.presenting) Object.assign(base.presenting,saved.presenting);
+    if(saved.priorAssessments){
+      if(saved.priorAssessments.existingDx) Object.assign(base.priorAssessments.existingDx, saved.priorAssessments.existingDx);
+      if(saved.priorAssessments.existingDxNotes) base.priorAssessments.existingDxNotes=saved.priorAssessments.existingDxNotes;
+      if(saved.priorAssessments.priorScreenNotes) base.priorAssessments.priorScreenNotes=saved.priorAssessments.priorScreenNotes;
+      if(saved.priorAssessments.priorScreens){
+        Object.keys(saved.priorAssessments.priorScreens).forEach(k=>{
+          if(base.priorAssessments.priorScreens[k]!==undefined){
+            const v=saved.priorAssessments.priorScreens[k];
+            // Handle both old boolean format and new object format
+            base.priorAssessments.priorScreens[k]=typeof v==='object'?v:{active:!!v,detail:''};
+          }
+        });
+      }
+    }
+    if(saved.collateral) Object.keys(saved.collateral).forEach(k=>{ if(base.collateral[k]) base.collateral[k]=saved.collateral[k]; });
+    if(saved.developmental) Object.keys(saved.developmental).forEach(k=>{ if(base.developmental[k]) base.developmental[k]=saved.developmental[k]; });
+    if(saved.critA){ if(saved.critA.ratings) Object.assign(base.critA.ratings,saved.critA.ratings); if(saved.critA.notes) Object.assign(base.critA.notes,saved.critA.notes); }
+    if(saved.critB){ if(saved.critB.ratings) Object.assign(base.critB.ratings,saved.critB.ratings); if(saved.critB.notes) Object.assign(base.critB.notes,saved.critB.notes); }
+    if(saved.critCE){ if(saved.critCE.ratings) Object.assign(base.critCE.ratings,saved.critCE.ratings); if(saved.critCE.notes) Object.assign(base.critCE.notes,saved.critCE.notes); }
+    if(saved.specifiers) Object.assign(base.specifiers,saved.specifiers);
+    if(saved.differentials) Object.keys(saved.differentials).forEach(k=>{ base.differentials[k]=saved.differentials[k]; });
+    if(saved.familyHistory) Object.assign(base.familyHistory,saved.familyHistory);
+    if(saved.obs) Object.keys(saved.obs).forEach(k=>{ base.obs[k]=saved.obs[k]; });
+    if(saved.mse) Object.assign(base.mse,saved.mse);
+    if(saved.comorbid) Object.assign(base.comorbid,saved.comorbid);
+    if(saved.risk) Object.assign(base.risk,saved.risk);
+    if(saved.nonPharm) Object.assign(base.nonPharm,saved.nonPharm);
+    if(saved.monitoring) Object.assign(base.monitoring,saved.monitoring);
+    if(saved.referrals) Object.assign(base.referrals,saved.referrals);
+    if(saved.concerns) Object.assign(base.concerns,saved.concerns);
+    if(Array.isArray(saved.medPlan)) base.medPlan=saved.medPlan;
+    if(Array.isArray(saved.fuAppts)) base.fuAppts=saved.fuAppts;
+    if(Array.isArray(saved.nonPharmCustom)) base.nonPharmCustom=saved.nonPharmCustom;
+    if(Array.isArray(saved.monCustom)) base.monCustom=saved.monCustom;
+    return base;
+  }catch(e){ return createInitialState(); }
+}
+let S = loadState();
+function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(S)); }
+function loadClin(){ try{ return JSON.parse(localStorage.getItem(CLIN_KEY)||'{}'); }catch(e){ return {}; } }
+function saveClin(){
+  const cd={ name:gv('drName'), creds:gv('drQuals'), ahpra:gv('drAHPRA'), provider:gv('drProvider') };
+  localStorage.setItem(CLIN_KEY,JSON.stringify(cd));
+}
+function gv(id){ const el=document.getElementById(id); return el?el.value:''; }
+function sv(id,val){ const el=document.getElementById(id); if(el) el.value=val||''; }
+
+// ═══ NAV ═══
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  const content=document.querySelector('.content');
+  if(!el||!content) return;
+  const top=el.offsetTop-8;
+  content.scrollTo({top:top,behavior:'smooth'});
+  document.querySelectorAll('.snav').forEach(b=>b.classList.remove('active'));
+  const btn=document.querySelector('.snav[data-sec="'+id+'"]');
+  if(btn){ btn.classList.add('active'); btn.scrollIntoView({block:'nearest',inline:'center'}); }
+}
+
+function initScrollSpy(){
+  const sections=['s-session','s-family','s-presenting','s-crita','s-critb','s-critc','s-critde','s-mse','s-risk','s-differentials','s-dxedu','s-plan','s-outputs'];
+  const content=document.querySelector('.content');
+  if(!content) return;
+  function onScroll(){
+    const scrollTop=content.scrollTop;
+    let active=sections[0];
+    sections.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.offsetTop<=scrollTop+20) active=id;
+    });
+    document.querySelectorAll('.snav').forEach(b=>b.classList.remove('active'));
+    const btn=document.querySelector('.snav[data-sec="'+active+'"]');
+    if(btn){ btn.classList.add('active'); btn.scrollIntoView({block:'nearest',inline:'center'}); }
+  }
+  content.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+}
+function switchTab(tab,btn){
+  const tabs=['patient','full','letter','treatment','ndis','handout','workplace','study','medcert'];
+  tabs.forEach(t=>{ const el=document.getElementById('report-'+t); if(el) el.style.display=t===tab?'block':'none'; });
+  document.querySelectorAll('.output-tab').forEach(b=>b.classList.remove('active'));
+  if(btn){ btn.classList.add('active'); }
+  else{
+    document.querySelectorAll('.output-tab').forEach(b=>{ if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+tab+"'")) b.classList.add('active'); });
+  }
+}
+
+// ═══ PILLS ═══
+function updateCriteriaSummary(){
+  const el=document.getElementById('criteriaSummaryBox'); if(!el) return;
+  const aTotal=critADomains.length; const bTotal=critBDomains.length;
+  const aMet=critADomains.filter(d=>S.critA.ratings[d.id]==='Met').length;
+  const aPartial=critADomains.filter(d=>S.critA.ratings[d.id]==='Partial').length;
+  const bMet=critBDomains.filter(d=>S.critB.ratings[d.id]==='Met').length;
+  const bPartial=critBDomains.filter(d=>S.critB.ratings[d.id]==='Partial').length;
+  const cMet=S.critCE.ratings['critC']==='Met';
+  const dMet=S.critCE.ratings['critD']==='Met';
+  const eMet=S.critCE.ratings['critE']==='Met';
+  function row(label, met, partial, total, required, threshold){
+    const ok=met>=threshold;
+    const col=ok?'#166534':met>0||partial>0?'#854d0e':'#6b7280';
+    const icon=ok?'✅':met>0||partial>0?'⚠':'○';
+    return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">'
+      +'<span style="font-size:13px">'+icon+'</span>'
+      +'<span style="color:'+col+';font-weight:'+(ok?'700':'400')+'">'+label+': '
+      +'<strong>'+met+'/'+total+' Met</strong>'+(partial?' ('+partial+' Partial)':'')
+      +' — '+(ok?'<span style="color:#166534">Required ✓</span>':'<span style="color:#9ca3af">Need '+threshold+'</span>')
+      +'</span></div>';
+  }
+  function ceRow(label, rating){
+    const ok=rating==='Met'; const col=ok?'#166534':rating==='Partial'?'#854d0e':'#6b7280';
+    const icon=ok?'✅':rating==='Partial'?'⚠':'○';
+    return '<div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">'
+      +'<span style="font-size:13px">'+icon+'</span>'
+      +'<span style="color:'+col+';font-weight:'+(ok?'700':'400')+'">'+label+': '+(rating||'Not rated')+'</span></div>';
+  }
+  el.innerHTML=row('Criterion A',aMet,aPartial,aTotal,'All 3',3)
+    +row('Criterion B',bMet,bPartial,bTotal,'≥2 of 4',2)
+    +ceRow('Criterion C',S.critCE.ratings['critC']||'')
+    +ceRow('Criterion D',S.critCE.ratings['critD']||'')
+    +ceRow('Criterion E',S.critCE.ratings['critE']||'');
+}
+function refresh(){
+  const cd=loadClin();
+  sv('drName',cd.name); sv('drQuals',cd.creds); sv('drAHPRA',cd.ahpra); sv('drProvider',cd.provider);
+  const aCount=critADomains.filter(d=>S.critA.ratings[d.id]==='Met').length;
+  const bCount=critBDomains.filter(d=>S.critB.ratings[d.id]==='Met').length;
+  const pA=document.getElementById('pill-crita');
+  const pB=document.getElementById('pill-critb');
+  const pD=document.getElementById('pill-dx');
+  if(pA){ pA.textContent='A: '+aCount+'/3'; pA.className='pill'+(aCount>=3?' green':''); }
+  if(pB){ pB.textContent='B: '+bCount+'/4'; pB.className='pill'+(bCount>=2?' green':''); }
+  const dx=S.dxCall||'';
+  updateCriteriaSummary();
+  if(pD){
+    if(dx.includes('confirmed')){ pD.textContent='\u2713 ASD'; pD.className='pill green'; }
+    else if(dx.includes('probable')){ pD.textContent='~ ASD'; pD.className='pill amber'; }
+    else if(dx.includes('not confirmed')){ pD.textContent='\u2717 No ASD'; pD.className='pill red'; }
+    else{ pD.textContent='Dx: ?'; pD.className='pill'; }
+  }
+}
+
+// ═══ RENDER HELPERS ═══
+function renderAssessReasons(){
+  const el=document.getElementById('assessReasonMount'); if(!el) return;
+  el.innerHTML=assessReasons.map(r=>{
+    const checked=S.presenting.assessReasons[r]||false;
+    return '<label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;padding:3px 0;line-height:1.4;">'
+      +'<input type="checkbox" '+(checked?'checked':'')
+      +' data-ar="'+r.replace(/"/g,'&quot;')+'" style="width:15px;height:15px;margin-top:1px;flex-shrink:0;accent-color:var(--primary)">'
+      +'<span>'+r+'</span></label>';
+  }).join('');
+  el.querySelectorAll('[data-ar]').forEach(cb=>{
+    cb.onchange=function(){ S.presenting.assessReasons[this.getAttribute('data-ar')]=this.checked; save(); };
+  });
+}
+function renderPriorScreens(){
+  const el=document.getElementById('priorScreensMount'); if(!el) return;
+  el.innerHTML=priorScreensList.map(s=>{
+    const e=S.priorAssessments.priorScreens[s.id]||{active:false,detail:''};
+    const detailHtml=e.active?'<input type="text" class="inp" style="margin-top:5px;font-size:12px;height:30px" placeholder="'+(s.id==='psych'?'Who assessed, when, conclusion...':s.id==='other'?'Test name, score, date...':'Score / result...')+'" value="'+esc(e.detail||'')+'" data-ps-detail="'+s.id+'">':'';
+    return '<div style="margin-bottom:4px">'
+      +'<label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:5px 0">'
+      +'<input type="checkbox" '+(e.active?'checked':'')+' data-ps="'+s.id+'" style="width:15px;height:15px;flex-shrink:0;accent-color:var(--primary)">'
+      +'<span style="font-size:13px;font-weight:'+(e.active?'600':'400')+'">'+esc(s.label)+'</span>'
+      +'</label>'
+      +detailHtml
+      +'</div>';
+  }).join('');
+  el.querySelectorAll('[data-ps]').forEach(cb=>{
+    cb.onchange=function(){
+      const id=this.getAttribute('data-ps');
+      if(!S.priorAssessments.priorScreens[id]) S.priorAssessments.priorScreens[id]={active:false,detail:''};
+      S.priorAssessments.priorScreens[id].active=this.checked;
+      save(); renderPriorScreens();
+    };
+  });
+  el.querySelectorAll('[data-ps-detail]').forEach(inp=>{
+    inp.oninput=function(){
+      const id=this.getAttribute('data-ps-detail');
+      if(!S.priorAssessments.priorScreens[id]) S.priorAssessments.priorScreens[id]={active:false,detail:''};
+      S.priorAssessments.priorScreens[id].detail=this.value;
+      save();
+    };
+  });
+}
+function renderChipGrid(mountId, items, stateObj, getKey){
+  const el=document.getElementById(mountId); if(!el) return;
+  el.innerHTML=items.map(item=>{
+    const key=getKey?getKey(item):item;
+    const active=stateObj&&stateObj[key]?'chip-active':'';
+    return '<button type="button" class="chip '+active+'" data-chip-mount="'+mountId+'" data-chip-key="'+esc(key)+'">'+esc(item.label||key)+'</button>';
+  }).join('');
+  el.querySelectorAll('[data-chip-key]').forEach(btn=>{
+    btn.onclick=function(){
+      const k=this.getAttribute('data-chip-key');
+      if(stateObj){ stateObj[k]=!stateObj[k]; this.classList.toggle('chip-active',stateObj[k]); save(); }
+    };
+  });
+}
+function renderToggleGroup(mountId, options, stateObj, stateKey){
+  const el=document.getElementById(mountId); if(!el) return;
+  const cur=stateObj[stateKey]||'';
+  function cls(opt){ if(opt!==cur) return ''; return opt==='Yes'||opt==='Confirmed'||opt.startsWith('Strong')?'tog-yes':opt==='No'||opt==='Not confirmed'?'tog-no':opt==='Partially'||opt.startsWith('Moderate')?'tog-partial':opt==='N/A'?'tog-na':'tog-active'; }
+  el.innerHTML=options.map(opt=>'<button type="button" class="'+cls(opt)+'" data-tg-key="'+esc(stateKey)+'" data-tg-val="'+esc(opt)+'">'+esc(opt)+'</button>').join('');
+  el.querySelectorAll('[data-tg-val]').forEach(btn=>{
+    btn.onclick=function(){
+      const val=this.getAttribute('data-tg-val');
+      stateObj[stateKey]=val; save();
+      const group=this.closest('.toggle-group');
+      group.querySelectorAll('button').forEach(b=>b.className='');
+      const v=val; this.classList.add(v==='Yes'||v==='Confirmed'||v.startsWith('Strong')?'tog-yes':v==='No'||v==='Not confirmed'?'tog-no':v==='Partially'||v.startsWith('Moderate')?'tog-partial':v==='N/A'?'tog-na':'tog-active');
+      save();
+    };
+  });
+}
+function quickFillColl(val){
+  collSources.forEach(src=>{ S.collateral[srcKey(src)].status=val; });
+  save(); renderCollateralTable();
+}
+function renderCollateralTable(){
+  const el=document.getElementById('collTableMount'); if(!el) return;
+  const statuses=['N/A','Yes','Partial','No','Not Done'];
+  const clsMap={'N/A':'coll-na-active','Yes':'coll-yes-active','Partial':'coll-part-active','No':'coll-no-active','Not Done':'coll-todo-active'};
+  el.innerHTML=collSources.map(src=>{
+    const k=srcKey(src); const e=S.collateral[k]||{status:'N/A',detail:''};
+    return '<div class="coll-tr"><div class="coll-label">'+esc(src)+'</div><div class="coll-right">'+
+      statuses.map(s=>'<button type="button" class="rb '+(e.status===s?clsMap[s]:'')+'" data-coll-src="'+k+'" data-coll-val="'+s+'">'+s+'</button>').join('')+
+      '</div>'+(e.status!=='N/A'?'<input type="text" class="coll-detail" placeholder="Detail / notes..." value="'+esc(e.detail||'')+'" data-coll-detail="'+k+'">':'')+'</div>';
+  }).join('');
+  el.querySelectorAll('[data-coll-src]').forEach(btn=>{
+    btn.onclick=function(){
+      const k=this.getAttribute('data-coll-src'); const v=this.getAttribute('data-coll-val');
+      if(!S.collateral[k]) S.collateral[k]={status:'N/A',detail:''};
+      S.collateral[k].status=v; save();
+      renderCollateralTable();
+    };
+  });
+  el.querySelectorAll('[data-coll-detail]').forEach(inp=>{
+    inp.oninput=function(){
+      const k=this.getAttribute('data-coll-detail');
+      if(!S.collateral[k]) S.collateral[k]={status:'N/A',detail:''};
+      S.collateral[k].detail=this.value; save();
+    };
+  });
+}
+function renderDevHistory(){
+  const el=document.getElementById('devHistoryMount'); if(!el) return;
+  const clsMap={'Yes':'tog-yes','Partially':'tog-partial','No':'tog-no','N/A':'tog-na'};
+  el.innerHTML=devHistorySections.map(sec=>{
+    const e=S.developmental[sec.id]||{rating:'',notes:'',asdRep:''};
+    const repBtns=['Yes','Partially','No','N/A'].map(opt=>'<button type="button" class="'+(e.asdRep===opt?clsMap[opt]:'')+'" data-dev-rep="'+sec.id+'" data-dev-rep-val="'+opt+'">'+opt+'</button>').join('');
+    const probeHtml=sec.questions.length?'<details style="margin:5px 0 4px"><summary style="font-size:11px;font-weight:700;color:var(--primary);cursor:pointer;list-style:none;display:flex;align-items:center;gap:4px;padding:3px 0;user-select:none;-webkit-user-select:none">&#9654; Sample questions</summary><ol style="margin:6px 0 2px 16px;font-size:11.5px;line-height:1.65;color:#374151">'+sec.questions.map(q=>'<li style="margin-bottom:4px">'+esc(q)+'</li>').join('')+'</ol></details>':'';
+    return '<div style="background:#fafbfc;border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin-bottom:6px">'+
+      '<div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px">'+esc(sec.label)+'</div>'+
+      '<div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em">Consistent with ASD?</div>'+
+      '<div class="toggle-group" style="margin-bottom:4px">'+repBtns+'</div>'+
+      probeHtml+
+      '<textarea class="nf" style="margin-top:4px;min-height:38px" data-dev-notes="'+sec.id+'" placeholder="Brief observations, examples...">'+esc(e.notes||'')+'</textarea></div>';
+  }).join('');
+  el.querySelectorAll('[data-dev-rep]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-dev-rep'); const val=this.getAttribute('data-dev-rep-val');
+      S.developmental[id].asdRep=val; save();
+      const group=this.closest('.toggle-group');
+      group.querySelectorAll('[data-dev-rep="'+id+'"]').forEach(b=>b.className='');
+      const clsMap={'Yes':'tog-yes','Partially':'tog-partial','No':'tog-no','N/A':'tog-na'};
+      this.classList.add(clsMap[val]||'');
+    };
+  });
+  el.querySelectorAll('[data-dev-notes]').forEach(ta=>{
+    ta.oninput=function(){ S.developmental[this.getAttribute('data-dev-notes')].notes=this.value; save(); };
+  });
+}
+function autoFillDev(val){ devHistorySections.forEach(s=>{ S.developmental[s.id].asdRep=val; }); save(); renderDevHistory(); }
+
+function obsStyle(val,isActive){
+  if(!isActive) return 'border:1.5px solid #d7deea;background:#fff;color:#6b7280;';
+  const g=['Normal','Good','Full range','Intact','None observed','None significant','No concerns','Clear and consistent','Strong','Average or above','None','Typical','Unremarkable'];
+  const b=['Marked','Severe','Absent','Flat','Suicidal','Paranoid','Halluci','None obtained','Contradictory','All-consuming','Likely ID'];
+  const w=['Mild','Moderate','Reduced','Limited','Partial','Monotone','Minimal','Concrete','Tangential','Odd','One-dir','Scripted','Intellectual','Theoretical','Low average','Borderline','Increased rate','Reduced rate','Pedantic','Patient-reported','Incongruent'];
+  if(g.some(x=>val.startsWith(x))) return 'border:1.5px solid #86efac;background:#dcfce7;color:#166534;font-weight:700;';
+  if(b.some(x=>val.includes(x))) return 'border:1.5px solid #fca5a5;background:#fee2e2;color:#991b1b;font-weight:700;';
+  if(w.some(x=>val.includes(x))) return 'border:1.5px solid #fde047;background:#fef9c3;color:#854d0e;font-weight:700;';
+  return 'border:1.5px solid #9ca3af;background:#e5e7eb;color:#374151;font-weight:700;';
+}
+function renderCritDomains(mountId, domains, stateObj, onUpdate){
+  const el=document.getElementById(mountId); if(!el) return;
+  const dsmCls={'Met':'dsm-met','Partial':'dsm-partial','Not Met':'dsm-notmet','N/A':'dsm-na'};
+  el.innerHTML=domains.map(domain=>{
+    const rating=stateObj.ratings[domain.id]||''; const notes=stateObj.notes[domain.id]||'';
+    const dsmBtns=['Met','Partial','Not Met','N/A'].map(opt=>'<button type="button" class="rb '+(rating===opt?dsmCls[opt]:'')+'" data-crit-id="'+domain.id+'" data-crit-val="'+opt+'">'+opt+'</button>').join('');
+    const obsHtml=(domain.obs||[]).length?'<div style="background:#f8faff;border:1px solid #e8eef7;border-radius:7px;padding:8px 10px;margin:6px 0">'+
+      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px">Observational items</div>'+
+      '<div class="obs-grid">'+domain.obs.map(ob=>{
+        const cur=S.obs[ob.id]||'N/A';
+        return '<div class="obs-item"><div class="obs-item-label">'+esc(ob.label)+'</div><div class="obs-item-btns">'+
+          ob.opts.map(opt=>'<button type="button" data-obs-id="'+ob.id+'" data-obs-val="'+opt+'" style="border-radius:5px;padding:2px 6px;font-size:10px;cursor:pointer;font-family:var(--sans);'+obsStyle(opt,cur===opt)+'">'+esc(opt)+'</button>').join('')+
+          '</div></div>';
+      }).join('')+'</div></div>':'';
+    const probeHtml=(domain.probes||[]).length?'<details style="margin:5px 0 3px"><summary style="font-size:11px;font-weight:700;color:var(--primary);cursor:pointer;list-style:none;display:flex;align-items:center;gap:4px;padding:3px 0;user-select:none;-webkit-user-select:none">&#9654; Sample questions</summary><ol style="margin:6px 0 2px 16px;font-size:11.5px;line-height:1.65;color:#374151">'+domain.probes.map(p=>'<li style="margin-bottom:4px">'+esc(p)+'</li>').join('')+'</ol></details>':'';
+    return '<div class="dsm-row"><div class="dsm-row-header"><div class="dsm-label">'+esc(domain.label)+'</div><div class="dsm-detail">'+esc(domain.detail)+'</div><div class="dsm-btns">'+dsmBtns+'</div></div>'+probeHtml+obsHtml+'<textarea class="nf" style="min-height:40px" data-crit-notes="'+domain.id+'" placeholder="Concrete examples...">'+esc(notes)+'</textarea></div>';
+  }).join('');
+  el.querySelectorAll('[data-crit-id]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-crit-id'); const val=this.getAttribute('data-crit-val');
+      stateObj.ratings[id]=val; save(); if(onUpdate) onUpdate();
+      const row=this.closest('.dsm-row');
+      row.querySelectorAll('[data-crit-id]').forEach(b=>b.className='rb');
+      this.classList.add(dsmCls[val]||'');
+      refresh();
+    };
+  });
+  el.querySelectorAll('[data-obs-id]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-obs-id'); const val=this.getAttribute('data-obs-val');
+      S.obs[id]=val; save();
+      const item=this.closest('.obs-item');
+      item.querySelectorAll('[data-obs-id="'+id+'"]').forEach(b=>{ b.style.cssText='border-radius:5px;padding:2px 6px;font-size:10px;cursor:pointer;font-family:var(--sans);'+obsStyle(b.getAttribute('data-obs-val'),b.getAttribute('data-obs-val')===val); });
+    };
+  });
+  el.querySelectorAll('[data-crit-notes]').forEach(ta=>{
+    ta.oninput=function(){ stateObj.notes[this.getAttribute('data-crit-notes')]=this.value; save(); };
+  });
+}
+function quickFillCrit(domains, stateObj, val){
+  domains.forEach(d=>{ stateObj.ratings[d.id]=val; });
+  save(); refresh();
+  // Re-render whichever mount has these domains
+  if(domains===critADomains) renderCritA();
+  else if(domains===critBDomains) renderCritB();
+  else renderCritCE();
+}
+function renderCritA(){ renderCritDomains('critAMount',critADomains,S.critA,refresh); }
+function renderCritB(){ renderCritDomains('critBMount',critBDomains,S.critB,refresh); }
+function renderCritC(){ renderCritDomains('critCMount',[critCEItems[0]],S.critCE,null); }
+function renderCritDE(){ renderCritDomains('critDEMount',critCEItems.slice(1),S.critCE,null); }
+function renderCritCE(){ renderCritC(); renderCritDE(); }
+
+function renderDifferentials(){
+  const el=document.getElementById('differentialsMount'); if(!el) return;
+  const OPTS=[
+    {val:'',label:'Not rated',bg:'#fff',bdr:'#d7deea',tc:'#9ca3af'},
+    {val:'ruled_out',label:'Ruled out',bg:'#dcfce7',bdr:'#86efac',tc:'#166534'},
+    {val:'comorbid',label:'Comorbid diagnosis',bg:'#fef9c3',bdr:'#fde047',tc:'#854d0e'},
+    {val:'primary',label:'Primary dx (better explains)',bg:'#fee2e2',bdr:'#fca5a5',tc:'#991b1b'},
+  ];
+  el.innerHTML=differentialsList.map(diff=>{
+    const cur=S.differentials[diff.id]||''; const curOpt=OPTS.find(o=>o.val===cur)||OPTS[0];
+    return '<div class="diff-card" id="diff_'+diff.id+'">'+
+      '<div class="diff-card-label">'+esc(diff.label)+' <span style="float:right;padding:2px 9px;border-radius:999px;font-size:10px;border:1.5px solid '+curOpt.bdr+';background:'+curOpt.bg+';color:'+curOpt.tc+';font-weight:700;" class="diff-verdict">'+esc(curOpt.label)+'</span></div>'+
+      '<div class="diff-card-q"><strong>1.</strong> '+esc(diff.q1)+'</div>'+
+      '<div class="diff-card-q" style="margin-top:3px"><strong>2.</strong> '+esc(diff.q2)+'</div>'+
+      '<div class="diff-card-note">'+esc(diff.note)+'</div>'+
+      '<div class="diff-card-btns">'+OPTS.map(opt=>'<button type="button" class="rb'+(cur===opt.val?' at':'')+'" data-diff-id="'+diff.id+'" data-diff-val="'+opt.val+'">'+esc(opt.label)+'</button>').join('')+'</div>'+
+      '</div>';
+  }).join('');
+  el.querySelectorAll('[data-diff-id]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-diff-id'); const val=this.getAttribute('data-diff-val');
+      S.differentials[id]=val; save();
+      const card=document.getElementById('diff_'+id); if(!card) return;
+      const curO=OPTS.find(o=>o.val===val)||OPTS[0];
+      const badge=card.querySelector('.diff-verdict');
+      if(badge){ badge.textContent=curO.label; badge.style.background=curO.bg; badge.style.borderColor=curO.bdr; badge.style.color=curO.tc; }
+      card.querySelectorAll('[data-diff-id]').forEach(b=>{ b.className='rb'+(b.getAttribute('data-diff-val')===val?' at':''); });
+    };
+  });
+}
+function renderMSE(){
+  const el=document.getElementById('mseMount'); if(!el) return;
+  const normalOpts=['Euthymic','No concerns','Normal','Capacity intact'];
+  const badOpts=['Suicidal ideation','Plan / intent','Past attempt','Paranoid ideation','Hallucinations reported','Lacks capacity'];
+  el.innerHTML=mseItems.map(item=>{
+    const cur=S.mse[item.id]||'';
+    return '<div class="mse-row"><div class="mse-label">'+esc(item.label)+'</div><div class="mse-opts">'+
+      item.options.map(opt=>'<button type="button" class="rb '+(cur===opt?(normalOpts.includes(opt)?'ay':badOpts.includes(opt)?'an':'ap'):'')+'" data-mse-id="'+item.id+'" data-mse-val="'+opt+'">'+esc(opt)+'</button>').join('')+
+      '</div></div>';
+  }).join('');
+  el.querySelectorAll('[data-mse-id]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-mse-id'); const val=this.getAttribute('data-mse-val');
+      const normalOpts=['Euthymic','No concerns','Normal','Capacity intact'];
+      const badOpts=['Suicidal ideation','Plan / intent','Past attempt','Paranoid ideation','Hallucinations reported','Lacks capacity'];
+      S.mse[id]=val; save();
+      this.closest('.mse-opts').querySelectorAll('button').forEach(b=>b.className='rb');
+      this.classList.add(normalOpts.includes(val)?'ay':badOpts.includes(val)?'an':'ap');
+    };
+  });
+}
+function renderComorbid(){
+  const el=document.getElementById('comorbidMount'); if(!el) return;
+  el.innerHTML=comorbidSections.map(sec=>{
+    const active=sec.items.filter(i=>S.comorbid[i]).length;
+    return '<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:5px">'+esc(sec.label)+(active?'<span style="color:var(--red);font-size:10px;margin-left:5px">'+active+' flagged</span>':'')+'</div>'+
+      '<div class="chip-grid">'+sec.items.map(item=>'<button type="button" class="chip'+(S.comorbid[item]?' chip-active':'')+'" data-cmb="'+esc(item)+'">'+esc(item)+'</button>').join('')+'</div></div>';
+  }).join('');
+  el.querySelectorAll('[data-cmb]').forEach(btn=>{
+    btn.onclick=function(){ const k=this.getAttribute('data-cmb'); S.comorbid[k]=!S.comorbid[k]; this.classList.toggle('chip-active',S.comorbid[k]); save(); };
+  });
+}
+function quickFillRisk(mode){
+  const noneMap={'risk_shi':'None','risk_rto':'None','risk_selfcare':'Adequate','risk_perception':'Normal','risk_capacity':'Capacity intact','risk_telehealth':'Appropriate'};
+  const flagMap={'risk_shi':'Passive SI','risk_rto':'Verbal aggression','risk_selfcare':'Mild neglect','risk_perception':'Hallucinations reported','risk_capacity':'Questionable','risk_telehealth':'Borderline — monitor'};
+  const map=mode==='none'?noneMap:flagMap;
+  riskItems.forEach(r=>{ S.risk[r.id]=map[r.id]||''; });
+  save(); renderRisk();
+}
+function renderRisk(){
+  const el=document.getElementById('riskMount'); if(!el) return;
+  const highRisk=['Passive SI','Active SI','Plan / intent','Past attempt','Current SH','Verbal aggression','Physical aggression','Forensic history','Moderate neglect','Severe neglect','Lacks capacity'];
+  const noneVals=['None','Adequate','Capacity intact','Appropriate'];
+  el.innerHTML=riskItems.map(item=>{
+    const cur=S.risk[item.id]||'';
+    return '<div class="mse-row"><div class="mse-label">'+esc(item.label)+'</div><div class="mse-opts">'+
+      item.options.map(opt=>{
+        const isA=cur===opt; const cls=isA?(noneVals.includes(opt)?'ay':highRisk.includes(opt)?'an':'ap'):'';
+        return '<button type="button" class="rb '+cls+'" data-risk-id="'+item.id+'" data-risk-val="'+opt+'">'+esc(opt)+'</button>';
+      }).join('')+'</div></div>';
+  }).join('');
+  el.querySelectorAll('[data-risk-id]').forEach(btn=>{
+    btn.onclick=function(){
+      const id=this.getAttribute('data-risk-id'); const val=this.getAttribute('data-risk-val');
+      S.risk[id]=val; save();
+      const noneVals=['None','Adequate','Capacity intact','Appropriate'];
+      const highRisk=['Passive SI','Active SI','Plan / intent','Past attempt','Current SH','Verbal aggression','Physical aggression','Forensic history','Moderate neglect','Severe neglect','Lacks capacity'];
+      this.closest('.mse-opts').querySelectorAll('button').forEach(b=>b.className='rb');
+      this.classList.add(noneVals.includes(val)?'ay':highRisk.includes(val)?'an':'ap');
+    };
+  });
+}
+function renderDxCall(){
+  const el=document.getElementById('dxCallMount'); if(!el) return;
+  const opts=['ASD confirmed','ASD probable — further info needed','ASD not confirmed','Uncertain — provisional'];
+  el.innerHTML=opts.map(opt=>{
+    const active=S.dxCall===opt;
+    const cls=active?(opt==='ASD confirmed'?'tog-yes':opt==='ASD not confirmed'?'tog-no':'tog-partial'):'';
+    return '<button type="button" class="'+cls+'" data-dxcall="'+esc(opt)+'">'+esc(opt)+'</button>';
+  }).join('');
+  el.querySelectorAll('[data-dxcall]').forEach(btn=>{
+    btn.onclick=function(){
+      const val=this.getAttribute('data-dxcall'); S.dxCall=val; save();
+      el.querySelectorAll('button').forEach(b=>b.className='');
+      this.classList.add(val==='ASD confirmed'?'tog-yes':val==='ASD not confirmed'?'tog-no':'tog-partial');
+      refresh(); updateSeverityDisplay();
+    };
+  });
+}
+function renderSeverityButtons(){
+  function makeSevBtns(mountId,stateKey){
+    const el=document.getElementById(mountId); if(!el) return;
+    const cur=S[stateKey]||'';
+    const clsMap={'Level 1':'sev-l1','Level 2':'sev-l2','Level 3':'sev-l3'};
+    el.innerHTML=['Level 1','Level 2','Level 3'].map(opt=>'<button type="button" class="rb '+(cur===opt?clsMap[opt]:'')+'" style="padding:5px 14px" data-sev-key="'+stateKey+'" data-sev-val="'+opt+'">'+opt+'</button>').join('');
+    el.querySelectorAll('[data-sev-key]').forEach(btn=>{
+      btn.onclick=function(){
+        const k=this.getAttribute('data-sev-key'); const v=this.getAttribute('data-sev-val');
+        S[k]=v; save();
+        el.querySelectorAll('button').forEach(b=>{ b.className='rb'; b.style.padding='5px 14px'; });
+        this.classList.add({'Level 1':'sev-l1','Level 2':'sev-l2','Level 3':'sev-l3'}[v]||'');
+        updateSeverityDisplay();
+      };
+    });
+  }
+  makeSevBtns('scLevelMount','scLevel'); makeSevBtns('rrbLevelMount','rrbLevel');
+}
+function updateSeverityDisplay(){
+  const sc=S.scLevel; const rrb=S.rrbLevel;
+  const box=document.getElementById('overallSeverityBox'); const txt=document.getElementById('overallSeverityText');
+  if(!sc||!rrb){ if(box) box.style.display='none'; return; }
+  if(box) box.style.display='block';
+  const nums={'Level 1':1,'Level 2':2,'Level 3':3};
+  const n1=nums[sc]||0; const n2=nums[rrb]||0;
+  let overall, note='';
+  if(n1===n2){ overall='Level '+n1; }
+  else{ overall='Level '+Math.max(n1,n2); note=' (SC and RRB differ; using higher)'; }
+  if(txt) txt.innerHTML='<strong>SC: '+esc(sc)+' | RRB: '+esc(rrb)+'</strong><br>Overall support needs consistent with <strong>ASD '+esc(overall)+'</strong>'+esc(note)+'.';
+}
+function renderNonPharm(){
+  const el=document.getElementById('nonPharmMount'); if(!el) return;
+  el.innerHTML=nonPharmOptions.map(opt=>'<button type="button" class="nonpharm-btn'+(S.nonPharm[opt.key]?' active':'')+'" data-np="'+opt.key+'">'+esc(opt.label)+'</button>').join('');
+  el.querySelectorAll('[data-np]').forEach(btn=>{ btn.onclick=function(){ const k=this.getAttribute('data-np'); S.nonPharm[k]=!S.nonPharm[k]; this.classList.toggle('active',S.nonPharm[k]); save(); }; });
+  renderNonPharmCustomList();
+}
+function renderNonPharmCustomList(){
+  const el=document.getElementById('nonPharmCustomList'); if(!el) return;
+  el.innerHTML=(S.nonPharmCustom||[]).map((item,i)=>'<span style="display:inline-flex;align-items:center;gap:4px;background:var(--primary-bg);border:1px solid var(--primary);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--primary)">'+esc(item)+' <button onclick="removeNonPharmCustom('+i+')" style="background:none;border:none;color:var(--muted);padding:0;font-size:10px;cursor:pointer">x</button></span>').join('');
+}
+function addCustomNonPharm(){ const inp=document.getElementById('nonPharmCustomInput'); if(!inp||!inp.value.trim()) return; if(!S.nonPharmCustom) S.nonPharmCustom=[]; S.nonPharmCustom.push(inp.value.trim()); inp.value=''; save(); renderNonPharmCustomList(); }
+function removeNonPharmCustom(i){ S.nonPharmCustom.splice(i,1); save(); renderNonPharmCustomList(); }
+function renderMedPlanTable(){
+  const tbody=document.getElementById('medPlanBody'); if(!tbody) return;
+  if(!S.medPlan||!S.medPlan.length){ tbody.innerHTML='<tr><td colspan="5" style="color:#9ca3af;font-style:italic;text-align:center;padding:10px">No medications added.</td></tr>'; return; }
+  tbody.innerHTML=S.medPlan.map((row,i)=>'<tr><td><input type="text" class="med-row-input" value="'+esc(row.med||'')+'" onchange="S.medPlan['+i+'].med=this.value;save();" placeholder="e.g. Sertraline"></td><td><input type="text" class="med-row-input" value="'+esc(row.indication||'')+'" onchange="S.medPlan['+i+'].indication=this.value;save();" placeholder="e.g. Anxiety"></td><td><input type="text" class="med-row-input" value="'+esc(row.dose||'')+'" onchange="S.medPlan['+i+'].dose=this.value;save();" placeholder="e.g. 50mg mane"></td><td><input type="text" class="med-row-input" value="'+esc(row.notes||'')+'" onchange="S.medPlan['+i+'].notes=this.value;save();" placeholder="Review 4/52"></td><td><button class="remove-med-btn" onclick="removeMedRow('+i+')">x</button></td></tr>').join('');
+}
+function addMedRow(){ if(!S.medPlan) S.medPlan=[]; S.medPlan.push({med:'',indication:'',dose:'',notes:''}); save(); renderMedPlanTable(); }
+function removeMedRow(i){ S.medPlan.splice(i,1); save(); renderMedPlanTable(); }
+function renderFUAppts(){
+  const el=document.getElementById('fuApptList'); if(!el) return;
+  if(!S.fuAppts||!S.fuAppts.length){ el.innerHTML=''; return; }
+  el.innerHTML=S.fuAppts.map((appt,i)=>'<div class="fu-appt-row"><input type="text" class="fu-appt-inp" placeholder="With..." value="'+esc(appt.with||'')+'" onchange="S.fuAppts['+i+'].with=this.value;save();" style="flex:2"><input type="text" class="fu-appt-inp" placeholder="When..." value="'+esc(appt.when||'')+'" onchange="S.fuAppts['+i+'].when=this.value;save();"><select class="fu-appt-inp" onchange="S.fuAppts['+i+'].len=this.value;save();" style="flex:0 0 80px"><option value="">-</option>'+['15 min','30 min','45 min','60 min'].map(l=>'<option '+(appt.len===l?'selected':'')+'>'+l+'</option>').join('')+'</select><input type="text" class="fu-appt-inp" placeholder="Notes..." value="'+esc(appt.notes||'')+'" onchange="S.fuAppts['+i+'].notes=this.value;save();" style="flex:2"><button class="fu-appt-rm" onclick="S.fuAppts.splice('+i+',1);save();renderFUAppts()">x</button></div>').join('');
+}
+function addFUAppt(){ if(!S.fuAppts) S.fuAppts=[]; S.fuAppts.push({with:'',when:'',len:'',notes:''}); save(); renderFUAppts(); }
+function renderMonitoring(){
+  const el=document.getElementById('monitoringMount'); if(!el) return;
+  el.innerHTML=monitoringOptions.map(m=>'<button type="button" class="fu-chip'+(S.monitoring[m]?' on':'')+'" data-mon="'+esc(m)+'">'+esc(m)+'</button>').join('');
+  el.querySelectorAll('[data-mon]').forEach(btn=>{ btn.onclick=function(){ const k=this.getAttribute('data-mon'); S.monitoring[k]=!S.monitoring[k]; this.classList.toggle('on',S.monitoring[k]); save(); }; });
+  const mcl=document.getElementById('monCustomList');
+  if(mcl) mcl.innerHTML=(S.monCustom||[]).map((item,i)=>'<span style="display:inline-flex;align-items:center;gap:4px;background:var(--primary-bg);border:1px solid var(--primary);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--primary)">'+esc(item)+' <button onclick="S.monCustom.splice('+i+',1);save();renderMonitoring();" style="background:none;border:none;color:var(--muted);padding:0;font-size:10px;cursor:pointer">x</button></span>').join('');
+}
+function addCustomMon(){ const inp=document.getElementById('monCustomInput'); if(!inp||!inp.value.trim()) return; if(!S.monCustom) S.monCustom=[]; S.monCustom.push(inp.value.trim()); inp.value=''; save(); renderMonitoring(); }
+function renderReferrals(){
+  const el=document.getElementById('referralsMount'); if(!el) return;
+  el.innerHTML=referralOptions.map(r=>'<button type="button" class="fu-chip'+(S.referrals[r.key]?' on':'')+'" data-ref="'+r.key+'">'+esc(r.label)+'</button>').join('');
+  el.querySelectorAll('[data-ref]').forEach(btn=>{ btn.onclick=function(){ const k=this.getAttribute('data-ref'); S.referrals[k]=!S.referrals[k]; this.classList.toggle('on',S.referrals[k]); save(); }; });
+}
+function renderConcerns(){
+  const el=document.getElementById('concernsMount'); if(!el) return;
+  el.innerHTML=concernOptions.map(c=>'<button type="button" class="fu-chip fu-chip-warn'+(S.concerns[c.key]?' on':'')+'" data-con="'+c.key+'">'+esc(c.label)+'</button>').join('');
+  el.querySelectorAll('[data-con]').forEach(btn=>{ btn.onclick=function(){ const k=this.getAttribute('data-con'); S.concerns[k]=!S.concerns[k]; this.classList.toggle('on',S.concerns[k]); save(); }; });
+}
+
+// ═══ PSYCHOEDUCATION ═══
+(function(){
+  function peInit(){
+    const list=document.getElementById('peList'); if(!list) return;
+    list.addEventListener('click',function(e){
+      const tick=e.target.closest('.pe-tick');
+      const header=e.target.closest('.pe-header');
+      const section=e.target.closest('.pe-section');
+      if(!section) return;
+      if(tick){ section.classList.toggle('pe-done'); tick.innerHTML=section.classList.contains('pe-done')?'&#9745;':'&#9744;'; e.stopPropagation(); }
+      else if(header){ section.classList.toggle('pe-open'); }
+    });
+  }
+  window._peInit=peInit;
+})();
+function buildPsychoedSummary(patientName){
+  const items=document.querySelectorAll('#peList .pe-section.pe-done');
+  if(!items.length) return '';
+  const labels=[]; items.forEach(el=>labels.push(el.getAttribute('data-label')));
+  const name=patientName||'The patient';
+  if(labels.length===1) return name+' was provided psychoeducation covering '+labels[0]+'.';
+  const last=labels.pop();
+  return name+' was provided psychoeducation covering '+labels.join(', ')+', and '+last+'.';
+}
+
+// ═══ REPORT GENERATION ═══
+let currentTab='patient';
+function generateReport(tab){
+  currentTab=tab||'patient';
+  const cd=loadClin();
+  const patName=S.ptName||'[Patient Name]';
+  const clinName=cd.name||'[Clinician]'; const clinCreds=cd.creds||'';
+  const dateStr=S.ptDate?new Date(S.ptDate+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  const clinLine=clinCreds?esc(clinName)+', '+esc(clinCreds):esc(clinName);
+  const ahpra=cd.ahpra||''; const provider=cd.provider||'';
+  const g=(S.ptGender||'').toLowerCase();
+  const pronoun=g==='male'?'He':g==='female'?'She':'They';
+  const possessive=g==='male'?'his':g==='female'?'her':'their';
+  const objective=g==='male'?'him':g==='female'?'her':'them';
+  const dxCall=S.dxCall||'';
+  const sc=S.scLevel; const rrb=S.rrbLevel;
+  const nums={'Level 1':1,'Level 2':2,'Level 3':3};
+  const n1=nums[sc]||0; const n2=nums[rrb]||0;
+  const overallLevel=sc&&rrb?'Level '+Math.max(n1,n2):'';
+  const dxHeadline=dxCall.includes('confirmed')?'Autism Spectrum Disorder (ASD)'+(overallLevel?', '+overallLevel:''):dxCall;
+
+  function buildDokoLetterhead(){
+    const showDoko=document.getElementById('includeDokotelaLetterhead');
+    if(!showDoko||!showDoko.checked) return '';
+    const clinBlock=clinName?'<div style="margin-top:5pt;font-size:9pt;color:#1a6478;line-height:1.6;"><div style="font-weight:700;font-size:10.5pt;color:#1a6478;">'+esc(clinName)+'</div><div style="color:#444;">Psychiatrist'+(clinCreds?' &middot; '+esc(clinCreds):'')+' </div>'+(provider?'<div style="color:#777;font-size:8pt;">Provider: '+esc(provider)+'</div>':'')+'</div>':'';
+    return '<div style="border-bottom:2.5pt solid #4db8b8;padding-bottom:12pt;margin-bottom:18pt;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8pt;font-family:Arial,sans-serif;"><div style="line-height:1;"><span style="font-size:26pt;font-weight:800;letter-spacing:-0.5pt;"><span style="color:#1a6478;">D</span><span style="color:#4db8b8;">ok</span><span style="color:#1a6478;">otela</span></span>'+clinBlock+'</div><div style="text-align:right;font-size:8pt;color:#444;line-height:1.7;"><div>101 Grafton St, Bondi Junction NSW 2022</div><div>Ph: 02 8003 7668 &nbsp;|&nbsp; Fax: 02 8569 1844</div><div><a href="mailto:specialists@dokotela.com.au" style="color:#1a6478;text-decoration:none;">specialists@dokotela.com.au</a></div></div></div>';
+  }
+  function signOff(extra){
+    return '<div style="margin-top:26px;padding-top:12px;border-top:1.5px solid #d1d9e6;font-family:Arial,sans-serif;"><p style="margin:0;font-size:10.5pt;line-height:2.2;">Yours sincerely,<br><br><strong>'+clinLine+'</strong><br><span style="color:#6b7280;font-size:9pt;">Psychiatrist</span></p>'+(extra||'')+'</div>';
+  }
+  function buildDxBox(){
+    const isC=dxCall.includes('confirmed'); const isP=dxCall.includes('probable'); const isN=dxCall.includes('not confirmed');
+    const bg=isC?'#f0fdf4':isP?'#fff7ed':isN?'#fee2e2':'#f1f5f9';
+    const bdr=isC?'#4ade80':isP?'#fb923c':isN?'#ef4444':'#94a3b8';
+    const col=isC?'#166534':isP?'#9a3412':isN?'#991b1b':'#374151';
+    const icon=isC?'&#9989;':isP?'&#9888;':isN?'&#10060;':'&#128269;';
+    return '<div style="background:'+bg+';border:2px solid '+bdr+';border-radius:12px;padding:12px 16px;margin-bottom:16px;">'+
+      '<div style="font-weight:800;font-size:1rem;color:'+col+';">'+icon+' '+esc(dxCall||'Diagnosis pending')+'</div>'+
+      (dxCall.includes('confirmed')?'<div style="font-size:0.9rem;color:'+col+';margin-top:3px;font-weight:600;">'+esc(dxHeadline)+'</div>':'')+
+      (sc&&rrb?'<div style="font-size:0.83rem;color:'+col+';margin-top:5px;">Severity specifiers: Social Communication &#8212; '+esc(sc)+'; Restricted &amp; Repetitive Behaviours &#8212; '+esc(rrb)+'.'+(overallLevel?' Overall support needs most consistent with ASD '+esc(overallLevel)+'.:':'')+' </div>':'')+
+      '</div>';
+  }
+  function buildHeader(){
+    return '<div style="border-bottom:2.5px solid #1e3a5f;padding-bottom:10px;margin-bottom:18px;"><h1 style="margin:0 0 3px;font-size:1.4rem;color:#1e3a5f;">ASD Assessment Report</h1><div style="font-size:1.05rem;font-weight:700;color:#111;">'+esc(patName)+'</div><div style="font-size:0.85rem;color:#6b7280;">'+esc(dateStr)+' &middot; '+clinLine+'</div></div>';
+  }
+  function buildAssessmentSummary(){
+    const concerns=Object.keys(S.presenting.concerns||{}).filter(c=>S.presenting.concerns[c]);
+    const existDx=Object.keys(S.priorAssessments.existingDx||{}).filter(d=>S.priorAssessments.existingDx[d]);
+    let h='<h2 style="font-size:1.1rem;font-weight:700;color:#1e3a5f;margin:14px 0 5px;border-bottom:2px solid #d1dce8;padding-bottom:3px;">Assessment Summary</h2>';
+    h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">'+esc(patName)+' presented for a telehealth psychiatric ASD assessment on '+esc(dateStr)+', referred by '+esc(S.ptRef||'self')+'.</p>';
+    if(concerns.length) h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">Presenting concerns include: '+concerns.map(esc).join(', ')+'.</p>';
+    if(S.presenting.notes) h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">'+esc(S.presenting.notes)+'</p>';
+    if(S.presenting.maskingNotes) h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;"><strong>Masking/burnout history:</strong> '+esc(S.presenting.maskingNotes)+'</p>';
+    if(existDx.length) h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;"><strong>Existing diagnoses:</strong> '+existDx.map(esc).join(', ')+'.</p>';
+    if(S.priorAssessments.existingDxNotes) h+='<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">'+esc(S.priorAssessments.existingDxNotes)+'</p>';
+    return h;
+  }
+  function H2(t){ return '<h2 style="font-size:1.1rem;font-weight:700;color:#1e3a5f;margin:16px 0 5px;border-bottom:2px solid #d1dce8;padding-bottom:3px;">'+t+'</h2>'; }
+  function H3(t){ return '<h3 style="font-size:1rem;font-weight:700;color:#1f2937;margin:12px 0 4px;">'+t+'</h3>'; }
+  function P(t){ return '<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">'+t+'</p>'; }
+  function buildDevHistory(){
+    let h=H2('Developmental History');
+    devHistorySections.forEach(sec=>{
+      const e=S.developmental[sec.id]; if(!e||!e.rating) return;
+      const col=e.rating==='Yes'?'#166534':e.rating==='Partially'?'#854d0e':e.rating==='No'?'#991b1b':'#6b7280';
+      h+=H3(esc(sec.label))+P('<span style="font-weight:700;color:'+col+'">'+esc(e.rating)+'</span>'+(e.notes?' &#8212; '+esc(e.notes):''));
+    });
+    return h;
+  }
+  function buildCriteria(){
+    const dsmColMap={'Met':'#166534','Partial':'#854d0e','Not Met':'#991b1b','N/A':'#6b7280'};
+    let h=H2('DSM-5-TR Criteria');
+    h+=H3('Criterion A &#8212; Social Communication (all 3 required; '+critADomains.filter(d=>S.critA.ratings[d.id]==='Met').length+'/3 met)');
+    critADomains.forEach(d=>{ const r=S.critA.ratings[d.id]; const n=S.critA.notes[d.id]; if(!r) return; h+=P('<strong>'+esc(d.label)+':</strong> <span style="color:'+dsmColMap[r]+';font-weight:700;">'+esc(r)+'</span>'+(n?' &#8212; '+esc(n):'')); });
+    h+=H3('Criterion B &#8212; Restricted &amp; Repetitive Behaviours (&#8805;2 of 4 required; '+critBDomains.filter(d=>S.critB.ratings[d.id]==='Met').length+'/4 met)');
+    critBDomains.forEach(d=>{ const r=S.critB.ratings[d.id]; const n=S.critB.notes[d.id]; if(!r) return; h+=P('<strong>'+esc(d.label)+':</strong> <span style="color:'+dsmColMap[r]+';font-weight:700;">'+esc(r)+'</span>'+(n?' &#8212; '+esc(n):'')); });
+    h+=H3('Criteria C&#8211;E');
+    critCEItems.forEach(item=>{ const r=S.critCE.ratings[item.id]; const n=S.critCE.notes[item.id]; if(!r) return; h+=P('<strong>'+esc(item.label)+':</strong> <span style="color:'+dsmColMap[r]+';font-weight:700;">'+esc(r)+'</span>'+(n?' &#8212; '+esc(n):'')); });
+    const spec=S.specifiers||{}; const specParts=[];
+    if(spec.intellectual&&spec.intellectual!=='Unsure') specParts.push('Intellectual impairment: '+spec.intellectual);
+    if(spec.language&&spec.language!=='Unsure') specParts.push('Language impairment: '+spec.language);
+    if(spec.catatonia&&spec.catatonia!=='Unsure') specParts.push('Catatonia: '+spec.catatonia);
+    if(spec.associated) specParts.push('Associated: '+spec.associated);
+    if(specParts.length) h+=P('<strong>Specifiers:</strong> '+specParts.map(esc).join('; '));
+    const diffPrimary=differentialsList.filter(d=>S.differentials[d.id]==='primary');
+    const diffComorbid=differentialsList.filter(d=>S.differentials[d.id]==='comorbid');
+    const diffRuledOut=differentialsList.filter(d=>S.differentials[d.id]==='ruled_out');
+    if(diffPrimary.length||diffComorbid.length||diffRuledOut.length){
+      h+=H3('Differential diagnoses considered');
+      if(diffPrimary.length) h+=P('<strong>Primary diagnosis (better explains presentation):</strong> '+diffPrimary.map(d=>esc(d.label)).join(', ')+'.');
+      if(diffComorbid.length) h+=P('<strong>Comorbid diagnoses:</strong> '+diffComorbid.map(d=>esc(d.label)).join(', ')+'.');
+      if(diffRuledOut.length) h+=P('<strong>Considered and ruled out:</strong> '+diffRuledOut.map(d=>esc(d.label)).join(', ')+'.');
+    }
+    if(S.differentialNotes) h+=P(esc(S.differentialNotes));
+    return h;
+  }
+  function buildMSEObs(){
+    let h=H2('Mental State &amp; Observational Findings');
+    const allD=[...critADomains,...critBDomains,...critCEItems];
+    const obsRated=allD.flatMap(d=>d.obs||[]).filter(o=>S.obs[o.id]&&S.obs[o.id]!=='N/A');
+    if(obsRated.length){
+      const goodV=['Normal','Good','Full range','Intact','None observed','None significant','No concerns','Clear and consistent','Strong','Average or above','None','Typical','Unremarkable'];
+      const badV=['Marked','Severe','Absent','Flat','Suicidal','Paranoid','Halluci','None obtained','Contradictory','All-consuming','Likely ID'];
+      const warnV=['Mild','Moderate','Reduced','Limited','Partial','Monotone','Minimal','Concrete','Tangential','Odd','One-dir','Scripted','Intellectual','Theoretical','Low average','Borderline'];
+      const marked=obsRated.filter(o=>badV.some(v=>S.obs[o.id].includes(v)));
+      const concern=obsRated.filter(o=>!badV.some(v=>S.obs[o.id].includes(v))&&warnV.some(v=>S.obs[o.id].includes(v)));
+      const normal=obsRated.filter(o=>goodV.some(v=>S.obs[o.id].startsWith(v))&&!badV.some(v=>S.obs[o.id].includes(v)));
+      if(marked.length) h+=P('<strong style="color:#991b1b;">&#9888; Marked concerns:</strong> '+marked.map(o=>esc(o.label)+' &#8212; <strong>'+esc(S.obs[o.id])+'</strong>').join('; ')+'.');
+      if(concern.length) h+=P('<strong style="color:#92400e;">&#916; Mild/moderate:</strong> '+concern.map(o=>esc(o.label)+' &#8212; '+esc(S.obs[o.id])).join('; ')+'.');
+      if(normal.length) h+=P('<strong style="color:#166534;">&#10003; Within normal limits:</strong> '+normal.map(o=>esc(o.label)).join(', ')+'.');
+    }
+    const mseRated=mseItems.filter(m=>S.mse[m.id]);
+    if(mseRated.length) h+=P('<strong>Mental state (remaining):</strong> '+mseRated.map(m=>'<strong>'+esc(m.label)+':</strong> '+esc(S.mse[m.id])).join(' &middot; ')+'.');
+    if(S.mseFreeText) h+=P(esc(S.mseFreeText));
+    return h;
+  }
+  function buildFamilyHistory(){
+    const fh=S.familyHistory||{}; if(!fh.notes&&!fh.geneticLoading) return '';
+    let h=H2('Family History');
+    if(fh.geneticLoading&&fh.geneticLoading!=='Not assessed') h+=P('<strong>Genetic loading:</strong> '+esc(fh.geneticLoading)+'.');
+    if(fh.notes) h+=P(esc(fh.notes));
+    return h;
+  }
+  function buildComorbidities(){
+    const present=[]; comorbidSections.forEach(sec=>{ sec.items.forEach(item=>{ if(S.comorbid[item]) present.push(item); }); });
+    if(!present.length&&!S.currentMeds&&!S.allergies) return '';
+    let h=H2('Comorbidities &amp; Medical History');
+    if(present.length) h+='<ul style="margin:3px 0 9px 16px;">'+present.map(p=>'<li style="margin-bottom:3px;font-size:12.5px;line-height:1.5;">'+esc(p)+'</li>').join('')+'</ul>';
+    if(S.currentMeds) h+=P('<strong>Current medications:</strong> '+esc(S.currentMeds));
+    if(S.allergies) h+=P('<strong>Allergies:</strong> '+esc(S.allergies));
+    return h;
+  }
+  function buildFormulation(){
+    let h=H2('Formulation &amp; Diagnosis');
+    h+=buildDxBox();
+    if(S.formulationNotes) h+=P(esc(S.formulationNotes));
+    if(S.scNotes) h+=P('<strong>SC rationale:</strong> '+esc(S.scNotes));
+    if(S.rrbNotes) h+=P('<strong>RRB rationale:</strong> '+esc(S.rrbNotes));
+    const peSumLine=buildPsychoedSummary(patName);
+    if(peSumLine) h+=P('<strong>Psychoeducation provided:</strong> '+peSumLine);
+    return h;
+  }
+  function buildRisk(){
+    const riskRated=riskItems.filter(r=>S.risk[r.id]); if(!riskRated.length&&!S.riskNotes) return '';
+    let h=H2('Risk &amp; Safety');
+    if(riskRated.length) h+='<ul style="margin:3px 0 9px 16px;">'+riskRated.map(r=>'<li style="margin-bottom:3px;font-size:12.5px;"><strong>'+esc(r.label)+':</strong> '+esc(S.risk[r.id])+'</li>').join('')+'</ul>';
+    if(S.riskNotes) h+=P(esc(S.riskNotes));
+    return h;
+  }
+  function buildTreatmentPlan(){
+    let h=H2('Treatment Plan');
+    const npActive=nonPharmOptions.filter(n=>S.nonPharm[n.key]).map(n=>n.label);
+    const npCustom=S.nonPharmCustom||[];
+    if(npActive.length||npCustom.length){ h+=H3('Non-Pharmacological &amp; Psychosocial')+'<ul style="margin:3px 0 9px 16px;">'+ [...npActive,...npCustom].map(n=>'<li style="margin-bottom:3px;font-size:12.5px;">'+esc(n)+'</li>').join('')+'</ul>'; }
+    if(S.medPlan&&S.medPlan.length){
+      const TH='padding:5px 10px;background:#134e4a;color:#fff;text-align:left;border:1px solid #134e4a;font-size:11px;';
+      const TD='padding:4px 10px;border:1px solid #d7deea;vertical-align:top;font-size:11.5px;';
+      h+=H3('Medication Plan')+'<table style="border-collapse:collapse;width:100%;margin-bottom:9px;"><thead><tr><th style="'+TH+'">Medication</th><th style="'+TH+'">Indication</th><th style="'+TH+'">Dose</th><th style="'+TH+'">Notes</th></tr></thead><tbody>'+
+        S.medPlan.map((row,i)=>'<tr style="'+(i%2===0?'':'background:#f0fdf4;')+'"><td style="'+TD+'">'+esc(row.med||'—')+'</td><td style="'+TD+'">'+esc(row.indication||'—')+'</td><td style="'+TD+'">'+esc(row.dose||'—')+'</td><td style="'+TD+'">'+esc(row.notes||'—')+'</td></tr>').join('')+'</tbody></table>';
+      if(S.prescribingNotes) h+=P('<strong>Prescribing notes:</strong> '+esc(S.prescribingNotes));
+    }
+    if(S.fuAppts&&S.fuAppts.length){
+      const TH2='padding:5px 10px;background:#0d9488;color:#fff;text-align:left;border:1px solid #0d9488;font-size:11px;';
+      const TD2='padding:4px 10px;border:1px solid #d7deea;font-size:11.5px;';
+      h+=H3('Follow-Up Appointments')+'<table style="border-collapse:collapse;width:100%;margin-bottom:9px;"><thead><tr><th style="'+TH2+'">With</th><th style="'+TH2+'">When</th><th style="'+TH2+'">Length</th><th style="'+TH2+'">Notes</th></tr></thead><tbody>'+
+        S.fuAppts.map((a,i)=>'<tr style="'+(i%2===0?'':'background:#f0fdf4;')+'"><td style="'+TD2+'">'+esc(a.with||'—')+'</td><td style="'+TD2+'">'+esc(a.when||'—')+'</td><td style="'+TD2+'">'+esc(a.len||'—')+'</td><td style="'+TD2+'">'+esc(a.notes||'—')+'</td></tr>').join('')+'</tbody></table>';
+    }
+    const monActive=monitoringOptions.filter(m=>S.monitoring[m]); const monCustom=S.monCustom||[];
+    if(monActive.length||monCustom.length){ h+=H3('Monitoring')+'<ul style="margin:3px 0 9px 16px;">'+ [...monActive,...monCustom].map(m=>'<li style="margin-bottom:3px;font-size:12.5px;">'+esc(m)+'</li>').join('')+'</ul>'; }
+    const refActive=referralOptions.filter(r=>S.referrals[r.key]).map(r=>r.label);
+    if(refActive.length||S.referralNotes){ h+=H3('Referrals &amp; Supports'); if(refActive.length) h+='<ul style="margin:3px 0 9px 16px;">'+refActive.map(r=>'<li style="margin-bottom:3px;font-size:12.5px;">'+esc(r)+'</li>').join('')+'</ul>'; if(S.referralNotes) h+=P(esc(S.referralNotes)); }
+    const conActive=concernOptions.filter(c=>S.concerns[c.key]).map(c=>c.label);
+    if(conActive.length){ h+=H3('If Any Concerns')+'<ul style="margin:3px 0 9px 16px;">'+conActive.map(c=>'<li style="margin-bottom:3px;font-size:12.5px;">'+esc(c)+'</li>').join('')+'</ul>'; }
+    const inclDisc=document.getElementById('includeDisclaimer');
+    if(inclDisc&&inclDisc.checked){ const email=S.contactEmail||''; h+=P('<em style="font-size:11px;color:#6b7280;">If you have any concerns between appointments, please contact your GP or present to the nearest emergency department. For non-urgent queries'+(email?', contact us at '+esc(email):'')+'.</em>'); }
+    if(S.additionalPlanNotes) h+=P(esc(S.additionalPlanNotes));
+    return h;
+  }
+  function buildSignOff(){
+    return '<div style="margin-top:24px;padding-top:12px;border-top:1.5px solid #d1d9e6;"><p style="margin:0;font-size:13px;line-height:2.2;">Yours sincerely,<br><br><strong>'+clinLine+'</strong><br><span style="color:#6b7280;font-size:11px;">Psychiatrist</span></p></div>';
+  }
+
+  // ── PATIENT REPORT ──
+  function buildPatientReport(){
+    const lh=buildDokoLetterhead();
+    const isC=dxCall.includes('confirmed'); const isP=dxCall.includes('probable'); const isN=dxCall.includes('not confirmed');
+    const bg=isC?'#f0fdf4':isP?'#fff7ed':isN?'#fee2e2':'#f8f9fa';
+    const bdr=isC?'#4ade80':isP?'#fb923c':isN?'#ef4444':'#94a3b8';
+    const col=isC?'#166534':isP?'#9a3412':isN?'#991b1b':'#374151';
+    const icon=isC?'&#9989;':isP?'&#9888;':isN?'&#10060;':'&#128269;';
+    const concerns=Object.keys(S.presenting.concerns||{}).filter(c=>S.presenting.concerns[c]);
+    const TH='padding:6px 10px;background:#1e3a5f;color:#fff;text-align:left;border:1px solid #1e3a5f;font-size:9.5pt;';
+    const TD='padding:5px 10px;border:1px solid #d7deea;font-size:9.5pt;vertical-align:top;';
+    const colMap={'Met':'✅ Met','Partial':'⚠ Partial','Not Met':'❌ Not Met','N/A':'— N/A'};
+    const colStyle={'Met':'color:#166534;font-weight:700;','Partial':'color:#854d0e;font-weight:700;','Not Met':'color:#991b1b;font-weight:700;','N/A':'color:#6b7280;'};
+    let rows='';
+    const aMetCount=critADomains.filter(d=>S.critA.ratings[d.id]==='Met').length;
+    rows+='<tr style="background:#f0f4f8;"><td colspan="3" style="'+TD+'font-weight:700;color:#1e3a5f;"><strong>Criterion A &#8212; Social Communication &amp; Interaction</strong> (all 3 required &#8212; '+aMetCount+'/3 met)</td></tr>';
+    critADomains.forEach(d=>{ const r=S.critA.ratings[d.id]||''; const n=S.critA.notes[d.id]||''; rows+='<tr><td style="'+TD+'">'+esc(d.label.replace(/^A\d+\s*\u2014\s*/,''))+'</td><td style="'+TD+(colStyle[r]||'')+'">'+esc(colMap[r]||'—')+'</td><td style="'+TD+'font-style:italic;color:#555;">'+esc(n)+'</td></tr>'; });
+    const bMetCount=critBDomains.filter(d=>S.critB.ratings[d.id]==='Met').length;
+    rows+='<tr style="background:#f0f4f8;"><td colspan="3" style="'+TD+'font-weight:700;color:#1e3a5f;"><strong>Criterion B &#8212; Restricted &amp; Repetitive Behaviours</strong> (&#8805;2 of 4 &#8212; '+bMetCount+'/4 met)</td></tr>';
+    critBDomains.forEach(d=>{ const r=S.critB.ratings[d.id]||''; const n=S.critB.notes[d.id]||''; rows+='<tr><td style="'+TD+'">'+esc(d.label.replace(/^B\d+\s*\u2014\s*/,''))+'</td><td style="'+TD+(colStyle[r]||'')+'">'+esc(colMap[r]||'—')+'</td><td style="'+TD+'font-style:italic;color:#555;">'+esc(n)+'</td></tr>'; });
+    rows+='<tr style="background:#f0f4f8;"><td colspan="3" style="'+TD+'font-weight:700;color:#1e3a5f;"><strong>Criteria C&#8211;E</strong></td></tr>';
+    critCEItems.forEach(item=>{ const r=S.critCE.ratings[item.id]||''; const n=S.critCE.notes[item.id]||''; rows+='<tr><td style="'+TD+'">'+esc(item.label.replace(/^Criterion\s+\w+\s*\u2014\s*/,''))+'</td><td style="'+TD+(colStyle[r]||'')+'">'+esc(colMap[r]||'—')+'</td><td style="'+TD+'font-style:italic;color:#555;">'+esc(n)+'</td></tr>'; });
+    const dsmTable='<table style="border-collapse:collapse;width:100%;margin:10px 0 14px;"><thead><tr><th style="'+TH+'width:42%;">DSM-5-TR Criterion</th><th style="'+TH+'width:15%;">Status</th><th style="'+TH+'">Clinical notes</th></tr></thead><tbody>'+rows+'</tbody></table>';
+    const peSumLine=buildPsychoedSummary(patName);
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="font-size:1.2rem;font-weight:800;color:#1e3a5f;margin-bottom:3px;">ASD Assessment Report</div>'+
+      '<div style="font-size:1rem;font-weight:700;color:#111;">'+esc(patName)+'</div>'+
+      '<div style="font-size:9pt;color:#6b7280;margin-bottom:14px;">'+esc(dateStr)+' &middot; '+clinLine+'</div>'+
+      '<div style="background:'+bg+';border:2.5px solid '+bdr+';border-radius:12px;padding:14px 18px;margin-bottom:18px;">'+
+        '<div style="font-weight:800;font-size:1.05rem;color:'+col+';">'+icon+' '+esc(dxCall||'Assessment in progress')+'</div>'+
+        (dxCall.includes('confirmed')?'<div style="font-size:0.95rem;color:'+col+';margin-top:3px;font-weight:600;">'+esc(dxHeadline)+'</div>':'')+
+        (sc&&rrb?'<div style="font-size:0.85rem;color:'+col+';margin-top:5px;">Severity: Social Communication &#8212; '+esc(sc)+'; Restricted &amp; Repetitive Behaviours &#8212; '+esc(rrb)+'.'+(overallLevel?' Overall ASD '+esc(overallLevel)+'.':'')+' </div>':'')+
+      '</div>'+
+      (concerns.length?P('<strong>Presenting concerns:</strong> '+concerns.map(esc).join(', ')+'.'):'')+(S.presenting.notes?P(esc(S.presenting.notes)):'')+
+      dsmTable+(S.formulationNotes?P(esc(S.formulationNotes)):'')+buildRisk()+(peSumLine?P('<strong>Psychoeducation provided:</strong> '+peSumLine):'')+
+      buildTreatmentPlan()+signOff('<p style="font-size:8.5pt;color:#9ca3af;font-style:italic;margin-top:8px;">Generated '+esc(dateStr)+'</p>')+
+      '</div>';
+  }
+
+  // ── GP LETTER ──
+  function buildGPLetter(){
+    const lh=buildDokoLetterhead();
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="font-size:9pt;color:#6b7280;margin-bottom:14px;">'+esc(dateStr)+'</div>'+
+      P('Dear '+esc(S.ptRef||'Colleague')+',')+
+      '<p style="margin:0 0 10px;font-size:10.5pt;font-weight:700;">Re: '+esc(patName)+' &#8212; ASD Assessment</p>'+
+      P('Thank you for referring '+esc(patName)+' for psychiatric assessment. I saw '+objective+' via telehealth on '+esc(dateStr)+' to assess for Autism Spectrum Disorder.')+
+      buildDxBox()+
+      (S.formulationNotes?P(esc(S.formulationNotes)):'')+
+      buildComorbidities()+buildRisk()+buildTreatmentPlan()+signOff()+
+      '</div>';
+  }
+
+  // ── NDIS LETTER ──
+  function buildNDISLetter(){
+    const lh=buildDokoLetterhead();
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="font-size:1.15rem;font-weight:800;color:#1e3a5f;margin-bottom:3px;">Letter of Support &#8212; NDIS</div>'+
+      '<div style="font-size:9pt;color:#6b7280;margin-bottom:14px;">'+esc(dateStr)+'</div>'+
+      P('To Whom It May Concern,')+
+      P('I write in my capacity as a consultant psychiatrist in support of the NDIS application / plan review for <strong>'+esc(patName)+'</strong>.')+
+      buildDxBox()+
+      P(esc(patName)+' presents with significant support needs in the domains of social communication and restricted/repetitive behaviours. '+pronoun+' experiences functional impairment across social, occupational, and daily living domains that is directly attributable to '+possessive+' Autism Spectrum Disorder.')+
+      (S.formulationNotes?P(esc(S.formulationNotes)):'')+buildTreatmentPlan()+
+      P('I confirm that '+esc(patName)+' has a disability that is permanent and attributable to Autism Spectrum Disorder, meeting the requirements for NDIS access under the disability requirements of the NDIS Act 2013.')+
+      signOff()+'</div>';
+  }
+
+  // ── WORKPLACE LETTER ──
+  function buildWorkplaceLetter(){
+    const lh=buildDokoLetterhead();
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="font-size:9pt;color:#6b7280;margin-bottom:14px;">'+esc(dateStr)+'</div>'+
+      P('To Whom It May Concern,')+'<p style="margin:0 0 10px;font-size:10.5pt;font-weight:700;">Re: Workplace Adjustments &#8212; '+esc(patName)+'</p>'+
+      P('I am a consultant psychiatrist and write in support of reasonable workplace adjustments for <strong>'+esc(patName)+'</strong>.')+
+      P('<strong>Diagnosis:</strong> '+esc(dxHeadline||dxCall||'Autism Spectrum Disorder')+'. This is a permanent neurodevelopmental condition affecting social communication, sensory processing, executive function, and the capacity to manage unpredictable or socially demanding environments.')+
+      (S.presenting.funcWork?P('<strong>Current occupational impact:</strong> '+esc(S.presenting.funcWork)):'')+
+      (S.formulationNotes?P(esc(S.formulationNotes)):'')+
+      '<p style="margin:0 0 7px;font-size:10pt;line-height:1.6;"><strong>Recommended workplace adjustments:</strong></p>'+
+      '<ul style="margin:0 0 12px 16px;font-size:10pt;line-height:1.8;">'+
+      '<li>Written instructions and meeting agendas provided in advance</li>'+
+      '<li>Permission to use noise-cancelling headphones or earplugs in the workplace</li>'+
+      '<li>Reduced exposure to open-plan or high-noise environments where practical</li>'+
+      '<li>Clear, explicit, written communication of expectations and feedback</li>'+
+      '<li>Advance notice of changes to routine, roster, or responsibilities</li>'+
+      '<li>Flexibility regarding attendance at unstructured social events</li>'+
+      '<li>Access to a quiet space for decompression during or after high-demand periods</li>'+
+      '<li>Working from home arrangements where operationally feasible</li>'+
+      '<li>Regular, structured check-ins with a manager or supervisor</li>'+
+      '<li>Adjustment of performance expectations during periods of increased stress or sensory overload</li>'+
+      '</ul>'+
+      P('These adjustments are intended to allow '+esc(patName)+' to perform '+possessive+' role effectively. Under the <em>Disability Discrimination Act 1992</em>, employers are required to make reasonable adjustments for employees with a disability.')+
+      signOff()+'</div>';
+  }
+
+  // ── STUDY LETTER ──
+  function buildStudyLetter(){
+    const lh=buildDokoLetterhead();
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="font-size:9pt;color:#6b7280;margin-bottom:14px;">'+esc(dateStr)+'</div>'+
+      P('To the Disability Services / Equity Office,')+'<p style="margin:0 0 10px;font-size:10.5pt;font-weight:700;">Re: Academic Adjustments &#8212; '+esc(patName)+'</p>'+
+      P('I am a consultant psychiatrist and write in support of academic adjustments for <strong>'+esc(patName)+'</strong>.')+
+      P('<strong>Diagnosis:</strong> '+esc(dxHeadline||dxCall||'Autism Spectrum Disorder')+'. Relevant functional impacts include difficulties with social communication in group settings, sensory processing in busy environments, executive function, processing speed under pressure, and managing unstructured or unpredictable academic demands.')+
+      (S.formulationNotes?P(esc(S.formulationNotes)):'')+
+      '<p style="margin:0 0 7px;font-size:10pt;line-height:1.6;"><strong>Recommended academic adjustments:</strong></p>'+
+      '<ul style="margin:0 0 12px 16px;font-size:10pt;line-height:1.8;">'+
+      '<li>Extended time for examinations and timed assessments (typically 25&#8211;50% additional time)</li>'+
+      '<li>Separate or reduced-distraction examination room</li>'+
+      '<li>Permission to use noise-cancelling headphones or earplugs during examinations and study</li>'+
+      '<li>Rest breaks during extended examinations</li>'+
+      '<li>Written instructions for all assessments and group work requirements</li>'+
+      '<li>Advance notice of any changes to schedule, requirements, or assessment format</li>'+
+      '<li>Permission to submit written work in place of verbal presentations where equivalent demonstration of knowledge is possible</li>'+
+      '<li>Access to lecture recordings and written materials in advance</li>'+
+      '<li>Flexibility around group work requirements or alternative individual assessment options</li>'+
+      '<li>Priority access to disability support advisor or academic mentor</li>'+
+      '</ul>'+
+      P('I recommend that '+esc(patName)+' be registered with the disability or equity office of '+possessive+' institution and that a student support plan be developed. I am available to provide further information if required.')+
+      signOff()+'</div>';
+  }
+
+  // ── MEDICAL CERTIFICATE ──
+  function buildMedCert(){
+    const lh=buildDokoLetterhead();
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<div style="background:#f0f4f8;border:2px solid #1e3a5f;border-radius:10px;padding:18px 22px;max-width:520px;margin:0 auto;">'+
+      '<div style="text-align:center;margin-bottom:14px;"><div style="font-size:1.1rem;font-weight:800;color:#1e3a5f;margin-bottom:3px;">Medical Certificate</div><div style="font-size:9pt;color:#6b7280;">Psychiatric Consultation</div></div>'+
+      '<table style="width:100%;border-collapse:collapse;font-size:10pt;">'+
+      '<tr><td style="padding:4px 0;color:#6b7280;width:38%;">Patient name:</td><td style="padding:4px 0;font-weight:700;">'+esc(patName)+'</td></tr>'+
+      (S.ptDOB?'<tr><td style="padding:4px 0;color:#6b7280;">Date of birth:</td><td style="padding:4px 0;">'+esc(S.ptDOB)+'</td></tr>':'')+
+      '<tr><td style="padding:4px 0;color:#6b7280;">Date of consultation:</td><td style="padding:4px 0;">'+esc(dateStr)+'</td></tr>'+
+      '<tr><td style="padding:4px 0;color:#6b7280;">Type:</td><td style="padding:4px 0;">Telehealth psychiatric assessment</td></tr>'+
+      '</table>'+
+      '<div style="margin:14px 0;padding:10px 13px;background:#fff;border-radius:7px;border:1px solid #d7deea;font-size:10pt;line-height:1.7;">'+
+      'I certify that I assessed the above-named patient on '+esc(dateStr)+' via telehealth. '+(dxCall.includes('confirmed')||dxCall.includes('probable')?'This consultation was in relation to a '+esc(dxHeadline||'neurodevelopmental condition')+'.':'')+
+      '</div>'+
+      '<div style="margin-top:18px;padding-top:12px;border-top:1px solid #d7deea;">'+
+      '<div style="font-weight:700;font-size:10.5pt;margin-bottom:2px;">'+clinLine+'</div>'+
+      '<div style="font-size:9pt;color:#6b7280;">Psychiatrist'+(ahpra?' &middot; AHPRA: '+esc(ahpra):'')+(provider?' &middot; Provider: '+esc(provider):'')+' </div>'+
+      '<div style="font-size:9pt;color:#6b7280;margin-top:1px;">'+esc(dateStr)+'</div>'+
+      '</div></div>'+
+      '<p style="margin-top:12px;font-size:8pt;color:#9ca3af;font-style:italic;text-align:center;">This certificate is for official purposes only.</p>'+
+      '</div>';
+  }
+
+  // ── PATIENT HANDOUT ──
+  function buildHandout(){
+    const lh=buildDokoLetterhead();
+    const items=document.querySelectorAll('#peList .pe-section.pe-done');
+    if(!items.length) return '<div style="font-family:Arial,sans-serif;">'+lh+'<p style="color:#6b7280;font-style:italic;">No psychoeducation topics were ticked. Go to the Psychoeducation tab, tick the topics covered, then regenerate.</p></div>';
+    let sectionsHtml='';
+    items.forEach(function(section){
+      const title=section.querySelector('.pe-title'); const body=section.querySelector('.pe-body');
+      if(title&&body) sectionsHtml+='<h2 style="font-size:13pt;color:#0d9488;margin:18px 0 6px;border-bottom:2px solid #0d9488;padding-bottom:3px;">'+esc(title.textContent)+'</h2><div style="font-size:10.5pt;line-height:1.7;">'+body.innerHTML+'</div>';
+    });
+    return '<div style="font-family:Arial,sans-serif;">'+lh+
+      '<h1 style="font-size:1.35rem;font-weight:800;color:#1e3a5f;margin-bottom:5px;">Information for '+esc(patName)+'</h1>'+
+      '<p style="font-size:9pt;color:#6b7280;margin-bottom:18px;">Prepared by '+clinLine+' &middot; '+esc(dateStr)+'</p>'+
+      sectionsHtml+
+      '<p style="margin-top:24px;padding-top:12px;border-top:1px solid #d7deea;font-size:9pt;color:#9ca3af;font-style:italic;">This information was prepared specifically for '+esc(patName)+' following a psychiatric assessment on '+esc(dateStr)+'. It is not a substitute for clinical advice.</p>'+
+      '</div>';
+  }
+
+  // ── FULL CLINICAL REPORT ──
+  const fullReport='<div style="font-family:Arial,sans-serif;">'+buildDokoLetterhead()+buildHeader()+buildAssessmentSummary()+buildFamilyHistory()+buildDevHistory()+buildCriteria()+buildMSEObs()+buildFormulation()+buildComorbidities()+buildRisk()+buildTreatmentPlan()+buildSignOff()+'</div>';
+
+  document.getElementById('report-patient').innerHTML=buildPatientReport();
+  document.getElementById('report-full').innerHTML=fullReport;
+  document.getElementById('report-letter').innerHTML=buildGPLetter();
+  document.getElementById('report-treatment').innerHTML='<div style="font-family:Arial,sans-serif;">'+buildDokoLetterhead()+buildHeader()+buildDxBox()+buildTreatmentPlan()+signOff()+'</div>';
+  document.getElementById('report-ndis').innerHTML=buildNDISLetter();
+  document.getElementById('report-handout').innerHTML=buildHandout();
+  document.getElementById('report-workplace').innerHTML=buildWorkplaceLetter();
+  document.getElementById('report-study').innerHTML=buildStudyLetter();
+  document.getElementById('report-medcert').innerHTML=buildMedCert();
+
+  const area=document.getElementById('reportArea'); area.style.display='block';
+  switchTab(tab||'patient',null);
+  area.scrollIntoView({behavior:'smooth'});
+}
+
+function getReportEl(){ return document.getElementById('report-'+currentTab)||document.getElementById('report-patient'); }
+function copyReport(){
+  const el=getReportEl();
+  const wordHtml='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;} table{border-collapse:collapse;width:100%;} th,td{border:1pt solid #ccc;padding:4pt 6pt;font-size:10pt;}</style></head><body>'+el.innerHTML+'</body></html>';
+  if(window.ClipboardItem){
+    const blob=new Blob([wordHtml],{type:'text/html'});
+    navigator.clipboard.write([new ClipboardItem({'text/html':blob})]).then(showToast).catch(()=>navigator.clipboard.writeText(el.innerText||el.textContent).then(showToast));
+  } else { navigator.clipboard.writeText(el.innerText||el.textContent).then(showToast); }
+}
+function downloadWord(){
+  const el=getReportEl();
+  const patName=(S.ptName||'Patient').replace(/[^a-zA-Z0-9]/g,'_');
+  const wordHtml='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>@page{margin:2cm 2.2cm;} body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;color:#111;} table{border-collapse:collapse;width:100%;font-size:9.5pt;} th{padding:5pt 8pt;text-align:left;} td{border:1pt solid #d1d5db;padding:4pt 8pt;vertical-align:top;}</style></head><body>'+el.innerHTML+'</body></html>';
+  const blob=new Blob(['\ufeff'+wordHtml],{type:'application/msword;charset=utf-8'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='ASD_Report_'+patName+'_'+currentTab+'.doc';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(()=>URL.revokeObjectURL(url),2000); showToast();
+}
+function printReport(){
+  const el=getReportEl();
+  const w=window.open('','_blank','width=900,height=700'); if(!w){ alert('Please allow pop-ups.'); return; }
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;font-size:10.5pt;line-height:1.5;color:#111;padding:28px 40px;} table{border-collapse:collapse;width:100%;font-size:9pt;} th,td{border:1pt solid #ccc;padding:4pt 7pt;}</style></head><body>'+el.innerHTML+'</body></html>');
+  w.document.close(); setTimeout(()=>{ w.focus(); w.print(); },500);
+}
+function showToast(){ const t=document.getElementById('toast'); t.style.opacity='1'; setTimeout(()=>t.style.opacity='0',2000); }
+
+// ═══ INIT ═══
+document.addEventListener('DOMContentLoaded',function(){
+  function bindTA(id,setter){ const el=document.getElementById(id); if(el){ el.value=setter.get(); el.oninput=function(){ setter.set(this.value); save(); }; } }
+  function bindSel(id,setter){ const el=document.getElementById(id); if(el){ el.value=setter.get(); el.onchange=function(){ setter.set(this.value); save(); }; } }
+
+  bindSel('ptGender',{get:()=>S.ptGender,set:v=>S.ptGender=v});
+  bindSel('ptState',{get:()=>S.ptState,set:v=>S.ptState=v});
+  bindSel('ptMBS',{get:()=>S.ptMBS,set:v=>S.ptMBS=v});
+  bindSel('ptLiving',{get:()=>S.ptLiving||'',set:v=>S.ptLiving=v});
+  bindSel('ptEmployment',{get:()=>S.ptEmployment||'',set:v=>S.ptEmployment=v});
+  bindSel('ptSupports',{get:()=>S.ptSupports||'',set:v=>S.ptSupports=v});
+  ['ptOcc','ptRef','ptWhoPresent','ptSessionNotes'].forEach(id=>bindTA(id,{get:()=>S[id],set:v=>S[id]=v}));
+  bindTA('presentingNotes',{get:()=>S.presenting.notes,set:v=>S.presenting.notes=v});
+  bindTA('maskingNotes',{get:()=>S.presenting.maskingNotes,set:v=>S.presenting.maskingNotes=v});
+  bindTA('existingDxNotes',{get:()=>S.priorAssessments.existingDxNotes,set:v=>S.priorAssessments.existingDxNotes=v});
+  ['mseFreeText','currentMeds','allergies','riskNotes','formulationNotes','scNotes','rrbNotes','prescribingNotes','referralNotes','additionalPlanNotes','differentialNotes'].forEach(id=>bindTA(id,{get:()=>S[id],set:v=>S[id]=v}));
+  bindTA('associatedConditions',{get:()=>S.specifiers.associated,set:v=>S.specifiers.associated=v});
+  bindTA('familyHistoryNotes',{get:()=>S.familyHistory.notes,set:v=>S.familyHistory.notes=v});
+
+  // Patient date
+  const dtEl=document.getElementById('ptDate');
+  if(dtEl){
+    if(!S.ptDate){ const today=new Date().toISOString().slice(0,10); S.ptDate=today; save(); }
+    dtEl.value=S.ptDate;
+    dtEl.oninput=function(){ S.ptDate=this.value; save(); };
+  }
+  // Patient name
+  const pnEl=document.getElementById('ptName'); if(pnEl){ pnEl.value=S.ptName||''; pnEl.oninput=function(){ S.ptName=this.value; save(); refresh(); }; }
+  const pdEl=document.getElementById('ptDOB'); if(pdEl){ pdEl.value=S.ptDOB||''; pdEl.oninput=function(){ S.ptDOB=this.value; save(); }; }
+
+  // Clinician fields — all in topbar, restored via refresh()
+  const cd=loadClin();
+  ['drName','drQuals','drAHPRA','drProvider'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const keyMap={drName:'name',drQuals:'creds',drAHPRA:'ahpra',drProvider:'provider'};
+    el.value=cd[keyMap[id]]||'';
+    el.oninput=function(){ saveClin(); refresh(); };
+  });
+
+  // Contact email / disclaimer
+  const discEl=document.getElementById('includeDisclaimer'); if(discEl){ discEl.checked=S.includeDisclaimer!==false; discEl.onchange=function(){ S.includeDisclaimer=this.checked; save(); }; }
+  const emailEl=document.getElementById('contactEmail'); if(emailEl){ emailEl.value=S.contactEmail||''; emailEl.oninput=function(){ S.contactEmail=this.value; save(); }; }
+
+  // Render all
+  renderChipGrid('presentingConcernsMount',presentingConcerns.map(c=>({label:c})),S.presenting.concerns,item=>item.label);
+  renderChipGrid('existingDxMount',existingDxList.map(d=>({label:d})),S.priorAssessments.existingDx,item=>item.label);
+  renderPriorScreens();
+  renderCollateralTable();
+  renderDevHistory();
+  renderAssessReasons();
+  renderCritA(); renderCritB(); renderCritCE();
+  renderToggleGroup('specIntellectMount',['Yes','No','Unsure'],S.specifiers,'intellectual');
+  renderToggleGroup('specLangMount',['Yes','No','Unsure'],S.specifiers,'language');
+  renderToggleGroup('specCatatMount',['Yes','No','Unsure'],S.specifiers,'catatonia');
+  renderDifferentials();
+  renderToggleGroup('geneticLoadingMount',['Not assessed','Low / unknown','Moderate — possible ASD/ADHD in family','Strong — confirmed ASD/ADHD/LD in first-degree relatives'],S.familyHistory,'geneticLoading');
+  renderRisk();
+  renderDxCall();
+  renderSeverityButtons(); updateSeverityDisplay();
+  renderNonPharm(); renderMedPlanTable(); renderFUAppts(); renderMonitoring(); renderReferrals(); renderConcerns();
+
+  if(window._peInit) window._peInit();
+  refresh();
+  initScrollSpy();
+});
+
+</script>
+</body>
+</html>
