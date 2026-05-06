@@ -6864,7 +6864,7 @@ function dlRtf(){
         return el.textContent
           .replace(/\\/g,'\\\\')
           .replace(/[{}]/g,function(c){return '\\'+c;})
-          .replace(/[^ -~]/g,function(c){var n=c.charCodeAt(0);return '\\u'+(n>32767?n-65536:n)+'?';});
+          .replace(/[^\x00-\x7E]/g,function(c){var n=c.charCodeAt(0);return '\\u'+(n>32767?n-65536:n)+'?';});
       }
       var tag=el.tagName?el.tagName.toLowerCase():'';
       var inner=Array.from(el.childNodes).map(node).join('');
