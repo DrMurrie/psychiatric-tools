@@ -3600,11 +3600,13 @@ function _factorListFor(stateKey){return stateKey==='predispose'?RISK_FACTORS:st
 function renderFactorChecks(elId,list,stateKey){
   var el=$(elId);if(!el)return;
   el.innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn desel" onclick="deselectAllFactors(\''+stateKey+'\',\''+elId+'\')">Deselect all</button></div>'+
+    '<div class="diff-grid">'+
     list.map(function(d){
       var key=d.replace(/[^a-zA-Z0-9]/g,'_');
       var on=!!S[stateKey][key];
       return '<div class="crow" onclick="toggleFactor(\''+stateKey+'\',\''+key+'\',this)"><div class="cbox'+(on?' yes':'')+'"></div><div class="clabel">'+d+'</div></div>';
-    }).join('');
+    }).join('')+
+    '</div>';
 }
 function toggleFactor(stateKey,k,r){S[stateKey][k]=!S[stateKey][k];var b=r.querySelector('.cbox');if(b)b.className='cbox'+(S[stateKey][k]?' yes':'');save();refresh();}
 function deselectAllFactors(stateKey,elId){
