@@ -1015,10 +1015,11 @@ select.inp{appearance:none}
         </div>
         <label class="fl" style="margin-top:10px">Formulation</label>
         <div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:center">
+          <button type="button" class="fmln-btn on" data-style="dotpoints" onclick="pickFormulation('dotpoints')">5 Ps</button>
           <button type="button" class="fmln-btn" data-style="clinical" onclick="pickFormulation('clinical')">Clinical</button>
           <button type="button" class="fmln-btn" data-style="narrative" onclick="pickFormulation('narrative')">Narrative</button>
           <button type="button" class="fmln-btn" data-style="functional" onclick="pickFormulation('functional')">Functional</button>
-          <button type="button" class="fmln-btn" data-style="dotpoints" onclick="pickFormulation('dotpoints')">4P dot points</button>
+          <button type="button" class="fmln-btn" style="margin-left:auto" onclick="copyFormulation(this)" title="Copy this formulation to the clipboard">Copy</button>
           <span id="fmln-edited-tag" style="display:none;font-size:10px;color:#b45309;font-weight:600">✎ edited — picking a style overwrites</span>
         </div>
         <textarea class="nf" id="dxNotes" placeholder="Pick a style above, or write your own…" oninput="onDxNotesEdit()" rows="6"></textarea>
@@ -1410,10 +1411,10 @@ select.inp{appearance:none}
 <script>
 'use strict';
 
-const DIFFICULTIES=['Anger','Anxiety','Avoidance','Binge eating','Burnout','Conflict at work or study','Difficulty concentrating','Difficulty finishing tasks','Difficulty focusing','Difficulty initiating tasks','Difficulty managing finances','Difficulty parenting','Difficulty regulating substance use','Difficulty with household tasks','Driving difficulties','Emotional dysregulation','Family conflict','Forgetfulness','Hyperfocus','Impulsivity','Internal hyperactivity','Job instability','Low mood','Low self-esteem','Memory difficulties','Mood swings','Overcommitting','Overspending','Poor organisation','Poor sleep routine','Poor time management','Procrastination','Rejection sensitivity','Relationship difficulties','Restlessness','Risk-taking','Sensory sensitivities','Sleep difficulties','Social difficulties','Time blindness','Underperformance'];
-const RISK_FACTORS=['Family history of ADHD (first-degree relative)','Family history of other neurodevelopmental disorder','Prematurity or low birth weight','Prenatal exposure (alcohol, tobacco, illicit drugs)','Perinatal complications (hypoxia, neonatal jaundice)','Early childhood adversity / trauma','Lead or other neurotoxin exposure','Childhood traumatic brain injury','Maternal stress, depression, or illness in pregnancy','Chronic medical illness in childhood (epilepsy, severe iron deficiency)'];
-const PERPETUATING_FACTORS=['Untreated or under-treated ADHD symptoms','Poor sleep / disrupted circadian rhythm','Iron deficiency, low vitamin D, or other nutritional issue','Untreated comorbid mental illness (anxiety, depression, SUD)','Stimulant or other substance misuse','Insufficient workplace or educational supports','Maladaptive coping (procrastination, avoidance, all-or-nothing effort)','Learned helplessness / negative self-concept','Lack of structure (no routines, planning systems, or external scaffolding)','Chronic stress or relational conflict','Financial or housing instability','Low physical activity'];
-const PROTECTIVE_FACTORS=['Established treatment / engaged with care','Strong family or social supports','Stable housing and finances','Effective routines and structure','Regular exercise','Good sleep hygiene','Workplace or educational accommodations in place','Insight and motivation for change','Positive therapeutic alliance'];
+const DIFFICULTIES=['Attention / focus difficulties','Task initiation / completion difficulties','Disorganisation','Time management / time blindness','Forgetfulness / memory difficulties','Impulsivity / risk-taking','Restlessness / internal hyperactivity','Emotional dysregulation','Rejection sensitivity','Low mood','Anxiety','Burnout / chronic exhaustion','Sleep difficulties','Substance / behavioural regulation','Eating dysregulation','Relationship / social difficulties','Workplace or academic underperformance','Financial difficulties','Driving / safety concerns','Sensory sensitivities'];
+const RISK_FACTORS=['Family history of ADHD (first-degree relative)','Family history of autism or other neurodevelopmental disorder','Family history of mental illness','Prematurity or low birth weight','Prenatal exposure (alcohol, tobacco, illicit drugs)','Perinatal complications (hypoxia, neonatal jaundice)','Maternal stress, depression, or illness in pregnancy','Chronic medical illness in childhood','Childhood traumatic brain injury','Childhood seizure disorder / epilepsy','Severe early childhood iron deficiency','Lead or other neurotoxin exposure','Early childhood adversity / trauma','Insecure attachment / caregiver disruption','Frequent school changes / instability','Childhood bullying','Childhood neglect or abuse'];
+const PERPETUATING_FACTORS=['Untreated or under-treated ADHD symptoms','Poor sleep / disrupted circadian rhythm','Iron deficiency, low vitamin D, or other nutritional issue','Untreated comorbid mental illness (anxiety, depression, SUD)','Stimulant or other substance misuse','Cannabis use','Excessive caffeine','Insufficient workplace or educational supports','Maladaptive coping (procrastination, avoidance, all-or-nothing effort)','Learned helplessness / negative self-concept','Internalised shame / low self-esteem','Lack of structure (no routines, planning systems, or external scaffolding)','Chronic stress or relational conflict','Caregiver burden','Financial or housing instability','Low physical activity','Excessive screen / social media use','Lack of psychoeducation about ADHD','Carer or partner accommodating dysfunction'];
+const PROTECTIVE_FACTORS=['Established treatment / engaged with care','Strong family or social supports','Supportive partner','Stable housing and finances','Effective routines and structure','Regular exercise','Good sleep hygiene','Healthy diet','Workplace or educational accommodations in place','Engaged with psychology / coaching','Insight and motivation for change','Positive therapeutic alliance','Above-average intellectual ability','Strong interests or sense of purpose','Spiritual or community engagement','Absence of substance use'];
 const ASSESS_REASONS=['Self-recognised symptoms','GP recommended','Psychologist recommended','Partner / spouse recommended','Child(ren) recently diagnosed','Family member recently diagnosed','Workplace or academic difficulties'];
 const ASSESS_REASON_NARR={
   'Self-recognised symptoms':'recognising symptoms in {refl}',
@@ -2076,9 +2077,13 @@ function setSafetyOverride(key,field,val){
 // Verb conjugation helpers (handle they/them as plural verb form)
 function _vAgree(g,sing,plural){return (g==='Male'||g==='Female')?sing:plural;}
 function _smartLower(s){
-  // Lowercase the first character only, preserving acronyms like ASD or FBC
-  // that may appear later in the label.
-  return s?s.charAt(0).toLowerCase()+s.slice(1):s;
+  // Lowercase the first character only, preserving acronyms like ASD/FBC/ECG.
+  // If the first whitespace-delimited token is 2+ uppercase letters (optionally
+  // with a trailing hyphenated/digit suffix), leave it intact.
+  if(!s)return s;
+  var m=s.match(/^([A-Z]{2,}(?:[\-/][A-Z0-9]+)*)\b/);
+  if(m)return s;
+  return s.charAt(0).toLowerCase()+s.slice(1);
 }
 function _stripDifficultyPrefix(s){return s.replace(/^difficulty\s+/i,'');}
 function _capitaliseDr(s){
@@ -2192,6 +2197,19 @@ function getFormulationContext(){
   var diva=(S.screening&&S.screening.diva)||'';
   var dx=dxFull();
   var predispose=RISK_FACTORS.filter(function(d){return S.predispose[d.replace(/[^a-zA-Z0-9]/g,'_')];}).map(_smartLower);
+  // Auto-include family-history predisposers when ADHD / ASD / other
+  // neurodevelopmental disorder is marked Present and the equivalent risk
+  // factor wasn't already ticked.
+  if(S.fam){
+    var FAM_PREDISPOSE_MAP={fam_adhd:'family history of ADHD',fam_asd:'family history of autism spectrum disorder',fam_neurodevel:'family history of other neurodevelopmental disorder'};
+    Object.keys(FAM_PREDISPOSE_MAP).forEach(function(k){
+      if(S.fam[k]==='Present'){
+        var ph=FAM_PREDISPOSE_MAP[k];
+        if(predispose.indexOf(ph)<0&&!predispose.some(function(p){return p.toLowerCase().indexOf('family history of '+(k==='fam_adhd'?'adhd':k==='fam_asd'?'autism':'other neurodevelopmental'))>=0;}))
+          predispose.push(ph);
+      }
+    });
+  }
   var perpetuate=PERPETUATING_FACTORS.filter(function(d){return S.perpetuate[d.replace(/[^a-zA-Z0-9]/g,'_')];}).map(_smartLower);
   var protective=PROTECTIVE_FACTORS.filter(function(d){return S.protective[d.replace(/[^a-zA-Z0-9]/g,'_')];}).map(_smartLower);
   var arSelected=ASSESS_REASONS.filter(function(r){return S.assessReason[r.replace(/[^a-zA-Z0-9]/g,'_')];});
@@ -2248,6 +2266,13 @@ function formulationClinical(c){
   if(c.predispose.length)bits.push('Predisposing factors include '+_joinList(c.predispose)+'.');
   if(c.perpetuate.length)bits.push('Perpetuating factors include '+_joinList(c.perpetuate)+'.');
   if(c.protective.length)bits.push('Protective factors include '+_joinList(c.protective)+'.');
+  // Treatment rationale
+  var rationaleBits=[];
+  rationaleBits.push('pharmacological management to target the core attentional and regulatory symptoms');
+  if(c.perpetuate.length)rationaleBits.push('non-pharmacological strategies addressing the perpetuating factors above');
+  else rationaleBits.push('non-pharmacological strategies (psychoeducation, structure, routines, sleep)');
+  if(c.current.length)rationaleBits.push('parallel management of comorbid '+_joinList(c.current));
+  bits.push('Treatment is indicated and will involve '+_joinList(rationaleBits)+'.');
   return bits.join(' ');
 }
 function formulationNarrative(c){
@@ -2306,7 +2331,7 @@ function formulationDotPoints(c){
   return lines.map(function(l){return '• '+l;}).join('\n');
 }
 var FORMULATION_BUILDERS={clinical:formulationClinical,narrative:formulationNarrative,functional:formulationFunctional,dotpoints:formulationDotPoints};
-var _fmlnEdited=false,_fmlnActiveStyle=null,_fmlnDxAtGen='';
+var _fmlnEdited=false,_fmlnActiveStyle='dotpoints',_fmlnDxAtGen='';
 function pickFormulation(style){
   var fn=FORMULATION_BUILDERS[style];if(!fn)return;
   var ta=$('dxNotes');if(!ta)return;
@@ -2321,6 +2346,18 @@ function onDxNotesEdit(){
   if(_fmlnActiveStyle){_fmlnEdited=true;var tag=$('fmln-edited-tag');if(tag)tag.style.display='inline';}
   if(typeof save==='function')save();
   if(typeof refresh==='function')refresh();
+}
+function copyFormulation(btn){
+  var ta=$('dxNotes');if(!ta)return;
+  var txt=ta.value||'';
+  if(!txt){if(btn){var orig=btn.textContent;btn.textContent='Empty';setTimeout(function(){btn.textContent=orig;},1200);}return;}
+  // Plain-text copy. The 5P style uses bullet characters that paste fine
+  // into Word and Best Practice as plain text.
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){
+      if(btn){var orig=btn.textContent;btn.textContent='Copied';btn.classList.add('on');setTimeout(function(){btn.textContent=orig;btn.classList.remove('on');},1200);}
+    });
+  }
 }
 function maybeRefreshFormulation(){
   // Whenever there's an active style and the user hasn't manually edited the
@@ -4447,7 +4484,7 @@ function buildHeidi(){
   if(S.fam){
     var famPresent=FAM_PSYCH.filter(function(item){return S.fam[item.id]==='Present';});
     var famAllNil=FAM_PSYCH.every(function(item){return S.fam[item.id]==='Nil';});
-    if(famPresent.length){o+='FAMILY PSYCHIATRIC HISTORY:\n';famPresent.forEach(function(item){o+='- '+item.label+'\n';});if(f('famNotes'))o+='Details: '+f('famNotes')+'\n';o+='\n';}
+    if(famPresent.length){o+='FAMILY PSYCHIATRIC HISTORY:\n';famPresent.forEach(function(item){var d=(S.famDetail&&S.famDetail[item.id]||'').trim();o+='- '+item.label+(d?' ('+d+')':'')+'\n';});if(f('famNotes'))o+='Details: '+f('famNotes')+'\n';o+='\n';}
     else if(famAllNil){o+='FAMILY PSYCHIATRIC HISTORY: Nil significant\n\n';}
   }
   if(f('mseNotes'))o+=f('mseNotes')+'\n';o+='\n';
@@ -5109,7 +5146,7 @@ function buildFullReport(){
     var famAllNil=FAM_PSYCH.every(function(item){return S.fam[item.id]==='Nil';});
     if(famPresent.length){
       h+=sec('Family Psychiatric History');
-      h+=list(famPresent.map(function(item){return esc(item.label);}));
+      h+=list(famPresent.map(function(item){var d=(S.famDetail&&S.famDetail[item.id]||'').trim();return esc(item.label)+(d?' <span style="color:#475569">('+esc(d)+')</span>':'');}));
       if(f('famNotes')) h+=p('<strong>Details:</strong> '+nl(f('famNotes')));
     } else if(famAllNil){
       h+=sec('Family Psychiatric History');
@@ -5838,9 +5875,29 @@ function _writeClipboardRichAndPlain(html,plain,btnSel){
   }catch(e){}
   fail();
 }
+function _styleHtmlForClipboard(html){
+  // Take an HTML fragment and apply inline styles so heading hierarchy and
+  // table layout survive paste into Word / Best Practice / other EMRs that
+  // may not honour external stylesheets.
+  var tmp=document.createElement('div');
+  tmp.innerHTML=html;
+  var BASE='font-family:Arial,sans-serif;color:#000;';
+  tmp.querySelectorAll('h1').forEach(function(el){el.style.cssText=BASE+'font-size:18pt;font-weight:bold;margin:18pt 0 8pt 0;border-bottom:1pt solid #000;padding-bottom:3pt;';});
+  tmp.querySelectorAll('h2').forEach(function(el){el.style.cssText=BASE+'font-size:16pt;font-weight:bold;margin:18pt 0 8pt 0;';});
+  tmp.querySelectorAll('h3').forEach(function(el){el.style.cssText=BASE+'font-size:14pt;font-weight:bold;color:#1e3a5f;margin:14pt 0 6pt 0;border-bottom:0.75pt solid #cbd5e1;padding-bottom:2pt;';});
+  tmp.querySelectorAll('h4').forEach(function(el){el.style.cssText=BASE+'font-size:12pt;font-weight:bold;margin:12pt 0 4pt 0;';});
+  tmp.querySelectorAll('p').forEach(function(el){if(!el.style.cssText)el.style.cssText=BASE+'font-size:11pt;line-height:1.5;margin:0 0 8pt 0;';});
+  tmp.querySelectorAll('ul,ol').forEach(function(el){el.style.cssText=BASE+'font-size:11pt;margin:4pt 0 10pt 22pt;padding:0;';});
+  tmp.querySelectorAll('li').forEach(function(el){el.style.cssText=BASE+'font-size:11pt;line-height:1.5;margin:0 0 4pt 0;';});
+  tmp.querySelectorAll('table').forEach(function(el){el.style.cssText='border-collapse:collapse;width:100%;'+BASE+'font-size:10.5pt;margin:6pt 0 12pt 0;';});
+  tmp.querySelectorAll('th').forEach(function(el){el.style.cssText=BASE+'font-size:10.5pt;font-weight:bold;background:#e7eef9;border:1pt solid #94a3b8;padding:5pt 8pt;text-align:left;vertical-align:top;';});
+  tmp.querySelectorAll('td').forEach(function(el){el.style.cssText=BASE+'font-size:10.5pt;border:1pt solid #94a3b8;padding:5pt 8pt;vertical-align:top;line-height:1.45;';});
+  return tmp.innerHTML;
+}
 function copyReportFormatted(){
   var html=_activeReportHtml();
-  var fullHtml='<html><body style="'+_activeReportFontCss()+';margin:0;padding:0;">'+html+'</body></html>';
+  var styled=_styleHtmlForClipboard(html);
+  var fullHtml='<html><body style="font-family:Arial,sans-serif;color:#000;margin:0;padding:0;">'+styled+'</body></html>';
   _writeClipboardRichAndPlain(fullHtml,htmlToPlainText(html),'[onclick="copyReportFormatted()"]');
 }
 
