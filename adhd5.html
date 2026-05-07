@@ -966,6 +966,12 @@ select.inp{appearance:none}
     </div>
   </div>
 <div class="card" data-initial-only>
+    <div class="ch amber">Core ADHD Symptoms (DSM-5-TR)</div>
+    <div class="cb">
+      <div id="core-sx-checks"></div>
+    </div>
+  </div>
+<div class="card" data-initial-only>
     <div class="ch indigo">Developmental History &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for example questions</span></div>
     <div class="cb">
       <label class="fl" style="margin-top:0">Predisposing / risk factors</label>
@@ -1459,7 +1465,7 @@ select.inp{appearance:none}
 'use strict';
 
 const DIFFICULTIES=['Attention / focus difficulties','Task initiation / completion difficulties','Disorganisation','Time management / time blindness','Forgetfulness / memory difficulties','Impulsivity / risk-taking','Restlessness / internal hyperactivity','Emotional dysregulation','Rejection sensitivity','Low mood','Anxiety','Burnout / chronic exhaustion','Sleep difficulties','Substance / behavioural regulation','Eating dysregulation','Relationship / social difficulties','Workplace or academic underperformance','Financial difficulties','Driving / safety concerns','Sensory sensitivities'];
-const RISK_FACTORS=['Family history of ADHD (first-degree relative)','Family history of autism or other neurodevelopmental disorder','Family history of mental illness','Prematurity or low birth weight','Prenatal exposure (alcohol, tobacco, illicit drugs)','Perinatal complications (hypoxia, neonatal jaundice)','Maternal stress, depression, or illness in pregnancy','Chronic medical illness in childhood','Childhood traumatic brain injury','Childhood seizure disorder / epilepsy','Severe early childhood iron deficiency','Lead or other neurotoxin exposure','Early childhood adversity / trauma','Insecure attachment / caregiver disruption','Frequent school changes / instability','Childhood bullying','Childhood neglect or abuse'];
+const RISK_FACTORS=['Family history of ADHD (first-degree relative)','Family history of autism or other neurodevelopmental disorder','Family history of mental illness','Prematurity or low birth weight','Prenatal exposure (alcohol, tobacco, illicit drugs)','Perinatal complications (hypoxia, neonatal jaundice)','Maternal stress, depression, or illness in pregnancy','Chronic medical illness in childhood','Childhood traumatic brain injury','Childhood seizure disorder / epilepsy','Lead or other neurotoxin exposure','Early childhood adversity / trauma','Insecure attachment / caregiver disruption','Frequent school changes / instability','Childhood bullying','Childhood neglect or abuse'];
 const PERPETUATING_FACTORS=['Untreated or under-treated ADHD symptoms','Poor sleep / disrupted circadian rhythm','Iron deficiency, low vitamin D, or other nutritional issue','Untreated comorbid mental illness (anxiety, depression, SUD)','Stimulant or other substance misuse','Cannabis use','Excessive caffeine','Insufficient workplace or educational supports','Maladaptive coping (procrastination, avoidance, all-or-nothing effort)','Learned helplessness / negative self-concept','Internalised shame / low self-esteem','Lack of structure (no routines, planning systems, or external scaffolding)','Chronic stress or relational conflict','Caregiver burden','Financial or housing instability','Low physical activity','Excessive screen / social media use','Lack of psychoeducation about ADHD','Carer or partner accommodating dysfunction'];
 const PROTECTIVE_FACTORS=['Established treatment / engaged with care','Strong family or social supports','Supportive partner','Stable housing and finances','Effective routines and structure','Regular exercise','Good sleep hygiene','Healthy diet','Workplace or educational accommodations in place','Engaged with psychology / coaching','Insight and motivation for change','Positive therapeutic alliance','Above-average intellectual ability','Strong interests or sense of purpose','Spiritual or community engagement','Absence of substance use'];
 const ASSESS_REASONS=['Self-recognised symptoms','GP recommended','Psychologist recommended','Partner / spouse recommended','Child(ren) recently diagnosed','Family member recently diagnosed','Workplace or academic difficulties'];
@@ -3777,6 +3783,31 @@ function renderScreening(){
     if(el.value!==v)el.value=v;
   });
 }
+function renderCoreSx(){
+  var el=$('core-sx-checks');if(!el)return;
+  var inattItems=DEV.filter(function(d){return d.type==='sym'&&/^sym_inatt/.test(d.id);});
+  var hiItems=DEV.filter(function(d){return d.type==='sym'&&/^sym_hi/.test(d.id);});
+  var inattCount=inattItems.filter(function(d){return S.dev[d.id];}).length;
+  var hiCount=hiItems.filter(function(d){return S.dev[d.id];}).length;
+  function row(d){
+    var on=!!S.dev[d.id];
+    return '<div class="crow sym-crow" data-devid="'+d.id+'" style="font-size:11px;padding:5px 8px"><div class="cbox'+(on?' yes':'')+'" style="width:16px;height:16px;flex-shrink:0"></div><div class="clabel" style="font-size:11px;line-height:1.3">'+d.label+'</div></div>';
+  }
+  function group(label,count,items){
+    return '<div style="display:flex;align-items:baseline;gap:8px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:6px 2px 4px"><span>'+label+'</span><span style="font-weight:700;color:var(--text)">'+count+' / '+items.length+'</span></div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px;margin-bottom:10px">'+items.map(row).join('')+'</div>';
+  }
+  el.innerHTML=group('Inattention',inattCount,inattItems)+group('Hyperactivity-impulsivity',hiCount,hiItems);
+  if(el._symHandler)el.removeEventListener('click',el._symHandler);
+  el._symHandler=function(e){
+    var r=e.target.closest('.sym-crow');if(!r)return;
+    var id=r.getAttribute('data-devid');if(!id)return;
+    S.dev[id]=!S.dev[id];
+    var cb=r.querySelector('.cbox');if(cb)cb.className='cbox'+(S.dev[id]?' yes':'');
+    save();refresh();
+  };
+  el.addEventListener('click',el._symHandler);
+}
 function renderDev(){
   var header='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllDev()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDev()">Deselect all</button></div>';
   var html=header;
@@ -3785,6 +3816,9 @@ function renderDev(){
   var inRegGrid=true;
   var inSymGrid=false;
   DEV.forEach(function(d){
+    // Skip core symptom rows + the 'Core Symptoms' label — they live in their
+    // own card now (renderCoreSx).
+    if(d.type==='sym'||(d.type==='label'&&/core/i.test(d.label||'')))return;
     if(d.type==='label'){
       // Close regular grid, open label + sym grid
       if(inRegGrid){html+='</div>';inRegGrid=false;}
@@ -4224,7 +4258,7 @@ function setSubDetail(key,val){
 // togglePE replaced by peToggle
 
 function deselectAllDifficulties(){DIFFICULTIES.forEach(function(d){S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')]=false;});renderDiffChecks();save();refresh();}
-function deselectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=false;});renderDev();save();refresh();}
+function deselectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=false;});renderDev();renderCoreSx();save();refresh();}
 function deselectAllDSM(){DSM.forEach(function(d){S.dsm[d.id]=false;delete S.dsmManual[d.id];});renderDSM();save();refresh();}
 function deselectAllScreening(){SCREENING.forEach(function(s){S.screening[s.id]='';});renderScreening();save();refresh();}
 
@@ -4243,7 +4277,7 @@ function selectAllDiffsNil(){DIFFS.forEach(function(d){S.differentials[d.id]='Ni
 function deselectAllDiffs(){DIFFS.forEach(function(d){S.differentials[d.id]='';});renderDiffRows();save();refresh();}
 function selectAllSubsNil(){SUBS.forEach(function(s){S.substances['sub_'+s.replace(/\W/g,'_')]='Nil';});S.sudDiff='Nil';S.drugDep='No';renderSubs();save();refresh();}
 function selectAllDifficulties(){DIFFICULTIES.forEach(function(d){S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')]=true;});renderDiffChecks();save();refresh();}
-function selectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=true;});renderDev();save();refresh();}
+function selectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=true;});renderDev();renderCoreSx();save();refresh();}
 function selectAllDSM(){DSM.forEach(function(d){S.dsm[d.id]=true;S.dsmManual[d.id]=true;});renderDSM();save();refresh();}
 function selectAllScreening(){S.screening.asrs='Positive';S.screening.diva='Completed - positive';S.screening.obs='Supportive';S.screening.gpReferral='Supportive';renderScreening();save();refresh();}
 
@@ -7259,7 +7293,7 @@ function initScrollSpy(){
 function init(){
   loadSaved();
 
-  renderDiffChecks();renderScreening();renderDev();renderDSM();renderDiffRows();
+  renderDiffChecks();renderScreening();renderDev();renderCoreSx();renderDSM();renderDiffRows();
   renderFactorChecks('predispose-checks',RISK_FACTORS,'predispose');
   renderFactorChecks('perpetuate-checks',PERPETUATING_FACTORS,'perpetuate');
   renderFactorChecks('protective-checks',PROTECTIVE_FACTORS,'protective');
