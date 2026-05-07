@@ -1012,8 +1012,8 @@ select.inp{appearance:none}
     <div class="cb" style="padding:0">
       <div style="padding:6px 13px 8px">
         <div style="display:flex;gap:6px;margin-bottom:8px">
-          <button class="sel-all-btn" onclick="toggleNoSection('noFamPsych')" id="no-fam-btn">No family psychiatric history</button>
-          <button class="sel-all-btn" onclick="famSetAll('Nil')">All nil</button>
+          <button class="sel-all-btn desel" onclick="toggleNoSection('noFamPsych')" id="no-fam-btn">No family psychiatric history</button>
+          <button class="sel-all-btn desel" onclick="famSetAll('Nil')">All nil</button>
           <button class="sel-all-btn desel" onclick="famSetAll('')">Deselect all</button>
         </div>
         <div id="fam-checks" class="sub-grid"></div>
@@ -3973,11 +3973,10 @@ function setFamDetail(id,val){
 function setFam(id,val,btn){
   if(!S.fam)S.fam={};
   var cur=S.fam[id]||'';
-  if(cur===val){S.fam[id]='';btn.className='rb';}
-  else{S.fam[id]=val;btn.closest('.rbtns').querySelectorAll('.rb').forEach(function(b){b.className='rb';});btn.classList.add(val==='Present'?'af':'ay');}
+  S.fam[id]=(cur===val)?'':val;
   // Selecting Present implicitly contradicts "No family psychiatric history".
   if(val==='Present'&&S.noFamPsych)S.noFamPsych=false;
-  save();refresh();renderFam();
+  renderFam();save();refresh();
 }
 function famSetAll(val){
   if(!S.fam)S.fam={};
