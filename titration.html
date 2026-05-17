@@ -101,7 +101,12 @@
   .tit-step-badge.ongoing{background:var(--green-bg);color:var(--green)}
   .tit-dur-inp{width:38px;border:1px solid var(--border);border-radius:5px;color:var(--text);padding:3px 5px;font:12px var(--sans);text-align:center;background:#fff}
   .tit-dur-sel{border:1px solid var(--border);border-radius:5px;color:var(--text);padding:3px 5px;font:12px var(--sans);background:#fff}
-  .tit-ongoing-lbl{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);cursor:pointer}
+  .tit-ongoing-btn{width:30px;height:26px;padding:0;border:1.5px solid var(--border);border-radius:5px;background:#fff;color:#94a3b8;font:700 13px var(--sans);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+  .tit-ongoing-btn.on{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+  .tit-ongoing-btn:hover{filter:brightness(.97)}
+  /* Orange highlight for fields the user still needs to fill in */
+  .unfilled,.tit-dur-inp.unfilled,.tit-cap-sel.unfilled{background:#fff7ed;border-color:#f59e0b;color:#b45309}
+  .tit-dur-inp.unfilled::placeholder{color:#f59e0b;opacity:1}
   .tit-rm-step{background:none;border:none;color:#c8cdd9;font-size:14px;padding:0 4px;cursor:pointer;margin-left:auto}
   .tit-rm-step:hover{color:var(--red)}
   .tit-dose-rows{display:flex;flex-direction:column;gap:6px}
@@ -638,10 +643,10 @@ function formNoun(m,q){
 }
 function buildDoseLabel(m,d){
   if(d.type==='free')return d.l||'';
+  if(d.s==null)return '(dose not set)';
   const u=m.unit||'mg';
   const q=d.q==null?1:d.q;
-  const s=d.s==null?0:d.s;
-  const total=Math.round(q*s*100)/100;
+  const total=Math.round(q*d.s*100)/100;
   return fmtQ(q)+' '+formNoun(m,q)+' ('+total+u+')';
 }
 function titAutoLabel(steps,si){
@@ -649,7 +654,8 @@ function titAutoLabel(steps,si){
   for(let i=0;i<=si;i++){
     const st=steps[i];
     if(st.ongoing)return 'Ongoing';
-    const dd=st.unit==='weeks'?(st.dur||1)*7:(st.dur||1);
+    if(!st.dur)return 'Step '+(si+1);
+    const dd=st.unit==='weeks'?st.dur*7:st.dur;
     const start=day+1;day+=dd;
     if(i<si)continue;
     if(st.unit==='weeks'){
@@ -677,12 +683,12 @@ function totalDailyDose(m,st){
 function makeDefaultDose(def){
   const strs=def.strengths||[];
   if(strs.length){
-    return {t:'morning',type:'str',s:strs[0],q:1};
+    return {t:'morning',type:'str',s:null,q:1};
   }
   return {t:'morning',type:'free',l:''};
 }
 function makeDefaultStep(def){
-  return {dur:7,unit:'days',ongoing:false,note:'',doses:[makeDefaultDose(def)]};
+  return {dur:null,unit:'weeks',ongoing:false,note:'',doses:[makeDefaultDose(def)]};
 }
 
 /* ─────────────────────── ADD / REMOVE MEDS ────────────────────────────── */
@@ -690,8 +696,6 @@ function addSelectedMed(){
   const key=$('medPicker').value;
   if(!key||!MED_CATALOG[key])return;
   const def=MED_CATALOG[key];
-  // Always start with a single empty maintenance step at the lowest strength.
-  // The catalogue's example titration plan (if any) can be loaded on demand.
   S.meds.push({
     key:key,
     customName:def.name,
@@ -703,7 +707,7 @@ function addSelectedMed(){
     unit:def.unit||'mg',
     strengths:(def.strengths||[]).slice(),
     authority:def.authority||'',
-    steps:[Object.assign(makeDefaultStep(def),{ongoing:true})]
+    steps:[makeDefaultStep(def)]
   });
   $('medPicker').value='';
   render();
@@ -734,7 +738,11 @@ function removeStep(mi,si){
   if(S.meds[mi].steps.length<=1){alert('Each medication needs at least one step.');return;}
   S.meds[mi].steps.splice(si,1);render();
 }
-function setStepDur(mi,si,val){S.meds[mi].steps[si].dur=parseInt(val,10)||1;renderOutputs();}
+function setStepDur(mi,si,val){
+  const n=parseInt(val,10);
+  S.meds[mi].steps[si].dur=isNaN(n)||n<=0?null:n;
+  render();
+}
 function setStepUnit(mi,si,val){S.meds[mi].steps[si].unit=val;render();}
 function setStepOngoing(mi,si,checked){S.meds[mi].steps[si].ongoing=!!checked;render();}
 function setStepNote(mi,si,val){S.meds[mi].steps[si].note=val;renderOutputs();}
@@ -751,7 +759,7 @@ function changeDoseQ(mi,si,di,dir){
 }
 function setDoseStrength(mi,si,di,val){
   const dose=S.meds[mi].steps[si].doses[di];if(!dose)return;
-  dose.s=parseFloat(val);render();
+  dose.s=val===''?null:parseFloat(val);render();
 }
 function setDoseTime(mi,si,di,val){S.meds[mi].steps[si].doses[di].t=val;renderOutputs();}
 function setDoseFreeLabel(mi,si,di,val){S.meds[mi].steps[si].doses[di].l=val;renderOutputs();}
@@ -847,11 +855,16 @@ function renderTitDose(m,d,di,si,mi){
     const strs=m.strengths||[];
     let strengthCtrl;
     if(strs.length>1){
-      strengthCtrl=`<select class="tit-cap-sel" onchange="setDoseStrength(${mi},${si},${di},this.value)">`+
+      const unfilled=d.s==null?' unfilled':'';
+      strengthCtrl=`<select class="tit-cap-sel${unfilled}" onchange="setDoseStrength(${mi},${si},${di},this.value)">`+
+        `<option value=""${d.s==null?' selected':''}>— pick —</option>`+
         strs.map(s=>`<option value="${s}"${d.s==s?' selected':''}>${esc(String(s))}${esc(u)}</option>`).join('')+'</select>';
+    } else if(strs.length===1){
+      // Only one strength available — auto-set if blank, just display.
+      if(d.s==null)d.s=strs[0];
+      strengthCtrl=`<span class="tit-fixed-strength">${esc(String(strs[0]))}${esc(u)}</span>`;
     } else {
-      const fixed=strs[0]||d.s||0;
-      strengthCtrl=`<span class="tit-fixed-strength">${esc(String(fixed))}${esc(u)}</span>`;
+      strengthCtrl=`<span class="tit-fixed-strength">${esc(String(d.s||0))}${esc(u)}</span>`;
     }
     ctrl='<div class="tit-dose-ctrl">'+stepper+formLbl+strengthCtrl+'</div>';
     toggleBtn=`<button type="button" class="tit-icon-btn" onclick="doseToFree(${mi},${si},${di})" title="Custom text (ranges, fractions, PRN wording)">✎</button>`;
@@ -879,12 +892,12 @@ function renderTitStep(m,st,si,mi){
     '<div class="tit-step-content">'+
       '<div class="tit-step-header">'+
         `<span class="tit-step-badge${isOngoing?' ongoing':''}">${esc(autoLbl)}</span>`+
-        `<input class="tit-dur-inp" type="number" min="1" max="365" value="${isOngoing?'':(st.dur||1)}" ${isOngoing?'disabled':''} oninput="setStepDur(${mi},${si},this.value)">`+
+        `<input class="tit-dur-inp${(!isOngoing&&!st.dur)?' unfilled':''}" type="number" min="1" max="365" value="${isOngoing?'':(st.dur||'')}" placeholder="—" ${isOngoing?'disabled':''} oninput="setStepDur(${mi},${si},this.value)">`+
         `<select class="tit-dur-sel" ${isOngoing?'disabled':''} onchange="setStepUnit(${mi},${si},this.value)">`+
           `<option value="days"${st.unit==='days'?' selected':''}>days</option>`+
           `<option value="weeks"${st.unit==='weeks'?' selected':''}>weeks</option>`+
         '</select>'+
-        `<label class="tit-ongoing-lbl"><input type="checkbox" ${isOngoing?'checked':''} onchange="setStepOngoing(${mi},${si},this.checked)"> Ongoing</label>`+
+        `<button type="button" class="tit-ongoing-btn${isOngoing?' on':''}" onclick="setStepOngoing(${mi},${si},${!isOngoing})" title="Toggle ongoing / maintenance (no fixed duration)">∞</button>`+
         `<button class="tit-rm-step" onclick="removeStep(${mi},${si})" title="Remove step">×</button>`+
       '</div>'+
       `<div class="tit-dose-rows">${doses}</div>`+
