@@ -625,12 +625,12 @@ footer{
   <nav class="toc">
     <a href="#sec-open">Opening</a>
     <a href="#sec-pre">Pre-screening</a>
-    <a href="#sec-fam">Family</a>
     <a href="#sec-a">A · Symptoms</a>
     <a href="#sec-b">B · Childhood</a>
     <a href="#sec-c">C · Settings</a>
     <a href="#sec-d">D · Impairment</a>
     <a href="#sec-e">E · Differentials</a>
+    <a href="#sec-fam">Family</a>
     <a href="#sec-sub">Substance</a>
     <a href="#sec-card">Cardiac</a>
     <a href="#sec-med">Medical</a>
@@ -658,14 +658,6 @@ footer{
   <div class="body">
     <p class="lead">Validated tools, prior reports, and informant accounts. Cover before you start the formal DSM-5 review.</p>
     <ul class="dots" data-section="prescreening"></ul>
-  </div>
-</section>
-
-<section class="card violet" id="sec-fam">
-  <div class="ch"><span class="num">·</span>Family psychiatric history</div>
-  <div class="body">
-    <p class="lead">ADHD is highly heritable. Family history of bipolar or psychosis changes the risk–benefit calculus.</p>
-    <ul class="dots" data-section="family"></ul>
   </div>
 </section>
 
@@ -715,6 +707,14 @@ footer{
   <div class="body">
     <p class="lead">For each differential, 2–3 differentiating questions, then a brief note on how to discern from ADHD. Click any line to expand.</p>
     <ul class="dots" data-section="differentials"></ul>
+  </div>
+</section>
+
+<section class="card violet" id="sec-fam">
+  <div class="ch"><span class="num">·</span>Family psychiatric history</div>
+  <div class="body">
+    <p class="lead">Each item expands to evidence-based clinical relevance. Click any line to read why this family history matters and what it changes in management.</p>
+    <ul class="dots" data-section="family"></ul>
   </div>
 </section>
 
@@ -1546,21 +1546,69 @@ meds: [
   ]},
 ],
 family: [
-  {t:"ADHD or learning disorders",
-   q:["Anyone diagnosed, or strongly suspected, ADHD, dyslexia, learning issues?"]},
-  {t:"Autism / neurodevelopmental",
-   q:["ASD or other neurodevelopmental diagnoses in family?"]},
-  {t:"Bipolar / psychosis",
-   q:["Any bipolar, schizophrenia, schizoaffective in first-degree relatives?",
-      "Anyone hospitalised, lithium, antipsychotics, ECT?"]},
-  {t:"Depression / anxiety",
-   q:["Mood or anxiety disorders treated in family?"]},
-  {t:"Substance use / dependence",
-   q:["Alcohol or other substance dependence in family?"]},
-  {t:"Suicide / self-harm",
-   q:["Any completed suicide or significant self-harm in family?"]},
-  {t:"Personality disorder",
-   q:["Anyone diagnosed with personality disorder or treated for chronic relational difficulty?"]},
+  {t:"ADHD or learning disorders", qLabel:"Clinical relevance", q:[
+    "ADHD is among the most heritable conditions in psychiatry, with twin heritability around 74-77%.",
+    "A first-degree relative with ADHD increases the patient's risk roughly 5-9×.",
+    "Strong family history makes the diagnosis more parsimonious and a stimulant trial less ambiguous.",
+    "A relative who responded well to a particular agent or class often predicts patient response."
+  ]},
+  {t:"Autism / neurodevelopmental", qLabel:"Clinical relevance", q:[
+    "Autism and ADHD overlap genetically. Family history of ASD shifts the pre-test probability of co-occurring AuDHD upward.",
+    "Family history of other neurodevelopmental conditions (intellectual disability, communication disorders) supports a developmental rather than acquired aetiology.",
+    "Influences therapy choice: sensory-aware, ASD-informed coaching and OT may be indicated."
+  ]},
+  {t:"Bipolar disorder", qLabel:"Clinical relevance", q:[
+    "First-degree bipolar I or II is one of the strongest single risk factors for converting to mania on stimulants.",
+    "Heritability for bipolar I is ~85%; risk to a first-degree relative is roughly 8-10×.",
+    "Particularly significant if the patient has had any prior period of elevated mood, reduced sleep need, or grandiosity. Bipolar should be actively excluded before stimulant initiation.",
+    "If positive: counsel about the risk of mania, consider mood stabiliser cover, lower threshold for non-stimulant first."
+  ]},
+  {t:"Psychosis / schizophrenia spectrum", qLabel:"Clinical relevance", q:[
+    "Heritability of schizophrenia is ~60-80%; first-degree relative confers ~10× the population risk.",
+    "Stimulants can precipitate or exacerbate psychotic symptoms in genetically vulnerable individuals.",
+    "Cannabis use combined with this family history multiplies risk substantially. Strong indication to insist on abstinence.",
+    "Consider non-stimulant (atomoxetine, alpha-2 agonist) as a safer first-line option."
+  ]},
+  {t:"Depression", qLabel:"Clinical relevance", q:[
+    "Family history of recurrent depression supports ADHD-plus-depression as a likely comorbid pattern rather than alternative diagnosis.",
+    "Treatment response in family members can guide antidepressant choice if needed.",
+    "If depression is current and severe, treat the depression first. ADHD treatment is more effective on a stabilised mood baseline."
+  ]},
+  {t:"Anxiety disorders", qLabel:"Clinical relevance", q:[
+    "Anxiety is the most common comorbidity in adult ADHD and clusters in families.",
+    "Family history of anxiety supports treating both. Atomoxetine is particularly useful when anxiety is prominent.",
+    "Predicts a higher likelihood that stimulants will transiently worsen anxiety during titration; counsel patient in advance."
+  ]},
+  {t:"OCD", qLabel:"Clinical relevance", q:[
+    "OCD has substantial heritability (~45-65%) and clusters with tic disorders and ADHD in some families.",
+    "Strong family OCD raises the probability the patient also has subthreshold or comorbid OCD features that need disentangling from ADHD.",
+    "Stimulants are generally safe in OCD but can occasionally worsen intrusive thoughts."
+  ]},
+  {t:"Substance use disorder", qLabel:"Clinical relevance", q:[
+    "Strong familial SUD signals elevated diversion risk: document rationale, set clear boundaries, prefer long-acting / lower-abuse-potential formulations (Vyvanse, Concerta).",
+    "Independently associated with poorer treatment adherence; address through psychoeducation and shared-care monitoring.",
+    "Untreated ADHD itself increases SUD risk; effective treatment is protective.",
+    "Specifically ask about alcohol, cannabis, methamphetamine, opioids, benzodiazepines, and at what age relatives first used."
+  ]},
+  {t:"Suicide / self-harm", qLabel:"Clinical relevance", q:[
+    "Family history of completed suicide doubles the patient's lifetime risk independently of any current diagnosis.",
+    "Mandates explicit, ongoing safety planning and lower threshold for psychological referral.",
+    "Particularly relevant when prescribing in adolescents and young adults; document risk discussion."
+  ]},
+  {t:"Personality disorder", qLabel:"Clinical relevance", q:[
+    "Family history of BPD predicts the patient's emotional dysregulation may be largely driven by trauma and relational dynamics rather than ADHD alone.",
+    "Particularly significant when the patient's presentation already overlaps with BPD features (RSD, identity disturbance, recurrent relational crises).",
+    "Treatment plan should prioritise DBT skills, structured therapy, and stable therapeutic alliance alongside any pharmacotherapy."
+  ]},
+  {t:"Sudden cardiac death / arrhythmia in family", qLabel:"Clinical relevance", q:[
+    "Family history of sudden unexplained death under 40, hypertrophic cardiomyopathy, long QT, Brugada, or channelopathy mandates ECG and low threshold for cardiology review before stimulant.",
+    "Includes drowning, single-vehicle MVA, or unexplained seizures in younger relatives; these can be missed channelopathy deaths.",
+    "Documenting the family screening status if any relatives have had formal cardiac genetic workup."
+  ]},
+  {t:"Dementia / neurodegenerative", qLabel:"Clinical relevance", q:[
+    "Mostly relevant in older patients; supports earlier baseline cognitive screening.",
+    "Family history of frontotemporal dementia in an adult presenting with new-onset attention / behaviour change is a red flag. ADHD is lifelong, not new-onset."
+  ]}
 ],
 
 investigations: [
