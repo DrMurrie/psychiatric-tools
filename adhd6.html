@@ -48,10 +48,6 @@ header.top{
   -webkit-backdrop-filter:saturate(180%) blur(10px);
   border-bottom:1px solid var(--border);
 }
-header.top .title-row{
-  display:flex; align-items:flex-start; gap:14px;
-  justify-content:space-between;
-}
 header.top h1{
   margin:0; font:700 22px/1.2 "Inter",sans-serif;
   letter-spacing:-.02em; color:var(--ink);
@@ -64,13 +60,14 @@ header.top .sub kbd{
   background:var(--primary-bg); color:var(--primary);
   padding:1px 6px; border-radius:4px; border:1px solid #c7ddff;
 }
-.nav-progress{
-  flex-shrink:0; font:600 12px/1.2 "Inter",sans-serif;
-  color:var(--muted); white-space:nowrap;
-  padding:5px 10px; background:var(--slate-bg); border-radius:999px;
-  align-self:flex-start;
+.scroll-progress{
+  position:absolute; left:0; right:0; bottom:-1px; height:3px;
+  background:transparent; pointer-events:none;
 }
-.nav-progress strong{color:var(--primary)}
+.scroll-progress-bar{
+  height:100%; width:0%; background:var(--primary);
+  transition:width .08s linear;
+}
 .search-wrap{
   position:relative; margin-top:10px; display:flex; align-items:center;
 }
@@ -99,32 +96,6 @@ header.top .sub kbd{
 #search-clear.show{display:inline-flex; align-items:center; justify-content:center}
 #search-clear:hover{color:var(--red)}
 .no-match{display:none !important}
-.search-empty{
-  padding:10px 14px; color:var(--muted); font-style:italic; font-size:13px;
-  border:1px dashed var(--border); border-radius:6px;
-  margin:8px 18px 12px;
-}
-nav.toc{
-  display:flex; flex-wrap:wrap; gap:0; margin-top:10px;
-  font-size:12.5px;
-}
-nav.toc a{
-  position:relative;
-  text-decoration:none; color:var(--primary); font-weight:500;
-  padding:3px 0 3px 11px; margin-right:14px;
-  border-bottom:1px solid transparent;
-}
-nav.toc a::before{
-  content:""; position:absolute; left:0; top:50%; transform:translateY(-50%);
-  width:6px; height:6px; border-radius:50%;
-  background:transparent; border:1px solid var(--border);
-  transition:all .12s;
-}
-nav.toc a.touched::before{
-  background:var(--green); border-color:var(--green);
-}
-nav.toc a:hover{border-bottom-color:var(--primary); color:var(--primary-dark)}
-
 /* Cards */
 section.card{
   background:var(--surface);
@@ -667,7 +638,7 @@ footer{
 
 @media print{
   body{background:#fff}
-  header.top, nav.toc, .copybtn, .clearbtn, .small-btn, .chev{display:none !important}
+  header.top, .copybtn, .clearbtn, .small-btn, .chev{display:none !important}
   .probes{display:block !important; page-break-inside:avoid}
   section.card{break-inside:avoid; box-shadow:none; border:1px solid #ccc}
   .pe-item-body, .row.no-q .chev::before{display:block !important}
@@ -679,39 +650,13 @@ footer{
 <div class="wrap">
 
 <header class="top">
-  <div class="title-row">
-    <div>
-      <h1>ADHD Follow-Along Guide</h1>
-      <div class="sub">A prompt sheet to use alongside AI transcription. Click any line for example questions.</div>
-    </div>
-    <span class="nav-progress" id="nav-progress"><strong>0</strong> / 0 explored</span>
-  </div>
+  <h1>ADHD Follow-Along Guide</h1>
+  <div class="sub">A prompt sheet to use alongside AI transcription. Click any line for example questions.</div>
   <div class="search-wrap">
     <input id="search" type="text" placeholder="Search probes, screeners, meds, MSE chips, handouts..." autocomplete="off" oninput="runSearch()">
     <button id="search-clear" type="button" title="Clear" onclick="clearSearch()">×</button>
   </div>
-  <nav class="toc">
-    <a href="#sec-open">Opening</a>
-    <a href="#sec-pre">Pre-screening</a>
-    <a href="#sec-pops">Special populations</a>
-    <a href="#sec-a">A · Symptoms</a>
-    <a href="#sec-b">B · Childhood</a>
-    <a href="#sec-c">C · Settings</a>
-    <a href="#sec-d">D · Impairment</a>
-    <a href="#sec-e">E · Differentials</a>
-    <a href="#sec-fam">Family</a>
-    <a href="#sec-sub">Substance</a>
-    <a href="#sec-card">Cardiac</a>
-    <a href="#sec-med">Medical</a>
-    <a href="#sec-rx">Meds</a>
-    <a href="#sec-mse">MSE</a>
-    <a href="#sec-inv">Investigations</a>
-    <a href="#sec-pe">Psychoeducation</a>
-    <a href="#sec-tit">Titration</a>
-    <a href="#sec-fu">Follow-up</a>
-    <a href="#sec-trtplan">Treatment plan</a>
-    <a href="#sec-hoc">Handover letter</a>
-  </nav>
+  <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-progress-bar"></div></div>
 </header>
 
 <section class="card slate" id="sec-open">
@@ -733,7 +678,7 @@ footer{
 <section class="card indigo" id="sec-pops">
   <div class="ch"><span class="num">Pop</span>Special populations</div>
   <div class="body">
-    <p class="lead">If any of these apply, open the relevant row for population-specific clinical relevance. The standard DSM-5 flow can miss these cohorts.</p>
+    <p class="lead">Just keep the following in mind while assessing, as different populations may present differently.</p>
     <ul class="dots" data-section="pops"></ul>
   </div>
 </section>
@@ -958,14 +903,18 @@ pops: [
     "Counsel about contraception choices when prescribing stimulants; document discussion of pregnancy planning."
   ]},
   {t:"AuDHD (ASD + ADHD)", qLabel:"Clinical relevance", q:[
-    "Overlap is 50, 70%. If you have one, screen for the other. Many adults present with one label and the other emerges through assessment.",
-    "Sensory profile: ASD tends to sensory sensitivity / avoidance, ADHD tends to sensory seeking; AuDHD often has both simultaneously and switches between them.",
+    "Overlap is 50 to 70 percent. If you have one, screen for the other. Many adults present with one label and the other emerges through assessment. Treating the ADHD component can help significantly with executive function, energy, and the bandwidth needed to cope with autistic features.",
+    "Sensory profile: ASD tends to sensory sensitivity and avoidance, ADHD tends to sensory seeking; AuDHD often has both simultaneously and switches between them.",
     "Special interest (ASD: enduring, deep, often niche) versus hyperfocus (ADHD: interest-driven, transient, dopamine-linked). Both can co-exist; ask about persistence and breadth.",
-    "Masking and camouflage are typical and physiologically exhausting; autistic burnout is a distinct entity from ADHD burnout and presents as functional collapse + sensory shutdown + skill regression.",
+    "Masking and camouflage are typical and physiologically exhausting. Autistic burnout is a distinct entity from ADHD burnout and presents as functional collapse, sensory shutdown, and skill regression.",
     "Internal tension between the need for routine (ASD) and the need for novelty (ADHD). This itself can be a presenting complaint.",
     "Consider screening with AQ-10, RAADS-R, or CAT-Q (camouflage). Refer for formal ASD assessment if clinically warranted.",
-    "Stimulants are generally well tolerated in AuDHD and often help with executive function. Atomoxetine or guanfacine are reasonable if sensory anxiety is prominent.",
-    "Plan for sensory accommodations alongside any pharmacotherapy: workspace, lighting, noise, scent, predictability."
+    "Medication sensitivity is the rule, not the exception. ASD-spectrum patients are typically far more sensitive to stimulants and to non-stimulants than the general ADHD population. Side effects (anxiety, jitteriness, GI upset, sensory overload, sleep disturbance) appear at lower doses. Plan for this from the start.",
+    "First-line stimulant: methylphenidate, started low and titrated slowly. Going straight to amphetamines can be too activating, more anxiogenic, and worse tolerated in this group. Consider IR methylphenidate trial first to gauge response and tolerance before committing to a long-acting agent.",
+    "Not everyone is the same. Some AuDHD patients tolerate amphetamines well and prefer them. Be guided by the individual response and side-effect profile; do not assume.",
+    "Atomoxetine is a reasonable option, particularly where anxiety or sleep is prominent, but titrate slowly. AuDHD patients are prone to gut sensitivities and atomoxetine GI side effects (nausea, abdominal discomfort) can be a deal-breaker if you push the dose too fast. Start at a low dose and step up over weeks, not days.",
+    "Guanfacine XR can help with emotional regulation, sleep onset, and sensory irritability; useful as adjunct or where stimulants and atomoxetine are not tolerated.",
+    "Plan for sensory accommodations alongside any pharmacotherapy: workspace, lighting, noise, scent, predictability. Pharmacology alone does not address the sensory and autistic-functioning components."
   ]},
   {t:"Adolescent ADHD (12-18)", qLabel:"Clinical relevance", q:[
     "Distinguish age-appropriate restlessness, impulsivity and risk-taking from clinically significant impairment. The bar is functional impact across settings.",
@@ -987,6 +936,41 @@ pops: [
     "Baseline cognitive screening (MoCA) before initiating stimulant gives a reference point and helps distinguish ADHD-pattern executive dysfunction from emerging dementia.",
     "Adjust for renal and hepatic clearance: start low, go slow, and prefer agents with simpler kinetics in this group.",
     "Frontotemporal dementia is the classic mimic in this age group. New-onset behavioural change, disinhibition, apathy, or social-cognitive change in a 50-60s adult is a red flag, not ADHD."
+  ]},
+  {t:"Active substance use", qLabel:"Clinical relevance", q:[
+    "Comorbidity is high. Untreated ADHD increases substance use; treating ADHD reduces it. Withholding treatment because someone uses substances often perpetuates the cycle.",
+    "Take a detailed substance history before deciding (current use, route, frequency, last use, prior detox / rehab, dependence features, IV use, diversion history). Document.",
+    "Order a urine drug screen at baseline and again before initiating a stimulant. Random screens during titration are reasonable if there is any concern about diversion or escalation.",
+    "Stable engagement with treatment and a clear management plan are more important than absolute abstinence before starting. Demand for total abstinence first often loses the patient.",
+    "Stimulants with lower abuse liability are preferred: lisdexamfetamine (pro-drug, slower onset) and OROS methylphenidate (Concerta). Avoid immediate-release where possible.",
+    "Non-stimulants are first-line when stimulants are contraindicated or refused: atomoxetine, guanfacine XR. Reasonable choices in active stimulant-use disorder or where diversion risk is high.",
+    "Stimulant-class substance history (cocaine, methamphetamine) warrants extra cardiac caution: structural damage may already be present. Lower threshold for ECG and cardiology review.",
+    "Alcohol use disorder: caution with hepatic metabolism, polypharmacy interactions, and the additive hypertensive effect of alcohol withdrawal plus stimulants.",
+    "Cannabis: very common comorbidity, often used self-therapeutically. Treating the ADHD frequently reduces use without needing to police it directly.",
+    "Coordinate explicitly with addiction services / GP / pharmacy. Document the shared plan, dispensing arrangement (e.g. weekly or daily), and monitoring schedule."
+  ]},
+  {t:"Acquired brain injury / TBI", qLabel:"Clinical relevance", q:[
+    "Post-TBI attention deficit is a recognised syndrome and can look identical to ADHD. The distinguishing feature is onset: ADHD requires childhood symptoms; post-injury attention disorder begins after the event.",
+    "Both can coexist. A TBI can also unmask previously well-compensated ADHD. Take a careful pre-injury developmental and functional history.",
+    "Cover the injury detail: mechanism, loss of consciousness, post-traumatic amnesia duration, imaging, neurosurgical involvement, rehab, and residual deficits. Stroke, hypoxic injury, encephalitis, and CNS infection sit in the same bucket.",
+    "Baseline neuropsychology is highly recommended if not already done. Helps separate attention, processing speed, memory, and executive components, and gives a reference point for treatment response.",
+    "Order recent imaging if not done (CT or MRI). Document seizure history; epilepsy and post-traumatic seizures change the medication calculus.",
+    "Methylphenidate has the best evidence base post-TBI for attention, processing speed, and arousal. Start low, titrate slowly, and review often.",
+    "Stimulants can lower seizure threshold; weigh risk in anyone with seizure history. Coordinate with neurology if uncertain.",
+    "Monitor BP and HR closely; cerebrovascular reserve may be reduced. Watch for mood lability, irritability, and disinhibition (which the injury itself may have caused, so a baseline matters).",
+    "Atomoxetine and guanfacine are reasonable alternatives, particularly where seizure risk or cardiovascular concern limits stimulants.",
+    "Coordinate with rehab medicine, neurology, and the GP. Document the treatment rationale carefully; this is a high-scrutiny prescribing context."
+  ]},
+  {t:"Schizophrenia or bipolar disorder", qLabel:"Clinical relevance", q:[
+    "Primary psychotic and bipolar disorders take precedence. Stabilise the primary illness first; ADHD treatment is a secondary consideration, not a parallel one.",
+    "Bipolar disorder: stimulants can precipitate mania, mixed states, and psychosis. Mood stabiliser (lithium, valproate, lamotrigine, atypical with mood-stabilising profile) must be established and effective before considering any ADHD pharmacotherapy. Document recent mood stability.",
+    "Schizophrenia and schizoaffective disorder: stimulants can worsen positive symptoms and destabilise an otherwise stable illness. Only consider once antipsychotic treatment is optimised and the patient has been stable (no positive symptoms, no recent admissions) for at least 6 to 12 months.",
+    "Non-stimulants are first-line in this group: atomoxetine and guanfacine XR carry far less risk of mood or psychotic destabilisation. Try these before considering a stimulant.",
+    "If a stimulant is justified, prefer methylphenidate over amphetamine (lower psychotogenic potential), start at the lowest dose, titrate very slowly, and monitor weekly during initiation. Lisdexamfetamine is a reasonable alternative if methylphenidate fails.",
+    "Many antipsychotics worsen attention, processing speed, and motivation. Sometimes the 'ADHD' presentation in this group is medication side effect; review the antipsychotic regimen with the treating team before assuming ADHD.",
+    "Drug interactions: stimulants and antipsychotics can both prolong QTc; baseline ECG and review with monitoring is sensible. Atomoxetine and CYP2D6 inhibitors (e.g. fluoxetine, paroxetine, bupropion) require dose adjustment.",
+    "Family history of bipolar or psychosis in an ADHD-presenting patient warrants extra caution and a lower threshold for non-stimulant first.",
+    "Coordinate explicitly with the treating psychiatrist or community mental-health team. Do not start ADHD treatment in isolation in this group. Document the shared plan and the agreed monitoring."
   ]}
 ],
 
@@ -2963,36 +2947,23 @@ function runSearch(){
   });
 
   if(!q){
-    // Restore everything
     targets.forEach(t=>{t.el.classList.remove('no-match'); if(t.probe) t.probe.classList.remove('no-match');});
-    document.querySelectorAll('.search-empty').forEach(n=>n.remove());
+    document.querySelectorAll('section.card').forEach(s=>s.classList.remove('no-match'));
     return;
   }
 
-  let anyMatch = false;
   targets.forEach(t=>{
     const match = t.hay.includes(q);
     t.el.classList.toggle('no-match', !match);
     if(t.probe) t.probe.classList.toggle('no-match', !match);
-    if(match) anyMatch = true;
   });
 
-  // Per-section "no matches" placeholder
-  document.querySelectorAll('.search-empty').forEach(n=>n.remove());
+  // Hide whole sections that have no remaining matches
   document.querySelectorAll('section.card').forEach(sec=>{
     const visible = sec.querySelectorAll(
       'ul.dots > .row:not(.no-match), .mse-section:not(.no-match), .pe-item:not(.no-match), .tit-tab:not(.no-match), .example-card:not(.no-match)'
     );
-    const matchables = sec.querySelectorAll(
-      'ul.dots > .row, .mse-section, .pe-item, .tit-tab, .example-card'
-    );
-    if(matchables.length && visible.length===0){
-      const note = document.createElement('div');
-      note.className = 'search-empty';
-      note.textContent = 'No matches in this section.';
-      const body = sec.querySelector('.body');
-      if(body) body.appendChild(note);
-    }
+    sec.classList.toggle('no-match', visible.length===0);
   });
 }
 function clearSearch(){
@@ -3006,62 +2977,16 @@ document.addEventListener('keydown', e=>{
   }
 });
 
-// =================== PROGRESS ===================
+// =================== SCROLL PROGRESS ===================
 function updateProgress(){
-  // Touched = any .row.open in section, any chip.on in MSE, any pe-item.open in PE,
-  // or any titration med selected.
-  const totals = {opened:0, total:0};
-  const touchedSections = new Set();
-
-  // Section probe rows
-  document.querySelectorAll('ul.dots[data-section]').forEach(ul=>{
-    const key = ul.getAttribute('data-section');
-    const rows = ul.querySelectorAll('.row');
-    rows.forEach(r=>{
-      totals.total++;
-      if(r.classList.contains('open')){ totals.opened++; touchedSections.add(key); }
-    });
-  });
-  // MSE chips , each on chip counts; one or more = section touched
-  const mseChips = document.querySelectorAll('#sec-mse .chip.on');
-  if(mseChips.length){ touchedSections.add('__mse__'); }
-  totals.total += document.querySelectorAll('#sec-mse .chip').length;
-  totals.opened += mseChips.length;
-  // PE accordion
-  const peOpen = document.querySelectorAll('.pe-item.open');
-  if(peOpen.length){ touchedSections.add('__pe__'); }
-  totals.total += document.querySelectorAll('.pe-item').length;
-  totals.opened += peOpen.length;
-  // Titration , count selected med as 1/1 touch
-  if(typeof titMed !== 'undefined' && titMed){ touchedSections.add('__tit__'); totals.opened++; }
-  totals.total++; // titration counts once
-
-  const out = document.getElementById('nav-progress');
-  if(out) out.innerHTML = '<strong>'+totals.opened+'</strong> / '+totals.total+' explored';
-
-  // Light up nav dots
-  // Mapping from section id → data-section key (or __mse__ etc.)
-  const navMap = {
-    'sec-open':'open', 'sec-pre':'prescreening', 'sec-pops':'pops',
-    'sec-a':'inattention', 'sec-a-hi':'hyperimp',
-    'sec-b':'childhood', 'sec-c':'settings', 'sec-d':'impairment', 'sec-e':'differentials',
-    'sec-fam':'family', 'sec-sub':'substances', 'sec-card':'cardiac', 'sec-med':'medical',
-    'sec-rx':'meds', 'sec-mse':'__mse__', 'sec-inv':'investigations',
-    'sec-pe':'__pe__', 'sec-tit':'__tit__'
-  };
-  document.querySelectorAll('nav.toc a').forEach(a=>{
-    const href = (a.getAttribute('href')||'').replace('#','');
-    // sec-a has two data-section keys (inattention + hyperimp) , touch if either
-    let touched = false;
-    if(href==='sec-a'){
-      touched = touchedSections.has('inattention') || touchedSections.has('hyperimp');
-    } else {
-      const key = navMap[href];
-      if(key) touched = touchedSections.has(key);
-    }
-    a.classList.toggle('touched', touched);
-  });
+  const bar = document.getElementById('scroll-progress-bar');
+  if(!bar) return;
+  const docH = (document.documentElement.scrollHeight || document.body.scrollHeight) - window.innerHeight;
+  const pct = docH > 0 ? Math.min(100, Math.max(0, (window.scrollY / docH) * 100)) : 0;
+  bar.style.width = pct.toFixed(2) + '%';
 }
+window.addEventListener('scroll', updateProgress, {passive:true});
+window.addEventListener('resize', updateProgress);
 
 // =================== INIT ===================
 document.addEventListener('DOMContentLoaded', ()=>{
