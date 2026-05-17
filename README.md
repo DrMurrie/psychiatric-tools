@@ -12,23 +12,16 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 A guide to follow along with during an ADHD assessment.
 
 ### [Ben's Amazing ADHD Assessment Generator](adhd5.html)
-This has everything you need — suitable for both initial assessments and follow-up reviews:
-- Interview template to follow with the key things, plus DSM-5-TR criteria
-- Psychoeducation
-- Prescribing information and prescriber guidance per state
-- Common medication titration schedules
-- Titration algorithm and follow-up plan generator
-- Easily generates a straightforward letter or note
-- Generates medical, travel, and possession certificates
-- Generates a nice ADHD report and script text for eScripts
-
-Perfect for beginners and experienced psychiatrists alike.
+Everything you need for an ADHD assessment or follow-up review. Perfect for beginners and experienced psychiatrists alike.
 
 ### [ASD Assessment v2](asd.html)
 A structured assessment tool for autism spectrum disorder.
 
 ### [Titration Builder](titration.html)
 Build a medication titration plan. Generates a printable plan for the patient.
+
+### [Letter Generator](letter-generator.html)
+Generate clinical letters and notes.
 
 ---
 
