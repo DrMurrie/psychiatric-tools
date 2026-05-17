@@ -625,12 +625,12 @@ footer{
   <nav class="toc">
     <a href="#sec-open">Opening</a>
     <a href="#sec-pre">Pre-screening</a>
-    <a href="#sec-fam">Family</a>
     <a href="#sec-a">A · Symptoms</a>
     <a href="#sec-b">B · Childhood</a>
     <a href="#sec-c">C · Settings</a>
     <a href="#sec-d">D · Impairment</a>
     <a href="#sec-e">E · Differentials</a>
+    <a href="#sec-fam">Family</a>
     <a href="#sec-sub">Substance</a>
     <a href="#sec-card">Cardiac</a>
     <a href="#sec-med">Medical</a>
@@ -658,14 +658,6 @@ footer{
   <div class="body">
     <p class="lead">Validated tools, prior reports, and informant accounts. Cover before you start the formal DSM-5 review.</p>
     <ul class="dots" data-section="prescreening"></ul>
-  </div>
-</section>
-
-<section class="card violet" id="sec-fam">
-  <div class="ch"><span class="num">·</span>Family psychiatric history</div>
-  <div class="body">
-    <p class="lead">ADHD is highly heritable. Family history of bipolar or psychosis changes the risk–benefit calculus.</p>
-    <ul class="dots" data-section="family"></ul>
   </div>
 </section>
 
@@ -715,6 +707,14 @@ footer{
   <div class="body">
     <p class="lead">For each differential, 2–3 differentiating questions, then a brief note on how to discern from ADHD. Click any line to expand.</p>
     <ul class="dots" data-section="differentials"></ul>
+  </div>
+</section>
+
+<section class="card violet" id="sec-fam">
+  <div class="ch"><span class="num">·</span>Family psychiatric history</div>
+  <div class="body">
+    <p class="lead">Each item expands to evidence-based clinical relevance. Click any line to read why this family history matters and what it changes in management.</p>
+    <ul class="dots" data-section="family"></ul>
   </div>
 </section>
 
@@ -825,67 +825,42 @@ footer{
 const SECTIONS = {
 
 open: [
-  {t:"Confirm consent and recording",
-   q:["Confirm the patient is happy to be recorded and that AI transcription is being used.",
-      "Confirm anyone else present (partner, parent, support person) and their role today."]},
-  {t:"Who is here and what do they want from today?",
-   q:["What are you hoping to get out of today?",
-      "If we got everything right today, what would change for you this week?",
-      "What's the one thing you most want me to understand about you?"]},
-  {t:"Tell me the story, in your own words",
-   q:["Take me through what's been going on, in your own words.",
-      "When did things start to really feel like a problem?",
+  {t:"Introduce yourself, confirm consent and recording",
+   q:["Introduce yourself, your role, and the structure of the session.",
+      "Confirm the patient is happy to be recorded and that AI transcription is being used.",
+      "Confirm anyone else present (partner, parent, support person) and their role today.",
+      "Confirm consent to contact GP / partner / parent for collateral as needed."]},
+  {t:"What brought you here today, and what do you want from this assessment?",
+   q:["What's been going on, in your own words?",
       "What made you reach out now rather than six months ago?",
+      "What are you hoping to get out of today?",
       "Has anyone else suggested ADHD to you, or did you come to that yourself?"]},
-  {t:"Previous assessments and treatment",
-   q:["Have you been assessed before for anything mental health–related?",
-      "Have you tried any medications, prescribed or borrowed?",
-      "Any previous therapy, what did and didn't help?"]},
 ],
 
 prescreening: [
-  {t:"ASRS v1.1 self-report screener",
-   q:["6-item Part A: ≥4 positive items = significant likelihood of adult ADHD.",
-      "Quick to administer. Useful screen, not diagnostic.",
-      "Did the patient bring it? Score? Self-completed or clinician-administered?"]},
-  {t:"DIVA-5 structured interview",
-   q:["Gold standard for adult ADHD diagnosis. Covers all 18 DSM-5 symptoms with examples.",
-      "Inattention symptoms endorsed (out of 9)? Hyperactivity/impulsivity (out of 9)?",
-      "Functional impairment domains?",
-      "Self-completed or clinician-administered?"]},
-  {t:"WURS-25 childhood retrospective",
-   q:["Adult recall of childhood symptoms.",
-      "Score ≥36 strongly supports childhood-onset ADHD.",
-      "Particularly useful when no childhood collateral available."]},
-  {t:"BAARS-IV (childhood + adult, with informant version)",
-   q:["Two-part scale: current adult symptoms + retrospective childhood.",
-      "Has an informant (partner / parent) version, strong collateral source."]},
-  {t:"Other screeners (Conners, CAARS, Vanderbilt)",
-   q:["Conners CBRS / CAARS, adult ADHD rating scales.",
-      "Vanderbilt parent / teacher, for collateral on a child or for retrospective childhood report."]},
-  {t:"Old school reports / NAPLAN / report cards",
-   q:["Strongest evidence for Criterion B onset before age 12.",
-      "Look for: 'doesn't apply themselves', 'easily distracted', 'talks too much', 'disorganised', 'forgets equipment'.",
-      "Could the patient bring photos / scans of any old reports?"]},
-  {t:"Previous psychology, paediatric, GP letters",
-   q:["Has the patient had any previous formal assessment (psychology, paediatric, neuropsych)?",
-      "GP referral letter content, what did the GP observe?",
-      "Letters from previous psychiatrists, psychologists, OT?"]},
-  {t:"Adult informant",
-   q:["Could a partner / parent / sibling tell us what they have observed?",
-      "Are they here today, or contactable later with consent?",
-      "Have they completed any informant rating scales?"]},
-  {t:"Childhood informant",
-   q:["Can a parent or older sibling describe the patient's childhood?",
-      "Discipline patterns, school behaviour, peer relationships, homework battles?",
-      "DIVA has a childhood-informant module, has it been completed?"]},
-  {t:"Online ADHD self-tests / TikTok-driven self-screen",
-   q:["What did the patient read or take online before seeking assessment?",
-      "Useful context, but be alert for self-confirmation bias and rehearsed presentations."]},
-  {t:"Permission to contact GP, partner, parent",
-   q:["Confirm consent to contact GP for collateral.",
-      "Consent to contact partner / parent for additional information if needed.",
-      "Document in record."]},
+  {t:"Self-rated screeners and structured interviews", qLabel:"What to look for", q:[
+    "ASRS v1.1, Part A (6 items): ≥4 positive items = significant likelihood of adult ADHD. Quick screen, not diagnostic.",
+    "DIVA-5: gold-standard structured interview covering all 18 DSM-5 symptoms with examples. Inattention out of 9, hyperactivity/impulsivity out of 9, plus functional impairment domains.",
+    "WURS-25: adult retrospective recall of childhood symptoms. Score ≥36 strongly supports childhood-onset ADHD.",
+    "BAARS-IV: current adult symptoms + retrospective childhood. Has a self version (used here)."
+  ]},
+  {t:"Observer-rated screeners (partner / parent / sibling)", qLabel:"What to look for", q:[
+    "Observer ASRS: partner or close family rates the same 18 symptoms about the patient. Discrepancies (patient endorses, observer denies ,  or vice versa) are clinically informative.",
+    "BAARS-IV Other-Report (Informant) version: an informant rates current adult symptoms and, separately, retrospective childhood symptoms.",
+    "DIVA-5 Other-Report module: informant version of the structured DIVA interview, particularly useful for childhood-symptom corroboration.",
+    "Conners' Adult ADHD Rating Scale (CAARS), Observer form: 66-item observer rating of current symptoms, often used in research and structured clinics.",
+    "Vanderbilt Parent / Teacher (paediatric): used when assessing a child, or when a parent can describe the patient as a child."
+  ]},
+  {t:"Old school reports / NAPLAN / report cards", qLabel:"What to look for", q:[
+    "Strongest objective evidence for Criterion B onset before age 12.",
+    "Look for repeated teacher comments: 'doesn't apply themselves', 'easily distracted', 'talks too much', 'disorganised', 'forgets equipment', 'daydreams', 'disrupts the class'.",
+    "Patient can be asked to bring photos / scans of any old reports."
+  ]},
+  {t:"Previous psychology / paediatric / GP letters", qLabel:"What to look for", q:[
+    "Any previous formal assessment (psychology, paediatric, neuropsych).",
+    "Content of the GP referral letter ,  what the GP observed.",
+    "Letters from previous psychiatrists, psychologists, OT, speech pathology."
+  ]}
 ],
 
 inattention: [
@@ -961,31 +936,39 @@ hyperimp: [
 ],
 
 childhood: [
-  {t:"School reports / NAPLAN / parent-teacher feedback",
-   q:["What kind of comments did teachers repeatedly make about you?",
-      "Phrases like 'could do better', 'not applying themselves', 'daydreams', 'disrupts the class', 'talks too much'?",
-      "Any old school reports you could bring in?"]},
-  {t:"What kind of child were you, at school and at home?",
-   q:["When you picture yourself in primary school, what sort of kid were you?",
-      "Were you the daydreamer, the disruptor, the chatterbox, the one always in trouble, the bright one not trying?",
-      "What did your parents repeatedly correct you for?"]},
-  {t:"Academic performance vs ability",
-   q:["Were you bright but underperforming? Or did effort and result line up?",
-      "Was homework a battle? Did it take hours longer than it should have?",
-      "Did you cram everything the night before?"]},
-  {t:"Behaviour at school, home, with friends",
-   q:["Detentions, suspensions, in trouble a lot? Or quietly slipping by?",
-      "Lose friends because of impulsive behaviour or interrupting?",
-      "Get told to 'calm down' or 'pay attention' constantly?"]},
-  {t:"Strategies you developed (compensation)",
-   q:["Did anxiety / perfectionism / fear of disappointing people drive your effort?",
-      "Did you rely on intelligence to coast through until that stopped working?",
-      "When did the wheels start coming off, high school, university, first job, becoming a parent?"]},
-  {t:"Predisposing / early-life risk factors",
-   q:["Premature, low birth weight, neonatal complications?",
-      "Maternal smoking, alcohol or other substance use in pregnancy?",
-      "Early adversity, trauma, foster care, parental separation?",
-      "Family history of ADHD / learning disorder / neurodevelopmental conditions?"]},
+  {t:"Predisposing / risk factors (developmental)", q:[
+    "Family history of ADHD, learning disorders, or other neurodevelopmental conditions.",
+    "Pregnancy: maternal smoking, alcohol, or other substance use; significant maternal illness or stress.",
+    "Birth: prematurity, low birth weight, neonatal hypoxia or other complications.",
+    "Infancy / early childhood: marked dysregulation, sleep difficulties, feeding difficulties.",
+    "Early adversity, trauma, foster care, parental separation."
+  ]},
+  {t:"Childhood (under 12)", q:[
+    "What kind of kid were you in primary school ,  daydreamer, disruptor, chatterbox, the one always in trouble, the bright one not trying?",
+    "School reports / NAPLAN / report cards: repeated teacher comments such as 'doesn't apply themselves', 'easily distracted', 'talks too much', 'disorganised', 'forgets equipment'.",
+    "Academic performance vs ability ,  bright but underperforming, or effort and results lined up?",
+    "Homework battles. Tasks taking hours longer than they should have. Last-minute cramming.",
+    "Behaviour: detentions, suspensions, frequent corrections, lost friends because of impulsive behaviour."
+  ]},
+  {t:"Adolescence (12–18)", q:[
+    "High school grades ,  did performance drop when the structure of primary school eased off and demands increased?",
+    "Were study habits ever sustainable, or always last-minute / all-nighters?",
+    "Risk-taking ,  driving, substances, sexual decisions, money, social media impulses.",
+    "Emotional dysregulation, peer relationship difficulties, rejection sensitivity beginning to crystallise.",
+    "First mental health presentations ,  anxiety, depression, eating issues ,  often secondary to undiagnosed ADHD."
+  ]},
+  {t:"Adulthood (continuity)", q:[
+    "Symptoms persisting and / or worsening into adulthood, not new-onset.",
+    "Underperformance relative to ability ,  capable but not delivering at work or study.",
+    "Functional cost compounding: relationship strain, job changes, financial chaos, parenting overwhelm.",
+    "When did the wheels really start to come off ,  university, first job, becoming a parent, leadership role, midlife?"
+  ]},
+  {t:"Compensation strategies / how the diagnosis was missed", q:[
+    "Anxiety / perfectionism / fear of disappointing people driving over-effort.",
+    "Relying on intelligence to coast through until that stopped working.",
+    "Hyperfocus directed at interests that masked broader executive dysfunction.",
+    "Female / quiet / inattentive presentations classically missed in childhood."
+  ]}
 ],
 
 settings: [
@@ -1358,11 +1341,6 @@ cardiac: [
     "14-day washout required.",
     "Hypertensive crisis / serotonin syndrome risk."
   ]},
-  {t:"Today's BP and HR", qLabel:"Clinical notes", q:[
-    "Document BP and HR at every visit during titration.",
-    "Defer if BP ≥140/90 or HR persistently >100.",
-    "Patient to bring home / pharmacy / GP readings between visits."
-  ]},
 ],
 
 medical: [
@@ -1546,52 +1524,144 @@ meds: [
   ]},
 ],
 family: [
-  {t:"ADHD or learning disorders",
-   q:["Anyone diagnosed, or strongly suspected, ADHD, dyslexia, learning issues?"]},
-  {t:"Autism / neurodevelopmental",
-   q:["ASD or other neurodevelopmental diagnoses in family?"]},
-  {t:"Bipolar / psychosis",
-   q:["Any bipolar, schizophrenia, schizoaffective in first-degree relatives?",
-      "Anyone hospitalised, lithium, antipsychotics, ECT?"]},
-  {t:"Depression / anxiety",
-   q:["Mood or anxiety disorders treated in family?"]},
-  {t:"Substance use / dependence",
-   q:["Alcohol or other substance dependence in family?"]},
-  {t:"Suicide / self-harm",
-   q:["Any completed suicide or significant self-harm in family?"]},
-  {t:"Personality disorder",
-   q:["Anyone diagnosed with personality disorder or treated for chronic relational difficulty?"]},
+  {t:"ADHD or learning disorders", qLabel:"Clinical relevance", q:[
+    "ADHD is among the most heritable conditions in psychiatry, with twin heritability around 74-77%.",
+    "A first-degree relative with ADHD increases the patient's risk roughly 5-9×.",
+    "Strong family history makes the diagnosis more parsimonious and a stimulant trial less ambiguous.",
+    "A relative who responded well to a particular agent or class often predicts patient response."
+  ]},
+  {t:"Autism / neurodevelopmental", qLabel:"Clinical relevance", q:[
+    "Autism and ADHD overlap genetically. Family history of ASD shifts the pre-test probability of co-occurring AuDHD upward.",
+    "Family history of other neurodevelopmental conditions (intellectual disability, communication disorders) supports a developmental rather than acquired aetiology.",
+    "Influences therapy choice: sensory-aware, ASD-informed coaching and OT may be indicated."
+  ]},
+  {t:"Bipolar disorder", qLabel:"Clinical relevance", q:[
+    "First-degree bipolar I or II is one of the strongest single risk factors for converting to mania on stimulants.",
+    "Heritability for bipolar I is ~85%; risk to a first-degree relative is roughly 8-10×.",
+    "Particularly significant if the patient has had any prior period of elevated mood, reduced sleep need, or grandiosity. Bipolar should be actively excluded before stimulant initiation.",
+    "If positive: counsel about the risk of mania, consider mood stabiliser cover, lower threshold for non-stimulant first."
+  ]},
+  {t:"Psychosis / schizophrenia spectrum", qLabel:"Clinical relevance", q:[
+    "Heritability of schizophrenia is ~60-80%; first-degree relative confers ~10× the population risk.",
+    "Stimulants can precipitate or exacerbate psychotic symptoms in genetically vulnerable individuals.",
+    "Cannabis use combined with this family history multiplies risk substantially. Strong indication to insist on abstinence.",
+    "Consider non-stimulant (atomoxetine, alpha-2 agonist) as a safer first-line option."
+  ]},
+  {t:"Depression", qLabel:"Clinical relevance", q:[
+    "Family history of recurrent depression supports ADHD-plus-depression as a likely comorbid pattern rather than alternative diagnosis.",
+    "Treatment response in family members can guide antidepressant choice if needed.",
+    "If depression is current and severe, treat the depression first. ADHD treatment is more effective on a stabilised mood baseline."
+  ]},
+  {t:"Anxiety disorders", qLabel:"Clinical relevance", q:[
+    "Anxiety is the most common comorbidity in adult ADHD and clusters in families.",
+    "Family history of anxiety supports treating both. Atomoxetine is particularly useful when anxiety is prominent.",
+    "Predicts a higher likelihood that stimulants will transiently worsen anxiety during titration; counsel patient in advance."
+  ]},
+  {t:"OCD", qLabel:"Clinical relevance", q:[
+    "OCD has substantial heritability (~45-65%) and clusters with tic disorders and ADHD in some families.",
+    "Strong family OCD raises the probability the patient also has subthreshold or comorbid OCD features that need disentangling from ADHD.",
+    "Stimulants are generally safe in OCD but can occasionally worsen intrusive thoughts."
+  ]},
+  {t:"Substance use disorder", qLabel:"Clinical relevance", q:[
+    "Strong familial SUD signals elevated diversion risk: document rationale, set clear boundaries, prefer long-acting / lower-abuse-potential formulations (Vyvanse, Concerta).",
+    "Independently associated with poorer treatment adherence; address through psychoeducation and shared-care monitoring.",
+    "Untreated ADHD itself increases SUD risk; effective treatment is protective.",
+    "Specifically ask about alcohol, cannabis, methamphetamine, opioids, benzodiazepines, and at what age relatives first used."
+  ]},
+  {t:"Suicide / self-harm", qLabel:"Clinical relevance", q:[
+    "Family history of completed suicide doubles the patient's lifetime risk independently of any current diagnosis.",
+    "Mandates explicit, ongoing safety planning and lower threshold for psychological referral.",
+    "Particularly relevant when prescribing in adolescents and young adults; document risk discussion."
+  ]},
+  {t:"Personality disorder", qLabel:"Clinical relevance", q:[
+    "Family history of BPD predicts the patient's emotional dysregulation may be largely driven by trauma and relational dynamics rather than ADHD alone.",
+    "Particularly significant when the patient's presentation already overlaps with BPD features (RSD, identity disturbance, recurrent relational crises).",
+    "Treatment plan should prioritise DBT skills, structured therapy, and stable therapeutic alliance alongside any pharmacotherapy."
+  ]},
+  {t:"Sudden cardiac death / arrhythmia in family", qLabel:"Clinical relevance", q:[
+    "Family history of sudden unexplained death under 40, hypertrophic cardiomyopathy, long QT, Brugada, or channelopathy mandates ECG and low threshold for cardiology review before stimulant.",
+    "Includes drowning, single-vehicle MVA, or unexplained seizures in younger relatives; these can be missed channelopathy deaths.",
+    "Documenting the family screening status if any relatives have had formal cardiac genetic workup."
+  ]},
+  {t:"Dementia / neurodegenerative", qLabel:"Clinical relevance", q:[
+    "Mostly relevant in older patients; supports earlier baseline cognitive screening.",
+    "Family history of frontotemporal dementia in an adult presenting with new-onset attention / behaviour change is a red flag. ADHD is lifelong, not new-onset."
+  ]}
 ],
 
 investigations: [
-  {t:"Blood pressure (baseline + every titration visit)",
-   q:["Document today's BP. Repeat at every titration visit and annually thereafter.",
-      "Defer titration if uncontrolled hypertension (≥140/90)."]},
-  {t:"Heart rate (baseline + every titration visit)",
-   q:["Resting HR, defer if persistent tachycardia >100 bpm.",
-      "Investigate underlying cause: anxiety, thyroid, anaemia, substance use."]},
-  {t:"Weight, height, BMI",
-   q:["Important especially in adolescents and underweight adults, stimulants suppress appetite.",
-      "Defer or use non-stimulant if BMI <18.5."]},
-  {t:"ECG (if cardiac risk or red flag)",
-   q:["Indications: personal cardiac history, family sudden death <40, hypertension, palpitations, structural disease, age >40 with risk factors.",
-      "Defer stimulant until ECG cleared / cardiology consulted."]},
-  {t:"Bloods (TFT, FBE, EUC, LFT, B12, ferritin, vit D)",
-   q:["Especially if fatigue, low mood, sleep disturbance, dietary concerns.",
-      "Check ferritin: low iron worsens ADHD symptoms.",
-      "LFT before atomoxetine, rare but serious hepatotoxicity."]},
-  {t:"Urine drug screen",
-   q:["Useful baseline if any concern re: stimulant misuse or undisclosed substance use.",
-      "Discuss openly: 'I'd like a UDS for our records, anything I should know about beforehand?'"]},
-  {t:"SafeScript / RTPM review",
-   q:["Mandatory check before stimulant prescribing in most Australian jurisdictions.",
-      "Looking for: existing controlled prescriptions, doctor-shopping, opioids, benzodiazepines."]},
-  {t:"Neuropsychological testing",
-   q:["Indications: diagnostic uncertainty, query learning disorder, cognitive complaints disproportionate to history.",
-      "Not required for diagnosis, DSM-5 is clinical."]},
-  {t:"Sleep study",
-   q:["Indications: snoring, witnessed apnoeas, daytime sleepiness, BMI elevated.",
-      "Treat OSA before assuming attention problem is ADHD."]},
+  {t:"BP, HR, weight, height (have the patient arrange)", q:[
+    "Telehealth practice: ask the patient to obtain BP and HR via GP, pharmacy or home cuff and bring readings.",
+    "Defer titration if BP ≥140/90 or resting HR persistently >100 bpm.",
+    "Weight monthly during titration, 6-monthly once stable; defer or use non-stimulant if BMI <18.5."
+  ]},
+  {t:"ECG (selectively)", q:[
+    "Indications: personal cardiac history, family sudden cardiac death <40, hypertension, palpitations, structural heart disease, age >40 with CV risk factors.",
+    "Defer stimulant until ECG cleared, or cardiology review obtained."
+  ]},
+  {t:"FBC / FBE", q:[
+    "Anaemia (esp iron-deficiency, B12, folate) can mimic ADHD inattention and fatigue.",
+    "Useful baseline; cytopenias are rare with stimulants but worth knowing.",
+    "Recheck if appetite suppression is significant."
+  ]},
+  {t:"EUC", q:[
+    "Baseline renal function relevant for clearance of guanfacine, clonidine, and dose decisions in CKD.",
+    "Generally normal in younger adults but a sensible baseline before stimulant initiation."
+  ]},
+  {t:"LFT", q:[
+    "Mandatory baseline before atomoxetine ,  rare but serious idiosyncratic hepatotoxicity.",
+    "Useful baseline before stimulants if alcohol use or hepatic disease.",
+    "Re-check if jaundice, dark urine, RUQ pain, or unexplained fatigue on atomoxetine."
+  ]},
+  {t:"TFT", q:[
+    "Hyperthyroidism mimics ADHD (restlessness, poor focus, palpitations) and is additive with stimulants.",
+    "Hypothyroidism causes cognitive slowing that looks like inattention.",
+    "Stabilise thyroid before assuming ADHD and before initiating stimulants."
+  ]},
+  {t:"Ferritin and iron studies", q:[
+    "Low ferritin (<30 ng/mL, ideally >50) is independently associated with worse ADHD symptoms and restless legs.",
+    "Replacement (oral iron, target ferritin >50–100) can meaningfully improve symptoms and sleep.",
+    "Particularly relevant in vegetarian / vegan, menstruating, or pregnancy-planning patients."
+  ]},
+  {t:"B12 and folate", q:[
+    "Deficiency causes cognitive slowing, low mood, fatigue, and irritability ,  all mimic or worsen ADHD.",
+    "Particularly relevant in vegetarian / vegan, older adults, malabsorption, chronic alcohol.",
+    "Cheap to check, easy to replace."
+  ]},
+  {t:"Vitamin D", q:[
+    "Observational links to inattention, mood symptoms, and sleep quality.",
+    "Replacement (1000–2000 IU/day) is benign and worth correcting in deficiency.",
+    "Common in Australia despite the climate."
+  ]},
+  {t:"HbA1c", q:[
+    "Baseline if metabolic risk, family history of T2DM, or overweight.",
+    "Stimulants are weight-neutral or weight-reducing ,  not contraindicated in diabetes ,  but appetite changes affect glycaemic control."
+  ]},
+  {t:"Fasting lipids", q:[
+    "Baseline cardiovascular risk profile before initiating any sympathomimetic.",
+    "Particularly relevant in patients >40 or with family history of early CAD."
+  ]},
+  {t:"CRP", q:[
+    "Non-specific marker of inflammation; consider if fatigue, low mood, or sleep disturbance is prominent.",
+    "Elevated CRP can be a clue to an underlying physical illness mimicking ADHD presentation."
+  ]},
+  {t:"Urine drug screen", q:[
+    "Useful baseline if any concern about stimulant misuse or undisclosed substance use.",
+    "Discuss openly: 'I'd like a UDS for our records ,  anything I should know about beforehand?'",
+    "Documentation supports your prescribing decision and protects both clinician and patient."
+  ]},
+  {t:"SafeScript / RTPM review", q:[
+    "Mandatory check before stimulant prescribing in most Australian jurisdictions.",
+    "Looking for: existing controlled prescriptions, doctor-shopping, opioids, benzodiazepines."
+  ]},
+  {t:"Neuropsychological testing", q:[
+    "Indications: diagnostic uncertainty, query learning disorder, cognitive complaints disproportionate to history.",
+    "Not required for diagnosis ,  DSM-5 ADHD is a clinical diagnosis."
+  ]},
+  {t:"Sleep study", q:[
+    "Indications: snoring, witnessed apnoeas, daytime sleepiness, elevated BMI.",
+    "Treat OSA before assuming the attention problem is ADHD ,  untreated OSA mimics ADHD almost perfectly."
+  ]}
 ],
 
 };
@@ -2304,60 +2374,53 @@ function flashCopy(btn, original){
 // =================== FOLLOW-UP PLAN BUILDER ===================
 // =================== EXAMPLE LIBRARIES ===================
 const FU_EXAMPLES = [
-  {nm:'1-2 week safety check (post-initiation)', text:`PLAN
+  {nm:'Initial titration review (4-6 weeks, 15 or 30 min)', text:`PLAN
 
-Call or telehealth review in 1-2 weeks to confirm tolerability.
-Patient to flag any chest pain, palpitations, severe anxiety, marked mood change.
-Continue current dose until reviewed.
-Email or call if any concerns before next appointment.`},
+Initial titration review in 4-6 weeks (15 or 30 min telehealth).
+Patient to bring BP and HR readings (home, pharmacy or GP) and a brief log of response, side effects, sleep, appetite, mood and function.
+Continue current dose until reviewed. May increase if tolerated well but inadequate response.
+Email or call if any concerns before the appointment.`},
 
-  {nm:'4-week titration review', text:`PLAN
+  {nm:'Extended titration / stabilising review (2-4 months)', text:`PLAN
 
-Review in 4 weeks (45 min, telehealth or in-person).
-Patient to bring: BP and HR readings (home, pharmacy or GP), weight.
-Monitor: response, side effects, sleep, appetite, mood, function.
-Continue current dose until reviewed. May increase if tolerating well but inadequate response.
-Email if any concerns before the appointment.`},
+Once tolerating titration well, review intervals can be extended to 2-4 months while the dose is being optimised.
+Patient to continue BP and HR readings between visits, plus weight check.
+Reassess response, side effects, sleep, mood and function at each review.
+Once on a stable, effective dose for 2+ months, prepare for GP handover.`},
 
-  {nm:'6-week titration review + GP letter', text:`PLAN
+  {nm:'GP handover (once on stable dose)', text:`PLAN
 
-Review at ~6 weeks once on ongoing dose for 2+ weeks.
-Patient to bring BP and HR readings, weight.
-At this review: draft GP letter summarising diagnosis, medication plan, monitoring requirements.
-If stable, progress to longer-interval reviews.`},
-
-  {nm:'3-month stable review', text:`PLAN
-
-Review in 3 months for stable medication regime.
-GP to monitor BP, HR, weight in between psychiatric reviews.
-Patient to flag: side-effect change, mood change, sleep change, response change.
-Annual scripts via psychiatrist; interim refills via GP shared-care arrangement.`},
-
-  {nm:'6-month review (stable maintenance)', text:`PLAN
-
-Six-monthly psychiatric review for stable regime.
-Continued GP monitoring of BP, HR, weight.
-Discuss any new medications, life changes, pregnancy plans.
-Repeat ECG only if new cardiac symptoms.`},
-
-  {nm:'GP shared-care handover', text:`PLAN
-
-Patient stable for 3+ months on current regimen.
+Patient stable on current regimen for 2+ months.
 GP to provide ongoing repeat scripts under shared-care arrangement.
 Psychiatrist reviews 6-12 monthly.
 GP responsible for BP, HR, weight monitoring; flag any concerns.
 Patient retains direct line to psychiatrist for any clinical change.
 GP handover letter to be sent (see GP letter examples).`},
 
+  {nm:'1-2 week post-initiation safety call', text:`PLAN
+
+Brief call or telehealth in 1-2 weeks after first prescription to confirm tolerability.
+Patient to flag any chest pain, palpitations, severe anxiety, marked mood change.
+Continue current dose until the next formal review.
+Email or call if any concerns.`},
+
+  {nm:'Annual review (stable patient)', text:`PLAN
+
+Annual psychiatric review for a stable patient under GP shared care.
+GP continues prescribing; routine monitoring of BP, HR, weight in between.
+Repeat bloods (TFT, FBE, EUC, LFT, ferritin, B12) annually or sooner if clinically indicated.
+Discuss life changes, pregnancy planning, comorbid mental health, substance use.
+Re-confirm direct line for any clinical change.`},
+
   {nm:'Suboptimal response: switch / augment', text:`PLAN
 
 Consider:
-• Switch within stimulant class (LA / Concerta) for different release profile
-• Switch across classes (methylphenidate / amphetamine)
-• Add afternoon IR top-up if duration insufficient
-• Add non-stimulant (guanfacine, atomoxetine) if partial response or affect / impulsivity
-• Address sleep, substance use, comorbid mood / anxiety
-• Confirm adherence and timing
+\u2022 Switch within stimulant class (LA / Concerta) for different release profile
+\u2022 Switch across classes (methylphenidate / amphetamine)
+\u2022 Add afternoon IR top-up if duration insufficient
+\u2022 Add non-stimulant (guanfacine, atomoxetine) if partial response or affect / impulsivity
+\u2022 Address sleep, substance use, comorbid mood / anxiety
+\u2022 Confirm adherence and timing
 
 Review in 4 weeks after change.`},
 
@@ -2365,45 +2428,37 @@ Review in 4 weeks after change.`},
 
 Review in 2-4 weeks following the side-effect adjustment.
 Patient to keep a brief side-effect / response log between visits.
-Monitor BP, HR, weight, mood.
+Patient to monitor BP, HR, weight, mood.
 Specifically reassess: appetite, sleep, rebound, anxiety, emotional blunting.
 If the side effect is not resolving: consider dose reduction, formulation change, or non-stimulant trial.`},
 
   {nm:'Defer stimulant: workup pending', text:`PLAN
 
 Stimulant deferred pending the following:
-• ECG (GP to order or in rooms)
-• Cardiology review if cardiac concern
-• Repeat BP readings: 7-day home log
-• Bloods: TFT, FBE, EUC, LFT, ferritin, B12
-• Clarify substance / mood / anxiety / sleep concern
-• Collateral: old school reports, parent / partner
+\u2022 ECG (GP to order, bring result)
+\u2022 Cardiology review if cardiac concern
+\u2022 Repeat BP readings: 7-day home log
+\u2022 Bloods: TFT, FBE, EUC, LFT, ferritin, B12
+\u2022 Clarify substance / mood / anxiety / sleep concern
+\u2022 Collateral: old school reports, parent / partner
 
 Review once outstanding items completed.
 In the interim: non-pharmacological strategies (psychoeducation, CBT-ADHD, sleep hygiene, coaching).`},
 
   {nm:'Pre-prescribing telehealth call', text:`PLAN
 
-Telehealth call before first prescription to:
-• Confirm consent and understanding of treatment
-• Confirm any final safety questions
-• Walk through expected effects and side effects
-• Confirm pharmacy and dispensing arrangements
+Telehealth call before the first prescription to:
+\u2022 Confirm consent and understanding of treatment
+\u2022 Confirm any final safety questions
+\u2022 Walk through expected effects and side effects
+\u2022 Confirm pharmacy and dispensing arrangements
 
-Followed by first formal review at 4 weeks.`},
-
-  {nm:'Annual review (stable patient)', text:`PLAN
-
-Annual psychiatric review.
-GP continues prescribing under shared-care arrangement; routine monitoring of BP, HR, weight.
-Repeat bloods (TFT, FBE, EUC, LFT, ferritin, B12) annually or sooner if clinically indicated.
-Discuss life changes, pregnancy planning, comorbid mental health.
-Re-confirm direct line for any clinical change.`},
+Followed by the first formal review at 4-6 weeks.`},
 
   {nm:'Cease stimulant: tapering plan', text:`PLAN
 
 Stimulant cessation plan agreed today.
-Taper over [X] weeks, with stepwise dose reduction.
+Taper over [X] weeks with stepwise dose reduction.
 Patient to monitor: re-emergence of attention / impulsivity / mood symptoms.
 Email any concerns; review at 4 weeks post-cessation.
 Non-pharmacological strategies reinforced.`}
