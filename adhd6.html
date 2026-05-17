@@ -40,29 +40,88 @@ body{
 .wrap{max-width:960px; margin:0 auto; padding:0 22px 96px;}
 
 header.top{
-  padding:32px 0 20px; margin-bottom:18px;
+  position:sticky; top:0; z-index:50;
+  padding:20px 22px 12px;
+  margin:0 -22px 18px;
+  background:rgba(248,250,252,0.93);
+  backdrop-filter:saturate(180%) blur(10px);
+  -webkit-backdrop-filter:saturate(180%) blur(10px);
   border-bottom:1px solid var(--border);
 }
+header.top .title-row{
+  display:flex; align-items:flex-start; gap:14px;
+  justify-content:space-between;
+}
 header.top h1{
-  margin:0; font:700 24px/1.2 "Inter",sans-serif;
+  margin:0; font:700 22px/1.2 "Inter",sans-serif;
   letter-spacing:-.02em; color:var(--ink);
 }
 header.top .sub{
-  font-size:13px; color:var(--muted); margin-top:5px;
+  font-size:12.5px; color:var(--muted); margin-top:4px;
 }
 header.top .sub kbd{
   font:600 12px "Inter",sans-serif;
   background:var(--primary-bg); color:var(--primary);
   padding:1px 6px; border-radius:4px; border:1px solid #c7ddff;
 }
+.nav-progress{
+  flex-shrink:0; font:600 12px/1.2 "Inter",sans-serif;
+  color:var(--muted); white-space:nowrap;
+  padding:5px 10px; background:var(--slate-bg); border-radius:999px;
+  align-self:flex-start;
+}
+.nav-progress strong{color:var(--primary)}
+.search-wrap{
+  position:relative; margin-top:10px; display:flex; align-items:center;
+}
+#search{
+  width:100%; padding:7px 30px 7px 32px;
+  font:500 13px "Inter",sans-serif;
+  border:1px solid var(--border); border-radius:7px;
+  background:#fff; color:var(--ink);
+}
+#search:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-bg)}
+.search-wrap::before{
+  content:""; position:absolute; left:11px; top:50%; transform:translateY(-50%);
+  width:13px; height:13px; border:1.6px solid var(--muted); border-radius:50%;
+}
+.search-wrap::after{
+  content:""; position:absolute; left:21px; top:calc(50% + 5px);
+  width:6px; height:1.6px; background:var(--muted); transform:rotate(45deg);
+  transform-origin:left center;
+}
+#search-clear{
+  position:absolute; right:6px; top:50%; transform:translateY(-50%);
+  width:22px; height:22px; border:none; background:transparent;
+  color:var(--muted); cursor:pointer; font:600 14px/1 "Inter",sans-serif;
+  display:none;
+}
+#search-clear.show{display:inline-flex; align-items:center; justify-content:center}
+#search-clear:hover{color:var(--red)}
+.no-match{display:none !important}
+.search-empty{
+  padding:10px 14px; color:var(--muted); font-style:italic; font-size:13px;
+  border:1px dashed var(--border); border-radius:6px;
+  margin:8px 18px 12px;
+}
 nav.toc{
-  display:flex; flex-wrap:wrap; gap:0; margin-top:14px;
+  display:flex; flex-wrap:wrap; gap:0; margin-top:10px;
   font-size:12.5px;
 }
 nav.toc a{
+  position:relative;
   text-decoration:none; color:var(--primary); font-weight:500;
-  padding:3px 0; margin-right:14px;
+  padding:3px 0 3px 11px; margin-right:14px;
   border-bottom:1px solid transparent;
+}
+nav.toc a::before{
+  content:""; position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:6px; height:6px; border-radius:50%;
+  background:transparent; border:1px solid var(--border);
+  transition:all .12s;
+}
+nav.toc a.touched::before{
+  background:var(--green); border-color:var(--green);
 }
 nav.toc a:hover{border-bottom-color:var(--primary); color:var(--primary-dark)}
 
@@ -620,11 +679,21 @@ footer{
 <div class="wrap">
 
 <header class="top">
-  <h1>ADHD Follow-Along Guide</h1>
-  <div class="sub">A prompt sheet to use alongside AI transcription. Click any line for example questions.</div>
+  <div class="title-row">
+    <div>
+      <h1>ADHD Follow-Along Guide</h1>
+      <div class="sub">A prompt sheet to use alongside AI transcription. Click any line for example questions.</div>
+    </div>
+    <span class="nav-progress" id="nav-progress"><strong>0</strong> / 0 explored</span>
+  </div>
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="Search probes, screeners, meds, MSE chips, handouts..." autocomplete="off" oninput="runSearch()">
+    <button id="search-clear" type="button" title="Clear" onclick="clearSearch()">×</button>
+  </div>
   <nav class="toc">
     <a href="#sec-open">Opening</a>
     <a href="#sec-pre">Pre-screening</a>
+    <a href="#sec-pops">Special populations</a>
     <a href="#sec-a">A · Symptoms</a>
     <a href="#sec-b">B · Childhood</a>
     <a href="#sec-c">C · Settings</a>
@@ -658,6 +727,14 @@ footer{
   <div class="body">
     <p class="lead">Validated tools, prior reports, and informant accounts. Cover before you start the formal DSM-5 review.</p>
     <ul class="dots" data-section="prescreening"></ul>
+  </div>
+</section>
+
+<section class="card indigo" id="sec-pops">
+  <div class="ch"><span class="num">Pop</span>Special populations</div>
+  <div class="body">
+    <p class="lead">If any of these apply, open the relevant row for population-specific clinical relevance. The standard DSM-5 flow can miss these cohorts.</p>
+    <ul class="dots" data-section="pops"></ul>
   </div>
 </section>
 
@@ -825,11 +902,17 @@ footer{
 const SECTIONS = {
 
 open: [
-  {t:"Introduce yourself, confirm consent and recording",
+  {t:"Introduce yourself and confirm recording",
    q:["Introduce yourself, your role, and the structure of the session.",
       "Confirm the patient is happy to be recorded and that AI transcription is being used.",
       "Confirm anyone else present (partner, parent, support person) and their role today.",
       "Confirm consent to contact GP / partner / parent for collateral as needed."]},
+  {t:"Consent and disclosure script", qLabel:"Read aloud to the patient before proceeding", q:[
+    "\"Before we begin, I want to be upfront with you about a few things. Today is a holistic psychiatric assessment, I'm going to look at everything, not just ADHD. I can't guarantee that I'll make an ADHD diagnosis, because that depends on what I find during the assessment. And even if I do diagnose ADHD, I can't guarantee that we'll end up on stimulant medication, that depends on your medical history, what's safe for you, and what makes clinical sense. What I can guarantee is that I want to do the very best by you. This is a thorough, holistic assessment and whatever we find, we'll work out the best path forward together.\"",
+    "\"I also want to be transparent about the cost. Today's assessment is one appointment, but depending on what comes up, there may be follow-up appointments, for example if we need to monitor how medication is going during titration. I'm always mindful of the financial impact and I'll only recommend follow-up when it's genuinely clinically necessary. I'll do everything I safely can to be efficient with your time and money.\"",
+    "\"Are you happy to continue?\"",
+    "Confirm verbal consent obtained, including financial consent and Telehealth consent."
+  ]},
   {t:"What brought you here today, and what do you want from this assessment?",
    q:["What's been going on, in your own words?",
       "What made you reach out now rather than six months ago?",
@@ -860,6 +943,50 @@ prescreening: [
     "Any previous formal assessment (psychology, paediatric, neuropsych).",
     "Content of the GP referral letter ,  what the GP observed.",
     "Letters from previous psychiatrists, psychologists, OT, speech pathology."
+  ]}
+],
+
+pops: [
+  {t:"Female-presenting ADHD", qLabel:"Clinical relevance", q:[
+    "Classically missed in childhood. Quiet / inattentive presentations and the female stereotype of 'not disruptive' lead to under-diagnosis. Most adult female patients have spent decades over-compensating.",
+    "Masking and camouflage are typical and exhausting. Diagnosis often comes after the compensation collapses (a new baby, a promotion, illness, perimenopause).",
+    "Premenstrual amplification of ADHD symptoms is the rule, not the exception. Substantial overlap with PMDD. Worth asking about cycle-linked symptom variability and tracking it.",
+    "Pregnancy and postpartum: symptoms can improve in pregnancy (oestrogen high), then unmask sharply postpartum (oestrogen drop + sleep deprivation + executive load). Plan ahead.",
+    "Perimenopause and menopause: falling oestrogen worsens ADHD symptoms. Many late-diagnosis presentations cluster in the mid-40s for this reason.",
+    "Higher rates of comorbid eating disorders (binge eating especially), anxiety, depression, and complex trauma. These are often diagnosed and treated first while the underlying ADHD is missed.",
+    "Impulsivity tends to be relational (chaotic relationships, sudden moves, financial impulsivity) rather than externalising (fights, conduct issues).",
+    "Counsel about contraception choices when prescribing stimulants; document discussion of pregnancy planning."
+  ]},
+  {t:"AuDHD (ASD + ADHD)", qLabel:"Clinical relevance", q:[
+    "Overlap is 50, 70%. If you have one, screen for the other. Many adults present with one label and the other emerges through assessment.",
+    "Sensory profile: ASD tends to sensory sensitivity / avoidance, ADHD tends to sensory seeking; AuDHD often has both simultaneously and switches between them.",
+    "Special interest (ASD: enduring, deep, often niche) versus hyperfocus (ADHD: interest-driven, transient, dopamine-linked). Both can co-exist; ask about persistence and breadth.",
+    "Masking and camouflage are typical and physiologically exhausting; autistic burnout is a distinct entity from ADHD burnout and presents as functional collapse + sensory shutdown + skill regression.",
+    "Internal tension between the need for routine (ASD) and the need for novelty (ADHD). This itself can be a presenting complaint.",
+    "Consider screening with AQ-10, RAADS-R, or CAT-Q (camouflage). Refer for formal ASD assessment if clinically warranted.",
+    "Stimulants are generally well tolerated in AuDHD and often help with executive function. Atomoxetine or guanfacine are reasonable if sensory anxiety is prominent.",
+    "Plan for sensory accommodations alongside any pharmacotherapy: workspace, lighting, noise, scent, predictability."
+  ]},
+  {t:"Adolescent ADHD (12-18)", qLabel:"Clinical relevance", q:[
+    "Distinguish age-appropriate restlessness, impulsivity and risk-taking from clinically significant impairment. The bar is functional impact across settings.",
+    "Symptoms typically escalate as school structure decreases and demands increase (transition to high school, senior years, leaving home).",
+    "High rates of comorbid ODD, conduct disorder, learning disorders, anxiety and depression. Untreated ADHD is a significant risk factor for each.",
+    "Substance use risk is elevated and earlier; alcohol, cannabis and stimulants of misuse appear sooner than in matched non-ADHD peers. Treatment is protective.",
+    "Driving safety: crash and traffic-offence rates are higher; counsel explicitly. Stimulant treatment reduces this risk.",
+    "Sexual risk-taking, social media impulsivity, money. Use specific examples rather than open questions.",
+    "Stimulants in growing adolescents: monitor growth velocity, weight and appetite; document baseline height / weight; consider drug holidays if growth concern.",
+    "Parent / teacher informant scales: Vanderbilt, Conners, BAARS-IV informant. School reports are gold-standard collateral for Criterion B.",
+    "Family system: parental ADHD is common and affects the family's capacity to scaffold treatment. Screen the parent if appropriate."
+  ]},
+  {t:"Older adult ADHD (>50)", qLabel:"Clinical relevance", q:[
+    "New-onset attention difficulty in an older adult is NOT ADHD until proven otherwise. Work up dementia, vascular cognitive impairment, depression, sleep disorder, polypharmacy, alcohol, and other medical causes first.",
+    "ADHD requires lifelong continuity. The diagnosis at this age depends on demonstrating that symptoms have been present since childhood, just with shifting presentation and compensation.",
+    "Late-life diagnostic presentations are often triggered by collapse of long-standing compensation: retirement, cognitive decline of a partner, cognitive demands of caring, bereavement, or a peer / child being diagnosed.",
+    "Polypharmacy is the rule. Review every current medication for interaction with stimulants and non-stimulants (especially antihypertensives, anticoagulants, antidepressants, antipsychotics).",
+    "Cardiovascular baseline matters more here. Lower threshold for ECG and cardiology review before initiating stimulant. BP, HR and weight monitoring are non-negotiable.",
+    "Baseline cognitive screening (MoCA) before initiating stimulant gives a reference point and helps distinguish ADHD-pattern executive dysfunction from emerging dementia.",
+    "Adjust for renal and hepatic clearance: start low, go slow, and prefer agents with simpler kinetics in this group.",
+    "Frontotemporal dementia is the classic mimic in this age group. New-onset behavioural change, disinhibition, apathy, or social-cognitive change in a 50-60s adult is a red flag, not ADHD."
   ]}
 ],
 
@@ -2007,6 +2134,7 @@ function renderSection(key){
 
 function toggleProbe(id){
   document.getElementById('row-'+id).classList.toggle('open');
+  if(typeof updateProgress==='function') updateProgress();
 }
 
 // =================== MSE ===================
@@ -2033,6 +2161,7 @@ function toggleMSE(sec, val){
   if(i>=0) mseState[sec].splice(i,1); else mseState[sec].push(val);
   renderMSE();
   buildMSEProse();
+  if(typeof updateProgress==='function') updateProgress();
 }
 function clearMSE(){
   Object.keys(mseState).forEach(k=>mseState[k]=[]);
@@ -2100,7 +2229,7 @@ function renderPE(){
     </div>`;
   }).join('');
 }
-function togglePEItem(id){document.getElementById(id).classList.toggle('open');}
+function togglePEItem(id){document.getElementById(id).classList.toggle('open'); if(typeof updateProgress==='function') updateProgress();}
 function peExpandAll(){document.querySelectorAll('.pe-item').forEach(el=>el.classList.add('open'));}
 function peCollapseAll(){document.querySelectorAll('.pe-item').forEach(el=>el.classList.remove('open'));}
 function copyPEItem(id, btn){
@@ -2228,8 +2357,8 @@ function renderTit(){
     </div>`;
 }
 
-function selectTitMed(k){titMed=k; titProto=null; renderTit(); if(typeof renderTrt==='function') renderTrt();}
-function selectTitProto(k){titProto=k; renderTit(); if(typeof renderTrt==='function') renderTrt();}
+function selectTitMed(k){titMed=k; titProto=null; renderTit(); if(typeof updateProgress==='function') updateProgress();}
+function selectTitProto(k){titProto=k; renderTit(); if(typeof updateProgress==='function') updateProgress();}
 
 // Derive a "Week N+" / "Day N+" prefix from the previous step,
 // so the ongoing phase reads "Week 4+, 50mg" instead of "Ongoing, 50mg".
@@ -2789,6 +2918,151 @@ function copyExample(tid, btn){
   navigator.clipboard.writeText(t.textContent).then(()=>flashCopy(btn,'Copy'));
 }
 
+// =================== SEARCH ===================
+function runSearch(){
+  const input = document.getElementById('search');
+  const q = (input?.value||'').trim().toLowerCase();
+  const clearBtn = document.getElementById('search-clear');
+  if(clearBtn) clearBtn.classList.toggle('show', q.length>0);
+  const targets = [];
+
+  // Dot-point probes , match on item title + each probe + explain text
+  document.querySelectorAll('ul.dots').forEach(ul=>{
+    const sectionKey = ul.getAttribute('data-section');
+    ul.querySelectorAll('.row').forEach(row=>{
+      const txtEl = row.querySelector('.txt');
+      const title = txtEl ? txtEl.textContent : '';
+      const id = row.id.replace(/^row-/,'');
+      const probe = document.getElementById('probe-'+id);
+      const probeTxt = probe ? probe.textContent : '';
+      const hay = (title+' '+probeTxt).toLowerCase();
+      targets.push({el:row, probe, hay});
+    });
+  });
+
+  // MSE rows match on label + chips
+  document.querySelectorAll('.mse-section').forEach(sec=>{
+    const hay = sec.textContent.toLowerCase();
+    targets.push({el:sec, probe:null, hay});
+  });
+  // PE accordion items
+  document.querySelectorAll('.pe-item').forEach(it=>{
+    const hay = it.textContent.toLowerCase();
+    targets.push({el:it, probe:null, hay});
+  });
+  // PE group labels , hide group if all items hidden? Keep groups always visible; only items filter.
+  // Titration tabs , match med name
+  document.querySelectorAll('.tit-tab').forEach(tab=>{
+    const hay = tab.textContent.toLowerCase();
+    targets.push({el:tab, probe:null, hay});
+  });
+  // Example cards
+  document.querySelectorAll('.example-card').forEach(card=>{
+    const hay = card.textContent.toLowerCase();
+    targets.push({el:card, probe:null, hay});
+  });
+
+  if(!q){
+    // Restore everything
+    targets.forEach(t=>{t.el.classList.remove('no-match'); if(t.probe) t.probe.classList.remove('no-match');});
+    document.querySelectorAll('.search-empty').forEach(n=>n.remove());
+    return;
+  }
+
+  let anyMatch = false;
+  targets.forEach(t=>{
+    const match = t.hay.includes(q);
+    t.el.classList.toggle('no-match', !match);
+    if(t.probe) t.probe.classList.toggle('no-match', !match);
+    if(match) anyMatch = true;
+  });
+
+  // Per-section "no matches" placeholder
+  document.querySelectorAll('.search-empty').forEach(n=>n.remove());
+  document.querySelectorAll('section.card').forEach(sec=>{
+    const visible = sec.querySelectorAll(
+      'ul.dots > .row:not(.no-match), .mse-section:not(.no-match), .pe-item:not(.no-match), .tit-tab:not(.no-match), .example-card:not(.no-match)'
+    );
+    const matchables = sec.querySelectorAll(
+      'ul.dots > .row, .mse-section, .pe-item, .tit-tab, .example-card'
+    );
+    if(matchables.length && visible.length===0){
+      const note = document.createElement('div');
+      note.className = 'search-empty';
+      note.textContent = 'No matches in this section.';
+      const body = sec.querySelector('.body');
+      if(body) body.appendChild(note);
+    }
+  });
+}
+function clearSearch(){
+  const input = document.getElementById('search');
+  if(input){ input.value=''; runSearch(); input.focus(); }
+}
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    const input = document.getElementById('search');
+    if(input && input.value){ clearSearch(); e.preventDefault(); }
+  }
+});
+
+// =================== PROGRESS ===================
+function updateProgress(){
+  // Touched = any .row.open in section, any chip.on in MSE, any pe-item.open in PE,
+  // or any titration med selected.
+  const totals = {opened:0, total:0};
+  const touchedSections = new Set();
+
+  // Section probe rows
+  document.querySelectorAll('ul.dots[data-section]').forEach(ul=>{
+    const key = ul.getAttribute('data-section');
+    const rows = ul.querySelectorAll('.row');
+    rows.forEach(r=>{
+      totals.total++;
+      if(r.classList.contains('open')){ totals.opened++; touchedSections.add(key); }
+    });
+  });
+  // MSE chips , each on chip counts; one or more = section touched
+  const mseChips = document.querySelectorAll('#sec-mse .chip.on');
+  if(mseChips.length){ touchedSections.add('__mse__'); }
+  totals.total += document.querySelectorAll('#sec-mse .chip').length;
+  totals.opened += mseChips.length;
+  // PE accordion
+  const peOpen = document.querySelectorAll('.pe-item.open');
+  if(peOpen.length){ touchedSections.add('__pe__'); }
+  totals.total += document.querySelectorAll('.pe-item').length;
+  totals.opened += peOpen.length;
+  // Titration , count selected med as 1/1 touch
+  if(typeof titMed !== 'undefined' && titMed){ touchedSections.add('__tit__'); totals.opened++; }
+  totals.total++; // titration counts once
+
+  const out = document.getElementById('nav-progress');
+  if(out) out.innerHTML = '<strong>'+totals.opened+'</strong> / '+totals.total+' explored';
+
+  // Light up nav dots
+  // Mapping from section id → data-section key (or __mse__ etc.)
+  const navMap = {
+    'sec-open':'open', 'sec-pre':'prescreening', 'sec-pops':'pops',
+    'sec-a':'inattention', 'sec-a-hi':'hyperimp',
+    'sec-b':'childhood', 'sec-c':'settings', 'sec-d':'impairment', 'sec-e':'differentials',
+    'sec-fam':'family', 'sec-sub':'substances', 'sec-card':'cardiac', 'sec-med':'medical',
+    'sec-rx':'meds', 'sec-mse':'__mse__', 'sec-inv':'investigations',
+    'sec-pe':'__pe__', 'sec-tit':'__tit__'
+  };
+  document.querySelectorAll('nav.toc a').forEach(a=>{
+    const href = (a.getAttribute('href')||'').replace('#','');
+    // sec-a has two data-section keys (inattention + hyperimp) , touch if either
+    let touched = false;
+    if(href==='sec-a'){
+      touched = touchedSections.has('inattention') || touchedSections.has('hyperimp');
+    } else {
+      const key = navMap[href];
+      if(key) touched = touchedSections.has(key);
+    }
+    a.classList.toggle('touched', touched);
+  });
+}
+
 // =================== INIT ===================
 document.addEventListener('DOMContentLoaded', ()=>{
   Object.keys(SECTIONS).forEach(renderSection);
@@ -2798,6 +3072,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderExamples('fu-examples', FU_EXAMPLES);
   renderExamples('trt-examples', TRT_EXAMPLES);
   renderExamples('hoc-examples', HOC_EXAMPLES);
+  updateProgress();
 });
 </script>
 </body>
