@@ -677,7 +677,7 @@ function totalDailyDose(m,st){
 function makeDefaultDose(def){
   const strs=def.strengths||[];
   if(strs.length){
-    return {t:'morning',type:'str',s:strs[strs.length-1],q:1};
+    return {t:'morning',type:'str',s:strs[0],q:1};
   }
   return {t:'morning',type:'free',l:''};
 }
@@ -690,14 +690,8 @@ function addSelectedMed(){
   const key=$('medPicker').value;
   if(!key||!MED_CATALOG[key])return;
   const def=MED_CATALOG[key];
-  // If the catalogue entry uses the new structured 'doses' format, deep-clone it.
-  // Otherwise spawn a sensible default starter step + maintenance row.
-  let steps;
-  if(def.steps&&def.steps.length&&def.steps[0].doses){
-    steps=JSON.parse(JSON.stringify(def.steps));
-  } else {
-    steps=[makeDefaultStep(def),Object.assign(makeDefaultStep(def),{ongoing:true})];
-  }
+  // Always start with a single empty maintenance step at the lowest strength.
+  // The catalogue's example titration plan (if any) can be loaded on demand.
   S.meds.push({
     key:key,
     customName:def.name,
@@ -709,9 +703,20 @@ function addSelectedMed(){
     unit:def.unit||'mg',
     strengths:(def.strengths||[]).slice(),
     authority:def.authority||'',
-    steps:steps
+    steps:[Object.assign(makeDefaultStep(def),{ongoing:true})]
   });
   $('medPicker').value='';
+  render();
+}
+function loadExamplePlan(mi){
+  const m=S.meds[mi];if(!m)return;
+  const def=MED_CATALOG[m.key];
+  if(!def||!def.steps||!def.steps.length||!def.steps[0].doses){
+    alert('No example titration plan available for this medication yet.');
+    return;
+  }
+  if(!confirm('Replace the current plan with the example titration?'))return;
+  m.steps=JSON.parse(JSON.stringify(def.steps));
   render();
 }
 function removeMed(idx){
@@ -760,7 +765,7 @@ function doseToFree(mi,si,di){
 function doseToStr(mi,si,di){
   const m=S.meds[mi];const d=m.steps[si].doses[di];
   const strs=m.strengths||[];
-  d.type='str';d.s=strs.length?strs[strs.length-1]:0;d.q=1;render();
+  d.type='str';d.s=strs.length?strs[0]:0;d.q=1;render();
 }
 function addDoseToStep(mi,si,t){
   if(!t)return;
@@ -801,6 +806,8 @@ function renderMedList(){
   wrap.innerHTML=S.meds.map((m,i)=>{
     const classLbl=(m.subclass||CLASS_LBL[m.class]||'Other');
     const classCls=m.class||'other';
+    const def=MED_CATALOG[m.key]||{};
+    const hasExample=def.steps&&def.steps.length&&def.steps[0].doses;
     const steps=m.steps.map((st,si)=>renderTitStep(m,st,si,i)).join('');
     return `
       <div class="med-card">
@@ -810,7 +817,10 @@ function renderMedList(){
             <span class="med-generic">${esc(m.generic||'')}</span>
             <span class="med-class-pill ${classCls}">${classLbl}${m.schedule?' · '+esc(m.schedule):''}</span>
           </div>
-          <button class="btn sm danger" onclick="removeMed(${i})">Remove</button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${hasExample?`<button class="btn sm ghost" onclick="loadExamplePlan(${i})" title="Replace with example titration plan">Load example plan</button>`:''}
+            <button class="btn sm danger" onclick="removeMed(${i})">Remove</button>
+          </div>
         </div>
         <div class="auth-line"><strong>Authority / notes:</strong>
           <input value="${esc(m.authority||'')}" oninput="setMedField(${i},'authority',this.value)" style="border:none;background:transparent;width:100%;font:13px var(--sans);color:#475569;padding:2px 0;margin-top:2px">
