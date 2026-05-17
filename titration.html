@@ -84,45 +84,52 @@
 
   .auth-line{font:400 11.5px/1.4 var(--sans);color:#475569;background:#fff7ed;border:1px solid #fde68a;padding:6px 10px;border-radius:6px;margin:6px 0}
 
-  /* Form / strengths summary line under the med name */
-  .form-line{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px;align-items:center}
-  .form-pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font:600 11px var(--sans);background:#eef2f7;color:#334155;border:1px solid #dbe2ec}
-  .form-pill.form{background:#e7eef9;color:var(--primary);border-color:#c7d6ec}
-  .form-pill.strength{background:#fff;color:#475569;border-color:#dbe2ec}
-
   /* Section sub-heading inside a med card */
   .med-sub-h{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:10px 0 6px}
 
-  /* Step cards (stacked, mobile-friendly) */
-  .step-cards{display:flex;flex-direction:column;gap:8px;margin-top:4px}
-  .step-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 12px}
-  .step-card-head{display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
-  .step-num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--primary-bg);color:var(--primary);font:700 12px var(--sans);display:inline-flex;align-items:center;justify-content:center;margin-top:18px}
-  .step-inputs{flex:1;display:grid;grid-template-columns:1.4fr 1fr;gap:8px;min-width:0}
-  @media (max-width:560px){.step-inputs{grid-template-columns:1fr}}
-  .step-card-actions{display:flex;gap:4px;margin-top:18px}
-
-  .step-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-  @media (max-width:560px){.step-grid{grid-template-columns:1fr}}
-
-  .step-fld{display:flex;flex-direction:column;gap:3px;min-width:0}
-  .step-fld.full{margin-top:8px}
-  .step-fld label{font:600 10px var(--sans);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
-  .step-fld input,.step-fld textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 9px;font:13px var(--sans);background:#fafbff}
-  .step-fld input:focus,.step-fld textarea:focus{outline:none;border-color:var(--primary);background:#fff}
-  .step-fld textarea{resize:vertical;min-height:36px;line-height:1.4}
-
-  .icon-btn{background:transparent;border:1px solid var(--border);border-radius:5px;width:26px;height:26px;cursor:pointer;color:var(--muted);font-size:13px;line-height:1;display:inline-flex;align-items:center;justify-content:center;padding:0}
-  .icon-btn:hover{background:#fff;color:var(--text);border-color:var(--muted)}
-  .icon-btn.danger:hover{color:var(--red);border-color:var(--red)}
-  .step-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:6px}
-  .step-foot .left{display:flex;gap:6px;flex-wrap:wrap}
-
-  /* Script controls */
-  .script-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px;padding:10px 12px;background:#fff;border:1px solid var(--border);border-radius:8px}
-  .script-controls label{font:600 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:4px}
-  .script-controls input,.script-controls select{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 9px;font:13px var(--sans);background:#fafbff}
-  .script-controls input:focus,.script-controls select:focus{outline:none;border-color:var(--primary);background:#fff}
+  /* Titration step builder (ported from adhd5.html) */
+  .tit-step-list{display:flex;flex-direction:column;gap:0;margin-top:4px}
+  .tit-step-row{display:flex;align-items:stretch;gap:0}
+  .tit-step-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:24px}
+  .tit-step-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid #fff;box-shadow:0 0 0 2px var(--primary);flex-shrink:0;margin-top:6px}
+  .tit-step-dot.ongoing{background:var(--green);box-shadow:0 0 0 2px var(--green)}
+  .tit-step-connector{width:2px;background:#dbeafe;flex:1;margin:2px 0}
+  .tit-step-row:last-child .tit-step-connector{display:none}
+  .tit-step-content{flex:1;padding:0 0 14px 8px;min-width:0}
+  .tit-step-header{display:flex;align-items:center;gap:5px;margin-bottom:6px;flex-wrap:wrap}
+  .tit-step-badge{font:700 11px var(--sans);color:var(--primary);background:#dbeafe;border-radius:5px;padding:3px 8px;white-space:nowrap}
+  .tit-step-badge.ongoing{background:var(--green-bg);color:var(--green)}
+  .tit-dur-inp{width:38px;border:1px solid var(--border);border-radius:5px;color:var(--text);padding:3px 5px;font:12px var(--sans);text-align:center;background:#fff}
+  .tit-dur-sel{border:1px solid var(--border);border-radius:5px;color:var(--text);padding:3px 5px;font:12px var(--sans);background:#fff}
+  .tit-ongoing-lbl{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--muted);cursor:pointer}
+  .tit-rm-step{background:none;border:none;color:#c8cdd9;font-size:14px;padding:0 4px;cursor:pointer;margin-left:auto}
+  .tit-rm-step:hover{color:var(--red)}
+  .tit-dose-rows{display:flex;flex-direction:column;gap:6px}
+  .tit-dose-item{display:flex;align-items:center;gap:5px;flex-wrap:wrap;row-gap:6px;min-width:0}
+  .tit-dose-time{flex:0 0 88px;width:88px;border:1px solid var(--border);border-radius:6px;color:#1e293b;padding:0 8px;font:600 12px var(--sans);background:#fff;height:32px;box-sizing:border-box}
+  .tit-dose-ctrl{display:flex;align-items:center;gap:5px;flex:1 1 auto;min-width:0;flex-wrap:wrap}
+  .tit-stepper{flex:0 0 auto;display:grid;grid-template-columns:30px 38px 30px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;overflow:hidden;align-items:stretch;height:32px}
+  .tit-ds-btn{background:#eef2f7;border:none;color:#0f172a;font:700 16px var(--sans);display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .tit-ds-btn:hover,.tit-ds-btn:active{background:var(--primary);color:#fff}
+  .tit-ds-lbl{display:flex;align-items:center;justify-content:center;font:700 14px var(--sans);color:#0f172a;background:#fff;border-left:1px solid #cbd5e1;border-right:1px solid #cbd5e1;padding:0 2px}
+  .tit-form-lbl{font:600 12px var(--sans);color:#475569;white-space:nowrap}
+  .tit-dose-free{flex:1 1 140px;min-width:0;border:1px solid var(--border);border-radius:6px;color:#0f172a;padding:0 9px;font:13px var(--sans);background:#fff;height:32px;box-sizing:border-box}
+  .tit-cap-sel{background:#fff;border:1px solid #cbd5e1;border-radius:6px;color:#0f172a;padding:0 8px;font:600 12px var(--sans);height:32px}
+  .tit-fixed-strength{background:var(--primary-bg);border:1px solid #c7d6ec;border-radius:6px;color:var(--primary);padding:0 10px;font:700 12px var(--sans);white-space:nowrap;height:32px;display:inline-flex;align-items:center}
+  .tit-dose-actions{display:flex;align-items:center;gap:3px;flex:0 0 auto;margin-left:auto}
+  .tit-icon-btn{padding:0;width:28px;height:28px;border-radius:6px;font:13px var(--sans);border:1.5px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .tit-icon-btn:hover,.tit-icon-btn:active{border-color:var(--primary);color:var(--primary);background:#eef2f7}
+  .tit-prn-btn{padding:0 8px;height:28px;border-radius:6px;font:700 10px var(--sans);border:1.5px solid #cbd5e1;background:#fff;color:#94a3b8;cursor:pointer;white-space:nowrap}
+  .tit-prn-btn.on{border-color:#b45309;background:#fff7ed;color:#b45309}
+  .tit-dose-rm{background:none;border:none;color:#94a3b8;font-size:16px;line-height:1;padding:0;width:24px;height:28px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+  .tit-dose-rm:hover{color:var(--red)}
+  .tit-step-total{margin-top:8px;padding:5px 10px;background:#f0f6ff;border:1px dashed #93c5fd;border-radius:6px;font:600 12px var(--sans);color:var(--primary);display:inline-block}
+  .tit-step-note{font:12px var(--sans);color:#0f172a;background:#fafbfc;border:1px solid #cbd5e1;border-radius:6px;outline:none;width:100%;margin-top:8px;padding:7px 10px;box-sizing:border-box}
+  .tit-step-note:focus{border-color:var(--primary);background:#fff}
+  .tit-step-note::placeholder{color:#94a3b8;font-style:italic}
+  .tit-step-foot{display:flex;align-items:center;gap:6px;padding:6px 0 0;flex-wrap:wrap}
+  .tit-time-sel{background:#f3f5f9;border:1px solid var(--border);border-radius:5px;color:var(--muted);padding:3px 6px;font:11px var(--sans);cursor:pointer}
+  .tit-add-step{background:none;border:none;color:var(--primary);font:600 11px var(--sans);padding:0;text-decoration:underline;cursor:pointer}
 
   /* ── OUTPUT TABS ────────────────────────────────────────────────────── */
   .out-tabs{display:flex;gap:2px;background:#0f172a;padding:6px 6px 0 6px;border-radius:var(--r) var(--r) 0 0;border-bottom:1px solid #1e293b}
@@ -264,114 +271,129 @@
 ─────────────────────────────────────────────────────────────────────────── */
 const MED_CATALOG = {
   dex_ir: {
-    name:'Dexamphetamine IR',
-    generic:'Dexamphetamine sulfate',
+    name:'Dexamphetamine IR', generic:'Dexamphetamine sulfate',
     class:'stimulant', subclass:'Stimulant', schedule:'S8',
     form:'tablet', strengths:[5], unit:'mg',
     authority:'S8 stimulant authority required. Add CA2023 (NSW). 20-day prescription interval.',
-    mitte:'200 tablets', repeats:5, intervalRule:'20-day',
     steps:[
-      {label:'Days 1–2',  dur:'2 days',  sig:'½ tab (2.5 mg) on waking and at midday', totalDose:'5 mg/day',  notes:'Start low. Take on waking.'},
-      {label:'Days 3–9',  dur:'7 days',  sig:'1 tab (5 mg) on waking and at midday',   totalDose:'10 mg/day', notes:''},
-      {label:'Days 10–16',dur:'7 days',  sig:'2 tabs (10 mg) on waking, 1 tab (5 mg) at midday', totalDose:'15 mg/day', notes:'Good tolerability required to proceed.'},
-      {label:'Maintenance', dur:'', sig:'2 tabs (10 mg) on waking and at midday', totalDose:'20 mg/day', notes:'Continue at this dose until next review.'}
+      {dur:2,unit:'days',ongoing:false,note:'Start low. Take on waking.',
+        doses:[{t:'morning',type:'str',s:5,q:0.5},{t:'midday',type:'str',s:5,q:0.5}]},
+      {dur:7,unit:'days',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:5,q:1},{t:'midday',type:'str',s:5,q:1}]},
+      {dur:7,unit:'days',ongoing:false,note:'Good tolerability required to proceed.',
+        doses:[{t:'morning',type:'str',s:5,q:2},{t:'midday',type:'str',s:5,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Continue at this dose until next review.',
+        doses:[{t:'morning',type:'str',s:5,q:2},{t:'midday',type:'str',s:5,q:2}]}
     ]
   },
   ritalin_ir: {
-    name:'Ritalin IR',
-    generic:'Methylphenidate hydrochloride',
+    name:'Ritalin IR', generic:'Methylphenidate hydrochloride',
     class:'stimulant', subclass:'Stimulant', schedule:'S8',
     form:'tablet', strengths:[10], unit:'mg',
     authority:'S8 stimulant authority required. Add CA2023 (NSW). 20-day prescription interval.',
-    mitte:'100 tablets', repeats:5, intervalRule:'20-day',
     steps:[
-      {label:'Days 1–2',  dur:'2 days',  sig:'½ tab (5 mg) on waking and at midday',  totalDose:'10 mg/day',  notes:'Start low.'},
-      {label:'Days 3–9',  dur:'7 days',  sig:'1 tab (10 mg) on waking and at midday', totalDose:'20 mg/day',  notes:''},
-      {label:'Days 10–16',dur:'7 days',  sig:'2 tabs (20 mg) on waking, 1 tab (10 mg) at midday', totalDose:'30 mg/day', notes:''},
-      {label:'Maintenance', dur:'', sig:'2 tabs (20 mg) on waking and at midday',totalDose:'40 mg/day',  notes:''}
+      {dur:2,unit:'days',ongoing:false,note:'Start low.',
+        doses:[{t:'morning',type:'str',s:10,q:0.5},{t:'midday',type:'str',s:10,q:0.5}]},
+      {dur:7,unit:'days',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:10,q:1},{t:'midday',type:'str',s:10,q:1}]},
+      {dur:7,unit:'days',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:10,q:2},{t:'midday',type:'str',s:10,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'',
+        doses:[{t:'morning',type:'str',s:10,q:2},{t:'midday',type:'str',s:10,q:2}]}
     ]
   },
   ritalin_la: {
-    name:'Ritalin LA',
-    generic:'Methylphenidate (modified-release)',
+    name:'Ritalin LA', generic:'Methylphenidate (modified-release)',
     class:'stimulant', subclass:'Stimulant', schedule:'S8',
     form:'capsule', strengths:[10,20,30,40,60], unit:'mg',
     authority:'S8 stimulant authority required. Add CA2023 (NSW). Once daily. Capsule can be sprinkled on soft food.',
-    mitte:'30 capsules', repeats:5, intervalRule:'20-day',
     steps:[
-      {label:'Week 1',     dur:'7 days', sig:'10 mg cap each morning',  totalDose:'10 mg/day', notes:'Sprinkle on soft food if needed.'},
-      {label:'Weeks 2–3',  dur:'14 days',sig:'20 mg cap each morning',  totalDose:'20 mg/day', notes:''},
-      {label:'Weeks 4–5',  dur:'14 days',sig:'30 mg cap each morning',  totalDose:'30 mg/day', notes:''},
-      {label:'Maintenance', dur:'',sig:'40 mg cap each morning',  totalDose:'40 mg/day', notes:'Review at next appointment.'}
+      {dur:1,unit:'weeks',ongoing:false,note:'Sprinkle on soft food if needed.',
+        doses:[{t:'morning',type:'str',s:10,q:1}]},
+      {dur:2,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:20,q:1}]},
+      {dur:2,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:30,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Review at next appointment.',
+        doses:[{t:'morning',type:'str',s:40,q:1}]}
     ]
   },
   concerta: {
-    name:'Concerta',
-    generic:'Methylphenidate OROS',
+    name:'Concerta', generic:'Methylphenidate OROS',
     class:'stimulant', subclass:'Stimulant', schedule:'S8',
     form:'tablet', strengths:[18,27,36,54], unit:'mg',
     authority:'S8 stimulant authority required. PBS Authority — diagnosis must have been made before age 18. Add CA2023 (NSW). Swallow whole — do NOT crush.',
-    mitte:'30 tablets', repeats:5, intervalRule:'20-day',
     steps:[
-      {label:'Week 1',    dur:'7 days', sig:'18 mg tab each morning', totalDose:'18 mg/day', notes:'Swallow whole — must not be crushed.'},
-      {label:'Weeks 2–3', dur:'14 days',sig:'27 mg tab each morning', totalDose:'27 mg/day', notes:''},
-      {label:'Weeks 4–5', dur:'14 days',sig:'36 mg tab each morning', totalDose:'36 mg/day', notes:''},
-      {label:'Maintenance', dur:'',sig:'54 mg tab each morning', totalDose:'54 mg/day', notes:'Maximum daily dose.'}
+      {dur:1,unit:'weeks',ongoing:false,note:'Swallow whole — must not be crushed.',
+        doses:[{t:'morning',type:'str',s:18,q:1}]},
+      {dur:2,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:27,q:1}]},
+      {dur:2,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:36,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Maximum daily dose.',
+        doses:[{t:'morning',type:'str',s:54,q:1}]}
     ]
   },
   vyvanse: {
-    name:'Vyvanse',
-    generic:'Lisdexamfetamine dimesilate',
+    name:'Vyvanse', generic:'Lisdexamfetamine dimesilate',
     class:'stimulant', subclass:'Stimulant', schedule:'S8',
     form:'capsule', strengths:[20,30,40,50,60,70], unit:'mg',
     authority:'S8 stimulant authority required. Add CA2023 (NSW). Take on waking. Capsule can be opened and dissolved in water.',
-    mitte:'30 capsules', repeats:5, intervalRule:'20-day',
     steps:[
-      {label:'Week 1',     dur:'7 days', sig:'30 mg cap each morning', totalDose:'30 mg/day', notes:'On waking.'},
-      {label:'Weeks 2–3',  dur:'14 days',sig:'30 mg cap + 20 mg cap each morning', totalDose:'50 mg/day', notes:''},
-      {label:'Maintenance', dur:'',sig:'30 mg cap + 2 × 20 mg cap each morning', totalDose:'70 mg/day', notes:'Only if still symptomatic. Confirm tolerability.'}
+      {dur:1,unit:'weeks',ongoing:false,note:'On waking.',
+        doses:[{t:'morning',type:'str',s:30,q:1}]},
+      {dur:2,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:30,q:1},{t:'morning',type:'str',s:20,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Only if still symptomatic. Confirm tolerability.',
+        doses:[{t:'morning',type:'str',s:30,q:1},{t:'morning',type:'str',s:20,q:2}]}
     ]
   },
   atomoxetine: {
-    name:'Atomoxetine (Strattera)',
-    generic:'Atomoxetine hydrochloride',
+    name:'Atomoxetine (Strattera)', generic:'Atomoxetine hydrochloride',
     class:'nonstim', subclass:'Non-stimulant ADHD', schedule:'S4',
     form:'capsule', strengths:[10,18,25,40,60,80,100], unit:'mg',
     authority:'PBS Streamlined Authority code 7876 (initiation) / 7890 (continuation). Not a controlled substance. Full effect at 4–12 weeks.',
-    mitte:'28 capsules', repeats:5, intervalRule:'',
     steps:[
-      {label:'Weeks 1–4', dur:'28 days', sig:'40 mg cap each morning', totalDose:'40 mg/day', notes:'Take with food to reduce nausea.'},
-      {label:'Weeks 5–8', dur:'28 days', sig:'60 mg cap each morning', totalDose:'60 mg/day', notes:'Increase if tolerating.'},
-      {label:'Weeks 9–12',dur:'28 days', sig:'80 mg cap each morning', totalDose:'80 mg/day', notes:'Target dose for most adults.'},
-      {label:'Maintenance', dur:'', sig:'80 mg cap each morning', totalDose:'80 mg/day', notes:'Do not exceed without review.'}
+      {dur:4,unit:'weeks',ongoing:false,note:'Take with food to reduce nausea.',
+        doses:[{t:'morning',type:'str',s:40,q:1}]},
+      {dur:4,unit:'weeks',ongoing:false,note:'Increase if tolerating.',
+        doses:[{t:'morning',type:'str',s:60,q:1}]},
+      {dur:4,unit:'weeks',ongoing:false,note:'Target dose for most adults.',
+        doses:[{t:'morning',type:'str',s:80,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Do not exceed without review.',
+        doses:[{t:'morning',type:'str',s:80,q:1}]}
     ]
   },
   guanfacine_xr: {
-    name:'Guanfacine XR (Intuniv)',
-    generic:'Guanfacine hydrochloride (extended release)',
+    name:'Guanfacine XR (Intuniv)', generic:'Guanfacine hydrochloride (extended release)',
     class:'nonstim', subclass:'Non-stimulant ADHD', schedule:'S4',
     form:'tablet', strengths:[1,2,3,4], unit:'mg',
     authority:'Private prescription unless PBS criteria met (childhood diagnosis). Not a controlled substance. Do not crush or chew. Taper if ceasing.',
-    mitte:'28 tablets', repeats:5, intervalRule:'',
     steps:[
-      {label:'Week 1',    dur:'7 days', sig:'1 mg tab at night',    totalDose:'1 mg/day', notes:'Take in the evening. Avoid high-fat meals at dose time.'},
-      {label:'Week 2',    dur:'7 days', sig:'2 mg tab at night',    totalDose:'2 mg/day', notes:'Monitor BP and pulse.'},
-      {label:'Week 3',    dur:'7 days', sig:'3 mg tab at night',    totalDose:'3 mg/day', notes:''},
-      {label:'Maintenance', dur:'',sig:'4 mg tab at night',    totalDose:'4 mg/day', notes:'Target maintenance dose. Adjust to lowest effective dose.'}
+      {dur:1,unit:'weeks',ongoing:false,note:'Take in the evening. Avoid high-fat meals at dose time.',
+        doses:[{t:'night',type:'str',s:1,q:1}]},
+      {dur:1,unit:'weeks',ongoing:false,note:'Monitor BP and pulse.',
+        doses:[{t:'night',type:'str',s:2,q:1}]},
+      {dur:1,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'night',type:'str',s:3,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Target maintenance dose. Adjust to lowest effective dose.',
+        doses:[{t:'night',type:'str',s:4,q:1}]}
     ]
   },
   clonidine: {
-    name:'Clonidine (Catapres)',
-    generic:'Clonidine hydrochloride',
+    name:'Clonidine (Catapres)', generic:'Clonidine hydrochloride',
     class:'nonstim', subclass:'Non-stimulant ADHD', schedule:'S4',
     form:'tablet', strengths:[100,150], unit:'mcg',
     authority:'Private prescription. Off-label use for ADHD-related hyperarousal and sleep. Taper if ceasing — do NOT stop abruptly (rebound hypertension).',
-    mitte:'100 tablets', repeats:5, intervalRule:'',
     steps:[
-      {label:'Week 1',  dur:'7 days', sig:'½ tab (50 mcg) at night',          totalDose:'50 mcg/day',  notes:'Start at night. Warn re sedation and dizziness on standing.'},
-      {label:'Week 2',  dur:'7 days', sig:'1 tab (100 mcg) at night',         totalDose:'100 mcg/day', notes:'Recheck BP and pulse.'},
-      {label:'Week 3',  dur:'7 days', sig:'1 tab (100 mcg) BD',               totalDose:'200 mcg/day', notes:''},
-      {label:'Maintenance', dur:'',sig:'1½ tabs (150 mcg) BD',             totalDose:'300 mcg/day', notes:'Titrate to lowest effective dose.'}
+      {dur:1,unit:'weeks',ongoing:false,note:'Start at night. Warn re sedation and dizziness on standing.',
+        doses:[{t:'night',type:'str',s:100,q:0.5}]},
+      {dur:1,unit:'weeks',ongoing:false,note:'Recheck BP and pulse.',
+        doses:[{t:'night',type:'str',s:100,q:1}]},
+      {dur:1,unit:'weeks',ongoing:false,note:'',
+        doses:[{t:'morning',type:'str',s:100,q:1},{t:'night',type:'str',s:100,q:1}]},
+      {dur:1,unit:'days',ongoing:true,note:'Titrate to lowest effective dose.',
+        doses:[{t:'morning',type:'str',s:150,q:1},{t:'night',type:'str',s:150,q:1}]}
     ]
   },
 
@@ -598,64 +620,157 @@ function populatePicker(){
   });
 }
 
+/* ─────────────────────── TITRATION HELPERS ────────────────────────────── */
+const FRAC_QS=[0.25,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5];
+const WHOLE_QS=[1,2,3,4,5,6,7,8];
+const TIT_TIMES=['morning','midday','afternoon','evening','night','bedtime'];
+function getQSteps(m){
+  // Fractional quantities only make sense for plain tablets.
+  const form=(m.form||'').toLowerCase();
+  return /^tab/.test(form)?FRAC_QS:WHOLE_QS;
+}
+function fmtQ(q){
+  return q===0.25?'¼':q===0.5?'½':q===0.75?'¾':q===1?'1':q===1.5?'1½':q===2?'2':q===2.5?'2½':q===3?'3':q===3.5?'3½':q===4?'4':q===4.5?'4½':q===5?'5':String(q);
+}
+function formNoun(m,q){
+  const f=(m.form||'tab').split(/[\s(]/)[0]; // e.g. 'tablet (CR)' → 'tablet'
+  return f+((q===1||q===0.5||q===0.25)?'':'s');
+}
+function buildDoseLabel(m,d){
+  if(d.type==='free')return d.l||'';
+  const u=m.unit||'mg';
+  const q=d.q==null?1:d.q;
+  const s=d.s==null?0:d.s;
+  const total=Math.round(q*s*100)/100;
+  return fmtQ(q)+' '+formNoun(m,q)+' ('+total+u+')';
+}
+function titAutoLabel(steps,si){
+  let day=0;
+  for(let i=0;i<=si;i++){
+    const st=steps[i];
+    if(st.ongoing)return 'Ongoing';
+    const dd=st.unit==='weeks'?(st.dur||1)*7:(st.dur||1);
+    const start=day+1;day+=dd;
+    if(i<si)continue;
+    if(st.unit==='weeks'){
+      const ws=Math.ceil(start/7),we=Math.ceil(day/7);
+      return ws===we?'Week '+ws:'Weeks '+ws+'-'+we;
+    }
+    return start===day?'Day '+start:'Days '+start+'-'+day;
+  }
+  return 'Step '+(si+1);
+}
+function totalDailyDose(m,st){
+  let total=0;
+  st.doses.forEach(d=>{
+    if(d.type==='str')total+=(d.q||0)*(d.s||0);
+    else if(d.type==='free'&&d.l){
+      const matches=String(d.l).match(/(\d+(?:\.\d+)?)\s*(?:mg|mcg)\b/gi);
+      if(matches&&matches.length){
+        const nums=matches.map(s=>parseFloat(s));
+        total+=Math.max.apply(null,nums);
+      }
+    }
+  });
+  return Math.round(total*100)/100;
+}
+function makeDefaultDose(def){
+  const strs=def.strengths||[];
+  if(strs.length){
+    return {t:'morning',type:'str',s:strs[strs.length-1],q:1};
+  }
+  return {t:'morning',type:'free',l:''};
+}
+function makeDefaultStep(def){
+  return {dur:7,unit:'days',ongoing:false,note:'',doses:[makeDefaultDose(def)]};
+}
+
 /* ─────────────────────── ADD / REMOVE MEDS ────────────────────────────── */
 function addSelectedMed(){
   const key=$('medPicker').value;
   if(!key||!MED_CATALOG[key])return;
   const def=MED_CATALOG[key];
+  // If the catalogue entry uses the new structured 'doses' format, deep-clone it.
+  // Otherwise spawn a sensible default starter step + maintenance row.
+  let steps;
+  if(def.steps&&def.steps.length&&def.steps[0].doses){
+    steps=JSON.parse(JSON.stringify(def.steps));
+  } else {
+    steps=[makeDefaultStep(def),Object.assign(makeDefaultStep(def),{ongoing:true})];
+  }
   S.meds.push({
     key:key,
     customName:def.name,
     generic:def.generic,
     class:def.class,
+    subclass:def.subclass,
     schedule:def.schedule,
     form:def.form,
-    unit:def.unit,
-    authority:def.authority,
-    mitte:def.mitte,
-    repeats:def.repeats,
-    intervalRule:def.intervalRule||'',
-    steps:clone(def.steps)
+    unit:def.unit||'mg',
+    strengths:(def.strengths||[]).slice(),
+    authority:def.authority||'',
+    steps:steps
   });
   $('medPicker').value='';
-  save();render();
+  render();
 }
 function removeMed(idx){
   if(!confirm('Remove this medication and its titration plan?'))return;
-  S.meds.splice(idx,1);save();render();
+  S.meds.splice(idx,1);render();
 }
-function moveStep(midx,sidx,dir){
-  const arr=S.meds[midx].steps;
-  const ni=sidx+dir;if(ni<0||ni>=arr.length)return;
-  const tmp=arr[sidx];arr[sidx]=arr[ni];arr[ni]=tmp;
-  save();render();
+function addStepBelow(mi,si){
+  const m=S.meds[mi];if(!m)return;
+  const src=m.steps[si];
+  const copy=src?JSON.parse(JSON.stringify(src.doses)):[makeDefaultDose(m)];
+  m.steps.splice(si+1,0,{dur:1,unit:'weeks',ongoing:false,note:'',doses:copy});
+  render();
 }
-function addStep(midx){
-  S.meds[midx].steps.push({label:'New step',dur:'7 days',sig:'',totalDose:'',notes:''});
-  save();render();
+function removeStep(mi,si){
+  if(S.meds[mi].steps.length<=1){alert('Each medication needs at least one step.');return;}
+  S.meds[mi].steps.splice(si,1);render();
 }
-function removeStep(midx,sidx){
-  if(S.meds[midx].steps.length<=1){alert('Each medication needs at least one step.');return;}
-  S.meds[midx].steps.splice(sidx,1);save();render();
+function setStepDur(mi,si,val){S.meds[mi].steps[si].dur=parseInt(val,10)||1;renderOutputs();}
+function setStepUnit(mi,si,val){S.meds[mi].steps[si].unit=val;render();}
+function setStepOngoing(mi,si,checked){S.meds[mi].steps[si].ongoing=!!checked;render();}
+function setStepNote(mi,si,val){S.meds[mi].steps[si].note=val;renderOutputs();}
+function setMedField(mi,field,val){
+  S.meds[mi][field]=val;renderOutputs();
+  if(field==='customName'){const el=document.querySelector('[data-medname="'+mi+'"]');if(el)el.textContent=val;}
 }
-function setStepField(midx,sidx,field,val){
-  S.meds[midx].steps[sidx][field]=val;save();renderOutputs();
+function changeDoseQ(mi,si,di,dir){
+  const m=S.meds[mi];const dose=m.steps[si].doses[di];if(!dose||dose.type!=='str')return;
+  const qSteps=getQSteps(m);
+  let idx=qSteps.indexOf(dose.q);if(idx<0)idx=qSteps.indexOf(1);
+  const ni=Math.max(0,Math.min(qSteps.length-1,idx+dir));
+  dose.q=qSteps[ni];render();
 }
-function setMedField(midx,field,val){
-  S.meds[midx][field]=val;save();renderOutputs();
-  // Header name needs DOM refresh
-  if(field==='customName'){const el=document.querySelector('[data-medname="'+midx+'"]');if(el)el.textContent=val;}
+function setDoseStrength(mi,si,di,val){
+  const dose=S.meds[mi].steps[si].doses[di];if(!dose)return;
+  dose.s=parseFloat(val);render();
 }
-function resetMedToDefault(midx){
-  const key=S.meds[midx].key;
-  if(!confirm('Reset this medication\'s plan to the catalogue defaults?'))return;
-  const def=MED_CATALOG[key];
-  if(!def)return;
-  S.meds[midx].steps=clone(def.steps);
-  S.meds[midx].authority=def.authority;
-  S.meds[midx].mitte=def.mitte;
-  S.meds[midx].repeats=def.repeats;
-  save();render();
+function setDoseTime(mi,si,di,val){S.meds[mi].steps[si].doses[di].t=val;renderOutputs();}
+function setDoseFreeLabel(mi,si,di,val){S.meds[mi].steps[si].doses[di].l=val;renderOutputs();}
+function togglePRN(mi,si,di){
+  const d=S.meds[mi].steps[si].doses[di];d.prn=!d.prn;render();
+}
+function doseToFree(mi,si,di){
+  const m=S.meds[mi];const d=m.steps[si].doses[di];
+  d.l=buildDoseLabel(m,d);d.type='free';delete d.q;delete d.s;render();
+}
+function doseToStr(mi,si,di){
+  const m=S.meds[mi];const d=m.steps[si].doses[di];
+  const strs=m.strengths||[];
+  d.type='str';d.s=strs.length?strs[strs.length-1]:0;d.q=1;render();
+}
+function addDoseToStep(mi,si,t){
+  if(!t)return;
+  const m=S.meds[mi];
+  const d=makeDefaultDose(m);d.t=t;
+  m.steps[si].doses.push(d);render();
+}
+function removeDose(mi,si,di){
+  if(S.meds[mi].steps[si].doses.length<=1){alert('Each step needs at least one dose row.');return;}
+  S.meds[mi].steps[si].doses.splice(di,1);render();
 }
 
 /* ─────────────────────── HEADER / FIELDS ──────────────────────────────── */
@@ -686,37 +801,7 @@ function renderMedList(){
   wrap.innerHTML=S.meds.map((m,i)=>{
     const classLbl=(m.subclass||CLASS_LBL[m.class]||'Other');
     const classCls=m.class||'other';
-    const def=MED_CATALOG[m.key]||{};
-    const form=m.form||def.form||'';
-    const strengths=def.strengths||[];
-    const unit=m.unit||def.unit||'mg';
-    const formPill=form?`<span class="form-pill form">${esc(form)}</span>`:'';
-    const strengthPills=strengths.length
-      ? strengths.map(s=>`<span class="form-pill strength">${esc(String(s))} ${esc(unit)}</span>`).join('')
-      : '';
-    const formLine=(formPill||strengthPills)
-      ? `<div class="form-line">${formPill}${strengthPills}</div>`
-      : '';
-    const stepCards=m.steps.map((st,si)=>`
-      <div class="step-card">
-        <div class="step-card-head">
-          <div class="step-num">${si+1}</div>
-          <div class="step-inputs">
-            <div class="step-fld"><label>Step name</label><input value="${esc(st.label)}" oninput="setStepField(${i},${si},'label',this.value)" placeholder="e.g. Week 1"></div>
-            <div class="step-fld"><label>Duration</label><input value="${esc(st.dur)}" oninput="setStepField(${i},${si},'dur',this.value)" placeholder="e.g. 7 days"></div>
-          </div>
-          <div class="step-card-actions">
-            <button class="icon-btn" onclick="moveStep(${i},${si},-1)" title="Move up">↑</button>
-            <button class="icon-btn" onclick="moveStep(${i},${si},1)" title="Move down">↓</button>
-            <button class="icon-btn danger" onclick="removeStep(${i},${si})" title="Remove step">×</button>
-          </div>
-        </div>
-        <div class="step-fld full"><label>Dose &amp; instructions</label><input value="${esc(st.sig)}" oninput="setStepField(${i},${si},'sig',this.value)" placeholder="e.g. 1 tablet (10 mg) on waking and at midday"></div>
-        <div class="step-grid">
-          <div class="step-fld"><label>Total daily dose</label><input value="${esc(st.totalDose||'')}" oninput="setStepField(${i},${si},'totalDose',this.value)" placeholder="e.g. 20 mg/day"></div>
-          <div class="step-fld"><label>Notes (optional)</label><input value="${esc(st.notes||'')}" oninput="setStepField(${i},${si},'notes',this.value)" placeholder="e.g. take with food"></div>
-        </div>
-      </div>`).join('');
+    const steps=m.steps.map((st,si)=>renderTitStep(m,st,si,i)).join('');
     return `
       <div class="med-card">
         <div class="med-card-head">
@@ -725,28 +810,81 @@ function renderMedList(){
             <span class="med-generic">${esc(m.generic||'')}</span>
             <span class="med-class-pill ${classCls}">${classLbl}${m.schedule?' · '+esc(m.schedule):''}</span>
           </div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="btn sm ghost" onclick="resetMedToDefault(${i})">Reset plan</button>
-            <button class="btn sm danger" onclick="removeMed(${i})">Remove</button>
-          </div>
+          <button class="btn sm danger" onclick="removeMed(${i})">Remove</button>
         </div>
-        ${formLine}
         <div class="auth-line"><strong>Authority / notes:</strong>
           <input value="${esc(m.authority||'')}" oninput="setMedField(${i},'authority',this.value)" style="border:none;background:transparent;width:100%;font:13px var(--sans);color:#475569;padding:2px 0;margin-top:2px">
         </div>
-        <div class="med-sub-h">Titration steps</div>
-        <div class="step-cards">${stepCards}</div>
-        <div class="step-foot">
-          <div class="left"><button class="btn sm ghost" onclick="addStep(${i})">+ Add step</button></div>
-        </div>
-        <div class="med-sub-h">Prescription details</div>
-        <div class="script-controls">
-          <div><label>Quantity to dispense</label><input value="${esc(m.mitte||'')}" oninput="setMedField(${i},'mitte',this.value)" placeholder="e.g. 30 tablets"></div>
-          <div><label>Repeats</label><input type="number" min="0" max="11" value="${esc(m.repeats==null?'':m.repeats)}" oninput="setMedField(${i},'repeats',this.value)"></div>
-          <div><label>Min. interval between scripts</label><input value="${esc(m.intervalRule||'')}" oninput="setMedField(${i},'intervalRule',this.value)" placeholder="e.g. 20 days"></div>
-        </div>
+        <div class="med-sub-h">Titration protocol</div>
+        <div class="tit-step-list">${steps}</div>
       </div>`;
   }).join('');
+}
+
+function renderTitDose(m,d,di,si,mi){
+  let ctrl,toggleBtn;
+  if(d.type==='str'){
+    const u=m.unit||'mg';
+    const qSteps=getQSteps(m);
+    let qIdx=qSteps.indexOf(d.q);
+    if(qIdx<0){let nearest=qSteps[0],bestDiff=Math.abs((d.q||1)-nearest);qSteps.forEach(v=>{const dd=Math.abs((d.q||1)-v);if(dd<bestDiff){bestDiff=dd;nearest=v;}});d.q=nearest;}
+    const stepper='<div class="tit-stepper">'+
+      `<button type="button" class="tit-ds-btn" onclick="changeDoseQ(${mi},${si},${di},-1)">−</button>`+
+      `<span class="tit-ds-lbl">${fmtQ(d.q)}</span>`+
+      `<button type="button" class="tit-ds-btn" onclick="changeDoseQ(${mi},${si},${di},1)">+</button>`+
+      '</div>';
+    const formLbl='<span class="tit-form-lbl">'+esc(formNoun(m,d.q))+'</span>';
+    const strs=m.strengths||[];
+    let strengthCtrl;
+    if(strs.length>1){
+      strengthCtrl=`<select class="tit-cap-sel" onchange="setDoseStrength(${mi},${si},${di},this.value)">`+
+        strs.map(s=>`<option value="${s}"${d.s==s?' selected':''}>${esc(String(s))}${esc(u)}</option>`).join('')+'</select>';
+    } else {
+      const fixed=strs[0]||d.s||0;
+      strengthCtrl=`<span class="tit-fixed-strength">${esc(String(fixed))}${esc(u)}</span>`;
+    }
+    ctrl='<div class="tit-dose-ctrl">'+stepper+formLbl+strengthCtrl+'</div>';
+    toggleBtn=`<button type="button" class="tit-icon-btn" onclick="doseToFree(${mi},${si},${di})" title="Custom text (ranges, fractions, PRN wording)">✎</button>`;
+  } else {
+    ctrl=`<input class="tit-dose-free" type="text" value="${esc(d.l||'')}" placeholder="e.g. 0.5–1 tab (2.5–5mg) PRN" oninput="setDoseFreeLabel(${mi},${si},${di},this.value)">`;
+    toggleBtn=(m.strengths&&m.strengths.length)?`<button type="button" class="tit-icon-btn" onclick="doseToStr(${mi},${si},${di})" title="Switch back to stepper">↺</button>`:'';
+  }
+  const prnBtn=`<button type="button" class="tit-prn-btn${d.prn?' on':''}" onclick="togglePRN(${mi},${si},${di})">PRN</button>`;
+  const tOpts=TIT_TIMES.map(t=>`<option value="${t}"${(d.t||'morning')===t?' selected':''}>${t}</option>`).join('');
+  return '<div class="tit-dose-item">'+
+    `<select class="tit-dose-time" onchange="setDoseTime(${mi},${si},${di},this.value)">${tOpts}</select>`+
+    ctrl+
+    `<div class="tit-dose-actions">${toggleBtn}${prnBtn}<button type="button" class="tit-dose-rm" onclick="removeDose(${mi},${si},${di})">×</button></div>`+
+    '</div>';
+}
+
+function renderTitStep(m,st,si,mi){
+  const isOngoing=!!st.ongoing;
+  const doses=st.doses.map((d,di)=>renderTitDose(m,d,di,si,mi)).join('');
+  const tOpts='<option value="" disabled selected>+ add timing</option>'+TIT_TIMES.map(t=>`<option value="${t}">${t}</option>`).join('');
+  const autoLbl=titAutoLabel(m.steps,si);
+  const total=totalDailyDose(m,st);
+  return '<div class="tit-step-row">'+
+    `<div class="tit-step-line"><div class="tit-step-dot${isOngoing?' ongoing':''}"></div><div class="tit-step-connector"></div></div>`+
+    '<div class="tit-step-content">'+
+      '<div class="tit-step-header">'+
+        `<span class="tit-step-badge${isOngoing?' ongoing':''}">${esc(autoLbl)}</span>`+
+        `<input class="tit-dur-inp" type="number" min="1" max="365" value="${isOngoing?'':(st.dur||1)}" ${isOngoing?'disabled':''} oninput="setStepDur(${mi},${si},this.value)">`+
+        `<select class="tit-dur-sel" ${isOngoing?'disabled':''} onchange="setStepUnit(${mi},${si},this.value)">`+
+          `<option value="days"${st.unit==='days'?' selected':''}>days</option>`+
+          `<option value="weeks"${st.unit==='weeks'?' selected':''}>weeks</option>`+
+        '</select>'+
+        `<label class="tit-ongoing-lbl"><input type="checkbox" ${isOngoing?'checked':''} onchange="setStepOngoing(${mi},${si},this.checked)"> Ongoing</label>`+
+        `<button class="tit-rm-step" onclick="removeStep(${mi},${si})" title="Remove step">×</button>`+
+      '</div>'+
+      `<div class="tit-dose-rows">${doses}</div>`+
+      (total>0?`<div class="tit-step-total">Total/day: ${total}${esc(m.unit||'mg')}</div>`:'')+
+      '<div class="tit-step-foot">'+
+        `<select class="tit-time-sel" onchange="if(this.value){addDoseToStep(${mi},${si},this.value);this.selectedIndex=0;}">${tOpts}</select>`+
+        `<button class="tit-add-step" onclick="addStepBelow(${mi},${si})">+ Add step below</button>`+
+      '</div>'+
+      `<input class="tit-step-note" type="text" value="${esc(st.note||'')}" placeholder="Optional step note (e.g. review BP after week 2)" oninput="setStepNote(${mi},${si},this.value)">`+
+    '</div></div>';
 }
 
 /* ─────────────────────────── OUTPUTS ──────────────────────────────────── */
@@ -754,108 +892,103 @@ function patientHeaderText(){
   const date=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
   return {date};
 }
-function finalStep(m){
-  return m.steps[m.steps.length-1];
+/* ─── Output helpers: render a step's dose row as natural sig text ─────── */
+function _doseText(m,d){
+  const t=d.t||'morning';
+  const prn=d.prn?' PRN':'';
+  if(d.type==='free')return (d.l||'').trim()+' '+t+prn;
+  const lbl=buildDoseLabel(m,d);
+  return lbl+' '+t+prn;
+}
+function _stepDoseSummary(m,st){
+  // Combine same-time doses on one line: e.g. "1 tab (10mg) + ½ tab (5mg) morning"
+  const byTime={},order=[];
+  st.doses.forEach(d=>{
+    const t=d.t||'morning';
+    if(!byTime[t]){byTime[t]=[];order.push(t);}
+    byTime[t].push(d);
+  });
+  return order.map(t=>{
+    const arr=byTime[t];
+    const prn=arr.some(d=>d.prn);
+    const labels=arr.map(d=>d.type==='free'?(d.l||'').trim():buildDoseLabel(m,d)).filter(Boolean);
+    return labels.join(' + ')+' '+t+(prn?' PRN':'');
+  }).join('; ');
 }
 
-/* ── eScript output ───────────────────────────────────────────────────── */
+/* ── eScript output (titration protocol only) ──────────────────────────── */
 function buildEscript(){
-  if(!S.meds.length)return '— Add a medication on the left to generate the eScript output.';
-  const h=patientHeaderText();
+  if(!S.meds.length)return '— Add a medication on the left to generate the titration protocol.';
   let out='';
-  out+='DATE:    '+h.date+'\n';
-  out+='─────────────────────────────────────────────\n\n';
   S.meds.forEach((m,i)=>{
-    const fin=finalStep(m);
-    const def=MED_CATALOG[m.key]||{};
-    const form=m.form||def.form||'';
-    const strengths=(def.strengths||[]).map(s=>s+' '+(m.unit||def.unit||'mg')).join(', ');
-    out+=(i+1)+'. '+(m.customName||m.name).toUpperCase()+'\n';
-    if(m.generic)out+='   '+m.generic+'\n';
-    if(form||strengths)out+='   Form:        '+[strengths,form].filter(Boolean).join(' — ')+'\n';
-    out+='   Dose:        '+(fin.sig||'(no dose set)')+'\n';
-    if(fin.totalDose)out+='   Total daily: '+fin.totalDose+'\n';
-    if(m.mitte)out+='   Quantity:    '+m.mitte+'\n';
-    if(m.repeats!==''&&m.repeats!=null)out+='   Repeats:     '+m.repeats+'\n';
-    if(m.intervalRule)out+='   Interval:    '+m.intervalRule+'\n';
-    if(m.authority)out+='   Authority:   '+m.authority+'\n';
+    const name=(m.customName||m.name).toUpperCase();
+    out+=(i+1)+'. '+name+(m.generic?' ('+m.generic+')':'')+'\n';
+    m.steps.forEach((st,si)=>{
+      const lbl=titAutoLabel(m.steps,si);
+      const summary=_stepDoseSummary(m,st)||'(no dose set)';
+      const total=totalDailyDose(m,st);
+      out+='   '+lbl.padEnd(14)+summary;
+      if(total>0)out+='  — total '+total+(m.unit||'mg')+'/day';
+      out+='\n';
+      if(st.note)out+='   '.padEnd(17)+'• '+st.note+'\n';
+    });
+    if(m.authority)out+='   Authority: '+m.authority+'\n';
     out+='\n';
   });
   return out.trimEnd();
 }
 
-/* ── Letter prose ─────────────────────────────────────────────────────── */
+/* ── Letter prose (titration protocol as narrative) ───────────────────── */
 function buildLetter(){
   if(!S.meds.length)return '<p class="empty" style="margin:0">Add a medication on the left to generate the letter prose.</p>';
   const h=patientHeaderText();
   const opening='<p><strong>Date:</strong> '+esc(h.date)+'</p>'+
-    '<p>The following titration plan has been arranged.</p>';
+    '<p>The titration plan is as follows.</p>';
   const meds=S.meds.map((m,i)=>{
     const name=(m.customName||m.name);
-    const def=MED_CATALOG[m.key]||{};
-    const form=m.form||def.form||'';
-    const strengths=(def.strengths||[]).map(s=>s+' '+(m.unit||def.unit||'mg')).join(', ');
-    const formStr=[strengths,form].filter(Boolean).join(' ');
-    const intro='<p><strong>'+esc(name)+'</strong>'+(m.generic?' ('+esc(m.generic)+')':'')+
-      (formStr?', available as '+esc(formStr):'')+
-      ' will be commenced and titrated as follows.</p>';
+    const intro='<p><strong>'+esc(name)+'</strong>'+(m.generic?' ('+esc(m.generic)+')':'')+'</p>';
     const stepLines=m.steps.map((st,si)=>{
-      const isLast=si===m.steps.length-1;
-      const isFirst=si===0&&m.steps.length>1;
-      const labelDur=[st.label,st.dur].filter(Boolean).map(esc).join(', ');
-      const phrase=isFirst?'For the first phase':isLast&&m.steps.length>1?'For maintenance':'At this step';
-      const lead=labelDur?phrase+' ('+labelDur+'),':phrase+',';
-      const sig=st.sig?' the dose is <strong>'+esc(st.sig)+'</strong>':'';
-      const total=st.totalDose?' giving a total daily dose of '+esc(st.totalDose):'';
-      const note=st.notes?'. '+esc(st.notes).replace(/\.\s*$/,'')+'.':'.';
-      return '<p>'+lead+sig+total+(note==='.'?'.':note)+'</p>';
+      const lbl=titAutoLabel(m.steps,si);
+      const summary=_stepDoseSummary(m,st);
+      const total=totalDailyDose(m,st);
+      const note=st.note?' '+esc(st.note).replace(/\.\s*$/,'')+'.':'';
+      const totalStr=total>0?' (total '+total+esc(m.unit||'mg')+'/day)':'';
+      return '<p><strong>'+esc(lbl)+':</strong> '+(summary?esc(summary):'(no dose set)')+totalStr+'.'+note+'</p>';
     }).join('');
-    const scriptBits=[];
-    if(m.mitte)scriptBits.push('a quantity of '+esc(m.mitte));
-    if(m.repeats!==''&&m.repeats!=null)scriptBits.push(esc(m.repeats)+' repeats');
-    if(m.intervalRule)scriptBits.push('a minimum interval of '+esc(m.intervalRule)+' between scripts');
-    const scriptLine=scriptBits.length?'<p>The prescription will be written for '+scriptBits.join(', ')+'.</p>':'';
     const auth=m.authority?'<p><em>'+esc(m.authority)+'</em></p>':'';
-    return intro+stepLines+scriptLine+auth;
+    return intro+stepLines+auth;
   }).join('<hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">');
-  const close='<p>Please contact me if there are any concerns regarding the above plan.</p>'+
-    '<p>'+esc(CLINICIAN_NAME)+'</p>';
+  const close='<p>'+esc(CLINICIAN_NAME)+'</p>';
   return opening+meds+close;
 }
 
-/* ── Table output ─────────────────────────────────────────────────────── */
+/* ── Table output (titration protocol schedule) ───────────────────────── */
 function buildTable(){
   if(!S.meds.length)return '<div class="empty">Add a medication on the left to generate the schedule.</div>';
   const h=patientHeaderText();
   let out='<div style="font:600 13px var(--sans);color:var(--primary);margin-bottom:10px">'+esc(h.date)+' &nbsp;·&nbsp; '+esc(CLINICIAN_NAME)+'</div>';
   out+=S.meds.map((m,i)=>{
-    const def=MED_CATALOG[m.key]||{};
-    const form=m.form||def.form||'';
-    const strengths=(def.strengths||[]).map(s=>s+' '+(m.unit||def.unit||'mg')).join(' / ');
-    const formLine=(strengths||form)?'<div style="font:12px var(--sans);color:var(--muted);margin:0 0 6px">'+esc([strengths,form].filter(Boolean).join(' · '))+'</div>':'';
-    const rows=m.steps.map(st=>`
-      <tr>
-        <td><strong>${esc(st.label||'')}</strong></td>
-        <td>${esc(st.dur||'')}</td>
-        <td>${esc(st.sig||'')}</td>
-        <td>${esc(st.totalDose||'')}</td>
-        <td>${esc(st.notes||'')}</td>
-      </tr>`).join('');
-    const scriptBits=[];
-    if(m.mitte)scriptBits.push('Quantity '+esc(m.mitte));
-    if(m.repeats!==''&&m.repeats!=null)scriptBits.push(esc(m.repeats)+' repeats');
-    if(m.intervalRule)scriptBits.push('min. interval '+esc(m.intervalRule));
-    return `
-      <div style="margin-bottom:18px">
-        <div style="font:700 14px var(--sans);color:var(--primary);margin-bottom:4px">${esc(m.customName||m.name)} ${m.generic?'<span style=\"font-weight:400;color:var(--muted);font-size:12px\">— '+esc(m.generic)+'</span>':''}</div>
-        ${formLine}
-        ${m.authority?'<div style="font:11.5px var(--sans);color:#475569;background:#fff7ed;border:1px solid #fde68a;padding:6px 10px;border-radius:6px;margin:4px 0 8px">'+esc(m.authority)+'</div>':''}
-        <table class="schedule">
-          <thead><tr><th style="width:18%">Step</th><th style="width:14%">Duration</th><th style="width:30%">Dose &amp; instructions</th><th style="width:14%">Total daily</th><th>Notes</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-        ${scriptBits.length?'<div style="font:12px var(--sans);color:var(--muted);margin-top:6px">Prescription: '+scriptBits.join(' · ')+'</div>':''}
-      </div>`;
+    const rows=m.steps.map((st,si)=>{
+      const lbl=titAutoLabel(m.steps,si);
+      const dur=st.ongoing?'—':(st.dur||1)+' '+(st.unit||'days');
+      const summary=_stepDoseSummary(m,st);
+      const total=totalDailyDose(m,st);
+      return '<tr>'+
+        '<td><strong>'+esc(lbl)+'</strong></td>'+
+        '<td>'+esc(dur)+'</td>'+
+        '<td>'+esc(summary||'(no dose set)')+'</td>'+
+        '<td>'+(total>0?total+esc(m.unit||'mg'):'')+'</td>'+
+        '<td>'+esc(st.note||'')+'</td>'+
+      '</tr>';
+    }).join('');
+    return '<div style="margin-bottom:18px">'+
+      '<div style="font:700 14px var(--sans);color:var(--primary);margin-bottom:4px">'+esc(m.customName||m.name)+(m.generic?' <span style="font-weight:400;color:var(--muted);font-size:12px">— '+esc(m.generic)+'</span>':'')+'</div>'+
+      (m.authority?'<div style="font:11.5px var(--sans);color:#475569;background:#fff7ed;border:1px solid #fde68a;padding:6px 10px;border-radius:6px;margin:4px 0 8px">'+esc(m.authority)+'</div>':'')+
+      '<table class="schedule">'+
+        '<thead><tr><th style="width:18%">Step</th><th style="width:14%">Duration</th><th style="width:40%">Dose</th><th style="width:12%">Total/day</th><th>Notes</th></tr></thead>'+
+        '<tbody>'+rows+'</tbody>'+
+      '</table>'+
+    '</div>';
   }).join('');
   return out;
 }
