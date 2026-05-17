@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Letter Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8fafc; --surface:#fff; --ink:#0f172a; --ink-soft:#1e293b;
+  --muted:#64748b; --border:#e2e8f0; --border-soft:#eef2f7; --hover:#f1f5f9;
+  --primary:#2563eb; --primary-dark:#1d4ed8; --primary-bg:#eff6ff;
+  --indigo:#4f46e5; --indigo-bg:#eef2ff;
+  --green:#059669; --green-bg:#ecfdf5;
+  --amber:#d97706; --amber-bg:#fffbeb;
+  --red:#dc2626; --red-bg:#fef2f2;
+  --violet:#7c3aed; --violet-bg:#f5f3ff;
+  --teal:#0d9488; --teal-bg:#f0fdfa;
+  --slate:#475569; --slate-bg:#f1f5f9;
+}
+*{box-sizing:border-box} html,body{margin:0;padding:0}
+body{font:14.5px/1.55 "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px; margin:0 auto; padding:0 22px 96px}
+header.top{padding:32px 0 20px; margin-bottom:18px; border-bottom:1px solid var(--border)}
+header.top h1{margin:0; font:700 24px/1.2 "Inter",sans-serif; letter-spacing:-.02em; color:var(--ink)}
+header.top .sub{font-size:13px; color:var(--muted); margin-top:5px}
+header.top a.back{font:500 12.5px "Inter",sans-serif; color:var(--primary); text-decoration:none}
+header.top a.back:hover{text-decoration:underline}
+
+section.card{
+  background:var(--surface); border:1px solid var(--border);
+  border-left:3px solid var(--primary);
+  border-radius:8px; margin-bottom:18px; overflow:hidden;
+  box-shadow:0 1px 2px rgba(15,23,42,.04);
+}
+.ch{
+  padding:14px 18px 4px; display:flex; align-items:baseline; gap:10px;
+  color:var(--ink); background:transparent;
+  font:600 16.5px/1.3 "Inter",sans-serif; letter-spacing:-.01em;
+}
+.ch .num{
+  font:700 11px/1 "Inter",sans-serif;
+  background:var(--primary-bg); color:var(--primary);
+  padding:3px 7px; border-radius:4px; letter-spacing:.06em;
+  text-transform:uppercase; flex-shrink:0; position:relative; top:-1px;
+}
+.body{padding:6px 18px 18px}
+.lead{font-size:13.5px; color:var(--muted); margin:0 0 14px; line-height:1.55}
+
+/* Builder forms */
+.bd-row{display:flex; flex-direction:column; gap:6px; margin-bottom:12px}
+.bd-label{
+  font:600 12px/1.3 "Inter",sans-serif; color:var(--slate);
+  text-transform:uppercase; letter-spacing:.05em;
+  display:flex; align-items:center; gap:8px;
+}
+.bd-controls{display:flex; flex-wrap:wrap; gap:5px; align-items:center}
+.bd-inline{flex-wrap:wrap; gap:6px}
+.bd-text{
+  flex:1 1 140px; min-width:120px;
+  padding:7px 10px; font:500 13.5px "Inter",sans-serif;
+  border:1px solid var(--border); border-radius:5px;
+  background:#fff; color:var(--ink);
+}
+.bd-text:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-bg)}
+.bd-text.wide{flex:1 1 100%}
+.bd-textarea{
+  width:100%; padding:9px 11px;
+  font:14px/1.5 "Inter",sans-serif;
+  border:1px solid var(--border); border-radius:5px;
+  background:#fff; color:var(--ink); resize:vertical;
+}
+.bd-textarea:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 2px var(--primary-bg)}
+.bd-date{flex:0 1 160px}
+.pill{
+  padding:6px 12px; font:500 12.5px/1.2 "Inter",sans-serif;
+  border:1px solid var(--border); background:#fff; color:var(--slate);
+  border-radius:999px; cursor:pointer; transition:all .12s;
+}
+.pill:hover{border-color:var(--primary); color:var(--primary)}
+.pill.on{background:var(--primary); border-color:var(--primary); color:#fff; font-weight:600}
+
+.copybtn{
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 14px; font:500 13px "Inter",sans-serif;
+  background:var(--primary); color:#fff; border:none; border-radius:5px;
+  cursor:pointer; margin-top:10px;
+}
+.copybtn:hover{background:var(--primary-dark)}
+.copybtn.ok{background:var(--green)}
+.clearbtn{
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 14px; font:500 13px "Inter",sans-serif;
+  background:#fff; color:var(--muted); border:1px solid var(--border);
+  border-radius:5px; cursor:pointer; margin-top:10px; margin-left:6px;
+}
+.clearbtn:hover{background:var(--hover); color:var(--ink)}
+
+.script-box{
+  margin-top:14px; padding:13px 15px;
+  background:var(--slate-bg); border:1px solid var(--border);
+  border-radius:6px; color:var(--ink-soft);
+}
+.script-box .label{
+  font:600 10.5px/1 "Inter",sans-serif; color:var(--slate);
+  text-transform:uppercase; letter-spacing:.08em; margin-bottom:6px;
+  display:block;
+}
+.script-box pre{
+  margin:0; font:13px/1.6 "Inter",sans-serif;
+  white-space:pre-wrap; overflow-wrap:anywhere; word-break:break-word;
+  color:var(--ink); background:transparent; padding:0;
+}
+
+/* Letter-type picker — segmented */
+.letter-types{
+  display:flex; flex-wrap:wrap; gap:5px;
+  padding:5px;
+  background:var(--slate-bg); border-radius:9px;
+  margin-bottom:14px;
+}
+.letter-type{
+  flex:1 1 auto; min-width:0;
+  padding:8px 11px; font:500 12.5px/1.25 "Inter",sans-serif;
+  border:1px solid transparent; background:transparent; color:var(--slate);
+  border-radius:6px; cursor:pointer; text-align:center; transition:all .12s;
+}
+.letter-type:hover{background:#fff; color:var(--ink)}
+.letter-type.on{
+  background:#fff; color:var(--primary); border-color:var(--primary);
+  box-shadow:0 1px 2px rgba(15,23,42,.08); font-weight:600;
+}
+
+/* Authority-script-style card for medications */
+.med-card{
+  position:relative;
+  background:#f0f6ff; border:1px solid #c7ddff; border-radius:7px;
+  padding:14px 16px 10px; margin:6px 0 10px;
+}
+.med-card .rx-tag{
+  position:absolute; top:10px; right:14px;
+  font:700 10px/1 "Inter",sans-serif; color:var(--primary);
+  text-transform:uppercase; letter-spacing:.1em;
+  padding:3px 8px; background:#fff;
+  border:1px solid #c7ddff; border-radius:4px;
+}
+.med-card .rm{
+  position:absolute; top:8px; right:60px;
+  width:24px; height:24px;
+  border:1px solid #c7ddff; background:#fff;
+  border-radius:50%; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font:600 16px/1 "Inter",sans-serif; color:var(--muted);
+}
+.med-card .rm:hover{background:#fef2f2; border-color:var(--red); color:var(--red)}
+.med-card .bd-row{margin-top:8px}
+.med-card .bd-row:first-of-type{margin-top:18px}
+.med-card .bd-label{color:var(--primary); font-weight:600}
+.med-card .bd-text, .med-card .bd-textarea{background:#fff}
+.add-med-btn{
+  display:block; margin:6px auto 14px; padding:7px 18px;
+  background:#fff; border:1px dashed var(--primary); color:var(--primary);
+  border-radius:999px; cursor:pointer; font:600 12.5px "Inter",sans-serif;
+}
+.add-med-btn:hover{background:var(--primary-bg)}
+
+/* Conditional sections */
+.cond{display:none}
+.cond.show{display:block}
+
+footer{text-align:center; padding:40px 14px 0; color:var(--muted); font-size:12px; line-height:1.6}
+
+@media print{
+  body{background:#fff}
+  header.top, .letter-types, .copybtn, .clearbtn{display:none !important}
+  section.card{break-inside:avoid; box-shadow:none; border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>Letter Generator</h1>
+  <div class="sub">Fill in the patient and recipient details, pick a letter type, and the letter updates live. <a class="back" href="./adhd6.html">← back to ADHD guide</a></div>
+</header>
+
+<section class="card">
+  <div class="ch"><span class="num">1</span>Choose letter type</div>
+  <div class="body">
+    <div class="letter-types" id="letter-types"></div>
+    <div class="lead" id="letter-desc"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">2</span>Patient details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Patient name &amp; DOB</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="pt-first" class="bd-text" placeholder="First name" oninput="render()">
+        <input type="text" id="pt-last"  class="bd-text" placeholder="Last name"  oninput="render()">
+        <input type="text" id="pt-dob"   class="bd-text bd-date" placeholder="DOB (DD/MM/YYYY)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Pronouns</label>
+      <div class="bd-controls">
+        <button type="button" class="pill" data-g="g" data-val="Female" onclick="pickPronouns(this)">Female (she/her)</button>
+        <button type="button" class="pill" data-g="g" data-val="Male"   onclick="pickPronouns(this)">Male (he/him)</button>
+        <button type="button" class="pill on" data-g="g" data-val="Other" onclick="pickPronouns(this)">Other (they/them)</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Address (optional)</label>
+      <input type="text" id="pt-address" class="bd-text wide" placeholder="Patient address (optional, for some letters)" oninput="render()">
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">3</span>Recipient details</div>
+  <div class="body">
+    <p class="lead">Who is the letter addressed to? Use "To whom it may concern" by leaving the name blank for travel / certificates.</p>
+    <div class="bd-row">
+      <label class="bd-label">Recipient</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="rec-name" class="bd-text" placeholder="Dr Smith / Manager / Border Force etc." oninput="render()">
+        <input type="text" id="rec-org"  class="bd-text" placeholder="Practice / organisation (optional)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Address (optional)</label>
+      <input type="text" id="rec-address" class="bd-text wide" placeholder="Recipient address" oninput="render()">
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">4</span>Your details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Your name &amp; qualifications</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="clin-name"  class="bd-text" placeholder="Dr Your Name" oninput="render()">
+        <input type="text" id="clin-quals" class="bd-text" placeholder="FRANZCP / qualifications" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Title / role</label>
+      <input type="text" id="clin-title" class="bd-text wide" placeholder="Consultant Psychiatrist / GP / etc." value="Consultant Psychiatrist" oninput="render()">
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Practice / contact (optional)</label>
+      <input type="text" id="clin-contact" class="bd-text wide" placeholder="Rooms address, phone, provider number" oninput="render()">
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Letter date</label>
+      <input type="text" id="letter-date" class="bd-text bd-date" placeholder="Leave blank for today" oninput="render()">
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">5</span>Diagnosis &amp; condition</div>
+  <div class="body">
+    <p class="lead">Used in the diagnosis-confirmation, workplace, cardiology, cannabis and follow-up letters.</p>
+    <div class="bd-row">
+      <label class="bd-label">Primary condition</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="dx-primary" class="bd-text wide" placeholder='e.g. "Attention Deficit Hyperactivity Disorder (ADHD)"' oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Quick pick</label>
+      <div class="bd-controls bd-inline">
+        <button type="button" class="pill" onclick="setDx('Attention Deficit Hyperactivity Disorder (ADHD)')">ADHD</button>
+        <button type="button" class="pill" onclick="setDx('Autism Spectrum Disorder (ASD)')">ASD</button>
+        <button type="button" class="pill" onclick="setDx('Major Depressive Disorder')">MDD</button>
+        <button type="button" class="pill" onclick="setDx('Bipolar Affective Disorder')">Bipolar</button>
+        <button type="button" class="pill" onclick="setDx('Post-Traumatic Stress Disorder (PTSD)')">PTSD</button>
+        <button type="button" class="pill" onclick="setDx('Obsessive-Compulsive Disorder (OCD)')">OCD</button>
+        <button type="button" class="pill" onclick="setDx('Generalised Anxiety Disorder (GAD)')">GAD</button>
+        <button type="button" class="pill" onclick="setDx('Social Anxiety Disorder')">Social Anxiety</button>
+        <button type="button" class="pill" onclick="setDx('Borderline Personality Disorder')">BPD</button>
+        <button type="button" class="pill" onclick="setDx('Sensory Processing Sensitivity')">Sensory</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Comorbid / additional conditions (optional)</label>
+      <input type="text" id="dx-comorbid" class="bd-text wide" placeholder='e.g. "Generalised Anxiety Disorder, mild Sensory Processing Sensitivity"' oninput="render()">
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Date of assessment (optional)</label>
+      <input type="text" id="dx-date" class="bd-text bd-date" placeholder="e.g. 12/03/2026" oninput="render()">
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">6</span>Medications</div>
+  <div class="body">
+    <p class="lead">Required for GP-handover, script-written, travel, and follow-up letters. Skip for letters that don't need medications.</p>
+    <div id="meds-list"></div>
+    <button type="button" class="add-med-btn" onclick="addMed()">+ Add another medication</button>
+  </div>
+</section>
+
+<!-- Letter-specific sections (conditional) -->
+
+<section class="card cond" id="cond-handover">
+  <div class="ch"><span class="num">7</span>Handover options</div>
+  <div class="body">
+    <p class="lead">Toggle which sections to include in the GP stimulant-handover letter.</p>
+    <div class="bd-row">
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-inc="authority" onclick="toggleInc(this)">Authority pathways (state-by-state)</button>
+        <button type="button" class="pill on" data-inc="monitoring" onclick="toggleInc(this)">Monitoring requirements</button>
+        <button type="button" class="pill on" data-inc="sideeffects" onclick="toggleInc(this)">Side-effect management</button>
+        <button type="button" class="pill on" data-inc="sleep" onclick="toggleInc(this)">Sleep management</button>
+        <button type="button" class="pill on" data-inc="nonstim" onclick="toggleInc(this)">Non-stimulant alternatives</button>
+        <button type="button" class="pill on" data-inc="referback" onclick="toggleInc(this)">When to refer back</button>
+        <button type="button" class="pill on" data-inc="resources" onclick="toggleInc(this)">Useful resources</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-medcert">
+  <div class="ch"><span class="num">7</span>Medical certificate details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Unfit from / to</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="mc-from" class="bd-text bd-date" placeholder="From (DD/MM/YYYY)" oninput="render()">
+        <input type="text" id="mc-to" class="bd-text bd-date" placeholder="To (DD/MM/YYYY)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Capacity</label>
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-cap="cap" data-val="unfit" onclick="pickCap(this)">Unfit for work / study</button>
+        <button type="button" class="pill" data-cap="cap" data-val="partial" onclick="pickCap(this)">Modified duties only</button>
+        <button type="button" class="pill" data-cap="cap" data-val="appointment" onclick="pickCap(this)">Attended appointment today</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Additional notes (optional)</label>
+      <textarea id="mc-notes" class="bd-textarea" rows="2" placeholder="e.g. Reasonable adjustments required on return; phased return-to-work" oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-travel">
+  <div class="ch"><span class="num">7</span>Travel / possession details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Destination(s)</label>
+      <input type="text" id="tv-dest" class="bd-text wide" placeholder="e.g. Singapore, Indonesia, Japan" oninput="render()">
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Travel period</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" id="tv-from" class="bd-text bd-date" placeholder="From (DD/MM/YYYY)" oninput="render()">
+        <input type="text" id="tv-to" class="bd-text bd-date" placeholder="To (DD/MM/YYYY)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Additional notes (optional)</label>
+      <textarea id="tv-notes" class="bd-textarea" rows="2" placeholder="e.g. Patient also travels for work to Indonesia 2-3x/year" oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-workplace">
+  <div class="ch"><span class="num">7</span>Workplace adjustments</div>
+  <div class="body">
+    <p class="lead">Specific adjustments to recommend. Letter pulls in evidence-based adjustments matched to the primary condition; tick any extras you want included.</p>
+    <div class="bd-row">
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-wp="auto" onclick="toggleWp(this)">Auto adjustments for the primary condition</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Extra adjustments to include</label>
+      <div class="bd-controls" id="wp-extra">
+        <button type="button" class="pill" data-wp="x" data-val="Noise-cancelling headphones in shared workspaces" onclick="toggleWp(this)">Noise-cancelling headphones</button>
+        <button type="button" class="pill" data-wp="x" data-val="Access to a quiet space when needed" onclick="toggleWp(this)">Quiet space access</button>
+        <button type="button" class="pill" data-wp="x" data-val="Written task lists and clearly written instructions with deadlines" onclick="toggleWp(this)">Written instructions</button>
+        <button type="button" class="pill" data-wp="x" data-val="Regular brief check-ins with manager / supervisor" onclick="toggleWp(this)">Regular check-ins</button>
+        <button type="button" class="pill" data-wp="x" data-val="Flexible deadlines where the work output is not time-critical" onclick="toggleWp(this)">Flexible deadlines</button>
+        <button type="button" class="pill" data-wp="x" data-val="Flexible start time / option to start later" onclick="toggleWp(this)">Flexible start time</button>
+        <button type="button" class="pill" data-wp="x" data-val="Option to work from home some days each week" onclick="toggleWp(this)">WFH option</button>
+        <button type="button" class="pill" data-wp="x" data-val="Predictable / stable shift roster" onclick="toggleWp(this)">Stable roster</button>
+        <button type="button" class="pill" data-wp="x" data-val="Standing desk / movement-friendly workspace" onclick="toggleWp(this)">Standing desk</button>
+        <button type="button" class="pill" data-wp="x" data-val="Permission to take micro-breaks during the day" onclick="toggleWp(this)">Micro-breaks</button>
+        <button type="button" class="pill" data-wp="x" data-val="Sensory adjustments — lighting, fluorescent-light reduction, scent-free area" onclick="toggleWp(this)">Sensory adjustments</button>
+        <button type="button" class="pill" data-wp="x" data-val="Reasonable adjustments for written / exam assessments — extra time, separate room" onclick="toggleWp(this)">Exam adjustments</button>
+        <button type="button" class="pill" data-wp="x" data-val="Trauma-informed management — flexibility around triggers, advance notice of changes" onclick="toggleWp(this)">Trauma-informed</button>
+        <button type="button" class="pill" data-wp="x" data-val="Reduced exposure to high-pressure / aggressive client interactions" onclick="toggleWp(this)">Reduced high-pressure exposure</button>
+        <button type="button" class="pill" data-wp="x" data-val="Predictable routine with advance notice of changes" onclick="toggleWp(this)">Predictable routine</button>
+        <button type="button" class="pill" data-wp="x" data-val="Permission to attend health appointments without using leave" onclick="toggleWp(this)">Time for appointments</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Custom adjustment / additional notes</label>
+      <textarea id="wp-notes" class="bd-textarea" rows="2" placeholder="Free-text — added to the letter verbatim" oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-cardio">
+  <div class="ch"><span class="num">7</span>Cardiology referral details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Reason for referral</label>
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-cdr="r" data-val="abnormal_ecg" onclick="pickCdr(this)">Abnormal ECG</button>
+        <button type="button" class="pill" data-cdr="r" data-val="family_history" onclick="pickCdr(this)">Family Hx sudden cardiac death</button>
+        <button type="button" class="pill" data-cdr="r" data-val="palpitations" onclick="pickCdr(this)">Palpitations / arrhythmia symptoms</button>
+        <button type="button" class="pill" data-cdr="r" data-val="syncope" onclick="pickCdr(this)">Syncope / pre-syncope</button>
+        <button type="button" class="pill" data-cdr="r" data-val="structural" onclick="pickCdr(this)">Known structural heart disease</button>
+        <button type="button" class="pill" data-cdr="r" data-val="hypertension" onclick="pickCdr(this)">Persistent hypertension</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Clinical context</label>
+      <textarea id="cdr-context" class="bd-textarea" rows="3" placeholder="Background — what was found, what was the trigger for referral, what's the proposed treatment plan." oninput="render()"></textarea>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Specific questions for cardiology</label>
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-cdr="q" data-val="Is there evidence of structural or arrhythmic disease that would contraindicate stimulant medication?" onclick="toggleCdrQ(this)">Stim contraindication?</button>
+        <button type="button" class="pill on" data-cdr="q" data-val="Is it safe to commence stimulant medication for ADHD?" onclick="toggleCdrQ(this)">Safe to start stimulant?</button>
+        <button type="button" class="pill" data-cdr="q" data-val="What monitoring would you recommend during stimulant titration?" onclick="toggleCdrQ(this)">Monitoring recommendations?</button>
+        <button type="button" class="pill" data-cdr="q" data-val="Should the ECG be repeated, and if so when?" onclick="toggleCdrQ(this)">Repeat ECG?</button>
+        <button type="button" class="pill" data-cdr="q" data-val="Are further investigations (Holter, echocardiogram, exercise testing) warranted before initiating treatment?" onclick="toggleCdrQ(this)">Further investigations?</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Additional notes</label>
+      <textarea id="cdr-notes" class="bd-textarea" rows="2" placeholder="Anything else for the cardiologist" oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-cannabis">
+  <div class="ch"><span class="num">7</span>Cease-cannabis letter details</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Cannabis form</label>
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-cn="form" data-val="medicinal" onclick="pickCn(this)">Medicinal cannabis (prescribed)</button>
+        <button type="button" class="pill" data-cn="form" data-val="recreational" onclick="pickCn(this)">Recreational / non-prescribed</button>
+        <button type="button" class="pill" data-cn="form" data-val="both" onclick="pickCn(this)">Both</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Reasons for cessation (select all that apply)</label>
+      <div class="bd-controls">
+        <button type="button" class="pill on" data-cn="r" data-val="Worsening ADHD symptoms and significantly reduced response to ADHD pharmacotherapy" onclick="toggleCn(this)">Worsens ADHD &amp; treatment response</button>
+        <button type="button" class="pill on" data-cn="r" data-val="Increased risk of psychosis, particularly when combined with stimulants" onclick="toggleCn(this)">Psychosis risk with stimulants</button>
+        <button type="button" class="pill" data-cn="r" data-val="Persistent low motivation, amotivation, and reduced executive function" onclick="toggleCn(this)">Amotivation / executive dysfunction</button>
+        <button type="button" class="pill" data-cn="r" data-val="Worsening anxiety and paranoia" onclick="toggleCn(this)">Anxiety / paranoia</button>
+        <button type="button" class="pill" data-cn="r" data-val="Cannabis use disorder / dependence features" onclick="toggleCn(this)">Dependence features</button>
+        <button type="button" class="pill" data-cn="r" data-val="Sleep architecture disruption and worsening insomnia" onclick="toggleCn(this)">Sleep disruption</button>
+        <button type="button" class="pill" data-cn="r" data-val="Interaction with current psychiatric treatment plan" onclick="toggleCn(this)">Interaction with treatment</button>
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Additional notes</label>
+      <textarea id="cn-notes" class="bd-textarea" rows="2" placeholder="Any specific clinical detail you want to include" oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-followup">
+  <div class="ch"><span class="num">7</span>Follow-up / titration review</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Clinical update / response</label>
+      <textarea id="fu-update" class="bd-textarea" rows="3" placeholder="Summary of today's review — response, side effects, mental state, function." oninput="render()"></textarea>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Changes made today</label>
+      <textarea id="fu-changes" class="bd-textarea" rows="2" placeholder="Dose adjustments, additions, cessations, formulation changes." oninput="render()"></textarea>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Plan / next review</label>
+      <textarea id="fu-plan" class="bd-textarea" rows="2" placeholder="When to review next, what monitoring, what the patient should do between visits." oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-dx">
+  <div class="ch"><span class="num">7</span>Diagnosis confirmation — extras</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Assessment included (optional)</label>
+      <textarea id="dxc-method" class="bd-textarea" rows="2" placeholder="Default: 'comprehensive clinical interview, collateral history, mental state examination, validated rating scales (eg ASRS, DIVA-5, WURS), differential consideration.' Override here." oninput="render()"></textarea>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Purpose of letter (optional)</label>
+      <input type="text" id="dxc-purpose" class="bd-text wide" placeholder="e.g. 'to support an application for reasonable adjustments at university'" oninput="render()">
+    </div>
+  </div>
+</section>
+
+<section class="card cond" id="cond-script">
+  <div class="ch"><span class="num">7</span>Script-written letter — extras</div>
+  <div class="body">
+    <div class="bd-row">
+      <label class="bd-label">Notes for the GP</label>
+      <textarea id="sc-notes" class="bd-textarea" rows="2" placeholder="Anything specific to flag with the GP about today's scripts — quantity, repeats, monitoring requested." oninput="render()"></textarea>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ch"><span class="num">·</span>Letter output</div>
+  <div class="body">
+    <div class="script-box">
+      <span class="label" id="out-label">Letter — copy ready</span>
+      <pre id="letter-out"></pre>
+    </div>
+    <button class="copybtn" onclick="copyLetter(this)">Copy letter</button>
+    <button class="clearbtn" onclick="clearAll()">Clear all</button>
+  </div>
+</section>
+
+<footer>
+  Letter Generator · drmurrie.github.io/psychiatric-tools · Not a substitute for clinical judgement
+</footer>
+
+</div>
+
+<script>
+// =================== STATE ===================
+const state = {
+  type: 'handover',
+  pronouns: 'Other',
+  inc: new Set(['authority','monitoring','sideeffects','sleep','nonstim','referback','resources']),
+  capacity: 'unfit',
+  cdrReason: 'abnormal_ecg',
+  cdrQs: new Set([
+    "Is there evidence of structural or arrhythmic disease that would contraindicate stimulant medication?",
+    "Is it safe to commence stimulant medication for ADHD?"
+  ]),
+  cnForm: 'medicinal',
+  cnReasons: new Set([
+    "Worsening ADHD symptoms and significantly reduced response to ADHD pharmacotherapy",
+    "Increased risk of psychosis, particularly when combined with stimulants"
+  ]),
+  wpAuto: true,
+  wpExtras: new Set(),
+};
+
+const LETTER_TYPES = [
+  {key:'handover',  label:'GP handover (stimulant prescribing)', desc:"Specialist recommendation supporting the GP as the ongoing prescriber of ADHD stimulant medication. Includes diagnosis, current regimen, monitoring requirements, state authority pathway and side-effect / sleep management."},
+  {key:'script',    label:'Script written', desc:"Short letter to the GP advising you have provided the patient with one or more prescriptions today, with full script details."},
+  {key:'medcert',   label:'Medical certificate', desc:"Standard medical certificate — no mention of psychiatry. Date range plus capacity for work / study."},
+  {key:'travel',    label:'Possession / travel letter', desc:"Confirms the patient is travelling with prescribed medication for personal medical use. Includes med list, destinations, and travel dates."},
+  {key:'dx',        label:'Diagnosis confirmation', desc:"Confirms thorough assessment and diagnosis of the specified condition. Suitable for supporting applications for reasonable adjustments, services or accommodations."},
+  {key:'workplace', label:'Workplace / study adjustments', desc:"Recommends reasonable adjustments specific to the patient's condition. Adjustments tailored per diagnosis (ADHD, ASD, sensory, PTSD etc)."},
+  {key:'cardio',    label:'Cardiology referral', desc:"Referral to cardiology for review prior to (or during) stimulant prescribing — specific questions configurable."},
+  {key:'cannabis',  label:'Recommend cease cannabis', desc:"Formal recommendation to the prescriber of cannabis (medicinal or otherwise) advising cessation."},
+  {key:'followup',  label:'Follow-up / titration review', desc:"Brief review letter to the GP — clinical update, current regimen, today's changes, and plan."},
+];
+
+// =================== HELPERS ===================
+function $(id){return document.getElementById(id);}
+function v(id){const el = $(id); return el ? (el.value||'').trim() : '';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function todayLong(){return new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});}
+function capFirst(s){return s ? s.charAt(0).toUpperCase()+s.slice(1) : s;}
+function pronouns(g){
+  if(g==='Female') return {sub:'she', obj:'her', poss:'her', possS:'hers',  is:'is', has:'has', does:'does', requires:'requires', vS:s=>s+'s'};
+  if(g==='Male')   return {sub:'he',  obj:'him', poss:'his', possS:'his',   is:'is', has:'has', does:'does', requires:'requires', vS:s=>s+'s'};
+  return {sub:'they', obj:'them', poss:'their', possS:'theirs', is:'are', has:'have', does:'do', requires:'require', vS:s=>s};
+}
+
+// =================== LETTER-TYPE PICKER ===================
+function renderTypes(){
+  const wrap = $('letter-types');
+  wrap.innerHTML = LETTER_TYPES.map(t=>
+    `<button class="letter-type${t.key===state.type?' on':''}" onclick="pickType('${t.key}')">${esc(t.label)}</button>`
+  ).join('');
+  const cur = LETTER_TYPES.find(t=>t.key===state.type);
+  $('letter-desc').textContent = cur ? cur.desc : '';
+  // Show/hide conditional sections
+  document.querySelectorAll('.cond').forEach(el=>el.classList.remove('show'));
+  const mapping = {
+    handover:'cond-handover', script:'cond-script', medcert:'cond-medcert',
+    travel:'cond-travel', dx:'cond-dx', workplace:'cond-workplace',
+    cardio:'cond-cardio', cannabis:'cond-cannabis', followup:'cond-followup'
+  };
+  if(mapping[state.type]) document.getElementById(mapping[state.type]).classList.add('show');
+}
+function pickType(k){state.type = k; renderTypes(); render();}
+
+// =================== PRONOUNS ===================
+function pickPronouns(btn){
+  state.pronouns = btn.dataset.val;
+  document.querySelectorAll('.pill[data-g="g"]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+
+function setDx(text){$('dx-primary').value = text; render();}
+
+function toggleInc(btn){
+  const k = btn.dataset.inc;
+  if(state.inc.has(k)){state.inc.delete(k); btn.classList.remove('on');}
+  else {state.inc.add(k); btn.classList.add('on');}
+  render();
+}
+function pickCap(btn){
+  state.capacity = btn.dataset.val;
+  document.querySelectorAll('.pill[data-cap="cap"]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function pickCdr(btn){
+  state.cdrReason = btn.dataset.val;
+  document.querySelectorAll('.pill[data-cdr="r"]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function toggleCdrQ(btn){
+  const k = btn.dataset.val;
+  if(state.cdrQs.has(k)){state.cdrQs.delete(k); btn.classList.remove('on');}
+  else {state.cdrQs.add(k); btn.classList.add('on');}
+  render();
+}
+function pickCn(btn){
+  state.cnForm = btn.dataset.val;
+  document.querySelectorAll('.pill[data-cn="form"]').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function toggleCn(btn){
+  const k = btn.dataset.val;
+  if(state.cnReasons.has(k)){state.cnReasons.delete(k); btn.classList.remove('on');}
+  else {state.cnReasons.add(k); btn.classList.add('on');}
+  render();
+}
+function toggleWp(btn){
+  if(btn.dataset.wp==='auto'){
+    state.wpAuto = !state.wpAuto;
+    btn.classList.toggle('on');
+  } else {
+    const k = btn.dataset.val;
+    if(state.wpExtras.has(k)){state.wpExtras.delete(k); btn.classList.remove('on');}
+    else {state.wpExtras.add(k); btn.classList.add('on');}
+  }
+  render();
+}
+
+// =================== MED CARDS ===================
+function makeMedHTML(){
+  return `<div class="med-card">
+    <span class="rx-tag">Rx</span>
+    <button class="rm" type="button" onclick="removeMed(this)" aria-label="Remove">&times;</button>
+    <div class="bd-row">
+      <label class="bd-label">Medication</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" class="bd-text med-name" placeholder="Generic name (Brand)" oninput="render()">
+        <input type="text" class="bd-text med-strength" placeholder="Strength (e.g. 30mg cap)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Quantity &amp; repeats</label>
+      <div class="bd-controls bd-inline">
+        <input type="text" class="bd-text med-qty" placeholder="Quantity (e.g. 30 caps)" oninput="render()">
+        <input type="text" class="bd-text med-repeats" placeholder="Repeats" oninput="render()">
+        <input type="text" class="bd-text med-auth" placeholder="Authorisation no. (optional)" oninput="render()">
+      </div>
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Indication</label>
+      <input type="text" class="bd-text wide med-indication" placeholder="e.g. ADHD" oninput="render()">
+    </div>
+    <div class="bd-row">
+      <label class="bd-label">Instructions</label>
+      <textarea class="bd-textarea med-sig" rows="2" placeholder="e.g. Take 1 capsule each morning on waking." oninput="render()"></textarea>
+    </div>
+  </div>`;
+}
+function addMed(){
+  const list = $('meds-list');
+  list.insertAdjacentHTML('beforeend', makeMedHTML());
+  refreshMedCards();
+  render();
+}
+function removeMed(btn){
+  const cards = document.querySelectorAll('.med-card');
+  if(cards.length<=1) return;
+  btn.closest('.med-card').remove();
+  refreshMedCards();
+  render();
+}
+function refreshMedCards(){
+  const cards = document.querySelectorAll('.med-card');
+  cards.forEach((c,i)=>{
+    const tag = c.querySelector('.rx-tag');
+    if(tag) tag.textContent = cards.length>1 ? ('Rx '+(i+1)) : 'Rx';
+    const rm = c.querySelector('.rm');
+    if(rm) rm.style.display = cards.length>1 ? '' : 'none';
+  });
+}
+function initMeds(){
+  const list = $('meds-list');
+  if(!list.querySelector('.med-card')){
+    list.innerHTML = makeMedHTML();
+    refreshMedCards();
+  }
+}
+function readMeds(){
+  const meds = [];
+  document.querySelectorAll('.med-card').forEach(c=>{
+    const grab = sel => {const el = c.querySelector(sel); return el ? (el.value||'').trim() : '';};
+    meds.push({
+      name: grab('.med-name'),
+      strength: grab('.med-strength'),
+      qty: grab('.med-qty'),
+      repeats: grab('.med-repeats'),
+      auth: grab('.med-auth'),
+      indication: grab('.med-indication'),
+      sig: grab('.med-sig'),
+    });
+  });
+  return meds.filter(m => m.name || m.strength || m.qty || m.repeats || m.sig);
+}
+function fmtMedsBlock(meds, opts){
+  opts = opts||{};
+  const numbered = meds.length>1;
+  const lines = [];
+  meds.forEach((m,i)=>{
+    if(i>0) lines.push('');
+    const head = [m.name, m.strength].filter(Boolean).join(' — ') || '[Medication]';
+    lines.push(numbered ? ((i+1)+'. '+head) : head);
+    const qtyLine = [];
+    if(m.qty) qtyLine.push('Quantity: '+m.qty);
+    if(m.repeats) qtyLine.push('Repeats: '+m.repeats);
+    if(qtyLine.length) lines.push('   '+qtyLine.join('   '));
+    if(m.auth && !opts.hideAuth) lines.push('   Authorisation: '+m.auth);
+    if(m.indication && !opts.hideIndication) lines.push('   Indication: '+m.indication);
+    if(m.sig){
+      lines.push('   Instructions:');
+      m.sig.split(/\n+/).forEach(l=>{if(l.trim()) lines.push('     '+l.trim());});
+    }
+  });
+  return lines.join('\n');
+}
+
+// =================== COMMON DETAILS ===================
+function commonDetails(){
+  const first = v('pt-first'), last = v('pt-last');
+  const fullName = (first+' '+last).trim() || '[Patient name]';
+  const firstName = first || '[First name]';
+  const dob = v('pt-dob');
+  const ptAddress = v('pt-address');
+  const recName = v('rec-name');
+  const recOrg = v('rec-org');
+  const recAddress = v('rec-address');
+  const clinName = v('clin-name');
+  const clinQuals = v('clin-quals');
+  const clinTitle = v('clin-title') || 'Consultant Psychiatrist';
+  const clinContact = v('clin-contact');
+  const letterDate = v('letter-date') || todayLong();
+  const p = pronouns(state.pronouns);
+  const dxPrimary = v('dx-primary');
+  const dxComorbid = v('dx-comorbid');
+  const dxDate = v('dx-date');
+
+  // Recipient salutation
+  let salutation;
+  let recipientHeader = [];
+  if(recName){
+    const greet = /^dr/i.test(recName) ? recName : (/^(prof|mr|mrs|ms|miss|mx)/i.test(recName) ? recName : 'Dr '+recName);
+    salutation = 'Dear '+greet+',';
+    recipientHeader.push(greet);
+  } else {
+    salutation = 'To whom it may concern,';
+  }
+  if(recOrg) recipientHeader.push(recOrg);
+  if(recAddress) recipientHeader.push(recAddress);
+
+  return {
+    first, last, fullName, firstName, dob, ptAddress,
+    recName, recOrg, recAddress, recipientHeader, salutation,
+    clinName, clinQuals, clinTitle, clinContact, letterDate,
+    p, dxPrimary, dxComorbid, dxDate
+  };
+}
+
+function header(d){
+  const lines = [];
+  lines.push(d.letterDate);
+  if(d.recipientHeader.length){
+    lines.push('');
+    d.recipientHeader.forEach(l=>lines.push(l));
+  }
+  lines.push('');
+  lines.push(d.salutation);
+  lines.push('');
+  const reLine = 'Re: '+d.fullName + (d.dob?' (DOB '+d.dob+')':'');
+  lines.push(reLine);
+  if(d.ptAddress) lines.push(d.ptAddress);
+  lines.push('');
+  return lines;
+}
+
+function signoff(d){
+  const lines = [];
+  lines.push('');
+  lines.push('Yours sincerely,');
+  lines.push('');
+  lines.push(d.clinName || '[Your name]');
+  if(d.clinQuals) lines.push(d.clinQuals);
+  if(d.clinTitle) lines.push(d.clinTitle);
+  if(d.clinContact) lines.push(d.clinContact);
+  return lines;
+}
+
+// =================== LETTER BUILDERS ===================
+
+function buildHandover(d){
+  const meds = readMeds();
+  const out = header(d);
+  out.push('Thank you for your ongoing care of '+d.fullName+'. I am writing to confirm '+d.p.poss+' diagnosis, current treatment, and to provide my written specialist recommendation supporting you as the ongoing prescriber of '+d.p.poss+' stimulant medication, in accordance with your state or territory prescribing framework.');
+  out.push('');
+  out.push('DIAGNOSIS');
+  const dx = d.dxPrimary || 'Attention Deficit Hyperactivity Disorder (ADHD)';
+  out.push(d.fullName+' meets DSM-5-TR criteria for '+dx+'. The diagnosis was established following comprehensive psychiatric assessment including pre-screening, thorough clinical interview, review of collateral history, assessment of substance use, and a medical screen.');
+  if(d.dxComorbid){
+    out.push('');
+    out.push('Comorbid conditions: '+d.dxComorbid+'.');
+  }
+  out.push('');
+  out.push('CURRENT MEDICATION REGIMEN');
+  if(meds.length){
+    out.push(fmtMedsBlock(meds));
+  } else {
+    out.push('[Add medications under section 6 above]');
+  }
+  out.push('');
+  out.push(capFirst(d.p.sub)+' has been carefully titrated to this regimen, has demonstrated good therapeutic response, and tolerates the medication well with no significant adverse effects at present.');
+  out.push('');
+  out.push('SPECIALIST RECOMMENDATION');
+  const gpForLine = d.recName ? (/^dr/i.test(d.recName)?d.recName:'Dr '+d.recName) : 'the GP';
+  out.push('I support '+gpForLine+' taking over ongoing prescribing of '+d.fullName+'\'s ADHD stimulant medication in accordance with the applicable state prescribing framework. This letter confirms specialist diagnosis, initiation and stabilisation of treatment, and is provided as the written specialist recommendation required to support any necessary state authority, permit, notification, or approval process. Please attach this letter to your relevant authority application or retain it in the patient\'s record as required by your jurisdiction.');
+
+  if(state.inc.has('authority')) appendAuthorityBlock(out);
+  if(state.inc.has('monitoring')) appendMonitoringBlock(out);
+  if(state.inc.has('sideeffects')) appendSideEffectsBlock(out);
+  if(state.inc.has('sleep')) appendSleepBlock(out);
+  if(state.inc.has('nonstim')) appendNonStimBlock(out);
+  if(state.inc.has('referback')) appendReferBackBlock(out);
+  if(state.inc.has('resources')) appendResourcesBlock(out);
+
+  out.push('');
+  out.push('Please do not hesitate to contact my rooms with any questions or concerns.');
+  out.push(...signoff(d));
+  return out.join('\n');
+}
+
+function appendAuthorityBlock(out){
+  out.push('');
+  out.push('═══ GP PRESCRIBING GUIDE — ADHD STIMULANT MEDICATIONS ═══');
+  out.push('Prescribing regulations across Australian states and territories are subject to ongoing change. Always verify current requirements with your state health authority before applying for prescribing authority. Document last reviewed April 2026.');
+  out.push('');
+  out.push('UNIVERSAL PRESCRIBING STEPS (all jurisdictions)');
+  out.push('1. Check your state RTPM system first — review SafeScript / equivalent before every stimulant prescription.');
+  out.push('2. Review history — confirm diagnosis and current regimen; assess mental health, substance use, cardiovascular history; red flags for misuse, psychosis, mania.');
+  out.push('3. Confirm monitoring requirements — response, adherence, adverse effects, mental state, substance use risk every review; BP, HR, weight at least every 6–12 months; ECG when clinically indicated.');
+  out.push('4. Obtain authority then prescribe — complete any required RTPM registration, permit, approval, authority or notification for your state, then issue the prescription.');
+  out.push('');
+  out.push('STATE-BY-STATE AUTHORITY GUIDE');
+  out.push('');
+  out.push('NEW SOUTH WALES — SafeScript NSW (safescript.health.nsw.gov.au)');
+  out.push('  1. Check SafeScript NSW before every script.');
+  out.push('  2. Apply to become a NSW continuation prescriber via the ADHD care in general practice pathway: aci.health.nsw.gov.au/projects/adhd-in-general-practice/clinicians/how-to-apply');
+  out.push('  3. Once approved, prescribe within the NSW continuation prescriber framework.');
+  out.push('  Contact: NSW Health Pharmaceutical Regulatory Unit — 02 9424 5923');
+  out.push('');
+  out.push('VICTORIA — SafeScript VIC (safescript.vic.gov.au)');
+  out.push('  1. Check SafeScript VIC before prescribing.');
+  out.push('  2. Apply for a Schedule 8 stimulant permit before prescribing — attach this letter.');
+  out.push('  3. Permit requirements: health.vic.gov.au/drugs-and-poisons/stimulants-for-adhd-or-narcolepsy-permit-requirements');
+  out.push('  Contact: VIC Safer Prescribing Team — dpcs@dhhs.vic.gov.au');
+  out.push('');
+  out.push('QUEENSLAND — QScript (qld.gov.au/health/conditions/all/qscript)');
+  out.push('  1. Check QScript before prescribing.');
+  out.push('  2. Confirm you hold FRACGP or FACRRM fellowship (qualifies as specialist GP under the QLD framework, December 2025).');
+  out.push('  3. Include the condition name on the script and your qualifications as your prescribing authorisation.');
+  out.push('  Contact: QLD Monitored Medicines Unit — 13 78 46 | MMU@health.qld.gov.au');
+  out.push('');
+  out.push('SOUTH AUSTRALIA — ScriptCheckSA (scriptcheck.sa.gov.au)');
+  out.push('  1. Check ScriptCheckSA before prescribing.');
+  out.push('  2. Apply for a Section 18A authority via ScriptCheckSA (paper forms no longer accepted as of January 2026), with this letter attached.');
+  out.push('  3. Info: cdn.wchn.sa.gov.au/downloads/WCH/professionals/gp/ADHD/ADHD-Shared-Care-GP-Information-March-2025.pdf');
+  out.push('  Contact: SA Health DDU — 1300 652 584 | healthdrugsofdependenceunit@sa.gov.au');
+  out.push('');
+  out.push('WESTERN AUSTRALIA — ScriptCheckWA (scriptcheck.health.wa.gov.au)');
+  out.push('  1. Check ScriptCheckWA (mandatory).');
+  out.push('  2. WA requires a urine drug screen (ANZ Standard 4308) for all patients aged 16+ before commencing treatment.');
+  out.push('  3. Prescribe under WA shared-care rules. For non-routine cases (comorbid SUD, doses above limits, history of psychosis), obtain patient-specific authorisation from the WA Stimulant Assessment Panel.');
+  out.push('  Contact: WA Stimulants — 08 9222 4424 | stimulants@health.wa.gov.au');
+  out.push('');
+  out.push('ACT — Canberra Script (canberrascript.act.gov.au)');
+  out.push('  1. Check Canberra Script (mandatory under the ACT Standing CHO Approval NI2026-8 pathway).');
+  out.push('  2. Complete the required one-off notification to ACT Health Protection Services.');
+  out.push('  3. Electronic prescribing (eScripts) only — handwritten scripts not valid under this pathway.');
+  out.push('  Contact: ACT Health Protection Services — 02 6205 0998 | hps@act.gov.au');
+  out.push('');
+  out.push('NORTHERN TERRITORY — NTScript (health.nt.gov.au/professionals/medicines-and-poisons)');
+  out.push('  1. Check NTScript before prescribing.');
+  out.push('  2. Apply for individual CHO approval before prescribing — required for each patient in the NT.');
+  out.push('  3. Ongoing specialist involvement is required under the NT framework.');
+  out.push('  Contact: NT Medicines and Poisons Control — 08 8922 7341 | poisonscontrol@nt.gov.au');
+  out.push('');
+  out.push('TASMANIA — TasScript (health.tas.gov.au/health-topics/drugs-and-poisons/information-for-medical-practitioners)');
+  out.push('  1. Check TasScript before prescribing.');
+  out.push('  2. Apply for a Section 59E authority through the Pharmaceutical Services Branch, with this letter attached.');
+  out.push('  3. Guidance: health.tas.gov.au/publications/seeking-authorisation-prescribe-s8-psychostimulants-tasmania');
+  out.push('  Contact: TAS Pharmaceutical Services Branch — 03 6166 0400 | pharmserv@health.tas.gov.au');
+}
+
+function appendMonitoringBlock(out){
+  out.push('');
+  out.push('CARDIOVASCULAR & GENERAL MONITORING');
+  out.push('Stimulants cause sympathomimetic effects — small average increases in heart rate (~5–7 bpm) and systolic BP (~1–5 mmHg), clinically significant in vulnerable patients.');
+  out.push('• Every review: therapeutic benefit, adherence, adverse effects, mental state, substance use risk, cardiovascular status; resting BP and pulse.');
+  out.push('• Every 6–12 months: BP, HR, weight.');
+  out.push('• ECG: cardiac history, exertional symptoms, syncope, palpitations, significant family history of arrhythmia or sudden death, or persistently abnormal parameters.');
+  out.push('• Refer to cardiology if: persistent BP >140/90, HR >100 at rest, new arrhythmia, chest pain, or unexplained syncope.');
+  out.push('• Use with caution in: significant structural heart disease, severe hypertension, recent coronary events, or arrhythmias — seek specialist advice before continuing.');
+  out.push('• Urine drug screening: at your discretion — does not imply misuse.');
+  out.push('• Recheck SafeScript / RTPM before every prescription.');
+  out.push('• Review at least every 6 months; sooner if any concerns.');
+}
+
+function appendSideEffectsBlock(out){
+  out.push('');
+  out.push('COMMON SIDE EFFECTS — MANAGEMENT');
+  out.push('• Reduced appetite / weight loss — substantial breakfast before dosing; high-calorie evening meal once medication has worn off; protein-rich snacks; consider weekend medication holidays.');
+  out.push('• Headache — usually transient; hydration, regular meals; review dose; check BP; may also be due to bruxism — consider dose adjustment or relaxation measures.');
+  out.push('• Dry mouth / nausea — take with food; adequate hydration; usually settles with time.');
+  out.push('• Rebound irritability / mood lability — review dose timing; reduce inter-dose gap; consider formulation change; refer to psychiatrist if persistent.');
+  out.push('• Increased anxiety — usually improves if anxiety is secondary to ADHD; may indicate dose too high — reduce; treat underlying anxiety separately if present; consider non-stimulant alternative.');
+  out.push('• Elevated BP / HR — reduce dose; ECG if indicated; clonidine may help with sleep, hyperarousal and BP together; refer to psychiatrist if persistent.');
+  out.push('• Emotional blunting / "zombie" — DOSE TOO HIGH; reduce, do not tolerate.');
+}
+
+function appendSleepBlock(out){
+  out.push('');
+  out.push('MANAGING INSOMNIA');
+  out.push('Insomnia is common in ADHD. Stimulants may or may not worsen it — many patients actually sleep better on treatment due to reduced stress from improved task management. ADHD is strongly associated with Delayed Sleep Phase Syndrome.');
+  out.push('');
+  out.push('Initial actions:');
+  out.push('  • Short-acting stimulant: move last dose to ≥6–8 hours before bedtime.');
+  out.push('  • Long-acting: take earlier in the day.');
+  out.push('  • Reduce caffeine — cut off at least 10 hours before bed.');
+  out.push('  • Optimise sleep hygiene (below).');
+  out.push('  • CBT-I (psychologist or This Way Up) for willing patients.');
+  out.push('');
+  out.push('Sleep hygiene:');
+  out.push('  • Fixed wake time 7 days/week.');
+  out.push('  • Morning bright light therapy (Re-Timer 3 for 30–60 min within 1 hr of waking).');
+  out.push('  • Melatonin 2–4mg as a chronobiotic — taken 3–4 hours before desired bedtime (not at bedtime).');
+  out.push('  • 10-3-2-1-0 wind-down: caffeine 10 hrs before bed; no heavy meals or alcohol 3 hrs before; stop work 2 hrs before; screens off 1 hr before; sleep mask + earplugs at bedtime.');
+  out.push('');
+  out.push('Medication options:');
+  out.push('  • Melatonin 1–5mg — highly effective, especially in ADHD/ASD; 3–4 hrs before bed.');
+  out.push('  • Clonidine 50–200mcg — useful for nocturnal agitation or hyperarousal.');
+  out.push('  • Lemborexant 5–10mg.');
+  out.push('  • Suvorexant 15–30mg.');
+  out.push('  • Doxylamine 12.5–50mg — short-term; next-day sedation common.');
+  out.push('  • Mirtazapine 15–30mg — also addresses mood / anxiety; monitor weight.');
+  out.push('  • Quetiapine 12.5–50mg IR.');
+  out.push('  • Benzodiazepines — reserve for severe insomnia crisis only, <4 weeks.');
+}
+
+function appendNonStimBlock(out){
+  out.push('');
+  out.push('NON-STIMULANT ALTERNATIVES (no S8 authority required)');
+  out.push('• Atomoxetine (Strattera) — selective NRI; once daily; 4–12 weeks to full effect; useful for comorbid anxiety; rare hepatotoxicity. Most psychiatrists are happy to initiate this and create a titration plan.');
+  out.push('• Guanfacine XR (Intuniv) — alpha-2 agonist; useful for hyperactivity and impulsivity; monitor BP; cannot stop abruptly. PBS access requires childhood diagnosis — otherwise ~$30–50/month privately.');
+  out.push('• Clonidine (Catapres) — off-label adjunct; primarily for sleep and tics; monitor BP; can be very effective for nocturnal agitation or hyperarousal.');
+}
+
+function appendReferBackBlock(out){
+  out.push('');
+  out.push('WHEN TO REFER BACK TO PSYCHIATRY');
+  out.push('• Inadequate treatment response or need for dose escalation beyond the current regimen.');
+  out.push('• New psychiatric symptoms not warranting ED presentation.');
+  out.push('• Concerns about whether the patient should remain on stimulants.');
+  out.push('• Significant or persistent side effects.');
+  out.push('• Pregnancy or breastfeeding.');
+  out.push('');
+  out.push('PSYCHOSIS OR MANIA — PSYCHIATRIC EMERGENCY');
+  out.push('Rare but more common in patients combining stimulants with cannabis. Cease stimulant medication immediately. Make a judgement call about sending the patient to ED (recommended), or manage in the community with antipsychotics while arranging urgent public community mental health review.');
+}
+
+function appendResourcesBlock(out){
+  out.push('');
+  out.push('USEFUL RESOURCES');
+  out.push('• Pandion Health state-by-state guide (March 2026): pandionhealth.com.au/adhd-stimulant-prescribing-in-australia-a-step-by-step-guide-for-every-state');
+  out.push('• RACGP Adult ADHD in General Practice: racgp.org.au/FSDEDEV/media/documents/Faculties/SI/RACGP-Adult-ADHD-in-general-practice.pdf');
+  out.push('• AADPA Prescribing Regulations guide (updated regularly): aadpa.com.au/adhd-stimulant-prescribing-regulations-in-australia-new-zealand');
+  out.push('• AADPA Prescribing Guide for GPs: aadpa.com.au/adhd-prescribing-guide-for-general-practice');
+}
+
+function buildScriptLetter(d){
+  const meds = readMeds();
+  const notes = v('sc-notes');
+  const out = header(d);
+  out.push('Thank you for your ongoing care of '+d.fullName+'. I am writing to advise that I have provided '+d.p.obj+' with the following prescription'+(meds.length>1?'s':'')+' today:');
+  out.push('');
+  out.push(meds.length ? fmtMedsBlock(meds) : '[Add medications under section 6 above]');
+  if(notes){
+    out.push('');
+    out.push('Additional notes:');
+    notes.split(/\n+/).forEach(l=>{if(l.trim()) out.push('  '+l.trim());});
+  }
+  out.push('');
+  out.push('Please do not hesitate to contact me with any questions or concerns.');
+  out.push(...signoff(d));
+  return out.join('\n');
+}
+
+function buildMedCert(d){
+  const from = v('mc-from'), to = v('mc-to');
+  const notes = v('mc-notes');
+  const lines = [];
+  lines.push(d.letterDate);
+  lines.push('');
+  lines.push('MEDICAL CERTIFICATE');
+  lines.push('');
+  lines.push('To whom it may concern,');
+  lines.push('');
+  lines.push('This is to certify that '+d.fullName+(d.dob?' (DOB '+d.dob+')':'')+' is under my medical care.');
+  lines.push('');
+  if(state.capacity === 'appointment'){
+    lines.push(capFirst(d.p.sub)+' attended a medical appointment with me on '+d.letterDate+' and '+d.p.is+' unfit to attend work / study for that day due to a medical condition.');
+  } else if(state.capacity === 'partial'){
+    if(from && to){
+      lines.push(capFirst(d.p.sub)+' '+d.p.is+' fit only for modified duties from '+from+' to '+to+' inclusive, due to a medical condition. Specific adjustments are detailed below.');
+    } else {
+      lines.push(capFirst(d.p.sub)+' '+d.p.is+' fit only for modified duties for the period of '+(from||'[from]')+' to '+(to||'[to]')+', due to a medical condition.');
+    }
+  } else {
+    if(from && to){
+      lines.push(capFirst(d.p.sub)+' '+d.p.is+' unfit to attend work / study from '+from+' to '+to+' inclusive, due to a medical condition.');
+    } else {
+      lines.push(capFirst(d.p.sub)+' '+d.p.is+' unfit to attend work / study for the period of '+(from||'[from]')+' to '+(to||'[to]')+', due to a medical condition.');
+    }
+  }
+  if(notes){
+    lines.push('');
+    notes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push(l.trim());});
+  }
+  lines.push(...signoff(d));
+  return lines.join('\n');
+}
+
+function buildTravel(d){
+  const dest = v('tv-dest');
+  const from = v('tv-from'), to = v('tv-to');
+  const notes = v('tv-notes');
+  const meds = readMeds();
+  const lines = [];
+  lines.push(d.letterDate);
+  lines.push('');
+  lines.push('To whom it may concern,');
+  lines.push('');
+  lines.push('Re: '+d.fullName + (d.dob?' (DOB '+d.dob+')':''));
+  if(d.ptAddress) lines.push(d.ptAddress);
+  lines.push('');
+  lines.push('This letter confirms that '+d.fullName+' is currently under my medical care and has been prescribed the following medication'+(meds.length>1?'s':'')+', which '+d.p.sub+' may carry for personal medical use:');
+  lines.push('');
+  if(meds.length){
+    lines.push(fmtMedsBlock(meds, {hideAuth:true}));
+  } else {
+    lines.push('[Add medications under section 6 above]');
+  }
+  lines.push('');
+  if(dest || from || to){
+    const travelV = state.pronouns==='Other' ? ' are travelling' : ' is travelling';
+    let travel = capFirst(d.p.sub)+travelV;
+    if(dest) travel += ' to '+dest;
+    if(from && to) travel += ' from '+from+' to '+to;
+    else if(from) travel += ' departing '+from;
+    else if(to) travel += ' returning '+to;
+    lines.push(travel+'.');
+  }
+  lines.push(capFirst(d.p.sub)+' '+d.p.requires+' this medication for the duration of travel.');
+  lines.push('');
+  lines.push('I confirm that the medication is for '+d.p.poss+' personal use only, has been prescribed and dispensed in Australia, and is not for sale or supply to others. The medication is being carried in '+d.p.poss+' original dispensed packaging together with this letter.');
+  lines.push('');
+  lines.push('Border, customs, or relevant authorities may contact me directly with any queries.');
+  if(notes){
+    lines.push('');
+    notes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push(l.trim());});
+  }
+  lines.push(...signoff(d));
+  return lines.join('\n');
+}
+
+function buildDxLetter(d){
+  const method = v('dxc-method') || 'a comprehensive clinical interview, collateral history, mental state examination, validated rating scales, and consideration of relevant differential diagnoses';
+  const purpose = v('dxc-purpose');
+  const dx = d.dxPrimary || '[Primary condition]';
+  const lines = [];
+  lines.push(d.letterDate);
+  if(d.recipientHeader.length){lines.push(''); d.recipientHeader.forEach(l=>lines.push(l));}
+  lines.push('');
+  lines.push(d.salutation);
+  lines.push('');
+  lines.push('Re: '+d.fullName + (d.dob?' (DOB '+d.dob+')':''));
+  if(d.ptAddress) lines.push(d.ptAddress);
+  lines.push('');
+  lines.push('I am writing to confirm that '+d.fullName+' has undergone a thorough psychiatric assessment under my care'+(d.dxDate?' (assessment completed '+d.dxDate+')':'')+' and meets DSM-5-TR criteria for '+dx+'.');
+  lines.push('');
+  lines.push('The diagnosis is based on '+method+'.');
+  if(d.dxComorbid){
+    lines.push('');
+    lines.push('Comorbid / additional conditions: '+d.dxComorbid+'.');
+  }
+  lines.push('');
+  if(purpose){
+    lines.push('This letter is provided '+purpose+'.');
+  } else {
+    lines.push('This letter is provided to support any application for reasonable adjustments, accommodations, or relevant services that '+d.fullName+' may require.');
+  }
+  lines.push('');
+  lines.push('Please do not hesitate to contact my rooms with any questions.');
+  lines.push(...signoff(d));
+  return lines.join('\n');
+}
+
+function buildWorkplace(d){
+  const dx = d.dxPrimary || '[Primary condition]';
+  const customNotes = v('wp-notes');
+  const lines = [];
+  lines.push(d.letterDate);
+  if(d.recipientHeader.length){lines.push(''); d.recipientHeader.forEach(l=>lines.push(l));}
+  lines.push('');
+  lines.push(d.salutation);
+  lines.push('');
+  lines.push('Re: '+d.fullName + (d.dob?' (DOB '+d.dob+')':''));
+  lines.push('');
+  lines.push(d.fullName+' has a confirmed diagnosis of '+dx+' following thorough psychiatric assessment under my care.');
+  if(d.dxComorbid) lines.push('Comorbid conditions: '+d.dxComorbid+'.');
+  lines.push('');
+
+  // Auto-derived adjustments + impacts per condition
+  const dxLower = dx.toLowerCase();
+  const isADHD = /adhd|attention.deficit/i.test(dxLower);
+  const isASD  = /autism|asd/i.test(dxLower);
+  const isPTSD = /ptsd|trauma|post.traumatic/i.test(dxLower);
+  const isAnx  = /anxiety|gad|social anxiety|panic/i.test(dxLower);
+  const isDep  = /depress|mdd/i.test(dxLower);
+  const isBip  = /bipolar/i.test(dxLower);
+  const isOCD  = /\bocd\b|obsessive/i.test(dxLower);
+  const isSens = /sensory/i.test(dxLower);
+  const isBPD  = /borderline|bpd/i.test(dxLower);
+
+  if(state.wpAuto){
+    const impacts = [];
+    if(isADHD) impacts.push(
+      'sustaining attention on long or unstimulating tasks',
+      'task initiation and follow-through',
+      'organising work, prioritising, and managing deadlines',
+      'working memory and remembering complex multi-step instructions',
+      'emotional regulation under stress'
+    );
+    if(isASD)  impacts.push(
+      'tolerating change to routine and unstructured environments',
+      'sensory input from open-plan offices, fluorescent lights, and ambient noise',
+      'reading subtle social and political cues at work',
+      'managing the cognitive load of "masking" through the working day'
+    );
+    if(isPTSD) impacts.push(
+      'tolerating loud, unpredictable, or interpersonally aggressive environments',
+      'managing trauma-related triggers',
+      'concentration and short-term memory due to hypervigilance',
+      'sleep disturbance affecting daytime performance'
+    );
+    if(isAnx)  impacts.push(
+      'public speaking, presentations, and high-pressure meetings',
+      'tolerating uncertainty and ambiguous feedback',
+      'managing the physiological symptoms of anxiety during performance tasks'
+    );
+    if(isDep)  impacts.push(
+      'sustaining energy and motivation through a full working day',
+      'concentration and decision-making during low-mood episodes',
+      'recovering after periods of acute deterioration'
+    );
+    if(isBip)  impacts.push(
+      'maintaining consistent productivity across mood states',
+      'managing episodes of low mood or elevated mood with adequate flexibility',
+      'tolerating shift work and disrupted sleep cycles'
+    );
+    if(isOCD)  impacts.push(
+      'managing the time-consuming cognitive and behavioural rituals of OCD',
+      'time pressure that increases rituals and checking'
+    );
+    if(isSens) impacts.push(
+      'tolerating sensory input from open-plan offices, fluorescent lights, scents, and ambient noise',
+      'managing recovery time after sensory overload'
+    );
+    if(isBPD)  impacts.push(
+      'managing intense emotional responses to perceived criticism or rejection',
+      'maintaining stable interpersonal relationships during high-conflict periods'
+    );
+
+    if(impacts.length){
+      lines.push(dx+' often results in difficulties with:');
+      impacts.forEach(x=>lines.push('  • '+x));
+      lines.push('');
+    }
+
+    const adj = [];
+    if(isADHD) adj.push(
+      'Written task lists with clear deadlines and prioritisation',
+      'Regular brief check-ins with manager / supervisor (e.g. weekly 15 min)',
+      'Flexible deadlines for tasks where output is not time-critical',
+      'Permission to use noise-cancelling headphones and a quieter workspace',
+      'Permission to take short movement breaks between demanding tasks',
+      'Schedule cognitively demanding work for the patient\'s peak performance times'
+    );
+    if(isASD)  adj.push(
+      'Predictable routine with advance notice of any change',
+      'Clear written instructions; avoid relying on implicit or verbal-only instructions',
+      'Sensory-friendly workspace — option to dim lighting, reduce noise, and avoid scented products',
+      'Designated quiet recovery space available when sensory load is high',
+      'Reduced expectation around unstructured social events'
+    );
+    if(isPTSD) adj.push(
+      'Trauma-informed management approach with flexibility around known triggers',
+      'Advance notice of any change to schedule, supervisor, or workspace',
+      'Permission to step away to a quiet space if triggered',
+      'Reduced exposure to aggressive or hostile client / customer interactions',
+      'Flexibility around medical and psychological appointments'
+    );
+    if(isAnx)  adj.push(
+      'Advance notice and preparation time for presentations and meetings',
+      'Option to deliver work in writing where verbal performance is not essential',
+      'Reduced expectation around extensive public speaking until anxiety is well managed'
+    );
+    if(isDep)  adj.push(
+      'Phased return-to-work after periods of acute deterioration',
+      'Permission to attend health and therapy appointments without using personal leave',
+      'Flexible start time / option to start later in the morning'
+    );
+    if(isBip)  adj.push(
+      'Avoidance of shift work and night-shift rosters where possible',
+      'Predictable, stable working hours and consistent sleep schedule',
+      'Flexibility for short periods of reduced workload during early phases of mood change'
+    );
+    if(isOCD)  adj.push(
+      'Reasonable flexibility around tasks that activate intrusive thoughts or checking',
+      'Permission to attend regular psychological treatment appointments'
+    );
+    if(isSens) adj.push(
+      'Quieter workspace away from high-traffic areas',
+      'Permission to use noise-cancelling headphones',
+      'Option to reduce fluorescent lighting at the workstation',
+      'Designated scent-free area / fragrance-free policy where possible'
+    );
+    if(isBPD)  adj.push(
+      'Clear and respectful written communication around feedback',
+      'Trauma-informed approach to performance conversations',
+      'Permission to attend regular psychological treatment'
+    );
+    if(!adj.length){
+      adj.push(
+        'Clear written communication and structured feedback',
+        'Reasonable flexibility around health and therapy appointments',
+        'A supportive workplace approach that allows access to early-intervention strategies'
+      );
+    }
+
+    lines.push('The following reasonable adjustments would meaningfully support '+d.p.poss+' performance:');
+    adj.forEach(a=>lines.push('  • '+a));
+  }
+
+  if(state.wpExtras.size){
+    if(!state.wpAuto){
+      lines.push('The following reasonable adjustments would meaningfully support '+d.p.poss+' performance:');
+    }
+    [...state.wpExtras].forEach(a=>lines.push('  • '+a));
+  }
+
+  if(customNotes){
+    lines.push('');
+    customNotes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push(l.trim());});
+  }
+
+  lines.push('');
+  lines.push('These adjustments are evidence-based and would enable '+d.fullName+' to perform '+d.p.poss+' role to '+d.p.poss+' full capacity. Please do not hesitate to contact my rooms with any questions.');
+  lines.push(...signoff(d));
+  return lines.join('\n');
+}
+
+function buildCardio(d){
+  const reason = state.cdrReason;
+  const reasonMap = {
+    abnormal_ecg:'an abnormal screening ECG',
+    family_history:'a significant family history of sudden cardiac death / inherited arrhythmia',
+    palpitations:'palpitations / symptoms suspicious for arrhythmia',
+    syncope:'an episode of syncope / pre-syncope',
+    structural:'known structural heart disease',
+    hypertension:'persistent hypertension'
+  };
+  const context = v('cdr-context');
+  const meds = readMeds();
+  const notes = v('cdr-notes');
+  const out = header(d);
+  out.push('I am writing to refer '+d.fullName+' for cardiology assessment in the context of '+(reasonMap[reason]||'cardiovascular concern')+', prior to (or during) consideration of stimulant medication for '+(d.dxPrimary || 'ADHD')+'.');
+  out.push('');
+  out.push('CLINICAL CONTEXT');
+  if(context){
+    context.split(/\n+/).forEach(l=>{if(l.trim()) out.push(l.trim());});
+  } else {
+    out.push('[Add background context — what was found, when, and what the proposed treatment plan is.]');
+  }
+  if(meds.length){
+    out.push('');
+    out.push('PROPOSED / CURRENT MEDICATION');
+    out.push(fmtMedsBlock(meds, {hideAuth:true}));
+  }
+  out.push('');
+  out.push('SPECIFIC QUESTIONS');
+  if(state.cdrQs.size){
+    [...state.cdrQs].forEach((q,i)=>out.push((i+1)+'. '+q));
+  } else {
+    out.push('1. Is it safe to commence stimulant medication for ADHD?');
+  }
+  if(notes){
+    out.push('');
+    out.push('Additional notes:');
+    notes.split(/\n+/).forEach(l=>{if(l.trim()) out.push('  '+l.trim());});
+  }
+  out.push('');
+  out.push('I would appreciate your assessment and recommendations. Please do not hesitate to contact my rooms.');
+  out.push(...signoff(d));
+  return out.join('\n');
+}
+
+function buildCannabis(d){
+  const form = state.cnForm;
+  const reasons = [...state.cnReasons];
+  const notes = v('cn-notes');
+  const out = header(d);
+  let opener = 'I am writing in relation to '+d.fullName+'\'s cannabis use.';
+  if(form==='medicinal') opener = 'I am writing formally to recommend cessation of medicinal cannabis prescribing for '+d.fullName+'.';
+  else if(form==='recreational') opener = 'I am writing in relation to '+d.fullName+'\'s recreational cannabis use, which is significantly impacting '+d.p.poss+' psychiatric treatment.';
+  else if(form==='both') opener = 'I am writing formally to recommend cessation of medicinal cannabis prescribing for '+d.fullName+', and to flag concurrent recreational cannabis use that is impacting '+d.p.poss+' psychiatric treatment.';
+  out.push(opener);
+  out.push('');
+  if(reasons.length){
+    out.push('My clinical concerns are:');
+    reasons.forEach(r=>out.push('  • '+r));
+    out.push('');
+  }
+  out.push('Cannabis (in any form) is, in my view, contraindicated alongside the patient\'s current psychiatric treatment plan. Continued use significantly impairs '+d.p.poss+' response to treatment and meaningfully increases the risk of psychotic decompensation, particularly in combination with stimulant pharmacotherapy.');
+  out.push('');
+  if(form==='medicinal' || form==='both'){
+    out.push('I would appreciate your support in a structured taper and cessation of any prescribed cannabis product. I do not consider ongoing medicinal cannabis prescribing to be clinically justified in this case.');
+  } else {
+    out.push('I am working with '+d.fullName+' to support cessation, and I would value any contribution your team can make to that effort.');
+  }
+  if(notes){
+    out.push('');
+    notes.split(/\n+/).forEach(l=>{if(l.trim()) out.push(l.trim());});
+  }
+  out.push('');
+  out.push('Please do not hesitate to contact my rooms if you would like to discuss this further.');
+  out.push(...signoff(d));
+  return out.join('\n');
+}
+
+function buildFollowup(d){
+  const update = v('fu-update');
+  const changes = v('fu-changes');
+  const plan = v('fu-plan');
+  const meds = readMeds();
+  const out = header(d);
+  out.push('Thank you for your ongoing care of '+d.fullName+'. I reviewed '+d.p.obj+' today.');
+
+  if(update){
+    out.push('');
+    out.push('CLINICAL UPDATE');
+    update.split(/\n+/).forEach(l=>{if(l.trim()) out.push(l.trim());});
+  }
+
+  if(meds.length){
+    out.push('');
+    out.push('CURRENT MEDICATION REGIMEN');
+    out.push(fmtMedsBlock(meds));
+  }
+
+  if(changes){
+    out.push('');
+    out.push('CHANGES TODAY');
+    changes.split(/\n+/).forEach(l=>{if(l.trim()) out.push(l.trim());});
+  }
+
+  if(plan){
+    out.push('');
+    out.push('PLAN');
+    plan.split(/\n+/).forEach(l=>{if(l.trim()) out.push(l.trim());});
+  }
+
+  out.push('');
+  out.push('Please do not hesitate to contact my rooms with any questions or concerns.');
+  out.push(...signoff(d));
+  return out.join('\n');
+}
+
+// =================== MAIN RENDER ===================
+function render(){
+  const d = commonDetails();
+  let text = '';
+  switch(state.type){
+    case 'handover':   text = buildHandover(d); break;
+    case 'script':     text = buildScriptLetter(d); break;
+    case 'medcert':    text = buildMedCert(d); break;
+    case 'travel':     text = buildTravel(d); break;
+    case 'dx':         text = buildDxLetter(d); break;
+    case 'workplace':  text = buildWorkplace(d); break;
+    case 'cardio':     text = buildCardio(d); break;
+    case 'cannabis':   text = buildCannabis(d); break;
+    case 'followup':   text = buildFollowup(d); break;
+  }
+  const out = $('letter-out');
+  out.textContent = text;
+  const cur = LETTER_TYPES.find(t=>t.key===state.type);
+  $('out-label').textContent = (cur ? cur.label : 'Letter') + ' — copy ready';
+}
+
+function copyLetter(btn){
+  const text = $('letter-out').textContent;
+  if(!text.trim()) return;
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='Copied!'; btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copy letter'; btn.classList.remove('ok');},1500);
+  });
+}
+function clearAll(){
+  ['pt-first','pt-last','pt-dob','pt-address',
+   'rec-name','rec-org','rec-address',
+   'clin-name','clin-quals','clin-contact','letter-date',
+   'dx-primary','dx-comorbid','dx-date',
+   'mc-from','mc-to','mc-notes',
+   'tv-dest','tv-from','tv-to','tv-notes',
+   'cdr-context','cdr-notes','cn-notes','wp-notes',
+   'fu-update','fu-changes','fu-plan','dxc-method','dxc-purpose','sc-notes'].forEach(id=>{const e=$(id); if(e) e.value='';});
+  $('clin-title').value = 'Consultant Psychiatrist';
+  $('meds-list').innerHTML = makeMedHTML(); refreshMedCards();
+  render();
+}
+
+// =================== INIT ===================
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderTypes();
+  initMeds();
+  render();
+});
+</script>
+</body>
+</html>
