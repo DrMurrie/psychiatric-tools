@@ -30,13 +30,9 @@
 
   /* ── HEADER ─────────────────────────────────────────────────────────── */
   header{background:#0f172a;color:#e2e8f0;padding:14px 20px;border-bottom:1px solid #1e293b;position:sticky;top:0;z-index:20}
-  .header-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;max-width:1400px;margin:0 auto}
+  .header-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;max-width:1400px;margin:0 auto}
   header h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.01em;color:#f1f5f9}
   header h1 .sub{display:block;font:500 11px var(--sans);color:#94a3b8;letter-spacing:.04em;text-transform:uppercase;margin-top:2px}
-  .top-fields{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:auto}
-  .top-fields input,.top-fields select{background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:6px 10px;border-radius:7px;font:600 12px var(--sans);min-width:130px}
-  .top-fields input:focus,.top-fields select:focus{outline:none;border-color:#64748b}
-  .top-fields input::placeholder{color:#64748b}
   .reset-btn{background:#450a0a;border:1.5px solid #dc2626;color:#fca5a5;font:700 11px var(--sans);padding:5px 11px;border-radius:999px;cursor:pointer}
   .reset-btn:hover{background:#7f1d1d}
 
@@ -175,14 +171,8 @@
 
 <header>
   <div class="header-row">
-    <h1>Titration Builder<span class="sub">by Dr Benjamin Murrie</span></h1>
-    <div class="top-fields">
-      <input id="patientName" type="text" placeholder="Patient name" autocomplete="off">
-      <input id="patientDob" type="date" aria-label="Patient DOB">
-      <input id="clinician" type="text" placeholder="Clinician" autocomplete="off">
-      <input id="visitDate" type="date" aria-label="Visit date">
-      <button class="reset-btn" onclick="resetAll()" title="Reset everything">Reset</button>
-    </div>
+    <h1>Titration Builder<span class="sub">by Dr Benjamin Murrie · FRANZCP</span></h1>
+    <button class="reset-btn" onclick="resetAll()" title="Clear all medications">Reset</button>
   </div>
 </header>
 
@@ -563,26 +553,18 @@ const MED_CATALOG = {
 };
 
 /* ─────────────────────────── STATE ─────────────────────────────────────── */
+const CLINICIAN_NAME='Dr Benjamin Murrie · FRANZCP';
 const S = {
-  patientName:'',
-  patientDob:'',
-  clinician:'',
-  visitDate:'',
   meds:[]   // array of {key, customName, mitte, repeats, authority, steps:[{label,dur,sig,totalDose,notes}]}
 };
-const STORAGE_KEY='titration_builder_v1';
 let activeTab='escript';
 
 /* ────────────────────────── PERSISTENCE ────────────────────────────────── */
-function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(S));}catch(e){}}
+// No localStorage — nothing is persisted between visits.
+function save(){}
 function load(){
-  try{
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(!raw)return;
-    const o=JSON.parse(raw);
-    Object.assign(S,o);
-    if(!Array.isArray(S.meds))S.meds=[];
-  }catch(e){}
+  // Clear any state left over from earlier versions of this page.
+  try{localStorage.removeItem('titration_builder_v1');}catch(e){}
 }
 
 /* ────────────────────────── HELPERS ────────────────────────────────────── */
@@ -677,18 +659,9 @@ function resetMedToDefault(midx){
 }
 
 /* ─────────────────────── HEADER / FIELDS ──────────────────────────────── */
-function bindHeader(){
-  ['patientName','patientDob','clinician','visitDate'].forEach(id=>{
-    const el=$(id);if(!el)return;
-    el.addEventListener('input',()=>{S[id]=el.value;save();renderOutputs();});
-    if(S[id])el.value=S[id];
-  });
-}
 function resetAll(){
-  if(!confirm('Clear everything — patient details and all medications?'))return;
-  Object.keys(S).forEach(k=>{if(Array.isArray(S[k]))S[k]=[];else S[k]='';});
-  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
-  document.querySelectorAll('input,select').forEach(el=>{if(el.type!=='button')el.value='';});
+  if(!confirm('Clear all medications?'))return;
+  S.meds=[];
   render();
 }
 
@@ -778,10 +751,8 @@ function renderMedList(){
 
 /* ─────────────────────────── OUTPUTS ──────────────────────────────────── */
 function patientHeaderText(){
-  const name=S.patientName||'[Patient name]';
-  const dob=S.patientDob?new Date(S.patientDob+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
-  const date=S.visitDate?new Date(S.visitDate+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
-  return {name,dob,date};
+  const date=new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  return {date};
 }
 function finalStep(m){
   // Final maintenance step = last step (or last ongoing one)
@@ -795,8 +766,7 @@ function buildEscript(){
   if(!S.meds.length)return '— Add a medication on the left to generate the eScript output.';
   const h=patientHeaderText();
   let out='';
-  out+='PATIENT: '+h.name+(h.dob?'  DOB '+h.dob:'')+'\n';
-  out+='DATE:    '+h.date+(S.clinician?'   CLINICIAN: '+S.clinician:'')+'\n';
+  out+='DATE:    '+h.date+'\n';
   out+='─────────────────────────────────────────────\n\n';
   S.meds.forEach((m,i)=>{
     const fin=finalStep(m);
@@ -822,7 +792,7 @@ function buildLetter(){
   if(!S.meds.length)return '<p class="empty" style="margin:0">Add a medication on the left to generate the letter prose.</p>';
   const h=patientHeaderText();
   const opening='<p><strong>Date:</strong> '+esc(h.date)+'</p>'+
-    '<p>The following titration plan has been arranged for <strong>'+esc(h.name)+'</strong>'+(h.dob?' (DOB '+esc(h.dob)+')':'')+'.</p>';
+    '<p>The following titration plan has been arranged.</p>';
   const meds=S.meds.map((m,i)=>{
     const name=(m.customName||m.name);
     const def=MED_CATALOG[m.key]||{};
@@ -850,7 +820,7 @@ function buildLetter(){
     return intro+stepLines+scriptLine+auth;
   }).join('<hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">');
   const close='<p>Please contact me if there are any concerns regarding the above plan.</p>'+
-    (S.clinician?'<p>'+esc(S.clinician)+'</p>':'');
+    '<p>'+esc(CLINICIAN_NAME)+'</p>';
   return opening+meds+close;
 }
 
@@ -858,7 +828,7 @@ function buildLetter(){
 function buildTable(){
   if(!S.meds.length)return '<div class="empty">Add a medication on the left to generate the schedule.</div>';
   const h=patientHeaderText();
-  let out='<div style="font:600 13px var(--sans);color:var(--primary);margin-bottom:10px"><span>'+esc(h.name)+'</span>'+(h.dob?' &nbsp;·&nbsp; DOB '+esc(h.dob):'')+' &nbsp;·&nbsp; '+esc(h.date)+(S.clinician?' &nbsp;·&nbsp; '+esc(S.clinician):'')+'</div>';
+  let out='<div style="font:600 13px var(--sans);color:var(--primary);margin-bottom:10px">'+esc(h.date)+' &nbsp;·&nbsp; '+esc(CLINICIAN_NAME)+'</div>';
   out+=S.meds.map((m,i)=>{
     const def=MED_CATALOG[m.key]||{};
     const form=m.form||def.form||'';
@@ -930,9 +900,7 @@ function flash(){
   setTimeout(()=>{btn.textContent=orig;},1200);
 }
 function printActive(){
-  // Open a fresh window with the active pane's HTML
-  const h=patientHeaderText();
-  const title='Titration plan — '+h.name;
+  const title='Titration plan';
   let body='';
   if(activeTab==='escript')body='<pre style="font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap">'+esc(buildEscript())+'</pre>';
   else if(activeTab==='letter')body='<div style="font:14px/1.6 Georgia,Times,serif">'+buildLetter()+'</div>';
@@ -941,17 +909,14 @@ function printActive(){
   if(!w)return;
   w.document.write('<!DOCTYPE html><html><head><title>'+esc(title)+'</title>'+
     '<style>body{font-family:Arial,sans-serif;color:#111;padding:24px;max-width:780px;margin:0 auto}h1{font-size:16px;margin:0 0 12px;color:#1e3a5f}table{border-collapse:collapse;width:100%;font-size:13px;margin:6px 0 12px}th,td{border:1px solid #cbd5e1;padding:6px 8px;text-align:left;vertical-align:top}th{background:#1e3a5f;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.04em}p{margin:0 0 10px}@media print{body{padding:0}}</style></head><body>'+
-    '<h1>Titration plan — '+esc(h.name)+'</h1>'+body+'</body></html>');
+    '<h1>Titration plan</h1>'+body+'</body></html>');
   w.document.close();setTimeout(()=>{w.print();},250);
 }
 
 /* ─────────────────────────── INIT ─────────────────────────────────────── */
 load();
-bindHeader();
 populatePicker();
 $('medClassFilter').addEventListener('change',populatePicker);
-// Default visit date to today if blank
-if(!S.visitDate){S.visitDate=new Date().toISOString().slice(0,10);$('visitDate').value=S.visitDate;save();}
 render();
 </script>
 
