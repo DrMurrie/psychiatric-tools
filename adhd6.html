@@ -290,6 +290,38 @@ ul.dots > .row .txt em{font-style:normal; color:var(--muted); font-size:13px; ma
   font-weight:600;
 }
 
+.tit-empty{
+  padding:18px 16px; background:#f8fafc;
+  border:1px dashed var(--border); border-radius:7px;
+  color:var(--muted); font-style:italic; font-size:13.5px; text-align:center;
+}
+
+.example-grid{display:grid; grid-template-columns:1fr; gap:11px}
+@media(min-width:760px){.example-grid{grid-template-columns:1fr 1fr}}
+.example-card{
+  border:1px solid var(--border); border-radius:7px; padding:13px 15px;
+  background:#fff;
+}
+.example-card .nm{
+  font:600 14px/1.3 "Inter",sans-serif;
+  margin-bottom:8px; color:var(--ink);
+}
+.example-card pre.body-txt{
+  font:13px/1.6 "Inter",sans-serif; white-space:pre-wrap;
+  overflow-wrap:anywhere; word-break:break-word;
+  color:var(--ink-soft); margin:0; padding:10px 12px;
+  background:var(--slate-bg); border-radius:5px;
+  max-height:340px; overflow-y:auto;
+  border:1px solid var(--border-soft);
+}
+.example-card .copybtn{margin-top:8px}
+.example-group-label{
+  font:700 11px/1.2 "Inter",sans-serif; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.08em;
+  margin:14px 0 4px;
+}
+.example-group-label:first-child{margin-top:0}
+
 .tit-card{
   border:1px solid var(--border); border-radius:8px;
   padding:14px 16px; background:#fff;
@@ -759,220 +791,26 @@ footer{
 </section>
 
 <section class="card primary" id="sec-fu">
-  <div class="ch"><span class="num">·</span>Follow-up plan</div>
+  <div class="ch"><span class="num">·</span>Follow-up plan examples</div>
   <div class="body">
-    <p class="lead">Build the plan with the controls below, output updates live. Click <strong style="color:var(--primary)">?</strong> for example follow-up regimes.</p>
-
-    <div class="builder">
-      <div class="bd-row">
-        <label class="bd-label">Review with
-          <button class="q" type="button" onclick="toggleFUHelp()" title="Example follow-up regimes">?</button>
-        </label>
-        <div class="bd-controls">
-          <button type="button" class="pill on" data-fu="who" data-val="Psychiatrist" onclick="fuPick(this)">Psychiatrist</button>
-          <button type="button" class="pill"    data-fu="who" data-val="GP"          onclick="fuPick(this)">GP</button>
-          <button type="button" class="pill"    data-fu="who" data-val="Psychologist" onclick="fuPick(this)">Psychologist</button>
-          <button type="button" class="pill"    data-fu="who" data-val="Shared care" onclick="fuPick(this)">Shared care (psych + GP)</button>
-        </div>
-      </div>
-
-      <div class="probes" id="fu-help" style="display:none">
-        <div class="head">Typical follow-up sequence</div>
-        <ul>
-          <li><strong>1–2 weeks:</strong> phone safety check after initiation</li>
-          <li><strong>4–6 weeks:</strong> first formal titration review (BP, HR, side effects, response)</li>
-          <li><strong>3 months:</strong> stabilisation review once on ongoing dose</li>
-          <li><strong>3–4 months:</strong> handover letter drafted if stable</li>
-          <li><strong>4–6 months:</strong> first GP-led review under shared care</li>
-          <li><strong>Annually:</strong> psychiatric review for stable regime</li>
-        </ul>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">In</label>
-        <div class="bd-controls bd-when">
-          <div class="num-strip" id="fu-num-strip"></div>
-          <div class="bd-controls bd-inline-pills">
-            <button type="button" class="pill" data-fu="unit" data-val="days"   onclick="fuPick(this)">days</button>
-            <button type="button" class="pill on" data-fu="unit" data-val="weeks"  onclick="fuPick(this)">weeks</button>
-            <button type="button" class="pill" data-fu="unit" data-val="months" onclick="fuPick(this)">months</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">Appointment duration</label>
-        <div class="bd-controls">
-          <button type="button" class="pill" data-fu="dur" data-val="15" onclick="fuPick(this)">15 min</button>
-          <button type="button" class="pill on" data-fu="dur" data-val="30" onclick="fuPick(this)">30 min</button>
-          <button type="button" class="pill" data-fu="dur" data-val="45" onclick="fuPick(this)">45 min</button>
-          <button type="button" class="pill" data-fu="dur" data-val="60" onclick="fuPick(this)">60 min</button>
-        </div>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">Patient to arrange</label>
-        <div class="bd-controls bd-multi">
-          <button type="button" class="pill" data-fu="req" data-val="BP and HR readings (home, pharmacy or GP)" onclick="fuToggle(this)">BP &amp; HR</button>
-          <button type="button" class="pill" data-fu="req" data-val="Weight check" onclick="fuToggle(this)">Weight</button>
-          <button type="button" class="pill" data-fu="req" data-val="Height" onclick="fuToggle(this)">Height</button>
-          <button type="button" class="pill" data-fu="req" data-val="ECG" onclick="fuToggle(this)">ECG</button>
-          <button type="button" class="pill" data-fu="req" data-val="Urine drug screen" onclick="fuToggle(this)">UDS</button>
-          <button type="button" class="pill" data-fu="req" data-val="Cardiology review" onclick="fuToggle(this)">Cardiology review</button>
-          <button type="button" class="pill" data-fu="req" data-val="Sleep study / OSA assessment" onclick="fuToggle(this)">Sleep study</button>
-          <button type="button" class="pill" data-fu="req" data-val="Neuropsychological testing" onclick="fuToggle(this)">Neuropsych testing</button>
-          <button type="button" class="pill" data-fu="req" data-val="Cognitive / IQ assessment" onclick="fuToggle(this)">IQ / cognitive testing</button>
-          <button type="button" class="pill" data-fu="req" data-val="Old school reports / NAPLAN / parent-teacher feedback" onclick="fuToggle(this)">School reports</button>
-          <button type="button" class="pill" data-fu="req" data-val="Adult informant report (partner / parent)" onclick="fuToggle(this)">Adult informant</button>
-          <button type="button" class="pill" data-fu="req" data-val="Childhood informant report (parent / sibling)" onclick="fuToggle(this)">Childhood informant</button>
-          <button type="button" class="pill" data-fu="req" data-val="Bring partner or family member to the next review" onclick="fuToggle(this)">Bring partner / family</button>
-          <button type="button" class="pill" data-fu="req" data-val="Previous psychology / paediatric / psychiatric letters" onclick="fuToggle(this)">Prior letters</button>
-          <button type="button" class="pill" data-fu="req" data-val="Past medical records / discharge summaries" onclick="fuToggle(this)">Past medical records</button>
-          <button type="button" class="pill" data-fu="req" data-val="Current medication list (including dosages and OTC)" onclick="fuToggle(this)">Current medication list</button>
-          <button type="button" class="pill" data-fu="req" data-val="ASRS v1.1 self-report" onclick="fuToggle(this)">ASRS</button>
-          <button type="button" class="pill" data-fu="req" data-val="DIVA-5 self-completed" onclick="fuToggle(this)">DIVA-5</button>
-          <button type="button" class="pill" data-fu="req" data-val="WURS-25 childhood retrospective" onclick="fuToggle(this)">WURS</button>
-          <button type="button" class="pill" data-fu="req" data-val="BAARS-IV (self + informant if available)" onclick="fuToggle(this)">BAARS</button>
-          <button type="button" class="pill" data-fu="req" data-val="Sleep diary (2 weeks)" onclick="fuToggle(this)">Sleep diary</button>
-          <button type="button" class="pill" data-fu="req" data-val="Mood / symptom diary" onclick="fuToggle(this)">Mood diary</button>
-          <button type="button" class="pill" data-fu="req" data-val="Side-effect / response log since last review" onclick="fuToggle(this)">Side-effect log</button>
-          <button type="button" class="pill" data-fu="req" data-val="Written list of any questions or concerns" onclick="fuToggle(this)">Written questions</button>
-          <button type="button" class="pill" data-fu="req" data-val="Photos / scans of any documents to bring" onclick="fuToggle(this)">Scan-and-bring docs</button>
-          <button type="button" class="pill" data-fu="req" data-val="Driving safety review (insurance / demerit / near-misses)" onclick="fuToggle(this)">Driving safety</button>
-          <button type="button" class="pill" data-fu="req" data-val="Workplace / study accommodations request" onclick="fuToggle(this)">Workplace / study letter</button>
-        </div>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">Bloods to order</label>
-        <div class="bd-controls bd-multi">
-          <button type="button" class="pill" data-fu="blood" data-val="FBC" onclick="fuToggleBlood(this)">FBC</button>
-          <button type="button" class="pill" data-fu="blood" data-val="EUC" onclick="fuToggleBlood(this)">EUC</button>
-          <button type="button" class="pill" data-fu="blood" data-val="LFT" onclick="fuToggleBlood(this)">LFT</button>
-          <button type="button" class="pill" data-fu="blood" data-val="TFT" onclick="fuToggleBlood(this)">TFT</button>
-          <button type="button" class="pill" data-fu="blood" data-val="CMP" onclick="fuToggleBlood(this)">CMP</button>
-          <button type="button" class="pill" data-fu="blood" data-val="CRP" onclick="fuToggleBlood(this)">CRP</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Iron studies" onclick="fuToggleBlood(this)">Iron studies</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Ferritin" onclick="fuToggleBlood(this)">Ferritin</button>
-          <button type="button" class="pill" data-fu="blood" data-val="B12" onclick="fuToggleBlood(this)">B12</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Folate" onclick="fuToggleBlood(this)">Folate</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Vitamin D" onclick="fuToggleBlood(this)">Vit D</button>
-          <button type="button" class="pill" data-fu="blood" data-val="HbA1c" onclick="fuToggleBlood(this)">HbA1c</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Fasting lipids" onclick="fuToggleBlood(this)">Lipids</button>
-          <button type="button" class="pill" data-fu="blood" data-val="Prolactin" onclick="fuToggleBlood(this)">Prolactin</button>
-        </div>
-        <div class="bd-controls" style="margin-top:6px">
-          <button type="button" class="pill" data-fu="path" data-val="Pathology form has been sent" onclick="fuPickPath(this)">Pathology form sent</button>
-          <button type="button" class="pill" data-fu="path" data-val="Patient to see GP for pathology form" onclick="fuPickPath(this)">See GP for pathology form</button>
-        </div>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">Notes / instructions</label>
-        <textarea id="fu-notes" class="bd-textarea" rows="3" placeholder="Anything additional, eg specific questions to raise, contingency plans, what to do if symptoms worsen…" oninput="fuRender()"></textarea>
-      </div>
-    </div>
-
-    <div class="script-box">
-      <span class="label">Follow-up plan</span>
-      <pre id="fu-out"></pre>
-    </div>
-    <button class="copybtn" onclick="copyFU(this)">Copy follow-up plan</button>
-    <button class="clearbtn" onclick="fuClear()">Clear</button>
+    <p class="lead">Pick the example that fits the stage of care. Copy the block straight into your note.</p>
+    <div class="example-grid" id="fu-examples"></div>
   </div>
 </section>
 
 <section class="card green" id="sec-trtplan">
-  <div class="ch"><span class="num">·</span>Treatment plan</div>
+  <div class="ch"><span class="num">·</span>Patient handout &amp; GP plan examples</div>
   <div class="body">
-    <p class="lead">Compose the full plan. Click any pill to include / exclude that section, output updates live.</p>
-
-    <div class="builder">
-      <div class="bd-row">
-        <label class="bd-label">Include in plan</label>
-        <div class="bd-controls">
-          <button type="button" class="pill on" data-trt="pharm"    onclick="trtToggle(this)">Pharmacotherapy</button>
-          <button type="button" class="pill on" data-trt="fu"       onclick="trtToggle(this)">Follow-up plan</button>
-          <button type="button" class="pill on" data-trt="nonpharm" onclick="trtToggle(this)">Non-pharmacotherapy</button>
-          <button type="button" class="pill on" data-trt="gp"       onclick="trtToggle(this)">GP management</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="script-box">
-      <span class="label">Treatment plan</span>
-      <pre id="trt-out"></pre>
-    </div>
-    <button class="copybtn" onclick="copyTrt(this)">Copy treatment plan</button>
+    <p class="lead">Pre-written blocks for patient handouts (sleep, exercise, productivity, etc.) and GP management snippets. Copy any block.</p>
+    <div class="example-grid" id="trt-examples"></div>
   </div>
 </section>
 
 <section class="card teal" id="sec-hoc">
-  <div class="ch"><span class="num">·</span>Handover-of-care letter (to GP)</div>
+  <div class="ch"><span class="num">·</span>GP letter examples</div>
   <div class="body">
-    <p class="lead">For when the patient is stable and ready for GP shared-care. Fill in the form, letter updates live.</p>
-
-    <div class="builder">
-      <div class="bd-row">
-        <label class="bd-label">Patient</label>
-        <div class="bd-controls bd-inline">
-          <input type="text" id="hoc-first" class="bd-text" placeholder="First name" oninput="hocRender()">
-          <input type="text" id="hoc-last"  class="bd-text" placeholder="Last name"  oninput="hocRender()">
-        </div>
-      </div>
-      <div class="bd-row">
-        <label class="bd-label">Gender (pronouns)</label>
-        <div class="bd-controls">
-          <button type="button" class="pill" data-hoc="g" data-val="Female" onclick="hocPick(this)">Female (she/her)</button>
-          <button type="button" class="pill" data-hoc="g" data-val="Male"   onclick="hocPick(this)">Male (he/him)</button>
-          <button type="button" class="pill on" data-hoc="g" data-val="Other" onclick="hocPick(this)">Other (they/them)</button>
-        </div>
-      </div>
-      <div class="bd-row">
-        <label class="bd-label">GP name</label>
-        <div class="bd-controls bd-inline">
-          <input type="text" id="hoc-gp" class="bd-text" placeholder="Dr Smith" oninput="hocRender()">
-          <input type="text" id="hoc-gppractice" class="bd-text" placeholder="Practice (optional)" oninput="hocRender()">
-        </div>
-      </div>
-      <div class="bd-row">
-        <label class="bd-label">Your name / qualifications</label>
-        <div class="bd-controls bd-inline">
-          <input type="text" id="hoc-clin" class="bd-text" placeholder="Dr Your Name" oninput="hocRender()">
-          <input type="text" id="hoc-quals" class="bd-text" placeholder="FRANZCP / qualifications" oninput="hocRender()">
-        </div>
-      </div>
-
-      <div class="bd-row">
-        <label class="bd-label">Script(s) for ongoing prescribing</label>
-      </div>
-      <div id="hoc-meds-list"></div>
-      <button type="button" class="hoc-add-med" onclick="addHocMed()">+ Add another medication</button>
-
-      <div class="bd-row">
-        <label class="bd-label">Include in letter</label>
-        <div class="bd-controls bd-multi">
-          <button type="button" class="pill on" data-hoc="inc" data-val="authority" onclick="hocToggle(this)">Authority pathways (state-by-state)</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="monitoring" onclick="hocToggle(this)">Monitoring requirements</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="sideeffects" onclick="hocToggle(this)">Side-effect management</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="sleep" onclick="hocToggle(this)">Sleep management</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="nonstim" onclick="hocToggle(this)">Non-stimulant alternatives</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="referback" onclick="hocToggle(this)">When to refer back</button>
-          <button type="button" class="pill on" data-hoc="inc" data-val="resources" onclick="hocToggle(this)">Useful resources</button>
-        </div>
-      </div>
-      <div class="bd-row">
-        <label class="bd-label">Additional notes</label>
-        <textarea id="hoc-notes" class="bd-textarea" rows="2" placeholder="Anything specific to add to the letter…" oninput="hocRender()"></textarea>
-      </div>
-    </div>
-
-    <div class="script-box">
-      <span class="label">Handover letter</span>
-      <pre id="hoc-out"></pre>
-    </div>
-    <button class="copybtn" onclick="copyHOC(this)">Copy letter</button>
-    <button class="clearbtn" onclick="hocClear()">Clear</button>
+    <p class="lead">Example handover and continuation-prescriber letters. Replace bracketed placeholders with the actual patient and recipient details, or use the Letter Generator for live form-driven letters.</p>
+    <div class="example-grid" id="hoc-examples"></div>
   </div>
 </section>
 
@@ -2208,7 +2046,7 @@ function copyPEItem(id, btn){
 }
 
 // =================== TITRATION TABLE RENDER ===================
-let titMed = 'vyvanse';
+let titMed = null;
 let titProto = null;
 
 const TIME_ORDER = ['morning','midday','afternoon','evening','night'];
@@ -2229,6 +2067,11 @@ function renderTit(){
     const m = TIT_MEDS[k];
     return `<button class="tit-tab ${k===titMed?'on':''}" onclick="selectTitMed('${k}')">${escHtml(m.name)}</button>`;
   }).join('');
+  if(!titMed || !TIT_MEDS[titMed]){
+    document.getElementById('tit-display').innerHTML =
+      '<div class="tit-empty">Pick a medication above to see its titration protocol and copyable directions.</div>';
+    return;
+  }
   const med = TIT_MEDS[titMed];
   const protos = getProtocols(titMed);
   if(!titProto || !protos.find(p=>p.key===titProto)) titProto = protos[0].key;
@@ -2459,622 +2302,436 @@ function flashCopy(btn, original){
 
 // =================== FOLLOW-UP RENDER ===================
 // =================== FOLLOW-UP PLAN BUILDER ===================
-const fuState = {
-  who:'Psychiatrist', num:6, unit:'weeks', dur:'30',
-  req:new Set(), blood:new Set(), path:null
-};
-function renderFUNumStrip(){
-  const wrap = document.getElementById('fu-num-strip');
-  if(!wrap) return;
-  let html = '';
-  for(let i=1; i<=12; i++){
-    html += `<button class="pill-num${i===fuState.num?' on':''}" data-val="${i}" onclick="fuPickNum(this)">${i}</button>`;
-  }
-  wrap.innerHTML = html;
-}
-function fuPickNum(btn){
-  fuState.num = parseInt(btn.dataset.val,10);
-  document.querySelectorAll('#fu-num-strip .pill-num').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  fuRender();
-}
-function fuPick(btn){
-  const grp = btn.dataset.fu;
-  fuState[grp] = btn.dataset.val;
-  document.querySelectorAll('.pill[data-fu="'+grp+'"]').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  fuRender();
-}
-function fuToggle(btn){
-  const v = btn.dataset.val;
-  if(fuState.req.has(v)){fuState.req.delete(v); btn.classList.remove('on');}
-  else {fuState.req.add(v); btn.classList.add('on');}
-  fuRender();
-}
-function fuToggleBlood(btn){
-  const v = btn.dataset.val;
-  if(fuState.blood.has(v)){fuState.blood.delete(v); btn.classList.remove('on');}
-  else {fuState.blood.add(v); btn.classList.add('on');}
-  fuRender();
-}
-function fuPickPath(btn){
-  const v = btn.dataset.val;
-  if(fuState.path === v){
-    fuState.path = null;
-    btn.classList.remove('on');
-  } else {
-    fuState.path = v;
-    document.querySelectorAll('.pill[data-fu="path"]').forEach(b=>b.classList.remove('on'));
-    btn.classList.add('on');
-  }
-  fuRender();
-}
-function fuClear(){
-  fuState.req.clear();
-  fuState.blood.clear();
-  fuState.path = null;
-  fuState.num = 6;
-  document.querySelectorAll('.pill[data-fu="req"], .pill[data-fu="blood"], .pill[data-fu="path"]').forEach(b=>b.classList.remove('on'));
-  const n = document.getElementById('fu-notes'); if(n) n.value = '';
-  renderFUNumStrip();
-  fuRender();
-}
-function toggleFUHelp(){
-  const h = document.getElementById('fu-help');
-  h.style.display = (h.style.display==='none' || !h.style.display) ? 'block' : 'none';
-}
-function fuRender(){
-  const notes = (document.getElementById('fu-notes')?.value||'').trim();
-  const lines = [];
-  lines.push('FOLLOW-UP PLAN');
-  lines.push('');
-  lines.push('Review with: '+fuState.who);
-  lines.push('When: in '+fuState.num+' '+fuState.unit);
-  if(fuState.dur) lines.push('Appointment duration: '+fuState.dur+' minutes');
-  if(fuState.req.size){
-    lines.push('');
-    lines.push('Patient to arrange before the next review:');
-    [...fuState.req].forEach(r=>lines.push('  • '+r));
-  }
-  if(fuState.blood.size){
-    lines.push('');
-    lines.push('Bloods to order: '+[...fuState.blood].join(', ')+'.');
-    if(fuState.path) lines.push('  '+fuState.path+'.');
-  } else if(fuState.path){
-    lines.push('');
-    lines.push(fuState.path+'.');
-  }
-  if(notes){
-    lines.push('');
-    lines.push('Notes / instructions:');
-    notes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push('  '+l.trim());});
-  }
-  const out = document.getElementById('fu-out');
-  if(out) out.textContent = lines.join('\n');
-  if(typeof renderTrt==='function') renderTrt();
-}
-function copyFU(btn){
-  const t = document.getElementById('fu-out').textContent;
-  if(!t.trim()) return;
-  navigator.clipboard.writeText(t).then(()=>flashCopy(btn,'Copy follow-up plan'));
-}
+// =================== EXAMPLE LIBRARIES ===================
+const FU_EXAMPLES = [
+  {nm:'1-2 week safety check (post-initiation)', text:`PLAN
 
-// =================== TREATMENT PLAN (composable) ===================
-const trtState = new Set(['pharm','fu','nonpharm','gp']);
-function trtToggle(btn){
-  const k = btn.dataset.trt;
-  if(trtState.has(k)){trtState.delete(k); btn.classList.remove('on');}
-  else {trtState.add(k); btn.classList.add('on');}
-  renderTrt();
-}
+Call or telehealth review in 1-2 weeks to confirm tolerability.
+Patient to flag any chest pain, palpitations, severe anxiety, marked mood change.
+Continue current dose until reviewed.
+Email or call if any concerns before next appointment.`},
 
-function buildTrtPharm(){
-  if(typeof titMed==='undefined' || !TIT_MEDS[titMed]) return '';
-  const med = TIT_MEDS[titMed];
-  const protos = getProtocols(titMed);
-  const proto = protos.find(p=>p.key===titProto) || protos[0];
-  const lines = [];
-  lines.push('MEDICATION & TITRATION PLAN');
-  lines.push('');
-  if(proto.conversion){
-    if(proto.intro){lines.push(proto.intro); lines.push('');}
-    lines.push('Daily IR dose      Ritalin LA              Concerta');
-    (proto.conversionTable||[]).forEach(r=>{
-      lines.push(r.ir.padEnd(18)+' '+r.la.padEnd(23)+' '+r.concerta);
-    });
-    lines.push('');
-    lines.push('* = nearest available dose, reassess at follow-up.');
-  } else {
-    lines.push(buildScriptText(med, proto));
-  }
-  const auth = proto.auth || med.auth || '';
-  if(auth){lines.push(''); lines.push('Authority / prescribing notes:'); lines.push(auth);}
-  return lines.join('\n');
-}
+  {nm:'4-week titration review', text:`PLAN
 
-function buildTrtFU(){
-  const notes = (document.getElementById('fu-notes')?.value||'').trim();
-  const lines = [];
-  lines.push('FOLLOW-UP PLAN');
-  lines.push('');
-  lines.push('Review with: '+fuState.who);
-  lines.push('When: in '+fuState.num+' '+fuState.unit);
-  if(fuState.dur) lines.push('Appointment duration: '+fuState.dur+' minutes');
-  if(fuState.req.size){
-    lines.push('');
-    lines.push('Patient to arrange before the next review:');
-    [...fuState.req].forEach(r=>lines.push('  • '+r));
-  }
-  if(fuState.blood.size){
-    lines.push('');
-    lines.push('Bloods to order: '+[...fuState.blood].join(', ')+'.');
-    if(fuState.path) lines.push('  '+fuState.path+'.');
-  } else if(fuState.path){
-    lines.push('');
-    lines.push(fuState.path+'.');
-  }
-  if(notes){
-    lines.push('');
-    lines.push('Notes / instructions:');
-    notes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push('  '+l.trim());});
-  }
-  return lines.join('\n');
-}
+Review in 4 weeks (45 min, telehealth or in-person).
+Patient to bring: BP and HR readings (home, pharmacy or GP), weight.
+Monitor: response, side effects, sleep, appetite, mood, function.
+Continue current dose until reviewed. May increase if tolerating well but inadequate response.
+Email if any concerns before the appointment.`},
 
-const TRT_NONPHARM = `NON-PHARMACOTHERAPY
+  {nm:'6-week titration review + GP letter', text:`PLAN
 
-SLEEP
+Review at ~6 weeks once on ongoing dose for 2+ weeks.
+Patient to bring BP and HR readings, weight.
+At this review: draft GP letter summarising diagnosis, medication plan, monitoring requirements.
+If stable, progress to longer-interval reviews.`},
+
+  {nm:'3-month stable review', text:`PLAN
+
+Review in 3 months for stable medication regime.
+GP to monitor BP, HR, weight in between psychiatric reviews.
+Patient to flag: side-effect change, mood change, sleep change, response change.
+Annual scripts via psychiatrist; interim refills via GP shared-care arrangement.`},
+
+  {nm:'6-month review (stable maintenance)', text:`PLAN
+
+Six-monthly psychiatric review for stable regime.
+Continued GP monitoring of BP, HR, weight.
+Discuss any new medications, life changes, pregnancy plans.
+Repeat ECG only if new cardiac symptoms.`},
+
+  {nm:'GP shared-care handover', text:`PLAN
+
+Patient stable for 3+ months on current regimen.
+GP to provide ongoing repeat scripts under shared-care arrangement.
+Psychiatrist reviews 6-12 monthly.
+GP responsible for BP, HR, weight monitoring; flag any concerns.
+Patient retains direct line to psychiatrist for any clinical change.
+GP handover letter to be sent (see GP letter examples).`},
+
+  {nm:'Suboptimal response: switch / augment', text:`PLAN
+
+Consider:
+• Switch within stimulant class (LA / Concerta) for different release profile
+• Switch across classes (methylphenidate / amphetamine)
+• Add afternoon IR top-up if duration insufficient
+• Add non-stimulant (guanfacine, atomoxetine) if partial response or affect / impulsivity
+• Address sleep, substance use, comorbid mood / anxiety
+• Confirm adherence and timing
+
+Review in 4 weeks after change.`},
+
+  {nm:'Side-effect management review', text:`PLAN
+
+Review in 2-4 weeks following the side-effect adjustment.
+Patient to keep a brief side-effect / response log between visits.
+Monitor BP, HR, weight, mood.
+Specifically reassess: appetite, sleep, rebound, anxiety, emotional blunting.
+If the side effect is not resolving: consider dose reduction, formulation change, or non-stimulant trial.`},
+
+  {nm:'Defer stimulant: workup pending', text:`PLAN
+
+Stimulant deferred pending the following:
+• ECG (GP to order or in rooms)
+• Cardiology review if cardiac concern
+• Repeat BP readings: 7-day home log
+• Bloods: TFT, FBE, EUC, LFT, ferritin, B12
+• Clarify substance / mood / anxiety / sleep concern
+• Collateral: old school reports, parent / partner
+
+Review once outstanding items completed.
+In the interim: non-pharmacological strategies (psychoeducation, CBT-ADHD, sleep hygiene, coaching).`},
+
+  {nm:'Pre-prescribing telehealth call', text:`PLAN
+
+Telehealth call before first prescription to:
+• Confirm consent and understanding of treatment
+• Confirm any final safety questions
+• Walk through expected effects and side effects
+• Confirm pharmacy and dispensing arrangements
+
+Followed by first formal review at 4 weeks.`},
+
+  {nm:'Annual review (stable patient)', text:`PLAN
+
+Annual psychiatric review.
+GP continues prescribing under shared-care arrangement; routine monitoring of BP, HR, weight.
+Repeat bloods (TFT, FBE, EUC, LFT, ferritin, B12) annually or sooner if clinically indicated.
+Discuss life changes, pregnancy planning, comorbid mental health.
+Re-confirm direct line for any clinical change.`},
+
+  {nm:'Cease stimulant: tapering plan', text:`PLAN
+
+Stimulant cessation plan agreed today.
+Taper over [X] weeks, with stepwise dose reduction.
+Patient to monitor: re-emergence of attention / impulsivity / mood symptoms.
+Email any concerns; review at 4 weeks post-cessation.
+Non-pharmacological strategies reinforced.`}
+];
+
+const TRT_EXAMPLES = [
+  // Patient handout chunks
+  {group:'Patient handouts', nm:'Sleep hygiene (patient handout)', text:`SLEEP
+
 • Fix your wake time across all 7 days of the week, including weekends.
-• Get bright outdoor or therapy light in the first hour of waking, for 30–60 minutes. The Re-Timer 3 light therapy glasses (retimer.com.au) are effective.
+• Get bright outdoor or therapy light in the first hour of waking, for 30-60 minutes. The Re-Timer 3 light therapy glasses (retimer.com.au) are effective.
 • Cut caffeine off at least 10 hours before bed. Stop heavy meals and alcohol at least 3 hours before bed. Screens off 1 hour before bed.
 • Keep the bedroom cool, dark, and quiet. A quality blackout mask (Manta Sleep) and earplugs (Loop) help.
-• Do not nap after 3pm.
+• Do not nap after 3pm.`},
 
-EXERCISE
-• Aim for at least 20 minutes of brisk aerobic exercise most days, ideally earlier in the day. One session improves attention for 1–4 hours afterwards.
+  {group:'Patient handouts', nm:'Exercise (patient handout)', text:`EXERCISE
+
+• Aim for at least 20 minutes of brisk aerobic exercise most days, ideally earlier in the day. One session improves attention for 1-4 hours afterwards.
 • Add short movement breaks between tasks.
-• Resistance / strength training 2–3 times a week.
+• Resistance / strength training 2-3 times a week.`},
 
-DIET
+  {group:'Patient handouts', nm:'Diet (patient handout)', text:`DIET
+
 • Eat breakfast (protein-rich is best).
 • Keep regular meals, especially lunch (eat even if not hungry).
 • Have an evening meal once medication has worn off, so appetite returns.
-• Reduce ultra-processed foods, added sugar, and high-glycaemic snacks.
+• Reduce ultra-processed foods, added sugar, and high-glycaemic snacks.`},
 
-CANNABIS
+  {group:'Patient handouts', nm:'Cannabis cessation (patient handout)', text:`CANNABIS
+
 • Cannabis worsens ADHD symptoms, reduces treatment benefit, and increases the risk of psychosis. Cease entirely.
-• If finding it hard to stop, raise it directly. We will support you to come off.
+• If finding it hard to stop, raise it directly. We will support you to come off.`},
 
-ALCOHOL & CAFFEINE
+  {group:'Patient handouts', nm:'Alcohol & caffeine (patient handout)', text:`ALCOHOL & CAFFEINE
+
 • Alcohol: keep to occasional, moderate use only. Stimulants mask the sedating effects, so it is easy to drink more than intended.
-• Caffeine: moderate is fine in the morning. Excess worsens anxiety, sleep onset, and heart rate.
+• Caffeine: moderate is fine in the morning. Excess worsens anxiety, sleep onset, and heart rate.`},
 
-PHONE / DIGITAL HYGIENE
+  {group:'Patient handouts', nm:'Phone & digital hygiene (patient handout)', text:`PHONE / DIGITAL HYGIENE
+
 • Hide social apps inside folders within folders on the last page.
 • Switch the phone to grayscale (Settings → Accessibility → Color Filters → Greyscale). It stops being rewarding.
 • Set Screen Time limits and have someone else set the override passcode.
 • Turn off notifications for everything non-essential.
-• Charge the phone outside the bedroom.
+• Charge the phone outside the bedroom.`},
 
-PRODUCTIVITY & EXECUTIVE STRATEGIES
+  {group:'Patient handouts', nm:'Productivity & executive strategies (patient handout)', text:`PRODUCTIVITY & EXECUTIVE STRATEGIES
+
 • Body doubling: work in the presence of another person, in real life or virtually via Focusmate (free, focusmate.com).
 • Weekly brain dump and priority matrix: get every task out of your head onto a list, then sort by importance and urgency.
 • Time blocking with a visual timer (Time Timer; or Pomodoro: 25 min on, 5 min off).
 • If-then planning: be specific. "If it is 9am and I sit at my desk, then I open document X."
-• Schedule demanding tasks for when your medication is at peak effect (60–90 minutes after dosing).
+• Schedule demanding tasks for when your medication is at peak effect (60-90 minutes after dosing).`},
 
-EMOTIONAL REGULATION
+  {group:'Patient handouts', nm:'Emotional regulation (patient handout)', text:`EMOTIONAL REGULATION
+
 • TIPP in the moment: cold water on the face; 60 seconds of intense exercise; paced breathing (4-in, 7-out); progressive muscle relaxation.
 • STOP: stop, take a step back, observe what you are feeling, then proceed mindfully.
 • 90-second rule: the physiological surge of an emotion lasts ~90 seconds if you do not feed it with rumination.
-• Distance yourself from intense thoughts. "I notice I am having the thought that I am worthless" rather than "I am worthless."
+• Distance yourself from intense thoughts. "I notice I am having the thought that I am worthless" rather than "I am worthless."`},
 
-WORK & STUDY
+  {group:'Patient handouts', nm:'Work & study (patient handout)', text:`WORK & STUDY
+
 • Disclose only as needed for specific accommodations.
 • Quiet or noise-cancelling headphones; written task lists with clear deadlines; brief regular check-ins with your manager.
-• Schedule your hardest work during your medication peak.
+• Schedule your hardest work during your medication peak.`},
 
-DRIVING
+  {group:'Patient handouts', nm:'Driving (patient handout)', text:`DRIVING
+
 • Stimulants do not restrict driving and evidence shows fewer crashes on treatment.
-• Avoid driving for prolonged periods when medication has worn off.
+• Avoid driving for prolonged periods when medication has worn off.`},
 
-WHAT TO WATCH FOR, CALL EARLY IF
+  {group:'Patient handouts', nm:'What to watch for / when to call (patient handout)', text:`WHAT TO WATCH FOR, CALL EARLY IF
+
 • Chest pain, palpitations, or fainting.
 • A sudden lift in mood with reduced need for sleep, racing thoughts, or out-of-character behaviour.
 • Severe anxiety or panic.
 • Any thoughts of suicide or self-harm.
-• Pregnancy, planning pregnancy, or breastfeeding.
+• Pregnancy, planning pregnancy, or breastfeeding.`},
 
-PSYCHOLOGICAL THERAPIES (your psychiatrist or GP can refer)
+  {group:'Patient handouts', nm:'Psychological therapies overview', text:`PSYCHOLOGICAL THERAPIES (your psychiatrist or GP can refer)
+
 • CBT for ADHD (procrastination, organisation, time management, avoidance).
 • ACT (psychological flexibility, values-based action).
 • DBT skills (emotional dysregulation, rejection sensitivity).
-• ADHD coaching (practical, present-focused accountability).
+• ADHD coaching (practical, present-focused accountability).`},
 
-USEFUL RESOURCES
+  {group:'Patient handouts', nm:'Useful resources', text:`USEFUL RESOURCES
+
 • Books: ADHD 2.0 (Hallowell & Ratey), Driven to Distraction, Smart but Stuck (Brown), Scattered Minds (Mate).
-• Apps / services: Focusmate (focusmate.com  free body doubling), Anki (ankiweb.net), Brick (brickself.com).
+• Apps / services: Focusmate (focusmate.com, free body doubling), Anki (ankiweb.net, spaced repetition), Brick (brickself.com, NFC app-locker).
 • Products: Re-Timer 3 (retimer.com.au), Loop earplugs (au.loopearplugs.com), Manta Sleep masks (mantasleep.com.au), Time Timer.
-• ADHD coaching directories: AADPA (aadpa.com.au), ADHD Australia (adhdaustralia.org.au), ICF (coachingfederation.org).`;
+• ADHD coaching directories: AADPA (aadpa.com.au), ADHD Australia (adhdaustralia.org.au), ICF (coachingfederation.org).`},
 
-const TRT_GP = `GP MANAGEMENT PLAN
+  // GP management chunks
+  {group:'GP management snippets', nm:'GP routine monitoring (every review)', text:`ROUTINE MONITORING (every GP review on stimulant treatment)
 
-ROUTINE MONITORING (every GP review on stimulant treatment)
-   • Therapeutic response, adherence, mental state, substance use, cardiovascular status.
-   • Resting BP and pulse every review.
-   • Weight: monthly during titration; 6-monthly once stable.
-   • Specifically ask about sleep, appetite, mood, rebound, headache, anxiety.
+• Therapeutic response, adherence, mental state, substance use, cardiovascular status.
+• Resting BP and pulse every review.
+• Weight: monthly during titration; 6-monthly once stable.
+• Specifically ask about sleep, appetite, mood, rebound, headache, anxiety.`},
 
-SIDE-EFFECT MONITORING & MANAGEMENT
-   • Reduced appetite / weight loss, substantial breakfast before dosing; high-calorie evening meal once medication wears off; protein-rich snacks; consider weekend medication holidays.
-   • Headache, usually transient; hydration, regular meals; review dose; check BP; consider bruxism.
-   • Dry mouth / nausea, take with food; usually settles.
-   • Rebound irritability / mood lability, review dose timing; reduce inter-dose gap; consider formulation change; refer if persistent.
-   • Increased anxiety / jitteriness, usually dose too high, reduce; treat anxiety separately if pre-existing.
-   • Elevated BP / HR, reduce dose; ECG if symptomatic; cardiology if persistent.
-   • Emotional blunting / "zombie", DOSE TOO HIGH; reduce, do not tolerate.
+  {group:'GP management snippets', nm:'GP side-effect monitoring & management', text:`SIDE-EFFECT MONITORING & MANAGEMENT
+
+• Reduced appetite / weight loss: substantial breakfast before dosing; high-calorie evening meal once medication wears off; protein-rich snacks; consider weekend medication holidays.
+• Headache: usually transient; hydration, regular meals; review dose; check BP; consider bruxism.
+• Dry mouth / nausea: take with food; usually settles.
+• Rebound irritability / mood lability: review dose timing; reduce inter-dose gap; consider formulation change; refer if persistent.
+• Increased anxiety / jitteriness: usually dose too high, reduce; treat anxiety separately if pre-existing.
+• Elevated BP / HR: reduce dose; ECG if symptomatic; cardiology if persistent.
+• Emotional blunting / "zombie": DOSE TOO HIGH, reduce, do not tolerate.`},
+
+  {group:'GP management snippets', nm:'When to refer back to psychiatry', text:`WHEN TO REFER BACK TO PSYCHIATRY
+
+• Inadequate treatment response or need for dose change.
+• Significant or persistent side effects.
+• Cardiovascular concerns (persistent BP ≥140/90, HR persistently >100).
+• New psychiatric symptoms.
+• Suspected psychosis or mania (psychiatric emergency): cease stimulant immediately, send to ED or arrange urgent community mental health review (more common when combined with cannabis).
+• Suicidal ideation or self-harm.
+• Pregnancy planning, pregnancy, breastfeeding.`}
+];
+
+const HOC_EXAMPLES = [
+  {nm:'Full GP handover for stimulant prescribing', text:`[Date]
+[GP Name and Practice]
+
+Dear Dr [GP],
+
+Re: [Patient Name] (DOB [DOB])
+
+Thank you for your ongoing care of [Patient Name]. I am writing to confirm their diagnosis, current treatment, and to provide my written specialist recommendation supporting you as the ongoing prescriber of their stimulant medication, in accordance with your state or territory prescribing framework.
+
+DIAGNOSIS
+[Patient Name] meets DSM-5-TR criteria for Attention Deficit Hyperactivity Disorder (ADHD). The diagnosis was established following comprehensive psychiatric assessment including pre-screening, thorough clinical interview, review of collateral history, assessment of substance use, and a medical screen.
+
+CURRENT MEDICATION REGIMEN
+[Medication name and strength]
+   Quantity: [X]
+   Repeats: [X]
+   Authorisation: [X]
+   Indication: ADHD
+   Instructions:
+     [Sig]
+
+They have been carefully titrated to this regimen, have demonstrated good therapeutic response, and tolerate the medication well with no significant adverse effects at present.
+
+SPECIALIST RECOMMENDATION
+I support Dr [GP] taking over ongoing prescribing of [Patient Name]'s ADHD stimulant medication in accordance with the applicable state prescribing framework. This letter confirms specialist diagnosis, initiation and stabilisation of treatment, and is provided as the written specialist recommendation required to support any necessary state authority, permit, notification, or approval process. Please attach this letter to your relevant authority application or retain it in the patient's record as required by your jurisdiction.
+
+CARDIOVASCULAR & GENERAL MONITORING
+Stimulants cause sympathomimetic effects, small average increases in heart rate (~5-7 bpm) and systolic BP (~1-5 mmHg), clinically significant in vulnerable patients.
+• Every review: therapeutic benefit, adherence, adverse effects, mental state, substance use risk, cardiovascular status; resting BP and pulse.
+• Every 6-12 months: BP, HR, weight.
+• ECG: cardiac history, exertional symptoms, syncope, palpitations, significant family history of arrhythmia or sudden death, or persistently abnormal parameters.
+• Refer to cardiology if: persistent BP >140/90, HR >100 at rest, new arrhythmia, chest pain, or unexplained syncope.
+• Use with caution in: significant structural heart disease, severe hypertension, recent coronary events, or arrhythmias.
+• Urine drug screening: at your discretion, does not imply misuse.
+• Recheck SafeScript / RTPM before every prescription.
+• Review at least every 6 months; sooner if any concerns.
+
+COMMON SIDE EFFECTS, MANAGEMENT
+• Reduced appetite / weight loss: substantial breakfast before dosing; high-calorie evening meal once medication has worn off; protein-rich snacks; consider weekend medication holidays.
+• Headache: usually transient; hydration, regular meals; review dose; check BP; may also be due to bruxism.
+• Dry mouth / nausea: take with food; adequate hydration; usually settles with time.
+• Rebound irritability / mood lability: review dose timing; reduce inter-dose gap; consider formulation change; refer to psychiatrist if persistent.
+• Increased anxiety: usually improves if anxiety is secondary to ADHD; may indicate dose too high, reduce.
+• Elevated BP / HR: reduce dose; ECG if indicated; clonidine may help with sleep, hyperarousal and BP together; refer to psychiatrist if persistent.
+• Emotional blunting / "zombie": DOSE TOO HIGH; reduce, do not tolerate.
 
 WHEN TO REFER BACK TO PSYCHIATRY
-   • Inadequate treatment response or need for dose change.
-   • Significant or persistent side effects.
-   • Cardiovascular concerns (persistent BP ≥140/90, HR persistently >100).
-   • New psychiatric symptoms.
-   • Suspected psychosis or mania, psychiatric emergency: cease stimulant immediately, send to ED or arrange urgent community mental health review (more common when combined with cannabis).
-   • Suicidal ideation or self-harm.
-   • Pregnancy planning, pregnancy, breastfeeding.`;
+• Inadequate treatment response or need for dose escalation beyond the current regimen.
+• New psychiatric symptoms not warranting ED presentation.
+• Significant or persistent side effects.
+• Pregnancy or breastfeeding.
+• Suspected psychosis or mania (psychiatric emergency): cease stimulant immediately and arrange ED or urgent community mental health review (more common when combined with cannabis).
 
-function renderTrt(){
-  const parts = [];
-  if(trtState.has('pharm'))    {const t = buildTrtPharm();   if(t) parts.push(t);}
-  if(trtState.has('fu'))       parts.push(buildTrtFU());
-  if(trtState.has('nonpharm')) parts.push(TRT_NONPHARM);
-  if(trtState.has('gp'))       parts.push(TRT_GP);
-  const out = document.getElementById('trt-out');
-  if(out) out.textContent = parts.length ? parts.join('\n\n\n') : '(Select at least one section above.)';
-}
-function copyTrt(btn){
-  const t = document.getElementById('trt-out').textContent;
-  if(!t.trim()) return;
-  navigator.clipboard.writeText(t).then(()=>flashCopy(btn,'Copy treatment plan'));
-}
-function copyTrt(btn){
-  const t = document.getElementById('trt-out').textContent;
-  if(!t.trim()) return;
-  navigator.clipboard.writeText(t).then(()=>flashCopy(btn,'Copy treatment plan'));
-}
+Please do not hesitate to contact my rooms with any questions or concerns.
 
-// =================== HANDOVER LETTER ===================
-const hocState = {g:'Other', inc:new Set(['authority','monitoring','sideeffects','sleep','nonstim','referback','resources'])};
-function hocPick(btn){
-  const grp = btn.dataset.hoc;
-  hocState[grp] = btn.dataset.val;
-  document.querySelectorAll('.pill[data-hoc="'+grp+'"]').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  hocRender();
-}
-function hocToggle(btn){
-  const v = btn.dataset.val;
-  if(hocState.inc.has(v)){hocState.inc.delete(v); btn.classList.remove('on');}
-  else {hocState.inc.add(v); btn.classList.add('on');}
-  hocRender();
-}
-function hocClear(){
-  ['hoc-first','hoc-last','hoc-gp','hoc-gppractice','hoc-clin','hoc-quals','hoc-notes']
-    .forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
-  const list = document.getElementById('hoc-meds-list');
-  if(list){ list.innerHTML = makeHocMedCardHTML(); refreshHocCards(); }
-  hocRender();
-}
+Yours sincerely,
 
-// Multi-medication script cards
-function makeHocMedCardHTML(){
-  return `<div class="hoc-med-card">
-    <span class="rx-tag">Rx</span>
-    <button class="rm" type="button" onclick="removeHocMed(this)" aria-label="Remove">&times;</button>
-    <div class="bd-row">
-      <label class="bd-label">Medication</label>
-      <div class="bd-controls bd-inline">
-        <input type="text" class="bd-text hoc-medname" placeholder="Generic name (Brand)" oninput="hocRender()">
-        <input type="text" class="bd-text hoc-medstrength" placeholder="Strength (e.g. 30mg cap)" oninput="hocRender()">
-      </div>
-    </div>
-    <div class="bd-row">
-      <label class="bd-label">Quantity &amp; repeats</label>
-      <div class="bd-controls bd-inline">
-        <input type="text" class="bd-text hoc-medqty" placeholder="Quantity (e.g. 30 caps)" oninput="hocRender()">
-        <input type="text" class="bd-text hoc-medrepeats" placeholder="Repeats" oninput="hocRender()">
-        <input type="text" class="bd-text hoc-medauth" placeholder="Authorisation no. (optional)" oninput="hocRender()">
-      </div>
-    </div>
-    <div class="bd-row">
-      <label class="bd-label">Indication</label>
-      <div class="bd-controls bd-inline">
-        <input type="text" class="bd-text hoc-medindication" placeholder="e.g. ADHD" oninput="hocRender()" style="flex:1 1 100%">
-      </div>
-    </div>
-    <div class="bd-row">
-      <label class="bd-label">Instructions</label>
-      <textarea class="bd-textarea hoc-medsig" rows="2" placeholder="e.g. Take 1 capsule each morning on waking. Avoid acidic drinks at dosing time." oninput="hocRender()"></textarea>
-    </div>
-  </div>`;
-}
-function addHocMed(){
-  const list = document.getElementById('hoc-meds-list');
-  if(!list) return;
-  list.insertAdjacentHTML('beforeend', makeHocMedCardHTML());
-  refreshHocCards();
-  hocRender();
-}
-function removeHocMed(btn){
-  const list = document.getElementById('hoc-meds-list');
-  const cards = list.querySelectorAll('.hoc-med-card');
-  if(cards.length<=1) return; // never remove the last
-  btn.closest('.hoc-med-card').remove();
-  refreshHocCards();
-  hocRender();
-}
-function refreshHocCards(){
-  const cards = document.querySelectorAll('.hoc-med-card');
-  cards.forEach((c,i)=>{
-    const tag = c.querySelector('.rx-tag');
-    if(tag) tag.textContent = cards.length>1 ? ('Rx '+(i+1)) : 'Rx';
-    const rm = c.querySelector('.rm');
-    if(rm) rm.style.display = cards.length>1 ? '' : 'none';
+[Your Name]
+[Qualifications]
+Consultant Psychiatrist`},
+
+  {nm:'Brief continuation-prescriber recommendation', text:`[Date]
+[GP Name and Practice]
+
+Dear Dr [GP],
+
+Re: [Patient Name] (DOB [DOB])
+
+Thank you for your ongoing care of [Patient Name].
+
+[Patient Name] meets DSM-5-TR criteria for Attention Deficit Hyperactivity Disorder (ADHD), established following comprehensive psychiatric assessment under my care. They are stable on [Medication, strength, dose] and tolerate treatment well.
+
+I support you as the ongoing prescriber of their ADHD stimulant medication in accordance with the applicable state prescribing framework. This letter is provided as the written specialist recommendation required to support any necessary state authority, permit, notification, or approval process.
+
+I recommend GP review at least every 6 months with BP, HR and weight monitoring. Please refer back to my rooms if there is inadequate treatment response, need for dose change, significant side effects, new psychiatric symptoms, suspected psychosis or mania, suicidal ideation, or pregnancy planning.
+
+Yours sincerely,
+
+[Your Name]
+[Qualifications]
+Consultant Psychiatrist`},
+
+  {nm:'State authority pathways (standalone)', text:`AUTHORITY PATHWAYS FOR ADHD STIMULANT PRESCRIBING IN AUSTRALIA
+
+Prescribing regulations vary across Australian states and territories and are subject to ongoing change. Always verify current requirements with your state health authority before applying for prescribing authority. Document last reviewed April 2026.
+
+UNIVERSAL PRESCRIBING STEPS (all jurisdictions)
+1. Check your state RTPM system first, review SafeScript / equivalent before every stimulant prescription.
+2. Review history: confirm diagnosis and current regimen; assess mental health, substance use, cardiovascular history; red flags for misuse, psychosis, mania.
+3. Confirm monitoring requirements: response, adherence, adverse effects, mental state, substance use risk every review; BP, HR, weight at least every 6-12 months; ECG when clinically indicated.
+4. Obtain authority then prescribe: complete any required RTPM registration, permit, approval, authority or notification for your state, then issue the prescription.
+
+NEW SOUTH WALES, SafeScript NSW (safescript.health.nsw.gov.au)
+1. Check SafeScript NSW before every script.
+2. Apply to become a NSW continuation prescriber via the ADHD care in general practice pathway: aci.health.nsw.gov.au/projects/adhd-in-general-practice/clinicians/how-to-apply
+3. Once approved, prescribe within the NSW continuation prescriber framework.
+Contact: NSW Health Pharmaceutical Regulatory Unit, 02 9424 5923
+
+VICTORIA, SafeScript VIC (safescript.vic.gov.au)
+1. Check SafeScript VIC before prescribing.
+2. Apply for a Schedule 8 stimulant permit before prescribing, attach this letter.
+3. Permit requirements: health.vic.gov.au/drugs-and-poisons/stimulants-for-adhd-or-narcolepsy-permit-requirements
+Contact: VIC Safer Prescribing Team, dpcs@dhhs.vic.gov.au
+
+QUEENSLAND, QScript (qld.gov.au/health/conditions/all/qscript)
+1. Check QScript before prescribing.
+2. Confirm you hold FRACGP or FACRRM fellowship (qualifies as specialist GP under the QLD framework, December 2025).
+3. Include the condition name on the script and your qualifications as your prescribing authorisation.
+Contact: QLD Monitored Medicines Unit, 13 78 46 | MMU@health.qld.gov.au
+
+SOUTH AUSTRALIA, ScriptCheckSA (scriptcheck.sa.gov.au)
+1. Check ScriptCheckSA before prescribing.
+2. Apply for a Section 18A authority via ScriptCheckSA (paper forms no longer accepted as of January 2026), with this letter attached.
+3. Info: cdn.wchn.sa.gov.au/downloads/WCH/professionals/gp/ADHD/ADHD-Shared-Care-GP-Information-March-2025.pdf
+Contact: SA Health DDU, 1300 652 584 | healthdrugsofdependenceunit@sa.gov.au
+
+WESTERN AUSTRALIA, ScriptCheckWA (scriptcheck.health.wa.gov.au)
+1. Check ScriptCheckWA (mandatory).
+2. WA requires a urine drug screen (ANZ Standard 4308) for all patients aged 16+ before commencing treatment.
+3. Prescribe under WA shared-care rules. For non-routine cases (comorbid SUD, doses above limits, history of psychosis), obtain patient-specific authorisation from the WA Stimulant Assessment Panel.
+Contact: WA Stimulants, 08 9222 4424 | stimulants@health.wa.gov.au
+
+ACT, Canberra Script (canberrascript.act.gov.au)
+1. Check Canberra Script (mandatory under the ACT Standing CHO Approval NI2026-8 pathway).
+2. Complete the required one-off notification to ACT Health Protection Services.
+3. Electronic prescribing (eScripts) only, handwritten scripts not valid under this pathway.
+Contact: ACT Health Protection Services, 02 6205 0998 | hps@act.gov.au
+
+NORTHERN TERRITORY, NTScript (health.nt.gov.au/professionals/medicines-and-poisons)
+1. Check NTScript before prescribing.
+2. Apply for individual CHO approval before prescribing, required for each patient in the NT.
+3. Ongoing specialist involvement is required under the NT framework.
+Contact: NT Medicines and Poisons Control, 08 8922 7341 | poisonscontrol@nt.gov.au
+
+TASMANIA, TasScript (health.tas.gov.au/health-topics/drugs-and-poisons/information-for-medical-practitioners)
+1. Check TasScript before prescribing.
+2. Apply for a Section 59E authority through the Pharmaceutical Services Branch, with this letter attached.
+3. Guidance: health.tas.gov.au/publications/seeking-authorisation-prescribe-s8-psychostimulants-tasmania
+Contact: TAS Pharmaceutical Services Branch, 03 6166 0400 | pharmserv@health.tas.gov.au`},
+
+  {nm:'GP sleep management info (for inclusion)', text:`MANAGING INSOMNIA, FOR INCLUSION IN GP CORRESPONDENCE
+
+Insomnia is common in ADHD. Stimulants may or may not worsen it, many patients sleep better on treatment due to reduced stress. ADHD is strongly associated with Delayed Sleep Phase Syndrome.
+
+Initial actions:
+• Short-acting stimulant: move last dose to ≥6-8 hours before bedtime.
+• Long-acting: take earlier in the day.
+• Reduce caffeine, cut off at least 10 hours before bed.
+• Optimise sleep hygiene (below).
+• CBT-I (psychologist or This Way Up) for willing patients.
+
+Sleep hygiene:
+• Fixed wake time 7 days/week.
+• Morning bright light therapy (Re-Timer 3 for 30-60 min within 1 hr of waking).
+• Melatonin 2-4mg as a chronobiotic, taken 3-4 hours before desired bedtime (not at bedtime).
+• 10-3-2-1-0 wind-down: caffeine 10 hrs before bed; no heavy meals or alcohol 3 hrs before; stop work 2 hrs before; screens off 1 hr before; sleep mask + earplugs at bedtime.
+
+Medication options:
+• Melatonin 1-5mg, highly effective, especially in ADHD/ASD; 3-4 hrs before bed.
+• Clonidine 50-200mcg, useful for nocturnal agitation or hyperarousal.
+• Lemborexant 5-10mg.
+• Suvorexant 15-30mg.
+• Doxylamine 12.5-50mg, short-term; next-day sedation common.
+• Mirtazapine 15-30mg, also addresses mood / anxiety; monitor weight.
+• Quetiapine 12.5-50mg IR.
+• Benzodiazepines: reserve for severe insomnia crisis only, <4 weeks.`},
+
+  {nm:'Useful resources (for letter footer)', text:`USEFUL RESOURCES
+
+• Pandion Health state-by-state guide (March 2026): pandionhealth.com.au/adhd-stimulant-prescribing-in-australia-a-step-by-step-guide-for-every-state
+• RACGP Adult ADHD in General Practice: racgp.org.au/FSDEDEV/media/documents/Faculties/SI/RACGP-Adult-ADHD-in-general-practice.pdf
+• AADPA Prescribing Regulations guide (updated regularly): aadpa.com.au/adhd-stimulant-prescribing-regulations-in-australia-new-zealand
+• AADPA Prescribing Guide for GPs: aadpa.com.au/adhd-prescribing-guide-for-general-practice`}
+];
+
+// =================== EXAMPLE RENDER ===================
+function renderExamples(containerId, examples){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  const groups = {};
+  const order = [];
+  examples.forEach((e,i)=>{
+    const g = e.group || '';
+    if(!(g in groups)){groups[g]=[]; order.push(g);}
+    groups[g].push({...e, _i:i});
   });
-}
-function initHocMeds(){
-  const list = document.getElementById('hoc-meds-list');
-  if(list && !list.querySelector('.hoc-med-card')){
-    list.innerHTML = makeHocMedCardHTML();
-    refreshHocCards();
-  }
-}
-function hocPronouns(g){
-  if(g==='Female') return {sub:'she', obj:'her', poss:'her', possS:'hers'};
-  if(g==='Male')   return {sub:'he',  obj:'him', poss:'his', possS:'his'};
-  return {sub:'they', obj:'them', poss:'their', possS:'theirs'};
-}
-function _todayLong(){
-  const d = new Date();
-  return d.toLocaleDateString('en-AU',{day:'numeric', month:'long', year:'numeric'});
-}
-function _capFirst(s){return s ? s.charAt(0).toUpperCase()+s.slice(1) : s;}
-function _v(id){const el = document.getElementById(id); return el ? (el.value||'').trim() : '';}
-function hocRender(){
-  const first = _v('hoc-first');
-  const last  = _v('hoc-last');
-  const gpRaw = _v('hoc-gp');
-  const gpPrac= _v('hoc-gppractice');
-  const clin  = _v('hoc-clin');
-  const quals = _v('hoc-quals');
-  const notes = _v('hoc-notes');
-
-  // Multi-medication: read every script card
-  const meds = [];
-  document.querySelectorAll('.hoc-med-card').forEach(c=>{
-    const grab = sel => {const el = c.querySelector(sel); return el ? (el.value||'').trim() : '';};
-    meds.push({
-      name:        grab('.hoc-medname'),
-      strength:    grab('.hoc-medstrength'),
-      qty:         grab('.hoc-medqty'),
-      repeats:     grab('.hoc-medrepeats'),
-      auth:        grab('.hoc-medauth'),
-      indication:  grab('.hoc-medindication'),
-      sig:         grab('.hoc-medsig'),
-    });
+  let html = '';
+  order.forEach(g=>{
+    if(g) html += '<div class="example-group-label">'+escHtml(g)+'</div>';
+    html += '<div class="example-grid-inner">' + groups[g].map(e=>{
+      const tid = containerId+'-text-'+e._i;
+      return '<div class="example-card">'+
+        '<div class="nm">'+escHtml(e.nm)+'</div>'+
+        '<pre class="body-txt" id="'+tid+'">'+escHtml(e.text)+'</pre>'+
+        '<button class="copybtn" onclick="copyExample(\''+tid+'\',this)">Copy</button>'+
+      '</div>';
+    }).join('') + '</div>';
   });
-  if(!meds.length) meds.push({name:'',strength:'',qty:'',repeats:'',auth:'',indication:'',sig:''});
-
-  const fullName = (first+' '+last).trim() || '[Patient name]';
-  const p = hocPronouns(hocState.g);
-  const gp = gpRaw ? (/^dr/i.test(gpRaw) ? gpRaw : 'Dr '+gpRaw) : '[GP name]';
-
-  const lines = [];
-  lines.push(_todayLong());
-  if(gpPrac) lines.push(gpPrac);
-  lines.push('');
-  lines.push('Dear '+gp+',');
-  lines.push('');
-  lines.push('Re: '+fullName);
-  lines.push('');
-  lines.push('Thank you for your ongoing care of '+fullName+'. I am writing to confirm '+p.poss+' diagnosis, current treatment, and to provide my written specialist recommendation supporting you as the ongoing prescriber of '+p.poss+' stimulant medication, in accordance with your state or territory prescribing framework.');
-  lines.push('');
-  lines.push('DIAGNOSIS');
-  lines.push(fullName+' meets DSM-5-TR criteria for Attention Deficit Hyperactivity Disorder (ADHD). The diagnosis was established following comprehensive psychiatric assessment including pre-screening, thorough clinical interview, review of collateral history, assessment of substance use, and a medical screen.');
-  lines.push('');
-  lines.push('CURRENT MEDICATION REGIMEN');
-  const numbered = meds.length>1;
-  meds.forEach((m,i)=>{
-    if(i>0) lines.push('');
-    const head = [m.name, m.strength].filter(Boolean).join(', ') || '[Medication, name and strength]';
-    lines.push(numbered ? ((i+1)+'. '+head) : head);
-    const qtyLine = [];
-    if(m.qty) qtyLine.push('Quantity: '+m.qty);
-    if(m.repeats) qtyLine.push('Repeats: '+m.repeats);
-    if(qtyLine.length) lines.push('   '+qtyLine.join('   '));
-    if(m.auth) lines.push('   Authorisation: '+m.auth);
-    if(m.indication) lines.push('   Indication: '+m.indication);
-    if(m.sig){
-      lines.push('   Instructions:');
-      m.sig.split(/\n+/).forEach(l=>{if(l.trim()) lines.push('     '+l.trim());});
-    }
-  });
-  lines.push('');
-  lines.push(_capFirst(p.sub)+' has been carefully titrated to this regimen, has demonstrated good therapeutic response, and tolerates the medication well with no significant adverse effects at present.');
-  lines.push('');
-  lines.push('SPECIALIST RECOMMENDATION');
-  lines.push('I support '+gp+' taking over ongoing prescribing of '+fullName+'\'s ADHD stimulant medication in accordance with the applicable state prescribing framework. This letter confirms specialist diagnosis, initiation and stabilisation of treatment, and is provided as the written specialist recommendation required to support any necessary state authority, permit, notification, or approval process. Please attach this letter to your relevant authority application or retain it in the patient\'s record as required by your jurisdiction.');
-
-  if(hocState.inc.has('authority')){
-    lines.push('');
-    lines.push('═══ GP PRESCRIBING GUIDE, ADHD STIMULANT MEDICATIONS ═══');
-    lines.push('Prescribing regulations across Australian states and territories are subject to ongoing change. Always verify current requirements with your state health authority before applying for prescribing authority. Document last reviewed April 2026.');
-    lines.push('');
-    lines.push('UNIVERSAL PRESCRIBING STEPS (all jurisdictions)');
-    lines.push('1. Check your state RTPM system first, review SafeScript / equivalent before every stimulant prescription.');
-    lines.push('2. Review history, confirm diagnosis and current regimen; assess mental health, substance use, cardiovascular history; red flags for misuse, psychosis, mania.');
-    lines.push('3. Confirm monitoring requirements, response, adherence, adverse effects, mental state, substance use risk every review; BP, HR, weight at least every 6–12 months; ECG when clinically indicated.');
-    lines.push('4. Obtain authority then prescribe, complete any required RTPM registration, permit, approval, authority or notification for your state, then issue the prescription.');
-    lines.push('');
-    lines.push('STATE-BY-STATE AUTHORITY GUIDE');
-    lines.push('');
-    lines.push('NEW SOUTH WALES, SafeScript NSW (safescript.health.nsw.gov.au)');
-    lines.push('  1. Check SafeScript NSW before every script.');
-    lines.push('  2. Apply to become a NSW continuation prescriber via the ADHD care in general practice pathway: aci.health.nsw.gov.au/projects/adhd-in-general-practice/clinicians/how-to-apply');
-    lines.push('  3. Once approved, prescribe within the NSW continuation prescriber framework.');
-    lines.push('  Contact: NSW Health Pharmaceutical Regulatory Unit, 02 9424 5923');
-    lines.push('');
-    lines.push('VICTORIA, SafeScript VIC (safescript.vic.gov.au)');
-    lines.push('  1. Check SafeScript VIC before prescribing.');
-    lines.push('  2. Apply for a Schedule 8 stimulant permit before prescribing, attach this letter.');
-    lines.push('  3. Permit requirements: health.vic.gov.au/drugs-and-poisons/stimulants-for-adhd-or-narcolepsy-permit-requirements');
-    lines.push('  Contact: VIC Safer Prescribing Team, dpcs@dhhs.vic.gov.au');
-    lines.push('');
-    lines.push('QUEENSLAND, QScript (qld.gov.au/health/conditions/all/qscript)');
-    lines.push('  1. Check QScript before prescribing.');
-    lines.push('  2. Confirm you hold FRACGP or FACRRM fellowship (qualifies as specialist GP under the QLD framework, December 2025).');
-    lines.push('  3. Include the condition name on the script and your qualifications as your prescribing authorisation.');
-    lines.push('  Contact: QLD Monitored Medicines Unit, 13 78 46 | MMU@health.qld.gov.au');
-    lines.push('');
-    lines.push('SOUTH AUSTRALIA, ScriptCheckSA (scriptcheck.sa.gov.au)');
-    lines.push('  1. Check ScriptCheckSA before prescribing.');
-    lines.push('  2. Apply for a Section 18A authority via ScriptCheckSA (paper forms no longer accepted as of January 2026), with this letter attached.');
-    lines.push('  3. Info: cdn.wchn.sa.gov.au/downloads/WCH/professionals/gp/ADHD/ADHD-Shared-Care-GP-Information-March-2025.pdf');
-    lines.push('  Contact: SA Health DDU, 1300 652 584 | healthdrugsofdependenceunit@sa.gov.au');
-    lines.push('');
-    lines.push('WESTERN AUSTRALIA, ScriptCheckWA (scriptcheck.health.wa.gov.au)');
-    lines.push('  1. Check ScriptCheckWA (mandatory).');
-    lines.push('  2. WA requires a urine drug screen (ANZ Standard 4308) for all patients aged 16+ before commencing treatment.');
-    lines.push('  3. Prescribe under WA shared-care rules. For non-routine cases (comorbid SUD, doses above limits, history of psychosis), obtain patient-specific authorisation from the WA Stimulant Assessment Panel.');
-    lines.push('  Contact: WA Stimulants, 08 9222 4424 | stimulants@health.wa.gov.au');
-    lines.push('');
-    lines.push('ACT, Canberra Script (canberrascript.act.gov.au)');
-    lines.push('  1. Check Canberra Script (mandatory under the ACT Standing CHO Approval NI2026-8 pathway).');
-    lines.push('  2. Complete the required one-off notification to ACT Health Protection Services.');
-    lines.push('  3. Electronic prescribing (eScripts) only, handwritten scripts not valid under this pathway.');
-    lines.push('  Contact: ACT Health Protection Services, 02 6205 0998 | hps@act.gov.au');
-    lines.push('');
-    lines.push('NORTHERN TERRITORY, NTScript (health.nt.gov.au/professionals/medicines-and-poisons)');
-    lines.push('  1. Check NTScript before prescribing.');
-    lines.push('  2. Apply for individual CHO approval before prescribing, required for each patient in the NT.');
-    lines.push('  3. Ongoing specialist involvement is required under the NT framework.');
-    lines.push('  Contact: NT Medicines and Poisons Control, 08 8922 7341 | poisonscontrol@nt.gov.au');
-    lines.push('');
-    lines.push('TASMANIA, TasScript (health.tas.gov.au/health-topics/drugs-and-poisons/information-for-medical-practitioners)');
-    lines.push('  1. Check TasScript before prescribing.');
-    lines.push('  2. Apply for a Section 59E authority through the Pharmaceutical Services Branch, with this letter attached.');
-    lines.push('  3. Guidance: health.tas.gov.au/publications/seeking-authorisation-prescribe-s8-psychostimulants-tasmania');
-    lines.push('  Contact: TAS Pharmaceutical Services Branch, 03 6166 0400 | pharmserv@health.tas.gov.au');
-  }
-
-  if(hocState.inc.has('monitoring')){
-    lines.push('');
-    lines.push('CARDIOVASCULAR & GENERAL MONITORING');
-    lines.push('Stimulants cause sympathomimetic effects, small average increases in heart rate (~5–7 bpm) and systolic BP (~1–5 mmHg), clinically significant in vulnerable patients.');
-    lines.push('• Every review: therapeutic benefit, adherence, adverse effects, mental state, substance use risk, cardiovascular status; resting BP and pulse.');
-    lines.push('• Every 6–12 months: BP, HR, weight.');
-    lines.push('• ECG: cardiac history, exertional symptoms, syncope, palpitations, significant family history of arrhythmia or sudden death, or persistently abnormal parameters.');
-    lines.push('• Refer to cardiology if: persistent BP >140/90, HR >100 at rest, new arrhythmia, chest pain, or unexplained syncope.');
-    lines.push('• Use with caution in: significant structural heart disease, severe hypertension, recent coronary events, or arrhythmias, seek specialist advice before continuing.');
-    lines.push('• Urine drug screening: at your discretion, does not imply misuse.');
-    lines.push('• Recheck SafeScript / RTPM before every prescription.');
-    lines.push('• Review at least every 6 months; sooner if any concerns.');
-  }
-
-  if(hocState.inc.has('sideeffects')){
-    lines.push('');
-    lines.push('COMMON SIDE EFFECTS, MANAGEMENT');
-    lines.push('• Reduced appetite / weight loss, substantial breakfast before dosing; high-calorie evening meal once medication has worn off; protein-rich snacks; consider weekend medication holidays.');
-    lines.push('• Headache, usually transient; hydration, regular meals; review dose; check BP; may also be due to bruxism, consider dose adjustment or relaxation measures.');
-    lines.push('• Dry mouth / nausea, take with food; adequate hydration; usually settles with time.');
-    lines.push('• Rebound irritability / mood lability, review dose timing; reduce inter-dose gap; consider formulation change; refer to psychiatrist if persistent.');
-    lines.push('• Increased anxiety, usually improves if anxiety is secondary to ADHD; may indicate dose too high, reduce; treat underlying anxiety separately if present; consider non-stimulant alternative.');
-    lines.push('• Elevated BP / HR, reduce dose; ECG if indicated; clonidine may help with sleep, hyperarousal and BP together; refer to psychiatrist if persistent.');
-    lines.push('• Emotional blunting / "zombie", DOSE TOO HIGH; reduce, do not tolerate.');
-  }
-
-  if(hocState.inc.has('sleep')){
-    lines.push('');
-    lines.push('MANAGING INSOMNIA');
-    lines.push('Insomnia is common in ADHD. Stimulants may or may not worsen it, many patients actually sleep better on treatment due to reduced stress from improved task management. ADHD is strongly associated with Delayed Sleep Phase Syndrome.');
-    lines.push('');
-    lines.push('Initial actions:');
-    lines.push('  • Short-acting stimulant: move last dose to ≥6–8 hours before bedtime.');
-    lines.push('  • Long-acting: take earlier in the day.');
-    lines.push('  • Reduce caffeine, cut off at least 10 hours before bed.');
-    lines.push('  • Optimise sleep hygiene (below).');
-    lines.push('  • CBT-I (psychologist or This Way Up) for willing patients.');
-    lines.push('');
-    lines.push('Sleep hygiene:');
-    lines.push('  • Fixed wake time 7 days/week.');
-    lines.push('  • Morning bright light therapy (Re-Timer 3 for 30–60 min within 1 hr of waking).');
-    lines.push('  • Melatonin 2–4mg as a chronobiotic, taken 3–4 hours before desired bedtime (not at bedtime).');
-    lines.push('  • 10-3-2-1-0 wind-down: caffeine 10 hrs before bed; no heavy meals or alcohol 3 hrs before; stop work 2 hrs before; screens off 1 hr before; sleep mask + earplugs at bedtime.');
-    lines.push('');
-    lines.push('Medication options:');
-    lines.push('  • Melatonin 1–5mg, highly effective, especially in ADHD/ASD; 3–4 hrs before bed.');
-    lines.push('  • Clonidine 50–200mcg, useful for nocturnal agitation or hyperarousal.');
-    lines.push('  • Lemborexant 5–10mg.');
-    lines.push('  • Suvorexant 15–30mg.');
-    lines.push('  • Doxylamine 12.5–50mg, short-term; next-day sedation common.');
-    lines.push('  • Mirtazapine 15–30mg, also addresses mood / anxiety; monitor weight.');
-    lines.push('  • Quetiapine 12.5–50mg IR.');
-    lines.push('  • Benzodiazepines, reserve for severe insomnia crisis only, <4 weeks.');
-    lines.push('');
-    lines.push('Recommended products: Re-Timer 3 light therapy glasses (retimer.com.au); Manta Sleep SOUND mask (mantasleep.com.au); Loop Dream / Quiet 2 earplugs (au.loopearplugs.com).');
-  }
-
-  if(hocState.inc.has('nonstim')){
-    lines.push('');
-    lines.push('NON-STIMULANT ALTERNATIVES (no S8 authority required)');
-    lines.push('• Atomoxetine (Strattera), selective NRI; once daily; 4–12 weeks to full effect; useful for comorbid anxiety; rare hepatotoxicity. Most psychiatrists are happy to initiate this and create a titration plan.');
-    lines.push('• Guanfacine XR (Intuniv), alpha-2 agonist; useful for hyperactivity and impulsivity; monitor BP; cannot stop abruptly. PBS access requires childhood diagnosis, otherwise ~$30–50/month privately.');
-    lines.push('• Clonidine (Catapres), off-label adjunct; primarily for sleep and tics; monitor BP; can be very effective for nocturnal agitation or hyperarousal.');
-  }
-
-  if(hocState.inc.has('referback')){
-    lines.push('');
-    lines.push('WHEN TO REFER BACK TO PSYCHIATRY');
-    lines.push('• Inadequate treatment response or need for dose escalation beyond the current regimen.');
-    lines.push('• New psychiatric symptoms not warranting ED presentation.');
-    lines.push('• Concerns about whether the patient should remain on stimulants.');
-    lines.push('• Significant or persistent side effects.');
-    lines.push('• Pregnancy or breastfeeding.');
-    lines.push('');
-    lines.push('PSYCHOSIS OR MANIA, PSYCHIATRIC EMERGENCY');
-    lines.push('Rare but more common in patients combining stimulants with cannabis. Cease stimulant medication immediately. Make a judgement call about sending the patient to ED (recommended), or manage in the community with antipsychotics while arranging urgent public community mental health review.');
-  }
-
-  if(hocState.inc.has('resources')){
-    lines.push('');
-    lines.push('USEFUL RESOURCES');
-    lines.push('• Pandion Health state-by-state guide (March 2026): pandionhealth.com.au/adhd-stimulant-prescribing-in-australia-a-step-by-step-guide-for-every-state');
-    lines.push('• RACGP Adult ADHD in General Practice: racgp.org.au/FSDEDEV/media/documents/Faculties/SI/RACGP-Adult-ADHD-in-general-practice.pdf');
-    lines.push('• AADPA Prescribing Regulations guide (updated regularly): aadpa.com.au/adhd-stimulant-prescribing-regulations-in-australia-new-zealand');
-    lines.push('• AADPA Prescribing Guide for GPs: aadpa.com.au/adhd-prescribing-guide-for-general-practice');
-  }
-
-  if(notes){
-    lines.push('');
-    lines.push('ADDITIONAL NOTES');
-    notes.split(/\n+/).forEach(l=>{if(l.trim()) lines.push(l.trim());});
-  }
-
-  lines.push('');
-  lines.push('Please do not hesitate to contact my rooms with any questions or concerns.');
-  lines.push('');
-  lines.push('Yours sincerely,');
-  lines.push('');
-  lines.push(clin||'[Your name]');
-  if(quals) lines.push(quals);
-  lines.push('Consultant Psychiatrist');
-
-  document.getElementById('hoc-out').textContent = lines.join('\n');
+  wrap.innerHTML = html;
 }
-function copyHOC(btn){
-  const t = document.getElementById('hoc-out').textContent;
-  if(!t.trim()) return;
-  navigator.clipboard.writeText(t).then(()=>flashCopy(btn,'Copy letter'));
+function copyExample(tid, btn){
+  const t = document.getElementById(tid);
+  if(!t) return;
+  navigator.clipboard.writeText(t.textContent).then(()=>flashCopy(btn,'Copy'));
 }
 
 // =================== INIT ===================
@@ -3083,11 +2740,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderMSE();
   renderPE();
   renderTit();
-  renderFUNumStrip();
-  fuRender();
-  renderTrt();
-  initHocMeds();
-  hocRender();
+  renderExamples('fu-examples', FU_EXAMPLES);
+  renderExamples('trt-examples', TRT_EXAMPLES);
+  renderExamples('hoc-examples', HOC_EXAMPLES);
 });
 </script>
 </body>
