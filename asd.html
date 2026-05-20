@@ -222,7 +222,7 @@ select.inp{appearance:none}
       <span class="pill" id="pill-crita">A: 0/3</span>
       <span class="pill" id="pill-critb">B: 0/4</span>
       <span class="pill" id="pill-dx">Dx: ?</span>
-      <button onclick="window.location.reload()" style="padding:3px 8px;border-radius:999px;border:1.5px solid #dc2626;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Reset</button>
+      <button onclick="resetAssessment()" style="padding:3px 8px;border-radius:999px;border:1.5px solid #dc2626;background:#450a0a;color:#fca5a5;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Reset</button>
     </div>
   </div>
   <div class="tb-row2">
@@ -1329,6 +1329,7 @@ function loadState(){
 }
 let S = loadState();
 function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(S)); }
+function resetAssessment(){ if(!confirm('Reset all patient data? Clinician details will be kept. This cannot be undone.')){ return; } localStorage.removeItem(STORAGE_KEY); window.location.reload(); }
 function loadClin(){ try{ return JSON.parse(localStorage.getItem(CLIN_KEY)||'{}'); }catch(e){ return {}; } }
 function saveClin(){
   const cd={ name:gv('drName'), creds:gv('drQuals'), ahpra:gv('drAHPRA'), provider:gv('drProvider') };
