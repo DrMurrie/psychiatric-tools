@@ -686,33 +686,41 @@ function buildPasteHtml(){
     c.groups.forEach(function(g){g.items.forEach(function(item){if(c.sel[item.id])hasAny=true;});});
   });
   if(!hasAny) return null;
-  var h='<div style="font-family:Arial,sans-serif;font-size:10pt;line-height:1.55;color:#111;max-width:780px">';
-  h+='<p style="font-size:16pt;font-weight:bold;margin:0 0 4px">Psychoeducation Handout</p>';
-  h+='<p style="font-size:9pt;color:#555;margin:0 0 14px">Patient: <b>'+esc(name)+'</b>';
-  if(ds) h+=' &nbsp;|&nbsp; '+esc(ds);
-  h+=' &nbsp;|&nbsp; Clinician: <b>'+esc(dr)+'</b></p>';
+  var sp='<p style="margin:0;line-height:1.2">&nbsp;</p>';
+  var h='<div style="font-family:Arial,sans-serif;font-size:10pt;line-height:1.6;color:#111">';
+  h+='<p style="font-size:14pt;font-weight:bold;margin:0"><b>Psychoeducation Handout</b></p>';
+  h+=sp;
+  h+='<p style="font-size:9pt;color:#555;margin:0">Patient: <b>'+esc(name)+'</b>';
+  if(ds) h+=' | '+esc(ds);
+  h+=' | Clinician: <b>'+esc(dr)+'</b></p>';
+  h+=sp; h+=sp;
   ['adhd','asd','ocd','ins','ptsd','an','aud','bp1','anx'].forEach(function(cond){
     if(!SHOW[cond]) return;
     var c=CONDITIONS[cond],meta=CONDITION_META[cond];
     var selItems=getSelectedItems(c.groups,c.sel);
     if(!selItems.length) return;
     var bg=bgMap[cond]||'#1e3a5f';
-    h+='<p style="font-size:13pt;font-weight:bold;color:#fff;background:'+bg+';padding:5px 9px;margin:16px 0 8px">'+esc(meta.label)+'</p>';
+    h+='<p style="font-size:12pt;font-weight:bold;color:#fff;background:'+bg+';padding:4px 8px;margin:0"><b>'+esc(meta.label)+'</b></p>';
+    h+=sp; h+=sp;
     var curGroup=null;
     c.groups.forEach(function(g){
       g.items.forEach(function(item){
         if(!c.sel[item.id]) return;
         if(g.label&&g.label!==curGroup){
           curGroup=g.label;
-          h+='<p style="font-size:8pt;font-weight:bold;text-transform:uppercase;margin:10px 0 4px;color:#444">'+esc(g.label)+'</p>';
+          h+='<p style="font-weight:bold;text-transform:uppercase;font-size:8pt;color:#444;margin:0"><b>'+esc(g.label)+'</b></p>';
+          h+=sp;
         }
-        h+='<div style="margin:0 0 14px;border:1px solid #ddd;padding:8px 11px">';
-        h+='<p style="font-weight:bold;font-size:11pt;margin:0 0 6px;padding-bottom:5px;border-bottom:1px solid #e5e7eb">'+esc(item.title)+'</p>';
+        h+='<div style="border:1px solid #ccc;padding:7px 10px">';
+        h+='<p style="font-weight:bold;margin:0 0 4px;padding-bottom:4px;border-bottom:1px solid #e0e0e0"><b>'+esc(item.title)+'</b></p>';
         h+='<div style="font-size:10pt;line-height:1.6">'+styleBody(item.body)+'</div>';
         h+='</div>';
+        h+=sp; h+=sp;
       });
     });
+    h+=sp;
   });
+  h+='<p style="color:#999;font-size:8pt;font-style:italic;margin:0"><i>This handout was prepared for '+esc(name)+(ds?' on '+esc(ds):'')+'. It is not a substitute for clinical advice.</i></p>';
   h+='</div>';
   return h;
 }

@@ -758,21 +758,66 @@ function dlDocx(){
   setTimeout(function(){URL.revokeObjectURL(url);},2000);
   flash($('btn-docx'),'Downloaded!');
 }
+function buildPasteHtml(){
+  if(!buildHandout()) return null;
+  var name=f('ptName')||'Patient';
+  var dr=f('drName')||'Your clinician';
+  var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
+  var sp='<p style="margin:0;line-height:1.2">&nbsp;</p>';
+  var h='<div style="font-family:Arial,sans-serif;font-size:10pt;line-height:1.6;color:#111">';
+  h+='<p style="font-size:14pt;font-weight:bold;margin:0"><b>Bipolar 1 Disorder — Psychoeducation Handout</b></p>';
+  h+=sp;
+  h+='<p style="font-size:9pt;color:#555;margin:0">Patient: <b>'+esc(name)+'</b>';
+  if(ds) h+=' | '+esc(ds);
+  if(dr) h+=' | Clinician: <b>'+esc(dr)+'</b>';
+  h+='</p>';
+  h+=sp; h+=sp;
+  var curGroup=null;
+  BP1_PE_GROUPS.forEach(function(g){
+    g.items.forEach(function(item){
+      if(!sel[item.id]) return;
+      if(g.label&&g.label!==curGroup){
+        curGroup=g.label;
+        h+='<p style="font-weight:bold;text-transform:uppercase;font-size:8pt;color:#444;margin:0"><b>'+esc(g.label)+'</b></p>';
+        h+=sp;
+      }
+      h+='<div style="border:1px solid #ccc;padding:7px 10px">';
+      h+='<p style="font-weight:bold;margin:0 0 4px;padding-bottom:4px;border-bottom:1px solid #e0e0e0"><b>'+esc(item.title)+'</b></p>';
+      h+=item.body;
+      h+='</div>';
+      h+=sp; h+=sp;
+    });
+  });
+  h+='<p style="color:#999;font-size:8pt;font-style:italic;margin:0"><i>This handout was prepared for '+esc(name)+(ds?' on '+esc(ds):'')+'. It is not a substitute for clinical advice.</i></p>';
+  h+='</div>';
+  return h;
+}
 function copyPlain(btn){
-  var pv=$('preview');
   if(!buildHandout()){alert('No topics selected.');return;}
+  var pv=$('preview');
   navigator.clipboard.writeText(pv.innerText||pv.textContent).then(function(){flash(btn,'Copied!');}).catch(function(){});
 }
 function copyFormatted(btn){
-  var docx=buildDocxHtml(); if(!docx){alert('No topics selected.');return;}
-  if(window.ClipboardItem){
-    var blob=new Blob([docx],{type:'text/html'});
-    navigator.clipboard.write([new ClipboardItem({'text/html':blob})]).then(function(){flash(btn,'Copied!');}).catch(function(){
-      navigator.clipboard.writeText($('preview').innerText||'').then(function(){flash(btn,'Copied (plain)!');});
-    });
-  } else {
-    navigator.clipboard.writeText($('preview').innerText||'').then(function(){flash(btn,'Copied!');});
-  }
+  var content=buildPasteHtml();
+  if(!content){alert('No topics selected.');return;}
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;left:-9999px;top:0;width:780px;background:#fff;overflow:hidden';
+  el.innerHTML=content;
+  document.body.appendChild(el);
+  var range=document.createRange();
+  range.selectNodeContents(el);
+  var wsel=window.getSelection();
+  wsel.removeAllRanges();
+  wsel.addRange(range);
+  var ok=false;
+  try{ok=document.execCommand('copy');}catch(ex){}
+  wsel.removeAllRanges();
+  document.body.removeChild(el);
+  if(ok){flash(btn,'Copied!');}
+  else if(window.ClipboardItem){
+    var blob=new Blob([content],{type:'text/html'});
+    navigator.clipboard.write([new ClipboardItem({'text/html':blob})]).then(function(){flash(btn,'Copied!');}).catch(function(){copyPlain(btn);});
+  } else {copyPlain(btn);}
 }
 function flash(btn,msg){
   if(!btn)return;
