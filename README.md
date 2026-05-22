@@ -6,16 +6,27 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 
 ---
 
-## ADHD Assessment
+## ADHD
 
-### [ADHD Assessment Follow Along Guide](adhd6.html)
-A guide to follow along with during an ADHD assessment.
+### [ADHD Telehealth Guide](adhd-telehealth-guide.html)
+The main reference guide for ADHD telehealth consultations.
 
-### [Ben's Amazing ADHD Assessment Generator](adhd5.html)
-Everything you need for an ADHD assessment or follow-up review. Perfect for beginners and experienced psychiatrists alike.
+### [ADHD Telehealth Guide (simpler)](adhd6.html)
+A simpler, easier-to-follow version of the telehealth guide.
 
-### [ASD Assessment v2](asd.html)
+### [ADHD Telehealth Guide Pro](adhd5.html)
+The full-featured version — everything you need for an ADHD assessment or follow-up review. Perfect for beginners and experienced psychiatrists alike.
+
+---
+
+## ASD
+
+### [ASD Assessment](asd.html)
 A structured assessment tool for autism spectrum disorder.
+
+---
+
+## Clinical Tools
 
 ### [Titration Builder](titration.html)
 Build a medication titration plan. Generates a printable plan for the patient.
@@ -50,7 +61,7 @@ Browse psychoeducation topics across conditions. Covers:
 - Anxiety
 
 ### [ADHD Handout Generator](ADHD-Patient-Guide-Generator-30.html)
-A web app to deliver psychoeducation and create a titration schedule for your patient. Generates a nice handout to print or send, plus the plain text for your eScript. You can choose how much info to include — some patients need more, some less. Includes non-pharmacological options. Most of this is already built into the assessment generator above.
+Deliver psychoeducation and create a titration schedule for your patient. Generates a printable handout plus the plain text for your eScript. Choose how much info to include and whether to add non-pharmacological options. Most of this is already built into the ADHD Telehealth Guide Pro.
 
 ### [ADHD Patient Reader](ADHD-Patient-Reader.html)
 A different psychoeducation delivery style.
@@ -59,8 +70,8 @@ A different psychoeducation delivery style.
 
 ## Rating Scales
 
+- [Psychometric Scales](psychometric-scales.html)
 - [YBOCS](ybocs_scale.html) — Yale-Brown Obsessive Compulsive Scale
-- [Depression Rating Scales](depression-scales.html)
 - [DIVA and ASRS in full](diva_asrs.html)
 
 ---
@@ -69,7 +80,6 @@ A different psychoeducation delivery style.
 
 #### Other
 
-- [ADHD Telehealth Reference Guide](adhd-telehealth-guide.html)
 - [Old ADHD Assessment Generator](adhd3.html)
 
 </sub>
