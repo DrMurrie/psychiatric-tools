@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate anxiety-psychoeducation.html — Anxiety Disorders psychoeducation tool."""
+"""Generate anxiety-psychoeducation.html  -  Anxiety Disorders psychoeducation tool."""
 
 def esc(s):
     return s.replace("'", "\\'")
@@ -410,7 +410,7 @@ html = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Anxiety Disorders Psychoeducation — Dr Benjamin Murrie</title>
+<title>Anxiety Disorders Psychoeducation  -  Dr Benjamin Murrie</title>
 <style>
 :root{--bg:#f0f2f5;--surface:#fff;--border:#e2e6ed;--text:#1a1d23;--muted:#6b7280;--anx:#4f46e5;--anx-bg:#eef2ff;--anx-dark:#312e81;--anx-mid:#4338ca;--navy:#0f172a;--sans:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -571,7 +571,7 @@ function buildHandout(){
   if(!hasAny) return null;
   var h='';
   h+='<div class="ho-header">';
-  h+='<div class="ho-pt">Psychoeducation Handout — Anxiety Disorders</div>';
+  h+='<div class="ho-pt">Psychoeducation Handout  -  Anxiety Disorders</div>';
   h+='<div class="ho-meta">Patient: <strong>'+esc(name)+'</strong>';
   if(ds) h+=' &nbsp;|&nbsp; '+esc(ds);
   h+=' &nbsp;|&nbsp; Clinician: <strong>'+esc(dr)+'</strong></div>';
@@ -643,13 +643,13 @@ function buildPasteHtml(){
   var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
   var sp='<p style="margin:0;line-height:1.2">&nbsp;</p>';
   var h='<div style="font-family:Arial,sans-serif;font-size:10pt;line-height:1.6;color:#111">';
-  h+='<p style="font-size:14pt;font-weight:bold;margin:0"><b>Anxiety Disorders — Psychoeducation Handout</b></p>';
+  h+='<p style="font-size:14pt;font-weight:bold;margin:0"><b>Anxiety Disorders  -  Psychoeducation Handout</b></p>';
   h+=sp;
   h+='<p style="font-size:9pt;color:#555;margin:0">Patient: <b>'+esc(name)+'</b>';
   if(ds) h+=' | '+esc(ds);
   if(dr) h+=' | Clinician: <b>'+esc(dr)+'</b>';
   h+='</p>';
-  h+=sp; h+=sp;
+  h+=sp;
   var curGroup=null;
   ANX_PE_GROUPS.forEach(function(g){
     g.items.forEach(function(item){
@@ -664,7 +664,7 @@ function buildPasteHtml(){
       h+='<br>';
       h+=spaceBody(item.body);
       h+='</div>';
-      h+=sp; h+=sp;
+      h+=sp;
     });
   });
   h+='<p style="color:#999;font-size:8pt;font-style:italic;margin:0"><i>This handout was prepared for '+esc(name)+(ds?' on '+esc(ds):'')+'. It is not a substitute for clinical advice.</i></p>';
