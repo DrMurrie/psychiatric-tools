@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate psychoeducation.html — unified tool merging ADHD, ASD, OCD, Insomnia, PTSD, AN, AUD, BP1."""
+"""Generate psychoeducation.html  -  unified tool merging ADHD, ASD, OCD, Insomnia, PTSD, AN, AUD, BP1."""
 import re, os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
@@ -60,7 +60,7 @@ html = r"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Psychoeducation — Dr Benjamin Murrie</title>
+<title>Psychoeducation  -  Dr Benjamin Murrie</title>
 <style>
 :root{
   --bg:#f0f2f5;--surface:#fff;--border:#e2e6ed;--text:#1a1d23;--muted:#6b7280;--navy:#0f172a;
@@ -247,7 +247,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
 <div class="content">
 
-  <div class="section-label" style="margin-top:12px">Select condition — tap to switch</div>
+  <div class="section-label" style="margin-top:12px">Select condition  -  tap to switch</div>
   <div class="disorder-row">
     <button class="dis-btn" id="dis-adhd" onclick="toggleCondition('adhd')">ADHD</button>
     <button class="dis-btn" id="dis-asd" onclick="toggleCondition('asd')">ASD</button>
@@ -262,7 +262,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-adhd" class="condition-block" style="display:none;margin-top:14px">
     <div class="condition-header adhd-h">
-      ADHD — Topics
+      ADHD  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('adhd')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('adhd')">Clear all</button>
@@ -273,7 +273,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-asd" class="condition-block" style="display:none">
     <div class="condition-header asd-h">
-      ASD — Topics
+      ASD  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('asd')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('asd')">Clear all</button>
@@ -284,7 +284,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-ocd" class="condition-block" style="display:none">
     <div class="condition-header ocd-h">
-      OCD — Topics
+      OCD  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('ocd')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('ocd')">Clear all</button>
@@ -295,7 +295,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-ins" class="condition-block" style="display:none">
     <div class="condition-header ins-h">
-      Insomnia — Topics
+      Insomnia  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('ins')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('ins')">Clear all</button>
@@ -306,7 +306,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-ptsd" class="condition-block" style="display:none">
     <div class="condition-header ptsd-h">
-      PTSD — Topics
+      PTSD  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('ptsd')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('ptsd')">Clear all</button>
@@ -317,7 +317,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-an" class="condition-block" style="display:none">
     <div class="condition-header an-h">
-      Anorexia Nervosa — Topics
+      Anorexia Nervosa  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('an')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('an')">Clear all</button>
@@ -328,7 +328,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-aud" class="condition-block" style="display:none">
     <div class="condition-header aud-h">
-      Alcohol Use Disorder — Topics
+      Alcohol Use Disorder  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('aud')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('aud')">Clear all</button>
@@ -339,7 +339,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-bp1" class="condition-block" style="display:none">
     <div class="condition-header bp1-h">
-      Bipolar 1 Disorder — Topics
+      Bipolar 1 Disorder  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('bp1')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('bp1')">Clear all</button>
@@ -350,7 +350,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 
   <div id="block-anx" class="condition-block" style="display:none">
     <div class="condition-header anx-h">
-      Anxiety Disorders — Topics
+      Anxiety Disorders  -  Topics
       <div class="cond-sel-btns">
         <button class="cond-sel-btn" onclick="selectAll('anx')">Select all</button>
         <button class="cond-sel-btn" onclick="clearAll('anx')">Clear all</button>
@@ -585,7 +585,7 @@ function spaceBody(s){
     .replace(/<\/ol>/gi,'</ol><br>');
 }
 
-/* Build Word-compatible HTML directly — no div backgrounds, table-per-topic for reliable spacing */
+/* Build Word-compatible HTML directly  -  no div backgrounds, table-per-topic for reliable spacing */
 function buildDocxHtml(){
   var name=f('ptName')||'Patient';
   var dr=f('drName')||'Your clinician';
@@ -632,7 +632,7 @@ function buildDocxHtml(){
 }
 
 function dlDocx(){
-  var docx=buildDocxHtml(); if(!docx){alert('No topics selected — please tick some topics first.');return;}
+  var docx=buildDocxHtml(); if(!docx){alert('No topics selected  -  please tick some topics first.');return;}
   var name=(f('ptName')||'Patient').replace(/[^a-zA-Z0-9]/g,'_');
   var blob=new Blob(['﻿'+docx],{type:'application/msword;charset=utf-8'});
   var url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -642,7 +642,7 @@ function dlDocx(){
   flash($('btn-docx'),'Downloaded!');
 }
 
-/* Build plain text from data — not from DOM innerText which collapses whitespace */
+/* Build plain text from data  -  not from DOM innerText which collapses whitespace */
 function buildPlainText(){
   var name=f('ptName')||'Patient';
   var dr=f('drName')||'Your clinician';
@@ -660,7 +660,7 @@ function buildPlainText(){
     c.groups.forEach(function(g){
       g.items.forEach(function(item){
         if(!c.sel[item.id]) return;
-        if(g.label&&g.label!==curGroup){curGroup=g.label;lines.push('','— '+g.label.toUpperCase()+' —');}
+        if(g.label&&g.label!==curGroup){curGroup=g.label;lines.push('',' -  '+g.label.toUpperCase()+'  - ');}
         lines.push('','■ '+item.title);
         var tmp=document.createElement('div');
         tmp.innerHTML=item.body;
@@ -675,8 +675,8 @@ function buildPlainText(){
 
 function copyPlain(btn){
   var txt=buildPlainText();
-  if(!txt){alert('No topics selected — please tick some topics first.');return;}
-  navigator.clipboard.writeText(txt).then(function(){flash(btn,'Copied!');}).catch(function(){alert('Copy failed — try Download .doc instead.');});
+  if(!txt){alert('No topics selected  -  please tick some topics first.');return;}
+  navigator.clipboard.writeText(txt).then(function(){flash(btn,'Copied!');}).catch(function(){alert('Copy failed  -  try Download .doc instead.');});
 }
 
 /* Build inline-styled HTML for paste into clinical software */
@@ -699,7 +699,7 @@ function buildPasteHtml(){
   h+='<p style="font-size:9pt;color:#555;margin:0">Patient: <b>'+esc(name)+'</b>';
   if(ds) h+=' | '+esc(ds);
   h+=' | Clinician: <b>'+esc(dr)+'</b></p>';
-  h+=sp; h+=sp;
+  h+=sp;
   ['adhd','asd','ocd','ins','ptsd','an','aud','bp1','anx'].forEach(function(cond){
     if(!SHOW[cond]) return;
     var c=CONDITIONS[cond],meta=CONDITION_META[cond];
@@ -707,7 +707,7 @@ function buildPasteHtml(){
     if(!selItems.length) return;
     var bg=bgMap[cond]||'#1e3a5f';
     h+='<p style="font-size:12pt;font-weight:bold;color:#fff;background:'+bg+';padding:4px 8px;margin:0"><b>'+esc(meta.label)+'</b></p>';
-    h+=sp; h+=sp;
+    h+=sp;
     var curGroup=null;
     c.groups.forEach(function(g){
       g.items.forEach(function(item){
@@ -722,7 +722,7 @@ function buildPasteHtml(){
         h+='<br>';
         h+='<div style="font-size:10pt;line-height:1.6">'+spaceBody(styleBody(item.body))+'</div>';
         h+='</div>';
-        h+=sp; h+=sp;
+        h+=sp;
       });
     });
     h+=sp;
@@ -732,10 +732,10 @@ function buildPasteHtml(){
   return h;
 }
 
-/* Uses execCommand copy on live DOM element — works on file:// and HTTPS, pastes rich text into any app */
+/* Uses execCommand copy on live DOM element  -  works on file:// and HTTPS, pastes rich text into any app */
 function copyFormatted(btn){
   var content=buildPasteHtml();
-  if(!content){alert('No topics selected — please tick some topics first.');return;}
+  if(!content){alert('No topics selected  -  please tick some topics first.');return;}
   var el=document.createElement('div');
   el.style.cssText='position:fixed;left:-9999px;top:0;width:780px;background:#fff;overflow:hidden';
   el.innerHTML=content;
