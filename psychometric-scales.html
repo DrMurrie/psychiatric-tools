@@ -320,6 +320,186 @@
         font-style: italic;
     }
 
+    .chart-toolbar {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    .chart-action-btn {
+        padding: 7px 14px;
+        font-size: 0.82em;
+        background: white;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .chart-action-btn:hover { background: var(--primary-light); }
+    .chart-action-btn.copied { background: var(--success); color: white; border-color: var(--success); }
+    .chart-svg-wrap {
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 6px;
+        padding: 10px;
+        overflow-x: auto;
+    }
+    .chart-svg-wrap svg {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .subscale-header {
+        padding: 10px 18px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.92em;
+        letter-spacing: 0.3px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .anchor-legend {
+        padding: 10px 14px;
+        background: #fffaf0;
+        border-bottom: 1px solid var(--gray-200);
+        font-size: 0.82em;
+        color: var(--gray-700);
+        line-height: 1.5;
+    }
+    .anchor-legend strong { color: var(--gray-900); }
+    .likert-row {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .likert-row:last-child { border-bottom: none; }
+    .likert-row-top {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+    .likert-num {
+        flex: 0 0 32px;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 0.95em;
+    }
+    .likert-chips {
+        display: flex;
+        gap: 4px;
+        flex: 0 0 auto;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .likert-chip {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    .likert-text {
+        flex: 1;
+        font-size: 0.9em;
+        color: var(--gray-800);
+        line-height: 1.45;
+        min-width: 0;
+    }
+    .likert-buttons {
+        display: flex;
+        gap: 6px;
+        padding-left: 42px;
+        flex-wrap: wrap;
+    }
+    .likert-buttons label {
+        cursor: pointer;
+        position: relative;
+        display: block;
+    }
+    .likert-buttons input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+    .likert-btn {
+        display: inline-block;
+        min-width: 38px;
+        padding: 8px 10px;
+        background: white;
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 0.88em;
+        font-weight: 600;
+        color: var(--gray-700);
+        text-align: center;
+        transition: all 0.12s ease;
+        user-select: none;
+    }
+    .likert-buttons label:hover .likert-btn {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .likert-buttons input[type="radio"]:checked + .likert-btn {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    .counter-row {
+        display: flex;
+        gap: 10px;
+        padding-left: 42px;
+        align-items: center;
+    }
+    .counter-btn {
+        width: 34px;
+        height: 34px;
+        background: var(--gray-100);
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--gray-700);
+        cursor: pointer;
+        line-height: 1;
+    }
+    .counter-btn:hover {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .counter-val {
+        width: 64px;
+        padding: 7px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 0.95em;
+        font-weight: 600;
+    }
+    .counter-suffix {
+        font-size: 0.85em;
+        color: var(--gray-600);
+    }
+    .mean-line {
+        padding: 10px 18px;
+        background: #f7fafc;
+        border-bottom: 1px solid var(--gray-200);
+        font-size: 0.9em;
+        font-weight: 600;
+        color: var(--gray-800);
+        text-align: right;
+    }
+    .mean-line .mean-value { color: var(--primary); margin-left: 8px; }
+
     @media (max-width: 600px) {
         .container { padding: 12px; }
         .header { padding: 20px; }
@@ -336,6 +516,10 @@
         .chart-label { flex: 0 0 100px; font-size: 0.78em; }
         .chart-bar-track { height: 20px; }
         .chart-value { font-size: 0.76em; right: 6px; }
+        .likert-buttons { padding-left: 0; gap: 4px; }
+        .likert-btn { min-width: 32px; padding: 6px 6px; font-size: 0.82em; }
+        .counter-row { padding-left: 0; }
+        .likert-num { flex: 0 0 26px; }
     }
 </style>
 </head>
@@ -1000,18 +1184,13 @@
     <!-- EDE-Q (self-report) -->
     <div class="tab-pane" id="tab-edeq">
         <div class="card">
-            <div class="card-title">EDE-Q (Eating Disorder Examination Questionnaire) Instructions</div>
-            <p style="font-size:0.9em;">Self-report adaptation of the EDE (Fairburn &amp; Beglin). 28 items covering the past <strong>28 days</strong>. Attitudinal items 1–12 and 19–28 are rated 0–6 and form four subscales (Restraint, Eating Concern, Shape Concern, Weight Concern). Items 13–18 record behavioural frequencies (objective binge episodes, etc.). Administer the questionnaire on the official EDE-Q 6.0 form (Fairburn / CREDO, Oxford), score the four subscale means (mean of constituent items rated 0–6), and enter them here. The global score is the mean of the four subscale means.</p>
+            <div class="card-title">EDE-Q 6.0 Instructions</div>
+            <p style="font-size:0.9em;">Self-report instrument (Fairburn &amp; Beglin), past <strong>28 days</strong>. 22 attitudinal items rated 0–6 form four subscales (Restraint, Eating Concern, Shape Concern, Weight Concern); 6 behavioural items capture episode counts. Click the rating for each attitudinal item; use the +/- counters for behavioural items. Subscale means and the global score are computed live.</p>
         </div>
 
-        <div class="card">
-            <div class="card-title">Subscale Means (0.00 – 6.00)</div>
-            <div class="section-body" id="edeqSubscales"></div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Behavioural Frequencies (past 28 days, episodes)</div>
-            <div class="section-body" id="edeqBehaviours"></div>
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div class="card-title" style="padding:18px 22px 8px;">Items</div>
+            <div class="section-body" id="edeqItems" style="margin:0; border-radius:0; box-shadow:none;"></div>
         </div>
 
         <div class="card">
@@ -1036,8 +1215,8 @@
         </div>
 
         <div class="score-bar" style="text-align:left; line-height:1.7;">
-            <div><strong>Global score</strong> (mean of 4 subscales): <span id="edeqGlobal">—</span> / 6</div>
-            <div><strong>Clinical-range flag</strong> (Global ≥ 4): <span id="edeqFlag">—</span></div>
+            <div><strong>Restraint:</strong> <span id="edeqMean_R">—</span> &nbsp;·&nbsp; <strong>Eating Concern:</strong> <span id="edeqMean_EC">—</span> &nbsp;·&nbsp; <strong>Shape Concern:</strong> <span id="edeqMean_SC">—</span> &nbsp;·&nbsp; <strong>Weight Concern:</strong> <span id="edeqMean_WC">—</span></div>
+            <div><strong>Global score</strong> (mean of 4 subscales): <span id="edeqGlobal">—</span> / 6 &nbsp;—&nbsp; <strong>Clinical-range (≥ 4):</strong> <span id="edeqFlag">—</span></div>
         </div>
 
         <div class="btn-row">
@@ -1054,7 +1233,7 @@
         </div>
 
         <div class="disclaimer">
-            <strong>Reference:</strong> Fairburn CG, Beglin SJ. Assessment of eating disorders: interview or self-report questionnaire? Int J Eat Disord. 1994;16:363-70. EDE-Q 6.0 reproduced in Fairburn CG. Cognitive Behavior Therapy and Eating Disorders. New York: Guilford Press; 2008. Community-norm mean ≈ 1.5; global ≥ 4 commonly used as clinical threshold (Mond et al, 2006). Items are not reproduced here — use the official EDE-Q 6.0 form.
+            <strong>Reference:</strong> Fairburn CG, Beglin SJ. Int J Eat Disord. 1994;16:363-70. EDE-Q 6.0 (Fairburn 2008). Community-norm mean ≈ 1.5; global ≥ 4 commonly used as a clinical threshold (Mond et al, 2006). Administer using the official EDE-Q 6.0 form (CREDO, Oxford) and click the patient's ratings here. Subscale assignments per Fairburn 2008: R = 1–5; EC = 7, 9, 19, 20, 21; SC = 6, 8, 10, 11, 23, 26, 27, 28; WC = 8, 12, 22, 24, 25.
         </div>
     </div>
 
@@ -1062,18 +1241,12 @@
     <div class="tab-pane" id="tab-ede">
         <div class="card">
             <div class="card-title">EDE Interview Instructions</div>
-            <p style="font-size:0.9em;">Eating Disorder Examination — semi-structured clinical interview (Fairburn, Cooper &amp; O'Connor; current edition EDE 17.0D). Investigator-based ratings over the past <strong>28 days</strong> across four subscales (Restraint, Eating Concern, Shape Concern, Weight Concern) on a 0–6 scale, plus structured probes for behavioural frequencies and diagnostic items. Administer using the official EDE schedule, score each item per the manual, then enter the subscale means and behavioural frequencies here. The global score is the mean of the four subscale means.</p>
+            <p style="font-size:0.9em;">Semi-structured clinical interview (Fairburn, Cooper &amp; O'Connor, EDE 17.0D). Past <strong>28 days</strong>. 22 investigator-rated attitudinal items (0–6) across four subscales (Restraint, Eating Concern, Shape Concern, Weight Concern) plus behavioural episode counts. Click the rating for each item below after administering the interview; subscale means and global update live.</p>
         </div>
 
-        <div class="card">
-            <div class="card-title">Subscale Means (0.00 – 6.00) — past 28 days</div>
-            <div class="section-body" id="edeSubscales"></div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Behavioural Frequencies (episodes)</div>
-            <p style="font-size:0.88em; color:var(--gray-600); margin-bottom:10px;">Enter number of episodes in the time-frame ascertained by the interview (commonly past 28 days; some EDE versions also record past 3 months).</p>
-            <div class="section-body" id="edeBehaviours"></div>
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div class="card-title" style="padding:18px 22px 8px;">Items</div>
+            <div class="section-body" id="edeItems" style="margin:0; border-radius:0; box-shadow:none;"></div>
         </div>
 
         <div class="card">
@@ -1098,8 +1271,8 @@
         </div>
 
         <div class="score-bar" style="text-align:left; line-height:1.7;">
-            <div><strong>Global score</strong> (mean of 4 subscales): <span id="edeGlobal">—</span> / 6</div>
-            <div><strong>Clinical-range flag</strong> (Global ≥ 4): <span id="edeFlag">—</span></div>
+            <div><strong>Restraint:</strong> <span id="edeMean_R">—</span> &nbsp;·&nbsp; <strong>Eating Concern:</strong> <span id="edeMean_EC">—</span> &nbsp;·&nbsp; <strong>Shape Concern:</strong> <span id="edeMean_SC">—</span> &nbsp;·&nbsp; <strong>Weight Concern:</strong> <span id="edeMean_WC">—</span></div>
+            <div><strong>Global score</strong> (mean of 4 subscales): <span id="edeGlobal">—</span> / 6 &nbsp;—&nbsp; <strong>Clinical-range (≥ 4):</strong> <span id="edeFlag">—</span></div>
         </div>
 
         <div class="btn-row">
@@ -1661,32 +1834,106 @@ const CGII_OPTIONS = [
 ];
 
 // ---------- EDE-Q / EDE data ----------
-// Items and probes are proprietary (Fairburn / CREDO, Oxford). Only the
-// subscale structure is encoded here for mean/global aggregation.
 const EDE_SUBSCALES = [
-    { key: 'RES', name: 'Restraint' },
-    { key: 'EC',  name: 'Eating Concern' },
-    { key: 'SC',  name: 'Shape Concern' },
-    { key: 'WC',  name: 'Weight Concern' }
+    { key: 'R',  name: 'Restraint' },
+    { key: 'EC', name: 'Eating Concern' },
+    { key: 'SC', name: 'Shape Concern' },
+    { key: 'WC', name: 'Weight Concern' }
 ];
 
+// EDE-Q 6.0 attitudinal items. Brief paraphrased descriptors are used to
+// identify which form item each row corresponds to; administer using the
+// official EDE-Q 6.0 form. Subscale mapping per Fairburn 2008; item 8
+// contributes to both Shape Concern and Weight Concern.
+const EDEQ_ITEMS = [
+    { num: 1,  anchor: 'days', subs: ['R'],       text: 'Deliberate attempts to limit food intake (to influence shape/weight)' },
+    { num: 2,  anchor: 'days', subs: ['R'],       text: 'Long periods (≥ 8 waking hours) without eating (to influence shape/weight)' },
+    { num: 3,  anchor: 'days', subs: ['R'],       text: 'Excluded preferred foods (to influence shape/weight)' },
+    { num: 4,  anchor: 'days', subs: ['R'],       text: 'Followed definite rules about eating (e.g., calorie limit)' },
+    { num: 5,  anchor: 'days', subs: ['R'],       text: 'Desire for an empty stomach (to influence shape/weight)' },
+    { num: 6,  anchor: 'days', subs: ['SC'],      text: 'Desire for a totally flat stomach' },
+    { num: 7,  anchor: 'days', subs: ['EC'],      text: 'Difficulty concentrating because of thoughts about food/eating/calories' },
+    { num: 8,  anchor: 'days', subs: ['SC','WC'], text: 'Difficulty concentrating because of thoughts about shape/weight' },
+    { num: 9,  anchor: 'days', subs: ['EC'],      text: 'Fear of losing control over eating' },
+    { num: 10, anchor: 'days', subs: ['SC'],      text: 'Fear of gaining weight' },
+    { num: 11, anchor: 'days', subs: ['SC'],      text: 'Felt fat' },
+    { num: 12, anchor: 'days', subs: ['WC'],      text: 'Strong desire to lose weight' },
+    { num: 19, anchor: 'days', subs: ['EC'],      text: 'Eaten in secret (not counting binge episodes)' },
+    { num: 20, anchor: 'prop', subs: ['EC'],      text: 'Proportion of meals followed by guilt re: shape/weight (not counting binges)' },
+    { num: 21, anchor: 'days', subs: ['EC'],      text: 'Concerned about others seeing patient eat (not counting binges)' },
+    { num: 22, anchor: 'int',  subs: ['WC'],      text: 'Weight influencing self-judgement as a person' },
+    { num: 23, anchor: 'int',  subs: ['SC'],      text: 'Shape influencing self-judgement as a person' },
+    { num: 24, anchor: 'int',  subs: ['WC'],      text: 'Upset by being asked to weigh once weekly for 4 weeks' },
+    { num: 25, anchor: 'int',  subs: ['WC'],      text: 'Dissatisfaction with weight' },
+    { num: 26, anchor: 'int',  subs: ['SC'],      text: 'Dissatisfaction with shape' },
+    { num: 27, anchor: 'int',  subs: ['SC'],      text: 'Discomfort seeing own body (mirror, reflection, undressing, bathing)' },
+    { num: 28, anchor: 'int',  subs: ['SC'],      text: 'Discomfort about others seeing patient\'s shape (changing rooms, swimming, tight clothes)' }
+];
+
+// EDE-Q 6.0 behavioural items (counts over past 28 days). Item 18 in some
+// versions also captures objective overeating without loss of control.
 const EDEQ_BEHAVIOURS = [
-    { key: 'OBE', name: 'Objective binge episodes (OBEs)',                  hint: 'Large amount of food + loss of control' },
-    { key: 'SBE', name: 'Subjective binge episodes (SBEs)',                 hint: 'Loss of control without objectively large amount' },
-    { key: 'VOM', name: 'Self-induced vomiting',                            hint: 'To control shape or weight' },
-    { key: 'LAX', name: 'Laxative misuse',                                  hint: 'To control shape or weight' },
-    { key: 'EXR', name: 'Driven / compulsive exercise',                     hint: 'To control shape, weight or body composition' }
+    { num: 13, key: 'epLarge',  name: 'Times eaten unusually large amount of food (regardless of control)',          hint: 'Per EDE-Q item 13' },
+    { num: 14, key: 'epOBE',    name: 'Of those, times with sense of loss of control over eating (OBE episodes)',    hint: 'Per EDE-Q item 14' },
+    { num: 15, key: 'daysOBE',  name: 'Days on which OBE episodes occurred (large amount + loss of control)',        hint: 'Per EDE-Q item 15' },
+    { num: 16, key: 'vom',      name: 'Self-induced vomiting (to control shape/weight)',                              hint: 'Per EDE-Q item 16' },
+    { num: 17, key: 'lax',      name: 'Laxative misuse (to control shape/weight)',                                    hint: 'Per EDE-Q item 17' },
+    { num: 18, key: 'exr',      name: 'Driven / compulsive exercise (to control weight/shape/burn calories)',         hint: 'Per EDE-Q item 18' }
+];
+
+// EDE 17.0D interview items, organised by subscale (per Fairburn 2008).
+// 'Preoccupation with shape or weight' contributes to both Shape Concern
+// and Weight Concern. Item ordering within a subscale is the standard
+// schedule order.
+const EDE_ITEMS = [
+    // Restraint (5)
+    { sub: 'R',     key: 'restraintEat',    text: 'Restraint over eating' },
+    { sub: 'R',     key: 'avoidEat',        text: 'Avoidance of eating' },
+    { sub: 'R',     key: 'emptyStom',       text: 'Empty stomach' },
+    { sub: 'R',     key: 'foodAvoid',       text: 'Food avoidance' },
+    { sub: 'R',     key: 'dietRules',       text: 'Dietary rules' },
+    // Eating Concern (5)
+    { sub: 'EC',    key: 'preocFood',       text: 'Preoccupation with food, eating or calories' },
+    { sub: 'EC',    key: 'fearLOC',         text: 'Fear of losing control over eating' },
+    { sub: 'EC',    key: 'eatSecret',       text: 'Eating in secret' },
+    { sub: 'EC',    key: 'socialEat',       text: 'Social eating' },
+    { sub: 'EC',    key: 'guiltEat',        text: 'Guilt about eating' },
+    // Shape Concern (8) — preocShapeWt is shared with Weight Concern
+    { sub: 'SC',    key: 'dissatShape',     text: 'Dissatisfaction with shape' },
+    { sub: 'SC,WC', key: 'preocShapeWt',    text: 'Preoccupation with shape or weight (counts toward SC and WC)' },
+    { sub: 'SC',    key: 'impShape',        text: 'Importance of shape' },
+    { sub: 'SC',    key: 'fearWtGain',      text: 'Fear of weight gain' },
+    { sub: 'SC',    key: 'discomfortBody',  text: 'Discomfort seeing own body' },
+    { sub: 'SC',    key: 'avoidExposure',   text: 'Avoidance of exposure' },
+    { sub: 'SC',    key: 'feelFat',         text: 'Feelings of fatness' },
+    { sub: 'SC',    key: 'flatStomach',     text: 'Desire for flat stomach' },
+    // Weight Concern (5)
+    { sub: 'WC',    key: 'impWeight',       text: 'Importance of weight' },
+    { sub: 'WC',    key: 'reactWeigh',      text: 'Reaction to prescribed weighing' },
+    { sub: 'WC',    key: 'dissatWeight',    text: 'Dissatisfaction with weight' },
+    { sub: 'WC',    key: 'desireLose',      text: 'Desire to lose weight' }
 ];
 
 const EDE_BEHAVIOURS = [
-    { key: 'OBE',  name: 'Objective bulimic episodes (OBEs)',               hint: 'Past 28 days' },
-    { key: 'SBE',  name: 'Subjective bulimic episodes (SBEs)',              hint: 'Past 28 days' },
-    { key: 'OOE',  name: 'Objective overeating episodes (OOEs)',            hint: 'Past 28 days — large amount, no loss of control' },
-    { key: 'VOM',  name: 'Self-induced vomiting',                           hint: 'Past 28 days' },
-    { key: 'LAX',  name: 'Laxative misuse',                                 hint: 'Past 28 days' },
-    { key: 'DIU',  name: 'Diuretic misuse',                                 hint: 'Past 28 days' },
-    { key: 'EXR',  name: 'Driven / compulsive exercise',                    hint: 'Past 28 days' }
+    { key: 'obe',  name: 'Objective bulimic episodes (OBEs)',     hint: 'Large amount + loss of control' },
+    { key: 'sbe',  name: 'Subjective bulimic episodes (SBEs)',    hint: 'Loss of control without objectively large amount' },
+    { key: 'ooe',  name: 'Objective overeating episodes (OOEs)',  hint: 'Large amount without loss of control' },
+    { key: 'vom',  name: 'Self-induced vomiting',                 hint: 'To control shape / weight' },
+    { key: 'lax',  name: 'Laxative misuse',                       hint: 'To control shape / weight' },
+    { key: 'diu',  name: 'Diuretic misuse',                       hint: 'To control shape / weight' },
+    { key: 'exr',  name: 'Driven / compulsive exercise',          hint: 'To control shape / weight' }
 ];
+
+// 0–6 anchor sets used in EDE-Q displays
+const EDEQ_DAYS_ANCHORS = {
+    0: '0 days', 1: '1–5 days', 2: '6–12 days', 3: '13–15 days', 4: '16–22 days', 5: '23–27 days', 6: 'Every day'
+};
+const EDEQ_INT_ANCHORS = {
+    0: 'Not at all', 1: '1', 2: '2', 3: 'Moderately', 4: '4', 5: '5', 6: 'Markedly'
+};
+const EDEQ_PROP_ANCHORS = {
+    0: 'None', 1: 'A few', 2: '< half', 3: 'Half', 4: '> half', 5: 'Most', 6: 'Every time'
+};
 
 // ---------- Y-BOCS data ----------
 const YBOCS_CORE_ITEMS = [
@@ -2501,55 +2748,123 @@ const HAMA_ITEMS = [
 })();
 
 // ---------- Build EDE-Q UI ----------
-(function buildEdeq() {
-    const subC = document.getElementById('edeqSubscales');
-    let sH = '';
-    EDE_SUBSCALES.forEach((s, idx) => {
-        sH += '<div class="item-block">';
-        sH += '<div class="item-header"><span class="item-number">' + (idx + 1) + '</span><span class="item-title">' + s.name + ' (' + s.key + ')</span></div>';
-        sH += '<div style="padding-left:38px;"><input type="number" id="edeqSub_' + s.key + '" min="0" max="6" step="0.01" placeholder="0.00 – 6.00" oninput="updateEdeq()" ' +
-              'style="width:140px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;"></div>';
-        sH += '</div>';
-    });
-    subC.innerHTML = sH;
+function edeAnchorRow(anchor) {
+    const map = anchor === 'days' ? EDEQ_DAYS_ANCHORS
+              : anchor === 'prop' ? EDEQ_PROP_ANCHORS
+              :                     EDEQ_INT_ANCHORS;
+    const label = anchor === 'days' ? 'days anchor'
+                : anchor === 'prop' ? 'proportion anchor'
+                :                     'intensity anchor';
+    let parts = [];
+    for (let v = 0; v <= 6; v++) parts.push('<strong>' + v + '</strong>=' + map[v]);
+    return '<div class="anchor-legend"><strong>' + label + ':</strong> ' + parts.join(' · ') + '</div>';
+}
+function likertButtons(name, onchange) {
+    let h = '<div class="likert-buttons">';
+    for (let v = 0; v <= 6; v++) {
+        h += '<label>';
+        h += '<input type="radio" name="' + name + '" value="' + v + '" onchange="' + onchange + '()">';
+        h += '<span class="likert-btn">' + v + '</span>';
+        h += '</label>';
+    }
+    h += '</div>';
+    return h;
+}
+function counterRow(id, suffix, onchange) {
+    return '<div class="counter-row">' +
+        '<button type="button" class="counter-btn" onclick="adjCounter(\'' + id + '\', -1, \'' + onchange + '\')">−</button>' +
+        '<input type="number" class="counter-val" id="' + id + '" min="0" step="1" placeholder="0" oninput="' + onchange + '()">' +
+        '<button type="button" class="counter-btn" onclick="adjCounter(\'' + id + '\', 1, \'' + onchange + '\')">+</button>' +
+        '<span class="counter-suffix">' + suffix + '</span>' +
+    '</div>';
+}
+function adjCounter(id, delta, onchangeName) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const cur = parseInt(el.value, 10);
+    const next = Math.max(0, (isNaN(cur) ? 0 : cur) + delta);
+    el.value = next;
+    if (window[onchangeName]) window[onchangeName]();
+}
 
-    const behC = document.getElementById('edeqBehaviours');
-    let bH = '';
-    EDEQ_BEHAVIOURS.forEach((b, idx) => {
-        bH += '<div class="item-block">';
-        bH += '<div class="item-header"><span class="item-number">' + (idx + 1) + '</span><span class="item-title">' + b.name + '</span></div>';
-        bH += '<div class="item-sub">' + b.hint + '</div>';
-        bH += '<div style="padding-left:38px;"><input type="number" id="edeqBeh_' + b.key + '" min="0" step="1" placeholder="episodes" oninput="updateEdeq()" ' +
-              'style="width:140px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;"></div>';
-        bH += '</div>';
+(function buildEdeq() {
+    const container = document.getElementById('edeqItems');
+    let html = '';
+    let lastAnchor = '';
+    let lastWasBeh = false;
+
+    EDEQ_ITEMS.forEach(item => {
+        if (item.anchor !== lastAnchor || lastWasBeh) {
+            html += edeAnchorRow(item.anchor);
+            lastAnchor = item.anchor;
+            lastWasBeh = false;
+        }
+        const chips = item.subs.map(s => '<span class="likert-chip">' + s + '</span>').join(' ');
+        html += '<div class="likert-row">';
+        html += '<div class="likert-row-top">';
+        html += '<div class="likert-num">' + item.num + '.</div>';
+        html += '<div class="likert-chips">' + chips + '</div>';
+        html += '<div class="likert-text">' + item.text + '</div>';
+        html += '</div>';
+        html += likertButtons('edeqItem_' + item.num, 'updateEdeq');
+        html += '</div>';
+
+        // After item 12, insert behavioural block (items 13-18) before item 19
+        if (item.num === 12) {
+            html += '<div class="subscale-header">Behavioural items 13–18 (counts, past 28 days)</div>';
+            EDEQ_BEHAVIOURS.forEach(b => {
+                html += '<div class="likert-row">';
+                html += '<div class="likert-row-top">';
+                html += '<div class="likert-num">' + b.num + '.</div>';
+                html += '<div class="likert-chips"><span class="likert-chip" style="background:#fefcbf;color:#744210;">BEH</span></div>';
+                html += '<div class="likert-text">' + b.name + '<div style="font-size:0.85em;color:var(--gray-600);font-style:italic;">' + b.hint + '</div></div>';
+                html += '</div>';
+                html += counterRow('edeqBeh_' + b.key, 'episodes', 'updateEdeq');
+                html += '</div>';
+            });
+            lastWasBeh = true;
+        }
     });
-    behC.innerHTML = bH;
+
+    container.innerHTML = html;
 })();
 
 // ---------- Build EDE UI ----------
 (function buildEde() {
-    const subC = document.getElementById('edeSubscales');
-    let sH = '';
-    EDE_SUBSCALES.forEach((s, idx) => {
-        sH += '<div class="item-block">';
-        sH += '<div class="item-header"><span class="item-number">' + (idx + 1) + '</span><span class="item-title">' + s.name + ' (' + s.key + ')</span></div>';
-        sH += '<div style="padding-left:38px;"><input type="number" id="edeSub_' + s.key + '" min="0" max="6" step="0.01" placeholder="0.00 – 6.00" oninput="updateEde()" ' +
-              'style="width:140px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;"></div>';
-        sH += '</div>';
-    });
-    subC.innerHTML = sH;
+    const container = document.getElementById('edeItems');
+    let html = '';
+    const subOrder = ['R', 'EC', 'SC', 'WC'];
+    const subNames = { R: 'Restraint', EC: 'Eating Concern', SC: 'Shape Concern', WC: 'Weight Concern' };
 
-    const behC = document.getElementById('edeBehaviours');
-    let bH = '';
-    EDE_BEHAVIOURS.forEach((b, idx) => {
-        bH += '<div class="item-block">';
-        bH += '<div class="item-header"><span class="item-number">' + (idx + 1) + '</span><span class="item-title">' + b.name + '</span></div>';
-        bH += '<div class="item-sub">' + b.hint + '</div>';
-        bH += '<div style="padding-left:38px;"><input type="number" id="edeBeh_' + b.key + '" min="0" step="1" placeholder="episodes" oninput="updateEde()" ' +
-              'style="width:140px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;"></div>';
-        bH += '</div>';
+    subOrder.forEach(subKey => {
+        const items = EDE_ITEMS.filter(it => it.sub.split(',').indexOf(subKey) >= 0);
+        html += '<div class="subscale-header">' + subNames[subKey] + ' (' + items.length + ' items)</div>';
+        items.forEach((item, idx) => {
+            const chips = item.sub.split(',').map(s => '<span class="likert-chip">' + s + '</span>').join(' ');
+            html += '<div class="likert-row">';
+            html += '<div class="likert-row-top">';
+            html += '<div class="likert-num">' + (idx + 1) + '.</div>';
+            html += '<div class="likert-chips">' + chips + '</div>';
+            html += '<div class="likert-text">' + item.text + '</div>';
+            html += '</div>';
+            html += likertButtons('edeItem_' + item.key, 'updateEde');
+            html += '</div>';
+        });
     });
-    behC.innerHTML = bH;
+
+    html += '<div class="subscale-header">Behavioural episode counts</div>';
+    EDE_BEHAVIOURS.forEach((b, idx) => {
+        html += '<div class="likert-row">';
+        html += '<div class="likert-row-top">';
+        html += '<div class="likert-num">' + (idx + 1) + '.</div>';
+        html += '<div class="likert-chips"><span class="likert-chip" style="background:#fefcbf;color:#744210;">BEH</span></div>';
+        html += '<div class="likert-text">' + b.name + '<div style="font-size:0.85em;color:var(--gray-600);font-style:italic;">' + b.hint + '</div></div>';
+        html += '</div>';
+        html += counterRow('edeBeh_' + b.key, 'episodes', 'updateEde');
+        html += '</div>';
+    });
+
+    container.innerHTML = html;
 })();
 
 // ---------- Build PCL-5 UI ----------
@@ -3024,6 +3339,86 @@ function fmtBarValue(v, max, decimals) {
     if (typeof v === 'number' && !Number.isInteger(v)) return v.toFixed(decimals != null ? decimals : 2) + ' / ' + max;
     return v + ' / ' + max;
 }
+function barColorFor(cls) {
+    if (cls === 'bar-none')     return '#48bb78';
+    if (cls === 'bar-mild')     return '#ecc94b';
+    if (cls === 'bar-moderate') return '#ed8936';
+    if (cls === 'bar-modsev')   return '#e53e3e';
+    if (cls === 'bar-severe')   return '#9b2c2c';
+    return '#3182ce';
+}
+function escapeXml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'})[c]);
+}
+function buildChartSvg(bars, headerText, footerText) {
+    const padLeft = 200, padRight = 100;
+    const padTop = 80, padBottom = footerText ? 50 : 24;
+    const rowH = 30, rowGap = 8;
+    const width = 760;
+    const chartW = width - padLeft - padRight;
+    const height = padTop + bars.length * (rowH + rowGap) - rowGap + padBottom;
+
+    const pName = (document.getElementById('patientName').value || '').trim();
+    const aDate = document.getElementById('assessmentDate').value || '';
+    const rater = (document.getElementById('raterName').value || '').trim();
+    const subtitleParts = [];
+    if (pName) subtitleParts.push('Patient: ' + pName);
+    if (aDate) subtitleParts.push('Date: ' + aDate);
+    if (rater) subtitleParts.push('Clinician: ' + rater);
+    const subtitle = subtitleParts.join('   ·   ');
+
+    let svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height +
+              '" viewBox="0 0 ' + width + ' ' + height +
+              '" font-family="\'Segoe UI\', \'Helvetica Neue\', Arial, sans-serif">';
+    svg += '<rect width="' + width + '" height="' + height + '" fill="#ffffff"/>';
+
+    if (headerText) {
+        svg += '<text x="' + (width / 2) + '" y="32" font-size="17" font-weight="700" text-anchor="middle" fill="#1a365d">' + escapeXml(headerText) + '</text>';
+    }
+    if (subtitle) {
+        svg += '<text x="' + (width / 2) + '" y="54" font-size="11" text-anchor="middle" fill="#718096">' + escapeXml(subtitle) + '</text>';
+    }
+
+    bars.forEach((b, idx) => {
+        const y = padTop + idx * (rowH + rowGap);
+        const raw = b.value;
+        const v = (raw === null || raw === undefined || (typeof raw === 'number' && isNaN(raw))) ? 0 : raw;
+        const pct = b.max ? Math.max(0, Math.min(1, v / b.max)) : 0;
+        const fillW = pct * chartW;
+        const fillColor = barColorFor(b.barClass);
+        const isTotal = !!b.isTotal;
+        const labelWeight = isTotal ? '700' : '500';
+        const labelColor = isTotal ? '#1a202c' : '#4a5568';
+        const trackBorder = isTotal ? '#cbd5e0' : '#e2e8f0';
+        const displayValue = b.displayValue !== undefined ? b.displayValue : fmtBarValue(raw, b.max, b.decimals);
+
+        if (isTotal) {
+            svg += '<line x1="' + padLeft + '" y1="' + (y - rowGap / 2) + '" x2="' + (padLeft + chartW) +
+                   '" y2="' + (y - rowGap / 2) + '" stroke="#cbd5e0" stroke-width="1" stroke-dasharray="3,3"/>';
+        }
+        svg += '<text x="' + (padLeft - 12) + '" y="' + (y + rowH / 2 + 5) +
+               '" font-size="13" font-weight="' + labelWeight +
+               '" text-anchor="end" fill="' + labelColor + '">' + escapeXml(b.label) + '</text>';
+        svg += '<rect x="' + padLeft + '" y="' + y + '" width="' + chartW + '" height="' + rowH +
+               '" rx="4" fill="#edf2f7" stroke="' + trackBorder + '" stroke-width="1"/>';
+        if (fillW > 0) {
+            svg += '<rect x="' + padLeft + '" y="' + y + '" width="' + fillW + '" height="' + rowH +
+                   '" rx="4" fill="' + fillColor + '"/>';
+        }
+        svg += '<text x="' + (padLeft + chartW + 8) + '" y="' + (y + rowH / 2 + 5) +
+               '" font-size="12" font-weight="600" fill="#2d3748">' + escapeXml(displayValue) + '</text>';
+    });
+
+    if (footerText) {
+        svg += '<text x="' + (width / 2) + '" y="' + (height - 16) +
+               '" font-size="11" font-style="italic" text-anchor="middle" fill="#718096">' +
+               escapeXml(footerText) + '</text>';
+    }
+
+    svg += '</svg>';
+    return svg;
+}
+
 function renderChart(scaleKey, bars, headerText, footerText) {
     const outputEl = document.getElementById(scaleKey + 'Output');
     if (!outputEl) return;
@@ -3036,25 +3431,79 @@ function renderChart(scaleKey, bars, headerText, footerText) {
         if (ta && ta.parentNode === outputEl) outputEl.insertBefore(c, ta);
         else outputEl.appendChild(c);
     }
-    let html = '';
-    if (headerText) html += '<div class="chart-title">' + escapeHtml(headerText) + '</div>';
-    bars.forEach(b => {
-        const raw = b.value;
-        const v = (raw === null || raw === undefined || (typeof raw === 'number' && isNaN(raw))) ? 0 : raw;
-        const pct = b.max ? Math.max(0, Math.min(100, (v / b.max) * 100)) : 0;
-        const sevClass = b.barClass || '';
-        const isTotal = b.isTotal ? ' is-total' : '';
-        const displayValue = b.displayValue !== undefined ? b.displayValue : fmtBarValue(raw, b.max, b.decimals);
-        html += '<div class="chart-row' + isTotal + '">';
-        html += '<div class="chart-label">' + escapeHtml(b.label) + '</div>';
-        html += '<div class="chart-bar-track">';
-        html += '<div class="chart-bar-fill ' + sevClass + '" style="width:' + pct.toFixed(1) + '%"></div>';
-        html += '<span class="chart-value">' + escapeHtml(displayValue) + '</span>';
-        html += '</div>';
-        html += '</div>';
-    });
-    if (footerText) html += '<div class="chart-footer">' + escapeHtml(footerText) + '</div>';
+
+    if (bars.length === 0) {
+        c.innerHTML = '<div style="padding:18px; text-align:center; color:var(--gray-600); font-style:italic;">' +
+                      escapeHtml(headerText || 'Not rated') + '</div>';
+        return;
+    }
+
+    const svg = buildChartSvg(bars, headerText, footerText);
+    let html = '<div class="chart-toolbar">';
+    html += '<button class="chart-action-btn" onclick="downloadChartPng(\'' + scaleKey + '\')">Download PNG</button>';
+    html += '<button class="chart-action-btn" onclick="copyChartPng(\'' + scaleKey + '\')" id="' + scaleKey + 'ChartCopyBtn">Copy chart image</button>';
+    html += '</div>';
+    html += '<div class="chart-svg-wrap">' + svg + '</div>';
     c.innerHTML = html;
+}
+
+function svgToPng(scaleKey, scale, cb) {
+    const c = document.getElementById(scaleKey + 'Chart');
+    const svg = c ? c.querySelector('svg') : null;
+    if (!svg) return cb(null);
+    const w = parseInt(svg.getAttribute('width'), 10);
+    const h = parseInt(svg.getAttribute('height'), 10);
+    const xml = new XMLSerializer().serializeToString(svg);
+    const blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = w * scale;
+        canvas.height = h * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(cb, 'image/png');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); cb(null); };
+    img.src = url;
+}
+
+function downloadChartPng(scaleKey) {
+    svgToPng(scaleKey, 2, function (blob) {
+        if (!blob) { alert('Unable to export chart.'); return; }
+        const a = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        const today = new Date().toISOString().slice(0, 10);
+        a.href = url;
+        a.download = scaleKey + '-' + today + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+    });
+}
+
+function copyChartPng(scaleKey) {
+    const btn = document.getElementById(scaleKey + 'ChartCopyBtn');
+    const reset = () => { if (btn) setTimeout(() => { btn.textContent = 'Copy chart image'; btn.classList.remove('copied'); }, 2000); };
+    if (!navigator.clipboard || typeof window.ClipboardItem !== 'function') {
+        downloadChartPng(scaleKey);
+        if (btn) { btn.textContent = 'Downloaded (clipboard unsupported)'; reset(); }
+        return;
+    }
+    svgToPng(scaleKey, 2, function (blob) {
+        if (!blob) { if (btn) { btn.textContent = 'Failed'; reset(); } return; }
+        navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
+            if (btn) { btn.textContent = 'Copied!'; btn.classList.add('copied'); reset(); }
+        }).catch(() => {
+            downloadChartPng(scaleKey);
+            if (btn) { btn.textContent = 'Downloaded'; reset(); }
+        });
+    });
 }
 
 // ---------- Per-scale chart builders ----------
@@ -3308,16 +3757,8 @@ function chartCgi() {
     }
     renderChart('cgi', bars, 'CGI ratings (lower CGI-S = less ill; lower CGI-I = more improved)');
 }
-function chartEdeBars(prefix, title) {
-    let nSubs = 0, sum = 0;
-    const subVals = {};
-    EDE_SUBSCALES.forEach(s => {
-        const v = getNumVal(prefix + 'Sub_' + s.key);
-        subVals[s.key] = v;
-        if (v !== null) { nSubs++; sum += v; }
-    });
-    if (nSubs === 0) { renderChart(prefix, [], title + ' — no subscales entered'); return; }
-    const global = sum / nSubs;
+function chartEdeBars(prefix, title, computed) {
+    if (computed.nSubs === 0) { renderChart(prefix, [], title + ' — no items rated'); return; }
     function edeBarClass(v) {
         if (v === null) return '';
         if (v < 2) return 'bar-none';
@@ -3325,28 +3766,32 @@ function chartEdeBars(prefix, title) {
         if (v < 4) return 'bar-moderate';
         return 'bar-modsev';
     }
-    const bars = EDE_SUBSCALES.map(s => ({
-        label: s.name,
-        value: subVals[s.key],
+    const subNames = { R: 'Restraint', EC: 'Eating Concern', SC: 'Shape Concern', WC: 'Weight Concern' };
+    const bars = ['R', 'EC', 'SC', 'WC'].map(k => ({
+        label: subNames[k],
+        value: computed.means[k],
         max: 6,
-        barClass: edeBarClass(subVals[s.key]),
+        barClass: edeBarClass(computed.means[k]),
         decimals: 2
     }));
     bars.push({
         label: 'Global',
-        value: global,
+        value: computed.global,
         max: 6,
-        barClass: edeBarClass(global),
+        barClass: edeBarClass(computed.global),
         isTotal: true,
         decimals: 2
     });
-    const footer = global >= 4 ? 'Global ≥ 4 — clinical-range threshold reached.' : 'Global below 4 (clinical-range threshold).';
-    renderChart(prefix, bars, title + ' Global = ' + global.toFixed(2) +
-        (nSubs < 4 ? ' (partial: ' + nSubs + '/4 subscales)' : ''),
+    const footer = computed.global >= 4
+        ? 'Global ≥ 4 — clinical-range threshold reached.'
+        : 'Global below clinical threshold (4).';
+    renderChart(prefix, bars,
+        title + ' Global = ' + computed.global.toFixed(2) +
+        (computed.nSubs < 4 ? ' (partial: ' + computed.nSubs + '/4 subscales)' : ''),
         footer);
 }
-function chartEdeq() { chartEdeBars('edeq', 'EDE-Q'); }
-function chartEde()  { chartEdeBars('ede',  'EDE'); }
+function chartEdeq() { chartEdeBars('edeq', 'EDE-Q', computeEdeqMeans()); }
+function chartEde()  { chartEdeBars('ede',  'EDE',  computeEdeMeans()); }
 
 function computeBMI(h, w) {
     if (h === null || w === null || h <= 0) return null;
@@ -3354,39 +3799,78 @@ function computeBMI(h, w) {
     return w / (m * m);
 }
 
-function edeUpdateCommon(prefix) {
-    const subs = {};
-    let nSubs = 0, sumSubs = 0;
-    EDE_SUBSCALES.forEach(s => {
-        let v = getNumVal(prefix + 'Sub_' + s.key);
+function computeEdeqMeans() {
+    const subVals = { R: [], EC: [], SC: [], WC: [] };
+    EDEQ_ITEMS.forEach(item => {
+        const v = getRadioVal('edeqItem_' + item.num);
         if (v !== null) {
-            if (v < 0) v = 0;
-            if (v > 6) v = 6;
-            subs[s.key] = v;
-            sumSubs += v;
-            nSubs++;
+            const n = parseInt(v, 10);
+            item.subs.forEach(s => subVals[s].push(n));
         }
     });
-    const globalEl = document.getElementById(prefix + 'Global');
-    const flagEl   = document.getElementById(prefix + 'Flag');
-    if (nSubs === 0) {
-        globalEl.textContent = '—';
-        flagEl.textContent = '—';
-    } else {
-        const g = sumSubs / nSubs;
-        globalEl.textContent = g.toFixed(2) + (nSubs < 4 ? ' (partial: ' + nSubs + '/4 subscales)' : '');
-        flagEl.textContent = (g >= 4) ? 'Yes (Global ≥ 4)' : 'No';
-    }
+    const means = {};
+    let nSubs = 0, sumSubs = 0;
+    ['R', 'EC', 'SC', 'WC'].forEach(k => {
+        if (subVals[k].length) {
+            means[k] = subVals[k].reduce((a, b) => a + b, 0) / subVals[k].length;
+            sumSubs += means[k];
+            nSubs++;
+        } else {
+            means[k] = null;
+        }
+    });
+    const global = nSubs > 0 ? (sumSubs / nSubs) : null;
+    return { means, global, nSubs, itemCounts: { R: subVals.R.length, EC: subVals.EC.length, SC: subVals.SC.length, WC: subVals.WC.length } };
+}
 
+function computeEdeMeans() {
+    const subVals = { R: [], EC: [], SC: [], WC: [] };
+    EDE_ITEMS.forEach(item => {
+        const v = getRadioVal('edeItem_' + item.key);
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            item.sub.split(',').forEach(s => subVals[s].push(n));
+        }
+    });
+    const means = {};
+    let nSubs = 0, sumSubs = 0;
+    ['R', 'EC', 'SC', 'WC'].forEach(k => {
+        if (subVals[k].length) {
+            means[k] = subVals[k].reduce((a, b) => a + b, 0) / subVals[k].length;
+            sumSubs += means[k];
+            nSubs++;
+        } else {
+            means[k] = null;
+        }
+    });
+    const global = nSubs > 0 ? (sumSubs / nSubs) : null;
+    return { means, global, nSubs, itemCounts: { R: subVals.R.length, EC: subVals.EC.length, SC: subVals.SC.length, WC: subVals.WC.length } };
+}
+
+function refreshEdeDisplay(prefix, computed) {
+    const subKeys = ['R', 'EC', 'SC', 'WC'];
+    subKeys.forEach(k => {
+        const el = document.getElementById(prefix + 'Mean_' + k);
+        if (el) el.textContent = computed.means[k] === null ? '—' : computed.means[k].toFixed(2);
+    });
+    const gEl = document.getElementById(prefix + 'Global');
+    const fEl = document.getElementById(prefix + 'Flag');
+    if (computed.global === null) {
+        gEl.textContent = '—';
+        fEl.textContent = '—';
+    } else {
+        gEl.textContent = computed.global.toFixed(2) + (computed.nSubs < 4 ? ' (partial: ' + computed.nSubs + '/4)' : '');
+        fEl.textContent = computed.global >= 4 ? 'Yes' : 'No';
+    }
     const h = getNumVal(prefix + 'Height');
     const w = getNumVal(prefix + 'Weight');
     const bmi = computeBMI(h, w);
     const bmiEl = document.getElementById(prefix + 'BMI');
-    bmiEl.value = bmi === null ? '' : bmi.toFixed(1);
+    if (bmiEl) bmiEl.value = bmi === null ? '' : bmi.toFixed(1);
 }
 
-function updateEdeq() { edeUpdateCommon('edeq'); }
-function updateEde()  { edeUpdateCommon('ede'); }
+function updateEdeq() { refreshEdeDisplay('edeq', computeEdeqMeans()); }
+function updateEde()  { refreshEdeDisplay('ede',  computeEdeMeans()); }
 
 function updatePcl5() {
     let total = 0, rated = 0;
@@ -4208,56 +4692,49 @@ function buildCgiText() {
     return t;
 }
 
-function buildEdeReport(opts) {
-    // opts: { which: 'edeq'|'ede', title, behaviours, refLines }
+function buildEdeqText() {
     const line = '='.repeat(66);
     const thin = '-'.repeat(66);
-    const prefix = opts.which;
     let t = '';
     t += line + '\n';
-    t += opts.title + '\n';
+    t += 'EATING DISORDER EXAMINATION QUESTIONNAIRE (EDE-Q 6.0)\n';
     t += line + '\n';
     t += patientHeader();
     t += thin + '\n';
 
-    const subs = {};
-    let nSubs = 0, sumSubs = 0;
-    EDE_SUBSCALES.forEach(s => {
-        const v = getNumVal(prefix + 'Sub_' + s.key);
-        subs[s.key] = v;
-        if (v !== null) { nSubs++; sumSubs += v; }
-    });
-    const global = nSubs === 0 ? null : (sumSubs / nSubs);
+    const c = computeEdeqMeans();
+    const subNames = { R: 'Restraint', EC: 'Eating Concern', SC: 'Shape Concern', WC: 'Weight Concern' };
 
-    t += 'SUBSCALE MEANS (0–6, past 28 days)\n';
-    EDE_SUBSCALES.forEach(s => {
-        const v = subs[s.key];
-        t += '  ' + (s.name + ' (' + s.key + ')').padEnd(28) + ': ' + (v === null ? 'NR' : v.toFixed(2)) + '\n';
+    t += 'SUBSCALE MEANS (0-6, past 28 days)\n';
+    ['R', 'EC', 'SC', 'WC'].forEach(k => {
+        const m = c.means[k];
+        const ic = c.itemCounts[k];
+        t += '  ' + (subNames[k] + ' (' + k + ')').padEnd(28) + ': '
+           + (m === null ? 'NR' : m.toFixed(2)) + '   ['
+           + ic + ' items rated]\n';
     });
     t += '  ' + '-'.repeat(50) + '\n';
-    if (global === null) {
+    if (c.global === null) {
         t += '  GLOBAL SCORE                : Not rated\n';
     } else {
-        t += '  GLOBAL SCORE (mean of subscales): ' + global.toFixed(2)
-           + (nSubs < 4 ? '  (partial: ' + nSubs + '/4 subscales)' : '') + '\n';
-        t += '  CLINICAL RANGE (Global >= 4): ' + (global >= 4 ? 'YES' : 'No') + '\n';
+        t += '  GLOBAL SCORE (mean of subscales): ' + c.global.toFixed(2)
+           + (c.nSubs < 4 ? '  (partial: ' + c.nSubs + '/4 subscales)' : '') + '\n';
+        t += '  CLINICAL RANGE (Global >= 4): ' + (c.global >= 4 ? 'YES' : 'No') + '\n';
     }
 
     t += thin + '\n';
-    t += 'BEHAVIOURAL FREQUENCIES (episodes)\n';
+    t += 'BEHAVIOURAL FREQUENCIES (past 28 days)\n';
     let anyBeh = false;
-    opts.behaviours.forEach(b => {
-        const v = getNumVal(prefix + 'Beh_' + b.key);
+    EDEQ_BEHAVIOURS.forEach(b => {
+        const v = getNumVal('edeqBeh_' + b.key);
         if (v !== null) anyBeh = true;
-        t += '  ' + (b.name + ' (' + b.key + ')').padEnd(46) + ': '
+        t += '  ' + ('Item ' + b.num + ' — ' + b.name).slice(0, 56).padEnd(58) + ': '
            + (v === null ? 'NR' : String(v)) + '\n';
     });
-    if (!anyBeh) {
-        t += '  (no behavioural frequencies entered)\n';
-    }
+    if (!anyBeh) t += '  (no behavioural frequencies entered)\n';
 
-    const h = getNumVal(prefix + 'Height');
-    const w = getNumVal(prefix + 'Weight');
+    const h = getNumVal('edeqHeight');
+    const w = getNumVal('edeqWeight');
     const bmi = computeBMI(h, w);
     if (h !== null || w !== null || bmi !== null) {
         t += thin + '\n';
@@ -4268,40 +4745,74 @@ function buildEdeReport(opts) {
     }
 
     t += thin + '\n';
-    opts.refLines.forEach(l => { t += l + '\n'; });
+    t += 'Community-norm mean ~1.5; Global >= 4 commonly used as a clinical\n';
+    t += 'threshold (Mond et al, 2006). Subscale assignment per Fairburn 2008:\n';
+    t += 'R = 1-5; EC = 7, 9, 19, 20, 21; SC = 6, 8, 10, 11, 23, 26-28;\n';
+    t += 'WC = 8, 12, 22, 24, 25 (item 8 shared SC/WC).\n';
+    t += 'Reference: Fairburn CG, Beglin SJ. Int J Eat Disord. 1994;16:363-70.\n';
     t += line + '\n';
     return t;
 }
 
-function buildEdeqText() {
-    return buildEdeReport({
-        which: 'edeq',
-        title: 'EATING DISORDER EXAMINATION QUESTIONNAIRE (EDE-Q 6.0)',
-        behaviours: EDEQ_BEHAVIOURS,
-        refLines: [
-            'EDE-Q is a copyrighted self-report measure (Fairburn / CREDO, Oxford);',
-            'items are not reproduced here. Subscale means and global scored per the',
-            'official EDE-Q 6.0 form. Community-norm mean ~1.5; Global >= 4 commonly',
-            'used as a clinical threshold (Mond et al, 2006).',
-            'Reference: Fairburn CG, Beglin SJ. Int J Eat Disord. 1994;16:363-70.'
-        ]
-    });
-}
-
 function buildEdeText() {
-    return buildEdeReport({
-        which: 'ede',
-        title: 'EATING DISORDER EXAMINATION (EDE 17.0D, interview)',
-        behaviours: EDE_BEHAVIOURS,
-        refLines: [
-            'EDE is a semi-structured investigator-based interview (Fairburn, Cooper,',
-            'O\'Connor); items and probes are not reproduced here. Subscale means and',
-            'global scored per the EDE schedule. Community-norm global ~1.5; Global',
-            '>= 4 commonly used as a clinical threshold.',
-            'Reference: Fairburn CG, Cooper Z, O\'Connor M. EDE 17.0D, in Fairburn',
-            '           CG, Cognitive Behavior Therapy and Eating Disorders, 2008.'
-        ]
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'EATING DISORDER EXAMINATION (EDE 17.0D — interview)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    const c = computeEdeMeans();
+    const subNames = { R: 'Restraint', EC: 'Eating Concern', SC: 'Shape Concern', WC: 'Weight Concern' };
+
+    t += 'SUBSCALE MEANS (0-6, past 28 days)\n';
+    ['R', 'EC', 'SC', 'WC'].forEach(k => {
+        const m = c.means[k];
+        const ic = c.itemCounts[k];
+        t += '  ' + (subNames[k] + ' (' + k + ')').padEnd(28) + ': '
+           + (m === null ? 'NR' : m.toFixed(2)) + '   ['
+           + ic + ' items rated]\n';
     });
+    t += '  ' + '-'.repeat(50) + '\n';
+    if (c.global === null) {
+        t += '  GLOBAL SCORE                : Not rated\n';
+    } else {
+        t += '  GLOBAL SCORE (mean of subscales): ' + c.global.toFixed(2)
+           + (c.nSubs < 4 ? '  (partial: ' + c.nSubs + '/4 subscales)' : '') + '\n';
+        t += '  CLINICAL RANGE (Global >= 4): ' + (c.global >= 4 ? 'YES' : 'No') + '\n';
+    }
+
+    t += thin + '\n';
+    t += 'BEHAVIOURAL EPISODE COUNTS\n';
+    let anyBeh = false;
+    EDE_BEHAVIOURS.forEach(b => {
+        const v = getNumVal('edeBeh_' + b.key);
+        if (v !== null) anyBeh = true;
+        t += '  ' + b.name.slice(0, 56).padEnd(58) + ': '
+           + (v === null ? 'NR' : String(v)) + '\n';
+    });
+    if (!anyBeh) t += '  (no episode counts entered)\n';
+
+    const h = getNumVal('edeHeight');
+    const w = getNumVal('edeWeight');
+    const bmi = computeBMI(h, w);
+    if (h !== null || w !== null || bmi !== null) {
+        t += thin + '\n';
+        t += 'WEIGHT / SHAPE\n';
+        if (h !== null)   t += '  Height: ' + h + ' cm\n';
+        if (w !== null)   t += '  Weight: ' + w + ' kg\n';
+        if (bmi !== null) t += '  BMI:    ' + bmi.toFixed(1) + ' kg/m^2\n';
+    }
+
+    t += thin + '\n';
+    t += 'Investigator-based interview; community-norm global ~1.5; Global >= 4\n';
+    t += 'commonly used as a clinical threshold.\n';
+    t += 'Reference: Fairburn CG, Cooper Z, O\'Connor M. EDE 17.0D, in Fairburn\n';
+    t += '           CG, Cognitive Behavior Therapy and Eating Disorders, 2008.\n';
+    t += line + '\n';
+    return t;
 }
 
 function buildPcl5Text() {
@@ -4608,19 +5119,32 @@ function resetScale(which) {
         document.getElementById('cgiOutput').classList.remove('visible');
         return;
     }
-    if (which === 'edeq' || which === 'ede') {
-        const behSet = which === 'edeq' ? EDEQ_BEHAVIOURS : EDE_BEHAVIOURS;
-        EDE_SUBSCALES.forEach(s => {
-            const r = document.getElementById(which + 'Sub_' + s.key); if (r) r.value = '';
+    if (which === 'edeq') {
+        EDEQ_ITEMS.forEach(item => {
+            document.querySelectorAll('input[name="edeqItem_' + item.num + '"]').forEach(r => r.checked = false);
         });
-        behSet.forEach(b => {
-            const r = document.getElementById(which + 'Beh_' + b.key); if (r) r.value = '';
+        EDEQ_BEHAVIOURS.forEach(b => {
+            const r = document.getElementById('edeqBeh_' + b.key); if (r) r.value = '';
         });
         ['Height', 'Weight', 'BMI'].forEach(f => {
-            const e = document.getElementById(which + f); if (e) e.value = '';
+            const e = document.getElementById('edeq' + f); if (e) e.value = '';
         });
-        if (which === 'edeq') updateEdeq(); else updateEde();
-        document.getElementById(which + 'Output').classList.remove('visible');
+        updateEdeq();
+        document.getElementById('edeqOutput').classList.remove('visible');
+        return;
+    }
+    if (which === 'ede') {
+        EDE_ITEMS.forEach(item => {
+            document.querySelectorAll('input[name="edeItem_' + item.key + '"]').forEach(r => r.checked = false);
+        });
+        EDE_BEHAVIOURS.forEach(b => {
+            const r = document.getElementById('edeBeh_' + b.key); if (r) r.value = '';
+        });
+        ['Height', 'Weight', 'BMI'].forEach(f => {
+            const e = document.getElementById('ede' + f); if (e) e.value = '';
+        });
+        updateEde();
+        document.getElementById('edeOutput').classList.remove('visible');
         return;
     }
     const count = counts[which];
