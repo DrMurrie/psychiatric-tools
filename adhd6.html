@@ -4053,8 +4053,11 @@ function runSearch(){
   if(!q){
     targets.forEach(t=>{t.el.classList.remove('no-match'); if(t.probe) t.probe.classList.remove('no-match');});
     document.querySelectorAll('section.card').forEach(s=>s.classList.remove('no-match'));
+    _applySectionState(); // restore tile-selected state when search cleared
     return;
   }
+  // While searching, reveal all sections so results aren't hidden
+  document.querySelectorAll('section.card').forEach(s=>s.classList.remove('sec-hidden'));
 
   targets.forEach(t=>{
     const match = t.hay.includes(q);
@@ -4083,34 +4086,35 @@ document.addEventListener('keydown', e=>{
 
 // =================== SECTION FILTER ===================
 const NEW_SEC_IDS = ['sec-meds-tit','sec-edu','sec-followup-ref','sec-billing','sec-special-groups','sec-complex'];
+let _activeGroup = null; // null = all hidden (home state)
 
-function showGroup(groupId, tileEl){
-  const allSecs = [...document.querySelectorAll('section.card')];
-  const bar = document.getElementById('back-bar');
-  const allTiles = [...document.querySelectorAll('.tile')];
-
-  allTiles.forEach(t=>t.classList.remove('tile-active'));
-  if(tileEl) tileEl.classList.add('tile-active');
-
-  if(groupId === 'follow-along'){
-    allSecs.forEach(s=>{
+function _applySectionState(){
+  document.querySelectorAll('section.card').forEach(s=>{
+    if(_activeGroup === null){
+      s.classList.add('sec-hidden');
+    } else if(_activeGroup === 'follow-along'){
       if(NEW_SEC_IDS.includes(s.id)) s.classList.add('sec-hidden');
       else s.classList.remove('sec-hidden');
-    });
-  } else {
-    allSecs.forEach(s=>{
-      if(s.id === groupId) s.classList.remove('sec-hidden');
+    } else {
+      if(s.id === _activeGroup) s.classList.remove('sec-hidden');
       else s.classList.add('sec-hidden');
-    });
-  }
-  bar.classList.add('show');
+    }
+  });
+}
+
+function showGroup(groupId, tileEl){
+  _activeGroup = groupId;
+  _applySectionState();
+  document.querySelectorAll('.tile').forEach(t=>t.classList.remove('tile-active'));
+  if(tileEl) tileEl.classList.add('tile-active');
+  document.getElementById('back-bar').classList.add('show');
   const first = document.querySelector('section.card:not(.sec-hidden)');
   if(first) setTimeout(()=>first.scrollIntoView({behavior:'smooth',block:'start'}),30);
 }
 
 function backToMenu(){
-  const allSecs = [...document.querySelectorAll('section.card')];
-  allSecs.forEach(s=>s.classList.remove('sec-hidden'));
+  _activeGroup = null;
+  _applySectionState();
   document.getElementById('back-bar').classList.remove('show');
   document.querySelectorAll('.tile').forEach(t=>t.classList.remove('tile-active'));
   document.querySelector('.tile-section').scrollIntoView({behavior:'smooth',block:'start'});
@@ -4137,6 +4141,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   renderExamples('trt-examples', TRT_EXAMPLES);
   renderExamples('hoc-examples', HOC_EXAMPLES);
   updateProgress();
+  // Start with all sections hidden — show only what the user selects
+  document.querySelectorAll('section.card').forEach(s=>s.classList.add('sec-hidden'));
 });
 </script>
 <button id="back-bar" onclick="backToMenu()">
