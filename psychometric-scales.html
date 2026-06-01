@@ -376,8 +376,12 @@
         <button class="tab-btn" data-tab="dast" onclick="switchTab('dast')">DAST-10</button>
         <button class="tab-btn" data-tab="wsas" onclick="switchTab('wsas')">WSAS</button>
         <button class="tab-btn" data-tab="sds" onclick="switchTab('sds')">SDS</button>
+<<<<<<< HEAD
         <button class="tab-btn" data-tab="edeq" onclick="switchTab('edeq')">EDE-Q</button>
         <button class="tab-btn" data-tab="ede" onclick="switchTab('ede')">EDE</button>
+=======
+        <button class="tab-btn" data-tab="edi3" onclick="switchTab('edi3')">EDI-3</button>
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
         <button class="tab-btn" data-tab="cgi" onclick="switchTab('cgi')">CGI</button>
     </div>
 
@@ -997,6 +1001,7 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- EDE-Q (self-report) -->
     <div class="tab-pane" id="tab-edeq">
         <div class="card">
@@ -1117,6 +1122,41 @@
 
         <div class="disclaimer">
             <strong>Reference:</strong> Fairburn CG, Cooper Z, O'Connor M. Eating Disorder Examination (Edition 17.0D). In: Fairburn CG. Cognitive Behavior Therapy and Eating Disorders. New York: Guilford Press; 2008. Investigator-based interview; community-norm global ≈ 1.5; global ≥ 4 commonly used as clinical threshold. Items, probes and scoring conventions are not reproduced here — use the official EDE schedule.
+=======
+    <!-- EDI-3 -->
+    <div class="tab-pane" id="tab-edi3">
+        <div class="card">
+            <div class="card-title">EDI-3 Instructions</div>
+            <p style="font-size:0.9em;">Eating Disorder Inventory-3 (Garner, 2004). 91-item self-report instrument with 12 primary scales and 6 composites. The EDI-3 is a <strong>proprietary instrument (PAR Inc.)</strong> — administration and norms-based T-score conversion require the official PAR form, scoring key, and age/sex-stratified norms tables. Use this tool to aggregate the hand-scored or PAR-scored subscale totals into the six EDI-3 composites and to produce a formatted summary for the chart. Optional T-score fields are included for report inclusion.</p>
+        </div>
+
+        <div class="section-body" id="edi3Items"></div>
+
+        <div class="score-bar" style="text-align:left; line-height:1.7;">
+            <div><strong>EDRC</strong> (Eating Disorder Risk Composite): <span id="edi3EDRC">0</span> / 100</div>
+            <div><strong>IC</strong> (Ineffectiveness): <span id="edi3IC">0</span> / 52</div>
+            <div><strong>IPC</strong> (Interpersonal Problems): <span id="edi3IPC">0</span> / 56</div>
+            <div><strong>APC</strong> (Affective Problems): <span id="edi3APC">0</span> / 68</div>
+            <div><strong>OC</strong> (Overcontrol): <span id="edi3OC">0</span> / 52</div>
+            <div><strong>GPMC</strong> (General Psychological Maladjustment): <span id="edi3GPMC">0</span> / 260</div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('edi3')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('edi3')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="edi3Output">
+            <div class="output-header">
+                <h3>EDI-3 Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('edi3')" id="edi3CopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="edi3Text" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Garner DM. Eating Disorder Inventory-3 Professional Manual. Lutz, FL: Psychological Assessment Resources, Inc.; 2004. Proprietary instrument — items, scoring key, and norms are not reproduced here. EDI-3 T-score interpretation (per manual): T &lt; 60 low clinical; T 60–69 typical clinical range; T ≥ 70 elevated clinical range.
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
         </div>
     </div>
 
@@ -1660,6 +1700,7 @@ const CGII_OPTIONS = [
     { val: 7, label: 'Very much worse' }
 ];
 
+<<<<<<< HEAD
 // ---------- EDE-Q / EDE data ----------
 // Items and probes are proprietary (Fairburn / CREDO, Oxford). Only the
 // subscale structure is encoded here for mean/global aggregation.
@@ -1686,6 +1727,24 @@ const EDE_BEHAVIOURS = [
     { key: 'LAX',  name: 'Laxative misuse',                                 hint: 'Past 28 days' },
     { key: 'DIU',  name: 'Diuretic misuse',                                 hint: 'Past 28 days' },
     { key: 'EXR',  name: 'Driven / compulsive exercise',                    hint: 'Past 28 days' }
+=======
+// ---------- EDI-3 data ----------
+// EDI-3 items are proprietary (PAR Inc.); only the 12 primary scales and their
+// raw-score ranges are encoded here for composite aggregation.
+const EDI3_SUBSCALES = [
+    { key: 'DT',  group: 'risk', name: 'Drive for Thinness',           items: 7,  max: 28 },
+    { key: 'B',   group: 'risk', name: 'Bulimia',                      items: 8,  max: 32 },
+    { key: 'BD',  group: 'risk', name: 'Body Dissatisfaction',         items: 10, max: 40 },
+    { key: 'LSE', group: 'psy',  name: 'Low Self-Esteem',              items: 6,  max: 24 },
+    { key: 'PA',  group: 'psy',  name: 'Personal Alienation',          items: 7,  max: 28 },
+    { key: 'II',  group: 'psy',  name: 'Interpersonal Insecurity',     items: 7,  max: 28 },
+    { key: 'IA',  group: 'psy',  name: 'Interpersonal Alienation',     items: 7,  max: 28 },
+    { key: 'ID',  group: 'psy',  name: 'Interoceptive Deficits',       items: 9,  max: 36 },
+    { key: 'ED',  group: 'psy',  name: 'Emotional Dysregulation',      items: 8,  max: 32 },
+    { key: 'P',   group: 'psy',  name: 'Perfectionism',                items: 6,  max: 24 },
+    { key: 'A',   group: 'psy',  name: 'Asceticism',                   items: 7,  max: 28 },
+    { key: 'MF',  group: 'psy',  name: 'Maturity Fears',               items: 8,  max: 32 }
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 ];
 
 // ---------- Y-BOCS data ----------
@@ -2500,6 +2559,7 @@ const HAMA_ITEMS = [
     imp.innerHTML = iH;
 })();
 
+<<<<<<< HEAD
 // ---------- Build EDE-Q UI ----------
 (function buildEdeq() {
     const subC = document.getElementById('edeqSubscales');
@@ -2550,6 +2610,32 @@ const HAMA_ITEMS = [
         bH += '</div>';
     });
     behC.innerHTML = bH;
+=======
+// ---------- Build EDI-3 UI ----------
+(function buildEdi3() {
+    const container = document.getElementById('edi3Items');
+    let html = '';
+    let lastGroup = '';
+    EDI3_SUBSCALES.forEach((sub, idx) => {
+        if (sub.group !== lastGroup) {
+            const groupLabel = sub.group === 'risk' ? 'Eating Disorder Risk scales' : 'Psychological scales';
+            html += '<div style="padding:10px 18px; background:var(--primary-light); color:var(--primary); font-weight:600; font-size:0.92em; text-transform:uppercase; letter-spacing:0.4px;">' + groupLabel + '</div>';
+            lastGroup = sub.group;
+        }
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + (idx + 1) + '</span><span class="item-title">' + sub.name + ' (' + sub.key + ') <span style="font-weight:400;color:var(--gray-600);font-size:0.85em;">— ' + sub.items + ' items, raw 0–' + sub.max + '</span></span></div>';
+        html += '<div style="padding-left:38px; display:flex; gap:18px; flex-wrap:wrap; align-items:center;">';
+        html += '<div style="display:flex; align-items:center; gap:8px;"><label style="font-size:0.9em; font-weight:500;">Raw:</label>' +
+                '<input type="number" id="edi3Raw_' + sub.key + '" min="0" max="' + sub.max + '" step="1" oninput="updateEdi3()" ' +
+                'style="width:80px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;">' +
+                '<span style="font-size:0.85em; color:var(--gray-600);">/ ' + sub.max + '</span></div>';
+        html += '<div style="display:flex; align-items:center; gap:8px;"><label style="font-size:0.9em; font-weight:500; color:var(--gray-700);">T-score (optional):</label>' +
+                '<input type="number" id="edi3T_' + sub.key + '" min="0" max="100" step="1" oninput="updateEdi3()" ' +
+                'style="width:80px; padding:6px 8px; border:1px solid var(--gray-300); border-radius:6px; font-size:0.95em;"></div>';
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 })();
 
 // ---------- Build PCL-5 UI ----------
@@ -3006,6 +3092,7 @@ function getNumVal(id) {
     return isNaN(n) ? null : n;
 }
 
+<<<<<<< HEAD
 // ---------- Chart rendering ----------
 function severityToBarClass(cssClass) {
     if (!cssClass) return '';
@@ -3388,6 +3475,33 @@ function edeUpdateCommon(prefix) {
 function updateEdeq() { edeUpdateCommon('edeq'); }
 function updateEde()  { edeUpdateCommon('ede'); }
 
+=======
+function updateEdi3() {
+    const raw = {};
+    EDI3_SUBSCALES.forEach(s => {
+        let v = getNumVal('edi3Raw_' + s.key);
+        if (v !== null) {
+            if (v < 0) v = 0;
+            if (v > s.max) v = s.max;
+        }
+        raw[s.key] = v;
+    });
+    const sumRaw = (...keys) => keys.reduce((a, k) => a + (raw[k] || 0), 0);
+    const edrc = sumRaw('DT', 'B', 'BD');
+    const ic   = sumRaw('LSE', 'PA');
+    const ipc  = sumRaw('II', 'IA');
+    const apc  = sumRaw('ID', 'ED');
+    const oc   = sumRaw('P', 'A');
+    const gpmc = sumRaw('LSE', 'PA', 'II', 'IA', 'ID', 'ED', 'P', 'A', 'MF');
+    document.getElementById('edi3EDRC').textContent = edrc;
+    document.getElementById('edi3IC').textContent   = ic;
+    document.getElementById('edi3IPC').textContent  = ipc;
+    document.getElementById('edi3APC').textContent  = apc;
+    document.getElementById('edi3OC').textContent   = oc;
+    document.getElementById('edi3GPMC').textContent = gpmc;
+}
+
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 function updatePcl5() {
     let total = 0, rated = 0;
     for (let i = 1; i <= 20; i++) {
@@ -4208,6 +4322,7 @@ function buildCgiText() {
     return t;
 }
 
+<<<<<<< HEAD
 function buildEdeReport(opts) {
     // opts: { which: 'edeq'|'ede', title, behaviours, refLines }
     const line = '='.repeat(66);
@@ -4216,10 +4331,19 @@ function buildEdeReport(opts) {
     let t = '';
     t += line + '\n';
     t += opts.title + '\n';
+=======
+function buildEdi3Text() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'EATING DISORDER INVENTORY-3 (EDI-3)\n';
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
     t += line + '\n';
     t += patientHeader();
     t += thin + '\n';
 
+<<<<<<< HEAD
     const subs = {};
     let nSubs = 0, sumSubs = 0;
     EDE_SUBSCALES.forEach(s => {
@@ -4269,10 +4393,83 @@ function buildEdeReport(opts) {
 
     t += thin + '\n';
     opts.refLines.forEach(l => { t += l + '\n'; });
+=======
+    const raw = {};
+    const tsc = {};
+    let anyRaw = false, anyT = false;
+    EDI3_SUBSCALES.forEach(s => {
+        raw[s.key] = getNumVal('edi3Raw_' + s.key);
+        tsc[s.key] = getNumVal('edi3T_' + s.key);
+        if (raw[s.key] !== null) anyRaw = true;
+        if (tsc[s.key] !== null) anyT = true;
+    });
+
+    function fmtRow(s) {
+        const rv = raw[s.key] === null ? ' NR' : String(raw[s.key]).padStart(3);
+        const tv = tsc[s.key] === null ? '' : '   T = ' + tsc[s.key];
+        return '  ' + (s.name + ' (' + s.key + ')').padEnd(36) + ': ' + rv + ' / ' + String(s.max).padEnd(3) + tv + '\n';
+    }
+
+    const sumRaw = (...keys) => keys.reduce((a, k) => a + (raw[k] || 0), 0);
+    const edrc = sumRaw('DT', 'B', 'BD');
+    const ic   = sumRaw('LSE', 'PA');
+    const ipc  = sumRaw('II', 'IA');
+    const apc  = sumRaw('ID', 'ED');
+    const oc   = sumRaw('P', 'A');
+    const gpmc = sumRaw('LSE', 'PA', 'II', 'IA', 'ID', 'ED', 'P', 'A', 'MF');
+
+    t += 'EATING DISORDER RISK SCALES (raw subscale totals)\n';
+    EDI3_SUBSCALES.filter(s => s.group === 'risk').forEach(s => { t += fmtRow(s); });
+    t += '  ' + '-'.repeat(58) + '\n';
+    t += '  EDRC  (Eating Disorder Risk Composite, DT+B+BD): ' + edrc + ' / 100\n';
+
+    t += thin + '\n';
+    t += 'PSYCHOLOGICAL SCALES (raw subscale totals)\n';
+    EDI3_SUBSCALES.filter(s => s.group === 'psy').forEach(s => { t += fmtRow(s); });
+
+    t += thin + '\n';
+    t += 'PSYCHOLOGICAL COMPOSITES (sum of raw subscale scores)\n';
+    t += '  IC    (Ineffectiveness, LSE+PA):                  ' + String(ic).padStart(3)   + ' / 52\n';
+    t += '  IPC   (Interpersonal Problems, II+IA):            ' + String(ipc).padStart(3)  + ' / 56\n';
+    t += '  APC   (Affective Problems, ID+ED):                ' + String(apc).padStart(3)  + ' / 68\n';
+    t += '  OC    (Overcontrol, P+A):                         ' + String(oc).padStart(3)   + ' / 52\n';
+    t += '  GPMC  (Gen. Psych. Maladjustment, 9 psych scales):' + String(gpmc).padStart(4) + ' / 260\n';
+
+    if (anyT) {
+        const elevated = [];
+        EDI3_SUBSCALES.forEach(s => {
+            const T = tsc[s.key];
+            if (T !== null && T >= 60) {
+                let bucket = 'typical clinical range';
+                if (T >= 70) bucket = 'elevated clinical range';
+                elevated.push(s.key + ' (T=' + T + ', ' + bucket + ')');
+            }
+        });
+        if (elevated.length) {
+            t += thin + '\n';
+            t += 'T-SCORE ELEVATIONS (T ≥ 60)\n';
+            elevated.forEach(e => { t += '  - ' + e + '\n'; });
+        }
+    }
+
+    if (!anyRaw && !anyT) {
+        t += thin + '\n';
+        t += 'No subscale scores entered.\n';
+    }
+
+    t += thin + '\n';
+    t += 'EDI-3 is a proprietary instrument (PAR Inc.) and is not reproduced here.\n';
+    t += 'This summary aggregates clinician-entered raw subscale totals into the six\n';
+    t += 'EDI-3 composites. T-score conversion requires PAR\'s age/sex-stratified\n';
+    t += 'norms. Per the EDI-3 manual: T<60 low clinical; T 60-69 typical clinical;\n';
+    t += 'T>=70 elevated clinical range.\n';
+    t += 'Reference: Garner DM. EDI-3 Professional Manual. Lutz, FL: PAR; 2004.\n';
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
     t += line + '\n';
     return t;
 }
 
+<<<<<<< HEAD
 function buildEdeqText() {
     return buildEdeReport({
         which: 'edeq',
@@ -4304,6 +4501,8 @@ function buildEdeText() {
     });
 }
 
+=======
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 function buildPcl5Text() {
     const line = '='.repeat(66);
     const thin = '-'.repeat(66);
@@ -4569,6 +4768,7 @@ const SCALE_DISPATCH = {
 };
 
 function generateOutput(which) {
+<<<<<<< HEAD
     const spec = SCALE_DISPATCH[which];
     if (!spec) return;
     document.getElementById(which + 'Text').value = spec.build();
@@ -4576,6 +4776,85 @@ function generateOutput(which) {
     const outEl = document.getElementById(which + 'Output');
     outEl.classList.add('visible');
     outEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+=======
+    if (which === 'madrs') {
+        document.getElementById('madrsText').value = buildMadrsText();
+        document.getElementById('madrsOutput').classList.add('visible');
+        document.getElementById('madrsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'phq9') {
+        document.getElementById('phq9Text').value = buildPhq9Text();
+        document.getElementById('phq9Output').classList.add('visible');
+        document.getElementById('phq9Output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'gad7') {
+        document.getElementById('gad7Text').value = buildGad7Text();
+        document.getElementById('gad7Output').classList.add('visible');
+        document.getElementById('gad7Output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'hama') {
+        document.getElementById('hamaText').value = buildHamaText();
+        document.getElementById('hamaOutput').classList.add('visible');
+        document.getElementById('hamaOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'hamd') {
+        document.getElementById('hamdText').value = buildHamdText();
+        document.getElementById('hamdOutput').classList.add('visible');
+        document.getElementById('hamdOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'pcl5') {
+        document.getElementById('pcl5Text').value = buildPcl5Text();
+        document.getElementById('pcl5Output').classList.add('visible');
+        document.getElementById('pcl5Output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'iesr') {
+        document.getElementById('iesrText').value = buildIesrText();
+        document.getElementById('iesrOutput').classList.add('visible');
+        document.getElementById('iesrOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'ybocs') {
+        document.getElementById('ybocsText').value = buildYbocsText();
+        document.getElementById('ybocsOutput').classList.add('visible');
+        document.getElementById('ybocsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'bfcrs') {
+        document.getElementById('bfcrsText').value = buildBfcrsText();
+        document.getElementById('bfcrsOutput').classList.add('visible');
+        document.getElementById('bfcrsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'ymrs') {
+        document.getElementById('ymrsText').value = buildYmrsText();
+        document.getElementById('ymrsOutput').classList.add('visible');
+        document.getElementById('ymrsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'bprs') {
+        document.getElementById('bprsText').value = buildBprsText();
+        document.getElementById('bprsOutput').classList.add('visible');
+        document.getElementById('bprsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'k10') {
+        document.getElementById('k10Text').value = buildK10Text();
+        document.getElementById('k10Output').classList.add('visible');
+        document.getElementById('k10Output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'msibpd') {
+        document.getElementById('msibpdText').value = buildMsibpdText();
+        document.getElementById('msibpdOutput').classList.add('visible');
+        document.getElementById('msibpdOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'cgi') {
+        document.getElementById('cgiText').value = buildCgiText();
+        document.getElementById('cgiOutput').classList.add('visible');
+        document.getElementById('cgiOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'audit') {
+        document.getElementById('auditText').value = buildAuditText();
+        document.getElementById('auditOutput').classList.add('visible');
+        document.getElementById('auditOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'dast') {
+        document.getElementById('dastText').value = buildDastText();
+        document.getElementById('dastOutput').classList.add('visible');
+        document.getElementById('dastOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'wsas') {
+        document.getElementById('wsasText').value = buildWsasText();
+        document.getElementById('wsasOutput').classList.add('visible');
+        document.getElementById('wsasOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'sds') {
+        document.getElementById('sdsText').value = buildSdsText();
+        document.getElementById('sdsOutput').classList.add('visible');
+        document.getElementById('sdsOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (which === 'edi3') {
+        document.getElementById('edi3Text').value = buildEdi3Text();
+        document.getElementById('edi3Output').classList.add('visible');
+        document.getElementById('edi3Output').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 }
 
 function copyOutput(which) {
@@ -4608,6 +4887,7 @@ function resetScale(which) {
         document.getElementById('cgiOutput').classList.remove('visible');
         return;
     }
+<<<<<<< HEAD
     if (which === 'edeq' || which === 'ede') {
         const behSet = which === 'edeq' ? EDEQ_BEHAVIOURS : EDE_BEHAVIOURS;
         EDE_SUBSCALES.forEach(s => {
@@ -4621,6 +4901,15 @@ function resetScale(which) {
         });
         if (which === 'edeq') updateEdeq(); else updateEde();
         document.getElementById(which + 'Output').classList.remove('visible');
+=======
+    if (which === 'edi3') {
+        EDI3_SUBSCALES.forEach(s => {
+            const r = document.getElementById('edi3Raw_' + s.key); if (r) r.value = '';
+            const tt = document.getElementById('edi3T_' + s.key); if (tt) tt.value = '';
+        });
+        updateEdi3();
+        document.getElementById('edi3Output').classList.remove('visible');
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
         return;
     }
     const count = counts[which];
@@ -4669,8 +4958,12 @@ updateWsas();
 updateSds();
 updateYbocs();
 updateBfcrs();
+<<<<<<< HEAD
 updateEdeq();
 updateEde();
+=======
+updateEdi3();
+>>>>>>> 3a91d86 (Add EDI-3 scoring aggregator to psychometric scales)
 </script>
 </body>
 </html>
