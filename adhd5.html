@@ -274,18 +274,88 @@ select.inp{appearance:none}
 .qol-clear{margin-left:8px;padding:3px 9px;border:1px solid var(--border);background:#fff;color:var(--muted);font:600 11px var(--sans);border-radius:5px;cursor:pointer}
 .qol-clear:hover{color:var(--text);border-color:var(--text)}
 .factor-tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.dev-block{margin-bottom:6px}
-.dev-block .dev-qrow{padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;cursor:pointer}
+.dev-block{margin-bottom:8px}
+.dev-block .dev-qrow{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px}
 .dev-block .dev-qrow:hover{border-color:#94a3b8;background:#f8fafc}
 .dev-block .dev-qrow.on{border-color:var(--green);background:var(--green-bg)}
-.dev-caret{margin-left:auto;background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:4px}
-.dev-caret:hover{background:#f1f5f9;color:var(--text)}
-.dev-opts{padding:6px 8px 4px 36px;display:grid;grid-template-columns:1fr;gap:3px;background:#fafbff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;margin-top:-3px}
+.dev-block .dev-cbox{width:26px;height:26px;border-width:2.5px;border-radius:7px;font-size:14px;margin-top:0}
+.dev-block .clabel{font-size:14px;font-weight:600}
+.dev-block .dev-qbtn{margin-left:0;margin-right:0}
+.dev-caret{margin-left:auto;background:none;border:1px solid var(--border);color:var(--muted);font-size:14px;cursor:pointer;padding:3px 9px;border-radius:6px;font-weight:700}
+.dev-caret:hover{background:#f1f5f9;color:var(--text);border-color:#94a3b8}
+.dev-opts{padding:10px 14px 12px 50px;display:flex;flex-direction:column;gap:5px;background:#fafbff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;margin-top:-4px}
 .dev-opts.hidden{display:none}
-.dev-opt-row{display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:5px;cursor:pointer;font-size:12px;line-height:1.3;color:#475569}
-.dev-opt-row:hover{background:#eef2ff;color:var(--text)}
+.dev-opt-row{display:flex;align-items:flex-start;gap:9px;padding:3px 4px;font-size:12.5px;line-height:1.45;color:#475569}
+.dev-opt-row::before{content:'•';color:var(--primary);font-weight:700;flex-shrink:0;margin-top:-1px}
 .dev-opt-label{flex:1}
-.dev-opt-badge{display:inline-block;margin-left:6px;background:var(--primary-bg);color:var(--primary);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;vertical-align:middle}
+.dev-opts-heading{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:2px 4px 4px;margin-bottom:2px;border-bottom:1px solid #e5e7eb}
+/* ── Presenting issues — categorised pill buttons ── */
+.diff-cat-group{margin-bottom:10px}
+.diff-cat-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:6px 0 6px 2px}
+.diff-pills{display:flex;flex-wrap:wrap;gap:6px}
+.diff-pill{padding:7px 13px;border-radius:18px;border:1.5px solid var(--border);background:#fff;color:#475569;font:600 12.5px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1.2;transition:all .12s;user-select:none}
+.diff-pill:hover{border-color:var(--green);color:var(--green)}
+.diff-pill.on{background:var(--green-bg);border-color:var(--green);color:#166534;font-weight:700;box-shadow:0 1px 3px rgba(22,163,74,.18)}
+.diff-pill.on::before{content:'✓ ';color:var(--green);font-weight:800}
+/* ── MSE — grouped layout ── */
+.mse-group{margin-bottom:12px}
+.mse-group-header{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--primary);padding:5px 0 6px;border-bottom:1.5px solid var(--primary-bg);margin-bottom:6px}
+.mse-group-body{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px 14px}
+.mse-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.mse-item.flag{border-color:var(--amber);background:#fff9ef}
+.mse-item.flag .mse-label{color:var(--amber)}
+.mse-item-chips{display:flex;flex-wrap:wrap;gap:4px 6px;margin:4px 0 5px}
+.mse-chip{padding:4px 9px;border-radius:14px;border:1.5px solid var(--border);background:#fff;color:#64748b;font:600 11.5px var(--sans);cursor:pointer;line-height:1.2;-webkit-tap-highlight-color:transparent;transition:all .1s}
+.mse-chip:hover{border-color:#94a3b8;color:var(--text)}
+.mse-chip.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
+.mse-chip.bad{color:#b91c1c}
+.mse-chip.bad:hover{border-color:#dc2626;color:#b91c1c}
+.mse-chip.bad.on{background:var(--red-bg);border-color:var(--red);color:#b91c1c}
+/* ── Differential — collapsible cards ── */
+.diff-stack{display:flex;flex-direction:column;gap:7px}
+.diff-legend{font-size:11px;color:#475569;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:6px;line-height:1.5}
+.diff-legend strong{color:var(--text)}
+.diff-legend .lg-minus{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--green-bg);color:var(--green);border:1.5px solid var(--green);font-weight:800;text-align:center;line-height:15px;font-size:14px;margin-right:3px;vertical-align:middle}
+.diff-legend .lg-plus{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--amber-bg);color:var(--amber);border:1.5px solid var(--amber);font-weight:800;text-align:center;line-height:15px;font-size:14px;margin:0 3px;vertical-align:middle}
+.diff-d{border:1.5px solid var(--border);border-radius:10px;background:#fff;overflow:hidden;transition:border-color .15s}
+.diff-d.open{border-color:#94a3b8}
+.diff-d.status-nil{border-color:var(--green);background:#f0fdf4}
+.diff-d.status-symptoms{border-color:var(--amber);background:#fffbeb}
+.diff-d.status-comorbid{border-color:var(--purple);background:#faf5ff}
+.diff-d.status-better{border-color:var(--red);background:#fef2f2}
+.diff-d-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:default;user-select:none;-webkit-user-select:none}
+.diff-d-title{font-size:13.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:5px;flex:1;min-width:0}
+.diff-d-title .qbtn{margin-top:0}
+.diff-d-status-pill{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:12px;background:#f1f5f9;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;flex-shrink:0}
+.diff-d.status-nil .diff-d-status-pill{background:var(--green-bg);color:var(--green)}
+.diff-d.status-symptoms .diff-d-status-pill{background:var(--amber-bg);color:var(--amber)}
+.diff-d.status-comorbid .diff-d-status-pill{background:var(--purple-bg);color:var(--purple)}
+.diff-d.status-better .diff-d-status-pill{background:var(--red-bg);color:var(--red)}
+.diff-d-toggles{display:flex;gap:5px;flex-shrink:0}
+.diff-d-toggle{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:#475569;font-size:20px;font-weight:800;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;justify-content:center;line-height:1;-webkit-tap-highlight-color:transparent;padding:0;transition:all .12s}
+.diff-d-toggle.minus{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.diff-d-toggle.minus:hover{background:var(--green);color:#fff}
+.diff-d-toggle.plus{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.diff-d-toggle.plus:hover{background:var(--amber);color:#fff}
+.diff-d-toggle.active{box-shadow:0 0 0 2px rgba(15,23,42,.18) inset}
+.diff-d-body{padding:0 14px 14px;border-top:1px dashed var(--border);background:rgba(255,255,255,.55)}
+.diff-d-body.hidden{display:none}
+.diff-d-section-lbl{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:11px 0 6px}
+.diff-sx-grid{display:flex;flex-direction:column;gap:3px}
+.diff-sx-row{display:flex;align-items:flex-start;gap:9px;padding:5px 4px;border-radius:6px;cursor:pointer;user-select:none;-webkit-user-select:none;font-size:12.5px;line-height:1.4;color:#334155}
+.diff-sx-row:hover{background:#f1f5f9}
+.diff-sx-row .cbox{width:18px;height:18px;border-width:2px;font-size:10px}
+.diff-sx-label{flex:1;margin-top:-1px}
+.diff-d-notes{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 10px;font:13px var(--sans);background:#fff;color:var(--text);min-height:48px;resize:vertical}
+.diff-d-notes:focus{outline:1px solid var(--primary)}
+.diff-d-status-btns{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:10px}
+@media(min-width:640px){.diff-d-status-btns{grid-template-columns:repeat(4,1fr)}}
+.diff-d-status-btns .dsb{padding:9px 8px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:#475569;font:700 11.5px var(--sans);cursor:pointer;text-align:center;line-height:1.25;-webkit-tap-highlight-color:transparent;transition:all .12s}
+.diff-d-status-btns .dsb:hover{border-color:#94a3b8;color:var(--text)}
+.diff-d-status-btns .dsb.on-nil{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:800}
+.diff-d-status-btns .dsb.on-symptoms{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);font-weight:800}
+.diff-d-status-btns .dsb.on-comorbid{background:var(--purple-bg);border-color:var(--purple);color:var(--purple);font-weight:800}
+.diff-d-status-btns .dsb.on-better{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:800}
 .factor-tile{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;color:#475569;font:600 12px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:left;line-height:1.3;min-height:40px;display:flex;align-items:center;transition:background .12s,border-color .12s,color .12s}
 .factor-tile:hover{border-color:var(--primary);color:var(--primary)}
 .factor-tile.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
@@ -1096,8 +1166,8 @@ select.inp{appearance:none}
 <div class="card" data-initial-only>
     <div class="ch sky">Criterion E — Differential Diagnoses &nbsp;<span style="font-size:10px;font-weight:400;opacity:.75">-- tap ? for questions</span></div>
     <div class="cb">
-      <div id="diff-rows" class="inner-2col-sm"></div>
-      <textarea class="nf" id="diffNotes" placeholder="Differential notes..." oninput="save();refresh()" rows="2"></textarea>
+      <div id="diff-rows" class="diff-stack"></div>
+      <textarea class="nf" id="diffNotes" placeholder="Additional differential notes..." oninput="save();refresh()" rows="2"></textarea>
     </div>
   </div>
 <div class="card" data-initial-only>
@@ -1156,7 +1226,7 @@ select.inp{appearance:none}
 <div class="card" data-initial-only>
     <div class="ch slate">Mental State Examination</div>
     <div class="cb">
-      <div id="mse-rows" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:2px"></div>
+      <div id="mse-rows"></div>
       <label class="fl">Free text MSE</label>
       <textarea class="nf" id="mseNotes" placeholder="Appearance, speech, mood, affect, thought, perception, cognition, insight, judgment, risk..." oninput="save();refresh()" rows="3"></textarea>
     </div>
@@ -1601,54 +1671,92 @@ const DEV=[
   {id:'childhood',label:'Childhood pattern (pre-age 12)',
     qs:['When you picture yourself in primary school, what sort of child were you at school and at home?','What did adults keep correcting you for, over and over?','Were you often described as bright but not applying yourself, careless, messy, chatty, daydreamy, or always on the go?','What themes would I expect to see repeatedly in your primary school reports?','Were there clear examples of inattention, hyperactivity, or impulsivity before age 12?'],
     options:[
-      'Bright but "not applying themselves"',
-      'Daydreamer / off in own world',
-      'Always on the go / climbed everything',
-      'Forgetful, lost belongings frequently',
-      'Talkative or disruptive in class',
+      'Bright but "not applying themselves" — clever, but inconsistent output',
+      'Daydreamer / off in own world / "head in the clouds"',
+      'Always on the go / climbed everything / unable to sit still',
+      'Forgot belongings, library books, homework, lunch repeatedly',
+      'Talkative or disruptive in class — couldn\'t wait turn',
       'Compensated through high IQ — symptoms hidden by capability',
       'Quiet inattentive / "good child" presentation (often missed)',
-      'School reports themed around "potential" and inconsistency'
+      'School reports themed around "potential" and inconsistency',
+      'Messy desk, lost stationery, untidy handwriting',
+      'Avoided reading or homework — needed an adult sitting with them',
+      'Emotional meltdowns over small frustrations or transitions',
+      'Easily bored — needed novelty, struggled with repetition',
+      'Difficulty making or keeping friends (impulsive, intrusive, or shy)',
+      'Frequently in trouble for behaviour that "wasn\'t their fault"',
+      'Excelled in sport / drama / preferred topic but "didn\'t apply" elsewhere'
     ]},
   {id:'adolescent',label:'Adolescent pattern',
     qs:['What happened when school became less supervised and more self-directed?','Did homework, deadlines, studying, lateness, or organisation become much harder in high school?','Did the presentation shift from obvious hyperactivity to internal restlessness, procrastination, disorganisation?','Did risk-taking, emotional impulsivity, substance use, or chaotic routines start showing up?','Did teachers or family feel you had potential you were not turning into consistent performance?'],
     options:[
       'Procrastination intensified as study became self-directed',
-      'Lateness, disorganisation became more obvious',
+      'Chronic lateness, disorganisation became more obvious',
       'Hyperactivity internalised — restless rather than running around',
-      'Risk-taking, impulsive substance use, reckless driving',
-      'Underperformed despite measured intelligence',
-      'Anxiety / perfectionism developed as compensation',
+      'Risk-taking — impulsive substance use, reckless driving, unprotected sex',
+      'Underperformed in exams despite knowing the material',
+      'Anxiety / perfectionism developed as a coping compensation',
       'Symptoms masked by structured / high-support schooling',
       'Difficulties only emerged at uni / first job (loss of structure)',
       'Body-focused repetitive behaviour (skin picking, hair pulling, nail biting)',
-      'Addictive behaviours (gaming, gambling, pornography, scrolling)'
+      'Addictive behaviours (gaming, gambling, pornography, scrolling)',
+      'Frequent fights with parents over chores, screens, homework',
+      'Lost or destroyed phones, laptops, wallets repeatedly',
+      'Started many hobbies, projects, instruments — finished few',
+      'Emotional volatility — quick anger, rapid mood shifts',
+      'Slept late, missed school / first periods, struggled with mornings',
+      'Friendship turbulence — intense, then fall-outs over small issues'
     ]},
   {id:'adult',label:'Adult pattern',
     qs:['How do these traits show up now in work, study, home admin, finances, or relationships?','What happens for you with tasks that are boring, repetitive, delayed-reward, or paperwork-heavy?','Do you struggle more with starting, organising, prioritising, switching, following through, or tracking time?','Do you function much better only when there is urgency, novelty, pressure, or strong personal interest?','What failures of everyday executive function keep recurring despite insight and effort?'],
     options:[
       'Procrastination on important tasks; last-minute completion',
       'Difficulty starting tasks despite genuine intent',
-      'Time blindness / chronic lateness',
-      'Forgetfulness in daily life — keys, appointments, bills',
-      'Disorganised home / work environment',
+      'Time blindness — 5 minutes feels like 30, 30 minutes vanish',
+      'Chronic lateness despite trying',
+      'Forgets keys, appointments, bills, birthdays, medications',
+      'Disorganised home / work environment — "doom piles"',
       'Better functioning under pressure, urgency or strong interest',
       'Inconsistency rather than impossibility — can do it sometimes',
-      'Job hopping, unfinished projects, chronic underachievement'
+      'Job hopping, unfinished projects, chronic underachievement',
+      'Email and admin paralysis — inbox in the thousands',
+      'Tax returns / paperwork chronically late',
+      'Impulse spending, online shopping regret, subscriptions forgotten',
+      'Difficulty reading long documents — re-reads pages',
+      'Forgets to eat, drink, or take breaks when absorbed',
+      'Says yes to too much; chronic overcommitment then collapse',
+      'Conversations drift / interrupts / loses thread mid-sentence',
+      'Trouble switching tasks — either can\'t start or can\'t stop',
+      'Driving — speeding tickets, near-misses, missed turns'
     ]},
   {id:'realworld',label:'Real-world manifestations',
     qs:['Beyond the textbook symptoms, how does ADHD actually show up day-to-day?','Are there compensations or other neurodevelopmental traits that are part of the picture?','How does the patient describe the emotional texture of their experience?'],
     options:[
-      'Need for external scaffolding (partner, parent, assistant, system)',
+      'Need for external scaffolding (partner, parent, assistant, accountability buddy)',
       'Masking strategies (lists, alarms, perfectionism, over-preparation)',
-      'Binging — food, scrolling, shopping, gaming, content',
-      'Emotional dysregulation',
+      'Binging — food, scrolling, shopping, gaming, Netflix, content',
+      'Emotional dysregulation — feelings hit fast, hard, hard to recover',
       'Overcompensation leading to chronic exhaustion / burnout',
-      'Sensory sensitivities (sounds, textures, lights, crowds)',
-      'Rejection sensitivity dysphoria (RSD)',
-      'Chronic anxiety without specific worry content',
+      'Sensory sensitivities (sounds, textures, lights, crowds, clothing tags)',
+      'Rejection sensitivity dysphoria (RSD) — small criticism feels catastrophic',
+      'Chronic background anxiety without specific worry content',
       'Dysphoria without negative cognitive content',
-      'Hyperfocus on preferred / novel tasks'
+      'Hyperfocus on preferred / novel tasks — can lose hours',
+      '"Wall of awful" — the bigger or more important, the harder to start',
+      'Object permanence issues — "out of sight, out of mind"',
+      'Sleep — racing thoughts at night, can\'t wake up in the morning',
+      'Caffeine, nicotine, cannabis or stimulants used to self-medicate',
+      'Relationship strain — partner becomes the "manager", resentment builds',
+      'Forgets to reply to messages — friendships drift unintentionally',
+      'Body doubling helps (working alongside someone)',
+      'Difficulty with delayed gratification — wants reward now',
+      'Parking, returning library books, dropping off parcels feels insurmountable',
+      'Emotional flooding — small overwhelm tips into shutdown / meltdown',
+      'Time-and-money "leakage" — late fees, lost items, missed deadlines compound',
+      'Rejection of "boring" jobs — drawn to creative, chaotic, or crisis roles',
+      'Difficulty with transitions (mornings, end of day, holidays, moving)',
+      'Imposter syndrome despite genuine ability',
+      '"Volcano" pattern — calm, calm, calm, then explosion over the small thing'
     ]},
   {id:'__sym_label',label:'Core Symptoms',type:'label'},
   {id:'sym_inatt1',label:'Often fails to give close attention to detail / makes careless mistakes',type:'sym'},
@@ -1807,6 +1915,44 @@ const MEDICAL=[
     letter:'Reported dizziness on standing suggests possible autonomic instability. Lying and standing blood pressure and heart rate will be checked before initiating treatment, with hydration and contributing medications addressed. Alpha-2 agonists in particular can worsen orthostatic symptoms; if findings are marked or progressive, autonomic or cardiology workup will be considered.'},
 ];
 const SUBS=['Alcohol','Cannabis','Methamphetamine','Cocaine/stimulants','MDMA','Opioids','Benzodiazepines','Tobacco/nicotine','Caffeine (excess)','Other'];
+const DIFFICULTY_CATEGORIES=[
+  {label:'Cognitive',items:['Attention difficulties','Forgetfulness','Disorganisation','Time management']},
+  {label:'Productivity / Study / Work',items:['Task initiation difficulties','Workplace underperformance']},
+  {label:'Emotions / Internal state',items:['Emotional dysregulation','Rejection sensitivity','Low mood','Anxiety','Burnout']},
+  {label:'Social / Relationships',items:['Impulsivity','Relationship difficulties']},
+  {label:'Home / Lifestyle',items:['Sleep difficulties','Eating dysregulation','Financial difficulties','Driving safety']},
+  {label:'Physical / Sensory',items:['Restlessness','Sensory sensitivities']},
+  {label:'Substance use',items:['Substance regulation']}
+];
+const MSE_GROUPS=[
+  {label:'Appearance & Behaviour',items:['appearance','inattention','hyperactivity','impulsivity','speech']},
+  {label:'Mood & Affect',items:['mood','affect']},
+  {label:'Thought & Perception',items:['thought_form','thought_cont','perception']},
+  {label:'Cognition & Judgment',items:['cognition','insight','judgment']},
+  {label:'Risk',items:['suicide','harm_others']},
+  {label:'ADHD Assessment',items:['adhd_support']}
+];
+const DIFF_SYMPTOMS={
+  depression:['Depressed mood most of the day','Markedly diminished interest or pleasure','Significant appetite or weight change','Insomnia or hypersomnia','Psychomotor agitation or retardation','Fatigue or loss of energy','Worthlessness or excessive guilt','Diminished concentration / indecisiveness','Recurrent thoughts of death or suicide'],
+  bipolar:['Distinct period of elevated, expansive or irritable mood','Inflated self-esteem or grandiosity','Decreased need for sleep','More talkative / pressure of speech','Flight of ideas / racing thoughts','Distractibility (episode-bound)','Increase in goal-directed activity / psychomotor agitation','Excessive involvement in risky pleasurable activities','History of major depressive episodes'],
+  anxiety:['Excessive worry, more days than not','Difficulty controlling the worry','Restlessness or feeling on edge','Easily fatigued','Difficulty concentrating / mind going blank','Irritability','Muscle tension','Sleep disturbance','Avoidance behaviours','Panic attacks'],
+  ptsd:['Exposure to actual or threatened death, serious injury, or sexual violence','Intrusive memories, dreams or flashbacks','Avoidance of trauma-related stimuli','Negative alterations in cognition or mood','Hypervigilance or exaggerated startle','Irritability or angry outbursts','Reckless or self-destructive behaviour','Sleep disturbance','Dissociation (depersonalisation / derealisation)'],
+  autism:['Persistent deficits in social communication','Reduced sharing of interests or emotions','Deficits in nonverbal communication','Difficulty developing or maintaining relationships','Stereotyped / repetitive movements or speech','Insistence on sameness / inflexibility','Highly restricted, fixated interests','Sensory hyper- or hypo-reactivity','Symptoms present in early development'],
+  neurodevel_other:['Specific difficulty in reading, writing or maths','Skills substantially below expected for age','Onset during school years','Not better explained by intellectual or sensory impairment','Difficulties persist despite intervention'],
+  tic_tourette:['Multiple motor tics (sudden, recurrent)','One or more vocal tics','Tics persist >1 year','Onset before age 18','Tics cause distress or impairment'],
+  schizophrenia:['Delusions','Hallucinations','Disorganised speech','Grossly disorganised or catatonic behaviour','Negative symptoms (flat affect, avolition)','Marked decline in functioning','Continuous signs for ≥6 months'],
+  ocd:['Recurrent intrusive thoughts or urges (obsessions)','Repetitive behaviours or mental acts (compulsions)','Compulsions aimed at preventing distress / feared event','Time-consuming (>1 hr/day)','Cause significant distress or impairment','Insight typically preserved'],
+  personality:['Pervasive unstable interpersonal relationships','Identity disturbance / unstable self-image','Impulsivity in 2+ potentially damaging areas','Recurrent suicidal or self-harm behaviour','Affective instability (marked reactivity of mood)','Chronic feelings of emptiness','Inappropriate intense anger','Stress-related paranoia or dissociation','Frantic efforts to avoid abandonment'],
+  anorexia:['Restriction of energy intake → low body weight','Intense fear of weight gain','Behaviour interfering with weight gain','Disturbance in body-image perception','Lack of recognition of seriousness of low weight'],
+  bulimia:['Recurrent binge-eating episodes','Sense of loss of control during binge','Inappropriate compensatory behaviours (vomiting, laxatives, fasting, exercise)','Occur ≥1×/week for 3 months','Self-evaluation unduly influenced by weight/shape'],
+  bed:['Recurrent binge-eating episodes','Loss of control during binge','Eating much more rapidly than normal','Eating until uncomfortably full','Eating large amounts when not hungry','Eating alone due to embarrassment','Marked distress regarding binge eating','No regular compensatory behaviour'],
+  sleep:['Difficulty initiating sleep','Difficulty maintaining sleep','Early morning awakening','Non-restorative sleep','Loud snoring / witnessed apnoeas','Excessive daytime sleepiness','Restless legs / urge to move legs','Delayed sleep phase'],
+  neurodegen:['Decline from previous level of cognitive functioning','Memory impairment','Language difficulty (word-finding, naming)','Visuospatial or executive decline','Interferes with independence in daily life','Progressive over months to years'],
+  tbi:['History of head injury (LoC, PTA, or imaging changes)','Cognitive symptoms following the injury','Persistent post-concussive symptoms','Mood or behavioural change post-injury','Domain-specific deficits consistent with injury'],
+  suicidality:['Current thoughts of suicide or self-harm','Specific plan or intent','Access to means','Recent preparatory acts or attempts','Prior suicide attempts','Hopelessness','Decreased reasons for living','Acute precipitating stressors'],
+  substance_induced:['Active or recent substance use','Symptoms developed during use / within 1 month of withdrawal','Symptoms resolve with sustained abstinence','Substance capable of producing the symptoms','Active substance use disorder'],
+  medical:['Thyroid dysfunction','Anaemia / iron deficiency','Vitamin B12 / folate deficiency','Seizure disorder','Autoimmune or inflammatory condition','Sleep apnoea','Medication side-effect','Other medical condition explaining picture']
+};
 const MSE=[
   {id:'appearance',label:'Appearance',opts:['Neat/appropriately dressed','Casually dressed','Dishevelled','Well-groomed']},
   {id:'inattention',label:'Inattention observed',opts:['Attentive throughout','Easily distracted','Required redirection','Lost thread mid-sentence','Forgot question before answering']},
@@ -2226,7 +2372,7 @@ const TIT_SCEN={
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 const SETTINGS_LIST=['Home','Work','School','TAFE','University','Romantic / partner relationships','Family relationships','Friendships / social','Driving','Recreational / hobbies','Sport / physical activity','Spiritual / religious','Self-care / health management','Online / digital'];
-const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:'',fuDecision:'',safetyOverrides:{},noPastPsych:false,noMedHistory:false,noCardiacRisk:false,noFamPsych:false,noSubHistory:false,diffDetail:{},subDetail:{},famDetail:{},userTouchedProvide:{},invNotProvided:{},predispose:{},perpetuate:{},protective:{},assessReason:{},settings:{},qol:0,ratAttn:0,ratImp:0,ratCalm:0,tier:0,devOpts:{},udsPos:{},functionalImpairment:false,crossSetConfirm:false};
+const S={difficulties:{},dev:{},dsm:{},dsmManual:{},differentials:{},cardiac:{},medical:{},mse:{},malingering:{},substances:{},screening:{},dx:'',subtype:'',dxManual:false,subtypeManual:false,safeScript:'',drugDep:'',sudDiff:'',uds:'',ecg:'',peChips:{},fam:{},prevPsych:'',otherPresent:'',reviewType:'Initial',sideFx:{},medResponse:'',adherence:'',coverage:'',sideFxRating:'',fuDecision:'',safetyOverrides:{},noPastPsych:false,noMedHistory:false,noCardiacRisk:false,noFamPsych:false,noSubHistory:false,diffDetail:{},subDetail:{},famDetail:{},userTouchedProvide:{},invNotProvided:{},predispose:{},perpetuate:{},protective:{},assessReason:{},settings:{},qol:0,ratAttn:0,ratImp:0,ratCalm:0,tier:0,devOpts:{},udsPos:{},functionalImpairment:false,crossSetConfirm:false,diffSymptoms:{},diffOpen:{}};
 const SIDE_FX=[{id:'appetite',label:'Reduced appetite'},{id:'insomnia',label:'Insomnia / sleep disturbance'},{id:'headache',label:'Headache'},{id:'dryMouth',label:'Dry mouth'},{id:'hrBp',label:'Elevated HR / BP'},{id:'anxiety',label:'Anxiety / jitteriness'},{id:'mood',label:'Mood changes / irritability'},{id:'gi',label:'GI upset / nausea'},{id:'rebound',label:'Rebound / afternoon crash'},{id:'weight',label:'Weight loss'},{id:'tics',label:'Tics'},{id:'libido',label:'Sexual / libido changes'},{id:'none',label:'Nil reported'}];
 var titMeds=[];
 var titCurTab='rich';
@@ -4118,7 +4264,29 @@ function dlTitDoc(){
 function printTitDoc(){var pane=$('tit-pane-rich');if(!pane)return;openPrintWin(pane.innerHTML);}
 
 // ─── ASSESSMENT RENDERS ───────────────────────────────────────────────────────
-function renderDiffChecks(){$('diff-checks').innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllDifficulties()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDifficulties()">Deselect all</button></div>'+'<div class="diff-grid">'+DIFFICULTIES.map(function(d){var key=d.replace(/[^a-zA-Z0-9]/g,'_');var on=!!S.difficulties[key];return '<div class="crow" onclick="toggleDiff(\''+key+'\',this)"><div class="cbox'+(on?' yes':'')+'"></div><div class="clabel">'+d+'</div></div>';}).join('')+'</div>';}
+function renderDiffChecks(){
+  var el=$('diff-checks');if(!el)return;
+  var header='<div style="display:flex;gap:6px;margin-bottom:10px"><button class="sel-all-btn" onclick="selectAllDifficulties()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDifficulties()">Deselect all</button></div>';
+  var groupsHtml=DIFFICULTY_CATEGORIES.map(function(cat){
+    var pills=cat.items.map(function(d){
+      var key=d.replace(/[^a-zA-Z0-9]/g,'_');
+      var on=!!S.difficulties[key];
+      return '<button type="button" class="diff-pill'+(on?' on':'')+'" data-diffkey="'+key+'">'+esc(d)+'</button>';
+    }).join('');
+    return '<div class="diff-cat-group"><div class="diff-cat-label">'+esc(cat.label)+'</div><div class="diff-pills">'+pills+'</div></div>';
+  }).join('');
+  el.innerHTML=header+groupsHtml;
+  if(el._h)el.removeEventListener('click',el._h);
+  el._h=function(e){
+    var p=e.target.closest('.diff-pill');
+    if(!p)return;
+    var k=p.getAttribute('data-diffkey');
+    S.difficulties[k]=!S.difficulties[k];
+    p.classList.toggle('on');
+    save();refresh();
+  };
+  el.addEventListener('click',el._h);
+}
 function _factorListFor(stateKey){return stateKey==='predispose'?RISK_FACTORS:stateKey==='perpetuate'?PERPETUATING_FACTORS:PROTECTIVE_FACTORS;}
 function renderFactorChecks(elId,list,stateKey,opts){
   var el=$(elId);if(!el)return;
@@ -4375,106 +4543,170 @@ function renderDev(){
   var devEl=$('dev-checks');if(!devEl)return;
   var header='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllDev()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDev()">Deselect all</button></div>';
   var html=header;
+  if(!devEl._openIds)devEl._openIds={};
   DEV.forEach(function(d){
     // Skip core symptom rows + the 'Core Symptoms' label — they live in their
     // own card now (renderCoreSx).
     if(d.type==='sym'||d.type==='label')return;
     var on=!!S.dev[d.id];
-    var open=!!(devEl._openIds&&devEl._openIds[d.id]);
+    var open=!!devEl._openIds[d.id];
     var optHtml='';
-    var checkedOptCount=0;
     if(d.options&&d.options.length){
-      d.options.forEach(function(o,i){
-        var ok=d.id+'_'+i;
-        if(S.devOpts[ok])checkedOptCount++;
-      });
       optHtml='<div class="dev-opts'+(open?'':' hidden')+'" data-devid3="'+d.id+'">'+
-        d.options.map(function(o,i){
-          var ok=d.id+'_'+i;
-          var oOn=!!S.devOpts[ok];
-          return '<div class="dev-opt-row" data-optkey="'+ok+'"><div class="cbox'+(oOn?' yes':'')+'" style="width:14px;height:14px"></div><div class="dev-opt-label">'+esc(o)+'</div></div>';
+        '<div class="dev-opts-heading">Real-world examples — tap ? for example questions</div>'+
+        d.options.map(function(o){
+          return '<div class="dev-opt-row"><div class="dev-opt-label">'+esc(o)+'</div></div>';
         }).join('')+'</div>';
     }
-    var caret=d.options&&d.options.length?'<button type="button" class="dev-caret" data-caret="'+d.id+'" aria-expanded="'+open+'">'+(open?'▾':'▸')+'</button>':'';
-    var qBtn=d.qs&&d.qs.length?'<button class="qbtn dev-qbtn" data-qid2="'+d.id+'">?</button>':'';
-    var optBadge=d.options&&checkedOptCount?'<span class="dev-opt-badge">'+checkedOptCount+'</span>':'';
+    var caret=d.options&&d.options.length?'<button type="button" class="dev-caret" data-caret="'+d.id+'" aria-expanded="'+open+'" title="Show/hide examples">'+(open?'▾ Hide':'▸ Examples')+'</button>':'';
+    var qBtn=d.qs&&d.qs.length?'<button class="qbtn dev-qbtn" data-qid2="'+d.id+'" title="Example questions">?</button>':'';
     html+='<div class="dev-block">'+
       '<div class="crow dev-qrow'+(on?' on':'')+'" data-devid2="'+d.id+'">'+
         '<div class="cbox dev-cbox'+(on?' yes':'')+'" data-cboxfor="'+d.id+'"></div>'+
-        '<div class="clabel">'+esc(d.label)+optBadge+'</div>'+
+        '<div class="clabel">'+esc(d.label)+'</div>'+
         qBtn+caret+
       '</div>'+
       optHtml+
     '</div>';
   });
   devEl.innerHTML=html;
-  if(!devEl._openIds)devEl._openIds={};
   if(devEl._h)devEl.removeEventListener('click',devEl._h);
   devEl._h=function(e){
-    // ? button → open questions drawer
+    // ? button → open questions drawer (next to heading)
     var q=e.target.closest('.dev-qbtn');
     if(q){e.stopPropagation();openDrawer(e,q.getAttribute('data-qid2'),'dev');return;}
-    // Cbox click → toggle parent only, no expand
-    var cbox=e.target.closest('.dev-cbox');
-    if(cbox){
+    // Caret → toggle examples panel
+    var car=e.target.closest('.dev-caret');
+    if(car){
       e.stopPropagation();
-      var id=cbox.getAttribute('data-cboxfor');
-      S.dev[id]=!S.dev[id];
-      renderDev();save();refresh();return;
+      var cid=car.getAttribute('data-caret');
+      devEl._openIds[cid]=!devEl._openIds[cid];renderDev();return;
     }
-    // Sub-option click → toggle option + auto-tick parent
-    var opt=e.target.closest('.dev-opt-row');
-    if(opt){
-      e.stopPropagation();
-      var key=opt.getAttribute('data-optkey');
-      var parentId=key.replace(/_\d+$/,'');
-      S.devOpts[key]=!S.devOpts[key];
-      // Auto-tick parent if any option is on
-      var anyOn=false;
-      var d=DEV.filter(function(x){return x.id===parentId;})[0];
-      if(d&&d.options){
-        d.options.forEach(function(o,i){if(S.devOpts[parentId+'_'+i])anyOn=true;});
-      }
-      if(anyOn)S.dev[parentId]=true;
-      renderDev();save();refresh();return;
-    }
-    // Anywhere else on the row → toggle dropdown
+    // Anywhere on the row (or checkbox) → toggle parent
     var row=e.target.closest('.dev-qrow');
     if(row){
       var id2=row.getAttribute('data-devid2');
-      if(id2){devEl._openIds[id2]=!devEl._openIds[id2];renderDev();}
+      if(id2){S.dev[id2]=!S.dev[id2];renderDev();save();refresh();}
       return;
     }
   };
   devEl.addEventListener('click',devEl._h);
 }
 function renderDSM(){$('dsm-checks').innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllDSM()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDSM()">Deselect all</button></div>'+DSM.map(function(d){var on=!!S.dsm[d.id];return '<div class="crow" onclick="toggleCheck(\'dsm\',\''+d.id+'\',this)"><div class="cbox'+(on?' yes':'')+'"></div><div class="clabel">'+d.label+'</div></div>';}).join('');}
+function _diffStatusClass(cur){
+  if(cur==='Nil')return 'status-nil';
+  if(cur==='Past')return 'status-symptoms';
+  if(cur==='Current')return 'status-comorbid';
+  if(cur==='Better explanation')return 'status-better';
+  return '';
+}
+function _diffStatusPill(cur){
+  if(cur==='Nil')return 'Nil Dx';
+  if(cur==='Past')return 'Symptoms — not full Dx';
+  if(cur==='Current')return 'Comorbid Dx';
+  if(cur==='Better explanation')return 'Better explains ADHD';
+  return '';
+}
 function renderDiffRows(){
-  var DIFF_FLAGS={bipolar:1,schizophrenia:1,suicidality:1,anorexia:1,bulimia:1,tbi:1,substance_induced:1,neurodegen:1,medical:1};
   if(!S.diffDetail)S.diffDetail={};
+  if(!S.diffSymptoms)S.diffSymptoms={};
+  if(!S.diffOpen)S.diffOpen={};
   var noPastBtn='<button class="sel-all-btn'+(S.noPastPsych?' on':'')+'" style="'+(S.noPastPsych?'background:var(--green-bg);border-color:var(--green);color:#166534;':'')+'" onclick="toggleNoSection(\'noPastPsych\')">'+(S.noPastPsych?'✓ ':'')+'No past psychiatric history</button>';
-  var header='<div style="display:flex;gap:6px;margin-bottom:8px;grid-column:1/-1;flex-wrap:wrap">'+noPastBtn+'<button class="sel-all-btn" onclick="selectAllDiffsNil()">All nil</button><button class="sel-all-btn desel" onclick="deselectAllDiffs()">Deselect all</button></div>';
-  $('diff-rows').innerHTML=header+DIFFS.map(function(d){
+  var header='<div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">'+noPastBtn+'<button class="sel-all-btn" onclick="selectAllDiffsNil()">All nil</button><button class="sel-all-btn desel" onclick="deselectAllDiffs()">Deselect all</button></div>';
+  var legend='<div class="diff-legend"><span class="lg-minus">−</span> <strong>Nil symptoms</strong> &nbsp;·&nbsp; <span class="lg-plus">+</span> <strong>Investigate further</strong> — tap + to open symptom checklist and classify.</div>';
+  var STATUS_OPTS=[
+    {val:'Nil',lbl:'Nil Dx',cls:'on-nil'},
+    {val:'Past',lbl:'Symptoms but not full Dx',cls:'on-symptoms'},
+    {val:'Current',lbl:'Comorbid Dx',cls:'on-comorbid'},
+    {val:'Better explanation',lbl:'Better explains ADHD',cls:'on-better'}
+  ];
+  $('diff-rows').innerHTML=header+legend+DIFFS.map(function(d){
     var cur=S.differentials[d.id]||'';
-    var isFlag=!!DIFF_FLAGS[d.id];
-    var cardCls='diff-card'+(cur==='Current'&&isFlag?' diff-card-flag':cur==='Current'?' diff-card-curr':'');
-    var nilCls=cur==='Nil'?' ay':'';
-    var pastCls=cur==='Past'?' ap':'';
-    var currCls=cur==='Current'?(isFlag?' af':' aq'):'';
-    var showDetail=(cur==='Current'||cur==='Past');
+    var open=!!S.diffOpen[d.id];
+    var statusCls=_diffStatusClass(cur);
+    var pillTxt=_diffStatusPill(cur);
+    var statusPill=pillTxt?'<span class="diff-d-status-pill">'+esc(pillTxt)+'</span>':'';
+    var minusActive=(cur==='Nil');
+    var plusActive=open;
+    var sxList=DIFF_SYMPTOMS[d.id]||[];
+    var sxState=S.diffSymptoms[d.id]||{};
+    var sxHtml=sxList.length?
+      '<div class="diff-d-section-lbl">Main symptoms</div>'+
+      '<div class="diff-sx-grid">'+
+      sxList.map(function(sx,i){
+        var sxKey=d.id+'_sx_'+i;
+        var sxOn=!!sxState[i];
+        return '<div class="diff-sx-row" data-diffsx="'+d.id+'" data-sxidx="'+i+'"><div class="cbox'+(sxOn?' yes':'')+'"></div><div class="diff-sx-label">'+esc(sx)+'</div></div>';
+      }).join('')+
+      '</div>':'';
     var detail=(S.diffDetail&&S.diffDetail[d.id])||'';
-    var detailInp=showDetail?'<input class="diff-detail" type="text" placeholder="brief detail (e.g. mild, treated, last episode 2yrs ago)" value="'+esc(detail)+'" oninput="setDiffDetail(\''+d.id+'\',this.value)">':'';
-    return '<div class="'+cardCls+'">'
-      +'<div class="diff-card-label">'+d.label
-      +'<button class="qbtn" onclick="openDrawer(event,\''+d.id+'\',\'diff\')" style="margin-left:4px">?</button></div>'
-      +'<div class="diff-card-btns">'
-      +'<button class="rb'+nilCls+'" onclick="setDiffVal(\''+d.id+'\',\'Nil\',this)">Nil</button>'
-      +'<button class="rb'+pastCls+'" onclick="setDiffVal(\''+d.id+'\',\'Past\',this)">Past</button>'
-      +'<button class="rb'+currCls+'" onclick="setDiffVal(\''+d.id+'\',\'Current\',this)">Current</button>'
+    var notesHtml='<div class="diff-d-section-lbl">Additional notes</div>'+
+      '<textarea class="diff-d-notes" placeholder="Onset, severity, treatment, episode pattern, relevant collateral..." oninput="setDiffDetail(\''+d.id+'\',this.value)">'+esc(detail)+'</textarea>';
+    var statusBtnsHtml='<div class="diff-d-section-lbl">Classification</div>'+
+      '<div class="diff-d-status-btns">'+
+      STATUS_OPTS.map(function(s){
+        var on=cur===s.val;
+        return '<button type="button" class="dsb'+(on?' '+s.cls:'')+'" data-setstatus="'+d.id+'" data-statusval="'+s.val+'">'+esc(s.lbl)+'</button>';
+      }).join('')+
+      '</div>';
+    var body=open?'<div class="diff-d-body">'+sxHtml+notesHtml+statusBtnsHtml+'</div>':'';
+    var headRow='<div class="diff-d-head">'
+      +'<div class="diff-d-title">'+esc(d.label)
+        +'<button class="qbtn" onclick="openDrawer(event,\''+d.id+'\',\'diff\')" title="Example questions">?</button>'
       +'</div>'
-      +detailInp
-      +'</div>';
+      +statusPill
+      +'<div class="diff-d-toggles">'
+        +'<button type="button" class="diff-d-toggle minus'+(minusActive?' active':'')+'" data-diffminus="'+d.id+'" title="Nil symptoms">−</button>'
+        +'<button type="button" class="diff-d-toggle plus'+(plusActive?' active':'')+'" data-diffplus="'+d.id+'" title="Investigate further">+</button>'
+      +'</div>'
+    +'</div>';
+    return '<div class="diff-d '+statusCls+(open?' open':'')+'" data-diffid="'+d.id+'">'+headRow+body+'</div>';
   }).join('');
+  var el=$('diff-rows');
+  if(el._h)el.removeEventListener('click',el._h);
+  el._h=function(e){
+    var minus=e.target.closest('[data-diffminus]');
+    if(minus){
+      e.stopPropagation();
+      var didM=minus.getAttribute('data-diffminus');
+      S.differentials[didM]='Nil';
+      S.diffOpen[didM]=false;
+      renderDiffRows();save();refresh();return;
+    }
+    var plus=e.target.closest('[data-diffplus]');
+    if(plus){
+      e.stopPropagation();
+      var didP=plus.getAttribute('data-diffplus');
+      S.diffOpen[didP]=!S.diffOpen[didP];
+      renderDiffRows();save();refresh();return;
+    }
+    var sxRow=e.target.closest('.diff-sx-row');
+    if(sxRow){
+      e.stopPropagation();
+      var did2=sxRow.getAttribute('data-diffsx');
+      var idx=parseInt(sxRow.getAttribute('data-sxidx'),10);
+      if(!S.diffSymptoms[did2])S.diffSymptoms[did2]={};
+      S.diffSymptoms[did2][idx]=!S.diffSymptoms[did2][idx];
+      var cb=sxRow.querySelector('.cbox');
+      if(cb)cb.className='cbox'+(S.diffSymptoms[did2][idx]?' yes':'');
+      save();refresh();return;
+    }
+    var stBtn=e.target.closest('.dsb');
+    if(stBtn){
+      e.stopPropagation();
+      var did3=stBtn.getAttribute('data-setstatus');
+      var newVal=stBtn.getAttribute('data-statusval');
+      var prev=S.differentials[did3]||'';
+      S.differentials[did3]=(prev===newVal)?'':newVal;
+      if(newVal==='Nil'&&S.differentials[did3]==='Nil'){
+        S.diffOpen[did3]=false;
+      }
+      if((newVal==='Past'||newVal==='Current')&&S.noPastPsych)S.noPastPsych=false;
+      if(newVal==='Current')delete S.dsmManual['critE'];
+      renderDiffRows();save();refresh();return;
+    }
+  };
+  el.addEventListener('click',el._h);
 }
 function setDiffDetail(id,val){
   if(!S.diffDetail)S.diffDetail={};
@@ -4528,25 +4760,33 @@ function mseSetNote(id,val){
 }
 function renderMSE(){
   var el=$('mse-rows');if(!el)return;
-  el.innerHTML='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllMSENormal()">All normal</button><button class="sel-all-btn desel" onclick="deselectAllMSE()">Deselect all</button></div>'+
-  MSE.map(function(sec){
+  var MSE_BY_ID={};MSE.forEach(function(s){MSE_BY_ID[s.id]=s;});
+  var renderSection=function(sec){
+    if(!sec)return '';
     var vals=mseVals(sec.id);
     var isADHD=sec.id==='adhd_support';
-    var checks=sec.opts.map(function(o){
+    var isRisk=(sec.id==='suicide'||sec.id==='harm_others');
+    var chips=sec.opts.map(function(o){
       var on=mseHas(sec.id,o);
       var bad=mseIsBad(o);
       var safeO=o.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       var handler=isADHD
         ?"var v=mseVals('"+sec.id+"');var was=v.indexOf('"+safeO+"')>=0;S.mse['"+sec.id+"']=(was?[]:['"+safeO+"']);renderMSE();save();refresh();"
         :"toggleMSE('"+sec.id+"','"+safeO+"')";
-      return '<label class="mse-check'+(bad?' bad':'')+(on?' on':'')+'"><input type="checkbox" '+(on?'checked':'')+' onchange="'+handler+'"><span>'+esc(o)+'</span></label>';
+      return '<button type="button" class="mse-chip'+(bad?' bad':'')+(on?' on':'')+'" onclick="'+handler+'">'+esc(o)+'</button>';
     }).join('');
     var freeVals=vals.filter(function(v){return sec.opts.indexOf(v)<0;});
     var noteVal=freeVals.join('; ');
     var noteBox='<input class="mse-note" placeholder="Notes…" value="'+esc(noteVal)+'" onchange="mseSetNote(\''+sec.id+'\',this.value)">';
-    var rowCls=isADHD?'mse-row mse-row-flag':'mse-row';
-    return '<div class="'+rowCls+'"><div class="mse-label">'+esc(sec.label)+'</div><div class="mse-checks">'+checks+'</div>'+noteBox+'</div>';
+    var flagCls=(isADHD||isRisk)?' flag':'';
+    return '<div class="mse-item'+flagCls+'"><div class="mse-label">'+esc(sec.label)+'</div><div class="mse-item-chips">'+chips+'</div>'+noteBox+'</div>';
+  };
+  var header='<div style="display:flex;gap:6px;margin-bottom:10px"><button class="sel-all-btn" onclick="selectAllMSENormal()">All normal</button><button class="sel-all-btn desel" onclick="deselectAllMSE()">Deselect all</button></div>';
+  var groupsHtml=MSE_GROUPS.map(function(g){
+    var items=g.items.map(function(id){return renderSection(MSE_BY_ID[id]);}).join('');
+    return '<div class="mse-group"><div class="mse-group-header">'+esc(g.label)+'</div><div class="mse-group-body">'+items+'</div></div>';
   }).join('');
+  el.innerHTML=header+groupsHtml;
 }
 function renderCardiac(){
   var noBtn='<div style="margin-bottom:8px"><button class="sel-all-btn'+(S.noCardiacRisk?' on':'')+'" style="'+(S.noCardiacRisk?'background:var(--green-bg);border-color:var(--green);color:#166534;':'')+'" onclick="toggleNoSection(\'noCardiacRisk\')">'+(S.noCardiacRisk?'\u2713 ':'')+'No known cardiac risk factors</button></div>';
