@@ -562,6 +562,7 @@
         <button class="tab-btn" data-tab="sds" onclick="switchTab('sds')">SDS</button>
         <button class="tab-btn" data-tab="edeq" onclick="switchTab('edeq')">EDE-Q</button>
         <button class="tab-btn" data-tab="ede" onclick="switchTab('ede')">EDE</button>
+        <button class="tab-btn" data-tab="baars" onclick="switchTab('baars')">BAARS-IV</button>
         <button class="tab-btn" data-tab="cgi" onclick="switchTab('cgi')">CGI</button>
     </div>
 
@@ -1316,6 +1317,54 @@
         </div>
     </div>
 
+    <!-- BAARS-IV (Barkley Adult ADHD Rating Scale) -->
+    <div class="tab-pane" id="tab-baars">
+        <div class="card">
+            <div class="card-title">BAARS-IV Instructions</div>
+            <p style="font-size:0.9em;">Barkley Adult ADHD Rating Scale-IV (self-report). Rate each item on a <strong>1–4</strong> frequency scale (1 = Never or Rarely, 2 = Sometimes, 3 = Often, 4 = Very Often). The form covers <strong>current symptoms</strong> (past 6 months), <strong>childhood symptoms</strong> (ages 5–12, retrospective), and <strong>domains of impairment</strong>. Symptom counts (items rated ≥3) and DSM-5 (adult) / DSM-IV (childhood) thresholds are computed live.</p>
+            <p style="font-size:0.82em; color:var(--gray-600); margin-top:8px;"><em>BAARS-IV is a copyrighted instrument (Barkley, Guilford Press 2011); verbatim items are not reproduced here. Item descriptors below correspond to the DSM ADHD symptom areas the BAARS-IV indexes; administer using the official form and click the patient's ratings.</em></p>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div class="card-title" style="padding:18px 22px 8px;">Current symptoms (past 6 months)</div>
+            <div class="section-body" id="baarsCurrentItems" style="margin:0; border-radius:0; box-shadow:none;"></div>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div class="card-title" style="padding:18px 22px 8px;">Childhood symptoms (ages 5–12, retrospective) — optional</div>
+            <div class="section-body" id="baarsChildItems" style="margin:0; border-radius:0; box-shadow:none;"></div>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div class="card-title" style="padding:18px 22px 8px;">Domains of impairment (current)</div>
+            <div class="section-body" id="baarsImpairmentItems" style="margin:0; border-radius:0; box-shadow:none;"></div>
+        </div>
+
+        <div class="score-bar" style="text-align:left; line-height:1.7;">
+            <div><strong>Current — Inattention:</strong> <span id="baarsCurIA">—</span>/9 endorsed &nbsp;·&nbsp; <strong>Hyperactivity:</strong> <span id="baarsCurHY">—</span>/5 &nbsp;·&nbsp; <strong>Impulsivity:</strong> <span id="baarsCurIM">—</span>/4 &nbsp;·&nbsp; <strong>Combined H+I:</strong> <span id="baarsCurHI">—</span>/9</div>
+            <div><strong>DSM-5 adult threshold</strong> (≥5 IA or ≥5 H+I): <span id="baarsCurDsm">—</span></div>
+            <div><strong>Childhood — IA:</strong> <span id="baarsChIA">—</span>/9 &nbsp;·&nbsp; <strong>H+I:</strong> <span id="baarsChHI">—</span>/9 &nbsp;—&nbsp; <strong>DSM-IV-TR threshold</strong> (≥6 either): <span id="baarsChDsm">—</span></div>
+            <div><strong>Impairment domains</strong> (≥3): <span id="baarsImpCount">—</span>/10 &nbsp;—&nbsp; <strong>Clinical impairment</strong> (≥2 domains): <span id="baarsImpFlag">—</span></div>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('baars')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('baars')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="baarsOutput">
+            <div class="output-header">
+                <h3>BAARS-IV Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('baars')" id="baarsCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="baarsText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Barkley RA. Barkley Adult ADHD Rating Scale-IV (BAARS-IV). New York: Guilford Press; 2011. Proprietary instrument — administer using the official form. Scoring conventions: items rated 3 (Often) or 4 (Very Often) count as endorsed; DSM-5 adult threshold for ADHD requires ≥5 inattention symptoms OR ≥5 hyperactive-impulsive symptoms (with onset before age 12, impairment in ≥2 settings); retrospective childhood threshold uses DSM-IV-TR ≥6 in either dimension.
+        </div>
+    </div>
+
     <!-- CGI-S and CGI-I -->
     <div class="tab-pane" id="tab-cgi">
         <div class="card">
@@ -1854,6 +1903,52 @@ const CGII_OPTIONS = [
     { val: 5, label: 'Minimally worse' },
     { val: 6, label: 'Much worse' },
     { val: 7, label: 'Very much worse' }
+];
+
+// ---------- BAARS-IV data ----------
+// Item descriptors are brief clinical paraphrases of the DSM ADHD symptom
+// areas the BAARS-IV indexes. Verbatim Barkley wording is not reproduced;
+// administer using the official BAARS-IV form (Guilford, 2011) and click
+// the patient's ratings.
+const BAARS_RATING_OPTIONS = [
+    { val: 1, label: 'Never or Rarely' },
+    { val: 2, label: 'Sometimes' },
+    { val: 3, label: 'Often' },
+    { val: 4, label: 'Very Often' }
+];
+
+const BAARS_ATTN_ITEMS = [
+    { num: 1,  sub: 'IA', text: 'Attention to detail / careless errors' },
+    { num: 2,  sub: 'IA', text: 'Sustained focus on tasks' },
+    { num: 3,  sub: 'IA', text: 'Apparent listening when addressed' },
+    { num: 4,  sub: 'IA', text: 'Task follow-through / completion' },
+    { num: 5,  sub: 'IA', text: 'Organisation of tasks and materials' },
+    { num: 6,  sub: 'IA', text: 'Engagement in sustained mental-effort tasks' },
+    { num: 7,  sub: 'IA', text: 'Losing items needed for tasks' },
+    { num: 8,  sub: 'IA', text: 'Distractibility' },
+    { num: 9,  sub: 'IA', text: 'Day-to-day forgetfulness' },
+    { num: 10, sub: 'HY', text: 'Fidgeting / inner restlessness / motor activity' },
+    { num: 11, sub: 'HY', text: 'Staying seated when expected' },
+    { num: 12, sub: 'HY', text: 'Subjective restlessness (adults) / motor activity (children)' },
+    { num: 13, sub: 'HY', text: 'Quiet leisure / working quietly' },
+    { num: 14, sub: 'HY', text: 'Subjective "on the go" / motor drive' },
+    { num: 15, sub: 'IM', text: 'Talkativeness' },
+    { num: 16, sub: 'IM', text: 'Verbal impulsivity (answering before completion)' },
+    { num: 17, sub: 'IM', text: 'Turn-taking' },
+    { num: 18, sub: 'IM', text: 'Interrupting / intruding on others' }
+];
+
+const BAARS_IMPAIRMENT_DOMAINS = [
+    { num: 1,  text: 'Work / occupational functioning' },
+    { num: 2,  text: 'Education / school' },
+    { num: 3,  text: 'Home life / household management' },
+    { num: 4,  text: 'Family relationships' },
+    { num: 5,  text: 'Social relationships and friendships' },
+    { num: 6,  text: 'Marriage / dating / intimate relationships' },
+    { num: 7,  text: 'Money management' },
+    { num: 8,  text: 'Driving / community functioning' },
+    { num: 9,  text: 'Leisure / recreation' },
+    { num: 10, text: 'Daily responsibilities (hygiene, meals, sleep)' }
 ];
 
 // ---------- EDE-Q / EDE data ----------
@@ -2800,6 +2895,17 @@ function likertButtons(name, onchange) {
     h += '</div>';
     return h;
 }
+function buttonsRange(name, onchange, minVal, maxVal) {
+    let h = '<div class="likert-buttons">';
+    for (let v = minVal; v <= maxVal; v++) {
+        h += '<label>';
+        h += '<input type="radio" name="' + name + '" value="' + v + '" onchange="' + onchange + '()">';
+        h += '<span class="likert-btn">' + v + '</span>';
+        h += '</label>';
+    }
+    h += '</div>';
+    return h;
+}
 function counterRow(id, suffix, onchange) {
     return '<div class="counter-row">' +
         '<button type="button" class="counter-btn" onclick="adjCounter(\'' + id + '\', -1, \'' + onchange + '\')">−</button>' +
@@ -2915,6 +3021,43 @@ function adjCounter(id, delta, onchangeName) {
     });
 
     container.innerHTML = html;
+})();
+
+// ---------- Build BAARS-IV UI ----------
+function baarsAnchorLegend() {
+    let parts = [];
+    BAARS_RATING_OPTIONS.forEach(o => parts.push('<strong>' + o.val + '</strong>=' + o.label));
+    return '<div class="anchor-legend"><strong>Rating (1–4):</strong> ' + parts.join(' · ') + '</div>';
+}
+function baarsItemRow(item, namePrefix) {
+    let h = '<div class="likert-row">';
+    h += '<div class="likert-row-top">';
+    h += '<div class="likert-num">' + item.num + '.</div>';
+    if (item.sub) h += '<div class="likert-chips"><span class="likert-chip">' + item.sub + '</span></div>';
+    h += '<div class="likert-text">' + item.text + '</div>';
+    h += '</div>';
+    h += buttonsRange(namePrefix + '_' + item.num, 'updateBaars', 1, 4);
+    h += '</div>';
+    return h;
+}
+(function buildBaars() {
+    const cur = document.getElementById('baarsCurrentItems');
+    const child = document.getElementById('baarsChildItems');
+    const imp = document.getElementById('baarsImpairmentItems');
+
+    let curH = baarsAnchorLegend();
+    BAARS_ATTN_ITEMS.forEach(item => { curH += baarsItemRow(item, 'baarsCur'); });
+    cur.innerHTML = curH;
+
+    let childH = baarsAnchorLegend();
+    BAARS_ATTN_ITEMS.forEach(item => { childH += baarsItemRow(item, 'baarsChild'); });
+    child.innerHTML = childH;
+
+    let impH = baarsAnchorLegend();
+    BAARS_IMPAIRMENT_DOMAINS.forEach(item => {
+        impH += baarsItemRow({ num: item.num, sub: 'IMP', text: item.text }, 'baarsImp');
+    });
+    imp.innerHTML = impH;
 })();
 
 // ---------- Build PCL-5 UI ----------
@@ -3843,6 +3986,38 @@ function chartEdeBars(prefix, title, computed) {
 function chartEdeq() { chartEdeBars('edeq', 'EDE-Q', computeEdeqMeans()); }
 function chartEde()  { chartEdeBars('ede',  'EDE',  computeEdeMeans()); }
 
+function chartBaars() {
+    const c = computeBaars();
+    if (c.cur.totalRated === 0 && c.ch.totalRated === 0 && c.imp.rated === 0) {
+        renderChart('baars', [], 'BAARS-IV — no items rated');
+        return;
+    }
+    function cls(count, threshold) {
+        if (count >= threshold) return 'bar-modsev';
+        if (count >= threshold - 2) return 'bar-moderate';
+        if (count >= 1) return 'bar-mild';
+        return 'bar-none';
+    }
+    const bars = [];
+    bars.push({ label: 'Current IA (count)', value: c.cur.counts.IA, max: 9, barClass: cls(c.cur.counts.IA, 5) });
+    bars.push({ label: 'Current HY (count)', value: c.cur.counts.HY, max: 5, barClass: cls(c.cur.counts.HY, 3) });
+    bars.push({ label: 'Current IM (count)', value: c.cur.counts.IM, max: 4, barClass: cls(c.cur.counts.IM, 3) });
+    bars.push({ label: 'Current H+I (count)', value: c.cur.hiCount, max: 9, barClass: cls(c.cur.hiCount, 5), isTotal: true });
+    if (c.ch.totalRated > 0) {
+        bars.push({ label: 'Childhood IA (count)', value: c.ch.counts.IA, max: 9, barClass: cls(c.ch.counts.IA, 6) });
+        bars.push({ label: 'Childhood H+I (count)', value: c.ch.hiCount, max: 9, barClass: cls(c.ch.hiCount, 6) });
+    }
+    if (c.imp.rated > 0) {
+        bars.push({ label: 'Impairment domains', value: c.imp.count, max: 10, barClass: c.imp.count >= 2 ? 'bar-modsev' : (c.imp.count >= 1 ? 'bar-mild' : 'bar-none'), isTotal: true });
+    }
+    const curMet = (c.cur.counts.IA >= 5) || (c.cur.hiCount >= 5);
+    const footer = c.cur.totalRated === 0
+        ? 'Current symptoms not rated.'
+        : 'DSM-5 adult threshold ' + (curMet ? 'MET' : 'not met') +
+          (c.imp.rated > 0 ? '  ·  Clinical impairment ' + (c.imp.count >= 2 ? 'YES' : 'No') : '');
+    renderChart('baars', bars, 'BAARS-IV — symptom counts (items rated ≥3)', footer);
+}
+
 function computeBMI(h, w) {
     if (h === null || w === null || h <= 0) return null;
     const m = h / 100;
@@ -3921,6 +4096,59 @@ function refreshEdeDisplay(prefix, computed) {
 
 function updateEdeq() { refreshEdeDisplay('edeq', computeEdeqMeans()); }
 function updateEde()  { refreshEdeDisplay('ede',  computeEdeMeans()); }
+
+function computeBaars() {
+    function countAndSum(prefix, items) {
+        const counts = { IA: 0, HY: 0, IM: 0 };
+        const sums   = { IA: 0, HY: 0, IM: 0 };
+        const rated  = { IA: 0, HY: 0, IM: 0 };
+        items.forEach(item => {
+            const v = getRadioVal(prefix + '_' + item.num);
+            if (v !== null) {
+                const n = parseInt(v, 10);
+                sums[item.sub] += n;
+                rated[item.sub]++;
+                if (n >= 3) counts[item.sub]++;
+            }
+        });
+        const totalRated = rated.IA + rated.HY + rated.IM;
+        const totalSum   = sums.IA + sums.HY + sums.IM;
+        const hiCount    = counts.HY + counts.IM;
+        return { counts, sums, rated, totalRated, totalSum, hiCount };
+    }
+    const cur = countAndSum('baarsCur',   BAARS_ATTN_ITEMS);
+    const ch  = countAndSum('baarsChild', BAARS_ATTN_ITEMS);
+    let impCount = 0, impRated = 0, impSum = 0;
+    BAARS_IMPAIRMENT_DOMAINS.forEach(d => {
+        const v = getRadioVal('baarsImp_' + d.num);
+        if (v !== null) {
+            const n = parseInt(v, 10);
+            impSum += n; impRated++;
+            if (n >= 3) impCount++;
+        }
+    });
+    return { cur, ch, imp: { count: impCount, rated: impRated, sum: impSum } };
+}
+
+function updateBaars() {
+    const c = computeBaars();
+    const fmt = v => v === null || v === undefined ? '—' : String(v);
+    document.getElementById('baarsCurIA').textContent = fmt(c.cur.counts.IA);
+    document.getElementById('baarsCurHY').textContent = fmt(c.cur.counts.HY);
+    document.getElementById('baarsCurIM').textContent = fmt(c.cur.counts.IM);
+    document.getElementById('baarsCurHI').textContent = fmt(c.cur.hiCount);
+    const curMet = (c.cur.counts.IA >= 5) || (c.cur.hiCount >= 5);
+    document.getElementById('baarsCurDsm').textContent =
+        c.cur.totalRated === 0 ? '—' : (curMet ? 'MET' : 'Not met');
+    document.getElementById('baarsChIA').textContent = fmt(c.ch.counts.IA);
+    document.getElementById('baarsChHI').textContent = fmt(c.ch.hiCount);
+    const chMet = (c.ch.counts.IA >= 6) || (c.ch.hiCount >= 6);
+    document.getElementById('baarsChDsm').textContent =
+        c.ch.totalRated === 0 ? '—' : (chMet ? 'MET' : 'Not met');
+    document.getElementById('baarsImpCount').textContent = fmt(c.imp.count);
+    document.getElementById('baarsImpFlag').textContent =
+        c.imp.rated === 0 ? '—' : (c.imp.count >= 2 ? 'YES (≥2 domains)' : 'No');
+}
 
 function updatePcl5() {
     let total = 0, rated = 0;
@@ -4875,6 +5103,79 @@ function buildEdeText() {
     return t;
 }
 
+function buildBaarsText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'BARKLEY ADULT ADHD RATING SCALE-IV (BAARS-IV)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    const c = computeBaars();
+    const curMet = (c.cur.counts.IA >= 5) || (c.cur.hiCount >= 5);
+    const chMet  = (c.ch.counts.IA  >= 6) || (c.ch.hiCount  >= 6);
+
+    t += 'CURRENT SYMPTOMS (past 6 months; items rated >=3 endorsed)\n';
+    t += '  Inattention symptoms:       ' + c.cur.counts.IA + ' / 9   (sum ' + c.cur.sums.IA + ' / 36)\n';
+    t += '  Hyperactivity symptoms:     ' + c.cur.counts.HY + ' / 5   (sum ' + c.cur.sums.HY + ' / 20)\n';
+    t += '  Impulsivity symptoms:       ' + c.cur.counts.IM + ' / 4   (sum ' + c.cur.sums.IM + ' / 16)\n';
+    t += '  H+I combined symptoms:      ' + c.cur.hiCount  + ' / 9   (sum ' + (c.cur.sums.HY + c.cur.sums.IM) + ' / 36)\n';
+    t += '  Total severity sum:         ' + c.cur.totalSum + ' / 72   (' + c.cur.totalRated + '/18 items rated)\n';
+    t += '  DSM-5 adult threshold (>=5 IA or >=5 H+I): ' + (c.cur.totalRated === 0 ? 'Not rated' : (curMet ? 'MET' : 'Not met')) + '\n';
+
+    t += thin + '\n';
+    t += 'CHILDHOOD SYMPTOMS (ages 5-12, retrospective)\n';
+    if (c.ch.totalRated === 0) {
+        t += '  Not rated.\n';
+    } else {
+        t += '  Inattention symptoms:       ' + c.ch.counts.IA + ' / 9   (sum ' + c.ch.sums.IA + ' / 36)\n';
+        t += '  H+I combined symptoms:      ' + c.ch.hiCount  + ' / 9   (sum ' + (c.ch.sums.HY + c.ch.sums.IM) + ' / 36)\n';
+        t += '  Total severity sum:         ' + c.ch.totalSum + ' / 72   (' + c.ch.totalRated + '/18 items rated)\n';
+        t += '  DSM-IV-TR threshold (>=6 IA or >=6 H+I): ' + (chMet ? 'MET' : 'Not met') + '\n';
+    }
+
+    t += thin + '\n';
+    t += 'DOMAINS OF IMPAIRMENT (current; rated >=3 = clinically impaired)\n';
+    if (c.imp.rated === 0) {
+        t += '  Not rated.\n';
+    } else {
+        BAARS_IMPAIRMENT_DOMAINS.forEach(d => {
+            const v = getRadioVal('baarsImp_' + d.num);
+            t += '  ' + (d.num + '. ' + d.text).padEnd(54) + ': ' + (v === null ? 'NR' : v) + '\n';
+        });
+        t += '  ----\n';
+        t += '  Domains impaired (>=3):     ' + c.imp.count + ' / 10  (sum ' + c.imp.sum + ' / 40)\n';
+        t += '  Clinical impairment (>=2 domains): ' + (c.imp.count >= 2 ? 'YES' : 'No') + '\n';
+    }
+
+    t += thin + '\n';
+    t += 'CURRENT ITEM RESPONSES (Q[sub]: rating; >=3 = endorsed)\n';
+    BAARS_ATTN_ITEMS.forEach(item => {
+        const v = getRadioVal('baarsCur_' + item.num);
+        t += '  ' + ('Q' + item.num + ' [' + item.sub + ']').padEnd(10) + (v === null ? 'NR' : v) + '\n';
+    });
+
+    if (c.ch.totalRated > 0) {
+        t += thin + '\n';
+        t += 'CHILDHOOD ITEM RESPONSES\n';
+        BAARS_ATTN_ITEMS.forEach(item => {
+            const v = getRadioVal('baarsChild_' + item.num);
+            t += '  ' + ('Q' + item.num + ' [' + item.sub + ']').padEnd(10) + (v === null ? 'NR' : v) + '\n';
+        });
+    }
+
+    t += thin + '\n';
+    t += 'Scoring: 1=Never or Rarely, 2=Sometimes, 3=Often, 4=Very Often. Items\n';
+    t += 'rated 3 or 4 count as endorsed. DSM-5 adult ADHD requires >=5 inattention\n';
+    t += 'symptoms OR >=5 hyperactive-impulsive symptoms (with onset <12 and\n';
+    t += 'impairment in >=2 settings). DSM-IV-TR childhood threshold: >=6 either.\n';
+    t += 'Reference: Barkley RA. BAARS-IV. Guilford Press; 2011.\n';
+    t += line + '\n';
+    return t;
+}
+
 function buildPcl5Text() {
     const line = '='.repeat(66);
     const thin = '-'.repeat(66);
@@ -5136,6 +5437,7 @@ const SCALE_DISPATCH = {
     sds:    { build: () => buildSdsText(),    chart: chartSds    },
     edeq:   { build: () => buildEdeqText(),   chart: chartEdeq   },
     ede:    { build: () => buildEdeText(),    chart: chartEde    },
+    baars:  { build: () => buildBaarsText(),  chart: chartBaars  },
     cgi:    { build: () => buildCgiText(),    chart: chartCgi    }
 };
 
@@ -5207,6 +5509,18 @@ function resetScale(which) {
         document.getElementById('edeOutput').classList.remove('visible');
         return;
     }
+    if (which === 'baars') {
+        BAARS_ATTN_ITEMS.forEach(item => {
+            document.querySelectorAll('input[name="baarsCur_' + item.num + '"]').forEach(r => r.checked = false);
+            document.querySelectorAll('input[name="baarsChild_' + item.num + '"]').forEach(r => r.checked = false);
+        });
+        BAARS_IMPAIRMENT_DOMAINS.forEach(d => {
+            document.querySelectorAll('input[name="baarsImp_' + d.num + '"]').forEach(r => r.checked = false);
+        });
+        updateBaars();
+        document.getElementById('baarsOutput').classList.remove('visible');
+        return;
+    }
     const count = counts[which];
     for (let i = 1; i <= count; i++) {
         document.querySelectorAll('input[name="' + which + '_' + i + '"]').forEach(r => r.checked = false);
@@ -5255,6 +5569,7 @@ updateYbocs();
 updateBfcrs();
 updateEdeq();
 updateEde();
+updateBaars();
 </script>
 </body>
 </html>
