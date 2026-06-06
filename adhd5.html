@@ -326,7 +326,7 @@ select.inp{appearance:none}
 .diff-d.status-symptoms{border-color:var(--amber);background:#fffbeb}
 .diff-d.status-comorbid{border-color:var(--purple);background:#faf5ff}
 .diff-d.status-better{border-color:var(--red);background:#fef2f2}
-.diff-d-head{display:flex;align-items:center;gap:8px;padding:7px 10px;cursor:default;user-select:none;-webkit-user-select:none}
+.diff-d-head{display:flex;align-items:center;gap:8px;padding:7px 10px;cursor:pointer;user-select:none;-webkit-user-select:none}
 .diff-d-title{font-size:13.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:5px;flex:1;min-width:0}
 .diff-d-title .qbtn{margin-top:0}
 .diff-d-status-pill{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:12px;background:#f1f5f9;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;flex-shrink:0}
@@ -572,8 +572,8 @@ select.inp{appearance:none}
 .tit-step-header{display:flex;align-items:center;gap:5px;margin-bottom:4px;flex-wrap:wrap}
 .tit-step-badge{font-size:10px;font-weight:700;color:var(--primary);background:#dbeafe;border-radius:4px;padding:2px 6px;white-space:nowrap}
 .tit-step-badge.ongoing{background:var(--green-bg);color:var(--green)}
-.tit-dur-inp{width:34px;border:1px solid var(--border);border-radius:4px;color:var(--text);padding:2px 4px;font:11px var(--sans);text-align:center;background:#fff}
-.tit-dur-sel{border:1px solid var(--border);border-radius:4px;color:var(--text);padding:2px 4px;font:11px var(--sans);background:#fff}
+.tit-dur-inp{width:52px;border:1px solid var(--border);border-radius:4px;color:var(--text);padding:3px 6px;font:13px var(--sans);text-align:center;background:#fff}
+.tit-dur-sel{border:1px solid var(--border);border-radius:4px;color:var(--text);padding:3px 6px;font:13px var(--sans);background:#fff}
 .tit-ongoing-lbl{display:flex;align-items:center;gap:3px;font-size:10px;color:var(--muted);cursor:pointer}
 .tit-rm-step{background:none;border:none;color:#c8cdd9;font-size:11px;padding:0;cursor:pointer}
 .tit-rm-step:hover{color:var(--red)}
@@ -885,10 +885,13 @@ select.inp{appearance:none}
       </div>
     </details>
 
-    <label class=”confirm-box” style=”border-color:var(--border);background:#f8fafc;margin-bottom:14px;margin-top:0”>
-      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
-      <span><span class=”cb-title” style=”color:#1e3a5f”>Patient gave verbal consent</span><span class=”cb-hint” style=”color:#475569”>to proceed, including financial consent and Telehealth consent.</span></span>
-    </label>
+    <div class=”confirm-box” style=”border-color:var(--border);background:#f8fafc;margin-bottom:14px;margin-top:0”>
+      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()” style=”margin-top:2px;flex-shrink:0;width:18px;height:18px;accent-color:var(--primary);cursor:pointer”>
+      <label for=”consentGiven” style=”cursor:pointer;flex:1;margin:0”>
+        <span class=”cb-title” style=”color:#1e3a5f”>Patient gave verbal consent</span>
+        <span class=”cb-hint” style=”color:#475569”> — to proceed, including financial consent and Telehealth consent.</span>
+      </label>
+    </div>
 
     <label class=”fl” style=”margin-top:0”>Reason for seeking assessment</label>
     <div id=”assess-reason-chips” class=”ar-chips”></div>
@@ -4731,6 +4734,16 @@ function renderDiffRows(){
       if((newVal==='Past'||newVal==='Current')&&S.noPastPsych)S.noPastPsych=false;
       if(newVal==='Current')delete S.dsmManual['critE'];
       renderDiffRows();save();refresh();return;
+    }
+    // Clicking anywhere on the head row (not on ?, −, +) opens/closes the body
+    if(!e.target.closest('.qbtn')&&!e.target.closest('.diff-d-toggle')){
+      var head=e.target.closest('.diff-d-head');
+      if(head){
+        var card=head.closest('.diff-d');
+        var did4=card?card.getAttribute('data-diffid'):null;
+        if(did4){S.diffOpen[did4]=!S.diffOpen[did4];renderDiffRows();save();refresh();}
+        return;
+      }
     }
   };
   el.addEventListener('click',el._h);
