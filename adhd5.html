@@ -874,7 +874,7 @@ select.inp{appearance:none}
 
 <div class="card" data-initial-only>
   <div class="ch rose">Reason for assessment &amp; consent</div>
-  <div class=”cb” style=”display:block”>
+  <div class=”cb”>
     <details class=”intro-box” open style=”margin:0 0 12px”>
       <summary>Consent and disclosure script — read at the start</summary>
       <div class=”intro-body”>
@@ -884,16 +884,18 @@ select.inp{appearance:none}
         <p style=”font-weight:700;color:#1e3a5f;margin-top:10px”>”Are you happy to continue?”</p>
       </div>
     </details>
-    <label class=”confirm-box” style=”display:flex;margin:0 0 14px;cursor:pointer”>
-      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
-      <span>
-        <span class=”cb-title”>Patient gave verbal consent</span>
-        <span class=”cb-hint”>to proceed, including financial consent and Telehealth consent.</span>
-      </span>
-    </label>
-    <label class=”fl” style=”display:block;margin:0 0 6px”>Reason for seeking assessment</label>
-    <div id=”assess-reason-chips”></div>
-    <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
+    <div style=”display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;gap:0”>
+      <div class=”confirm-box” style=”margin:0 0 14px;margin-top:0”>
+        <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
+        <label for=”consentGiven” style=”flex:1;cursor:pointer;margin:0”>
+          <span class=”cb-title”>Patient gave verbal consent</span>
+          <span class=”cb-hint”>to proceed, including financial consent and Telehealth consent.</span>
+        </label>
+      </div>
+      <div style=”font:600 11.5px/1.4 var(--sans);color:#475569;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em”>Reason for seeking assessment</div>
+      <div id=”assess-reason-chips”></div>
+      <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
+    </div>
   </div>
 </div>
 
