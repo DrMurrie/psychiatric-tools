@@ -203,7 +203,7 @@ select.inp{appearance:none}
 .dtbl td{padding:5px 6px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
 .dtbl tr:last-child td{border-bottom:none}
 .dtbl input{border:1px solid var(--border);border-radius:5px;padding:3px 5px;font:inherit;font-size:12px;background:#fff;width:100%}
-.sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;align-items:start}
 .sub-item{background:#f9fafb;border:1px solid var(--border);border-radius:8px;padding:6px 9px;display:flex;flex-direction:column;gap:4px}
 .sub-name{font-size:12px;font-weight:600}
 .sub-btns{display:flex;gap:3px}
@@ -273,7 +273,7 @@ select.inp{appearance:none}
 .qol-star.on{color:#f59e0b}
 .qol-clear{margin-left:8px;padding:3px 9px;border:1px solid var(--border);background:#fff;color:var(--muted);font:600 11px var(--sans);border-radius:5px;cursor:pointer}
 .qol-clear:hover{color:var(--text);border-color:var(--text)}
-.factor-tiles{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.factor-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
 .dev-block{margin-bottom:8px}
 .dev-block .dev-qrow{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px}
 .dev-block .dev-qrow:hover{border-color:#94a3b8;background:#f8fafc}
@@ -304,6 +304,8 @@ select.inp{appearance:none}
 .mse-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
 .mse-item.flag{border-color:var(--amber);background:#fff9ef}
 .mse-item.flag .mse-label{color:var(--amber)}
+.mse-item.danger{border-color:var(--red);background:#fff5f5}
+.mse-item.danger .mse-label{color:var(--red)}
 .mse-item-chips{display:flex;flex-wrap:wrap;gap:4px 6px;margin:4px 0 5px}
 .mse-chip{padding:4px 9px;border-radius:14px;border:1.5px solid var(--border);background:#fff;color:#64748b;font:600 11.5px var(--sans);cursor:pointer;line-height:1.2;-webkit-tap-highlight-color:transparent;transition:all .1s}
 .mse-chip:hover{border-color:#94a3b8;color:var(--text)}
@@ -312,7 +314,7 @@ select.inp{appearance:none}
 .mse-chip.bad:hover{border-color:#dc2626;color:#b91c1c}
 .mse-chip.bad.on{background:var(--red-bg);border-color:var(--red);color:#b91c1c}
 /* ── Differential — collapsible cards ── */
-.diff-stack{display:flex;flex-direction:column;gap:7px}
+.diff-stack{display:flex;flex-direction:column;gap:3px}
 .diff-legend{font-size:11px;color:#475569;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:6px;line-height:1.5}
 .diff-legend strong{color:var(--text)}
 .diff-legend .lg-minus{display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--green-bg);color:var(--green);border:1.5px solid var(--green);font-weight:800;text-align:center;line-height:15px;font-size:14px;margin-right:3px;vertical-align:middle}
@@ -323,7 +325,7 @@ select.inp{appearance:none}
 .diff-d.status-symptoms{border-color:var(--amber);background:#fffbeb}
 .diff-d.status-comorbid{border-color:var(--purple);background:#faf5ff}
 .diff-d.status-better{border-color:var(--red);background:#fef2f2}
-.diff-d-head{display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:default;user-select:none;-webkit-user-select:none}
+.diff-d-head{display:flex;align-items:center;gap:8px;padding:7px 10px;cursor:default;user-select:none;-webkit-user-select:none}
 .diff-d-title{font-size:13.5px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:5px;flex:1;min-width:0}
 .diff-d-title .qbtn{margin-top:0}
 .diff-d-status-pill{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:12px;background:#f1f5f9;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;flex-shrink:0}
@@ -360,7 +362,7 @@ select.inp{appearance:none}
 .diff-d-status-btns .dsb.on-symptoms{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);font-weight:800}
 .diff-d-status-btns .dsb.on-comorbid{background:var(--purple-bg);border-color:var(--purple);color:var(--purple);font-weight:800}
 .diff-d-status-btns .dsb.on-better{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:800}
-.factor-tile{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;color:#475569;font:600 12px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:left;line-height:1.3;min-height:40px;display:flex;align-items:center;transition:background .12s,border-color .12s,color .12s}
+.factor-tile{padding:5px 8px;border:1.5px solid var(--border);border-radius:7px;background:#fff;color:#475569;font:600 11.5px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:left;line-height:1.3;min-height:30px;display:flex;align-items:center;transition:background .12s,border-color .12s,color .12s}
 .factor-tile:hover{border-color:var(--primary);color:var(--primary)}
 .factor-tile.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
 .ar-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
@@ -493,7 +495,7 @@ select.inp{appearance:none}
 .ps-tile-label{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:#475569;margin:0}
 .ps-tile .rbtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0}
 .ps-tile .rbtns.ps-tile-mode{grid-template-columns:repeat(2,minmax(0,1fr))}
-.ps-tile .rbtns .rb{white-space:normal;overflow-wrap:break-word;hyphens:auto;text-align:center;padding:5px 6px;font-size:11px;line-height:1.2;min-width:0}
+.ps-tile .rbtns .rb{white-space:normal;overflow-wrap:normal;hyphens:none;text-align:center;padding:5px 6px;font-size:11px;line-height:1.2;min-width:0}
 .ps-tile .inp{font-size:12px;padding:6px 9px}
 .ps-tile-mode{display:flex;flex-wrap:wrap;gap:4px}
 .ps-tile-mode .rb{font-size:10px;padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b}
@@ -882,9 +884,9 @@ select.inp{appearance:none}
       </div>
     </details>
 
-    <label class=”rb-check” style=”display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:#fff”>
-      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()” style=”margin-top:2px;flex-shrink:0;width:18px;height:18px”>
-      <span style=”font-size:13px;line-height:1.4”><strong>Patient gave verbal consent</strong> to proceed, including financial consent and Telehealth consent.</span>
+    <label class=”confirm-box” style=”border-color:var(--border);background:#f8fafc;margin-bottom:14px;margin-top:0”>
+      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
+      <span><span class=”cb-title” style=”color:#1e3a5f”>Patient gave verbal consent</span><span class=”cb-hint” style=”color:#475569”>to proceed, including financial consent and Telehealth consent.</span></span>
     </label>
 
     <label class=”fl” style=”margin-top:0”>Reason for seeking assessment</label>
@@ -1830,8 +1832,8 @@ const CARDIAC=[
   {id:'c_htn',label:'Hypertension',flag:true,
     note:'Control blood pressure before starting stimulants and monitor regularly during treatment.',
     letter:'It is important that blood pressure is well controlled prior to starting stimulants and monitored regularly during treatment.'},
-  {id:'c_maoi',label:'Current MAOI use — ABSOLUTE CONTRAINDICATION',flag:true,
-    note:'Do not prescribe stimulants or atomoxetine until an appropriate washout period is completed. This is an absolute contraindication.',
+  {id:'c_maoi',label:'Current MAOI use',flag:true,
+    note:'Do not prescribe stimulants or atomoxetine until an appropriate washout period is completed (absolute contraindication). Confirm washout before considering any ADHD pharmacotherapy.',
     letter:'Current MAOI use is an absolute contraindication to both stimulants and atomoxetine. An appropriate washout period must be completed before any ADHD pharmacotherapy is considered.'},
 ];
 const FAM_PSYCH=[
@@ -1918,13 +1920,12 @@ const MEDICAL=[
 ];
 const SUBS=['Alcohol','Cannabis','Methamphetamine','Cocaine/stimulants','MDMA','Opioids','Benzodiazepines','Tobacco/nicotine','Caffeine (excess)','Other'];
 const DIFFICULTY_CATEGORIES=[
-  {label:'Cognitive',items:['Attention difficulties','Forgetfulness','Disorganisation','Time management']},
-  {label:'Productivity / Study / Work',items:['Task initiation difficulties','Workplace underperformance']},
-  {label:'Emotions / Internal state',items:['Emotional dysregulation','Rejection sensitivity','Low mood','Anxiety','Burnout']},
-  {label:'Social / Relationships',items:['Impulsivity','Relationship difficulties']},
-  {label:'Home / Lifestyle',items:['Sleep difficulties','Eating dysregulation','Financial difficulties','Driving safety']},
-  {label:'Physical / Sensory',items:['Restlessness','Sensory sensitivities']},
-  {label:'Substance use',items:['Substance regulation']}
+  {label:'Cognitive',items:['Attention difficulties','Forgetfulness','Disorganisation','Time management difficulties','Hyperfocus / task-switching difficulties']},
+  {label:'Productivity',items:['Task initiation difficulties','Workplace underperformance','Chronic underachievement']},
+  {label:'Emotional',items:['Emotional dysregulation','Rejection sensitivity (RSD)','Low mood / depression','Anxiety','Chronic exhaustion / burnout','Low self-esteem / shame','Emotional flooding / meltdowns']},
+  {label:'Social / Relationships',items:['Impulsivity','Relationship difficulties','Social difficulties / isolation']},
+  {label:'Home / Lifestyle',items:['Sleep difficulties','Binge eating','Appetite dysregulation','Financial difficulties','Driving safety']},
+  {label:'Physical / Sensory',items:['Restlessness / hyperactivity','Sensory sensitivities']}
 ];
 const MSE_GROUPS=[
   {label:'Appearance & Behaviour',items:['appearance','inattention','hyperactivity','impulsivity','speech']},
@@ -4789,7 +4790,7 @@ function renderMSE(){
     var freeVals=vals.filter(function(v){return sec.opts.indexOf(v)<0;});
     var noteVal=freeVals.join('; ');
     var noteBox='<input class="mse-note" placeholder="Notes…" value="'+esc(noteVal)+'" onchange="mseSetNote(\''+sec.id+'\',this.value)">';
-    var flagCls=(isADHD||isRisk)?' flag':'';
+    var flagCls=isRisk?' danger':isADHD?' flag':'';
     return '<div class="mse-item'+flagCls+'"><div class="mse-label">'+esc(sec.label)+'</div><div class="mse-item-chips">'+chips+'</div>'+noteBox+'</div>';
   };
   var header='<div style="display:flex;gap:6px;margin-bottom:10px"><button class="sel-all-btn" onclick="selectAllMSENormal()">All normal</button><button class="sel-all-btn desel" onclick="deselectAllMSE()">Deselect all</button></div>';
@@ -4801,7 +4802,7 @@ function renderMSE(){
 }
 function renderCardiac(){
   var noBtn='<div style="margin-bottom:8px"><button class="sel-all-btn'+(S.noCardiacRisk?' on':'')+'" style="'+(S.noCardiacRisk?'background:var(--green-bg);border-color:var(--green);color:#166534;':'')+'" onclick="toggleNoSection(\'noCardiacRisk\')">'+(S.noCardiacRisk?'\u2713 ':'')+'No known cardiac risk factors</button></div>';
-  $('cardiac-checks').innerHTML=noBtn+CARDIAC.map(function(c){var on=!!S.cardiac[c.id];var isMaoi=c.id==='c_maoi';return '<div class="crow" onclick="toggleCardiac(\''+c.id+'\','+c.flag+',this)"><div class="cbox'+(on?(c.flag?' flag':' yes'):'')+'"></div><div class="clabel">'+(isMaoi?'<strong style="color:var(--red)">'+c.label+'</strong>':c.label)+(c.flag&&!isMaoi?'<span style="font-size:10px;color:var(--red);margin-left:5px">\u26a0</span>':'')+'</div><button class="qbtn" onclick="openDrawer(event,\''+c.id+'\',\'cardiac\')">?</button></div>';}).join('');
+  $('cardiac-checks').innerHTML=noBtn+CARDIAC.map(function(c){var on=!!S.cardiac[c.id];return '<div class="crow" onclick="toggleCardiac(\''+c.id+'\','+c.flag+',this)"><div class="cbox'+(on?(c.flag?' flag':' yes'):'')+'"></div><div class="clabel">'+c.label+(c.flag?'<span style="font-size:10px;color:var(--red);margin-left:5px">\u26a0</span>':'')+'</div><button class="qbtn" onclick="openDrawer(event,\''+c.id+'\',\'cardiac\')">?</button></div>';}).join('');
 }
 function renderFam(){
   var el=$('fam-checks');if(!el)return;
