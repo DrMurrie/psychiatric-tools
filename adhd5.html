@@ -872,30 +872,31 @@ select.inp{appearance:none}
     </div>
   </div>
 
-<div class="card" data-initial-only>
-  <div class="ch rose">Reason for assessment &amp; consent</div>
+<div class=”card” data-initial-only>
+  <div class=”ch rose”>Reason for assessment &amp; consent</div>
   <div class=”cb”>
-    <details class=”intro-box” open style=”margin:0 0 12px”>
-      <summary>Consent and disclosure script — read at the start</summary>
-      <div class=”intro-body”>
+    <div class=”intro-box” style=”margin:0 0 12px”>
+      <div onclick=”var b=document.getElementById('cs-body');var c=document.getElementById('cs-caret');if(b.style.display==='none'){b.style.display='block';c.textContent='▼'}else{b.style.display='none';c.textContent='▸'}” style=”cursor:pointer;padding:10px 14px;font:600 13px var(--sans);color:#334155;display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none”>
+        <span id=”cs-caret” style=”font-size:11px;flex-shrink:0”>▼</span>
+        Consent and disclosure script — read at the start
+      </div>
+      <div id=”cs-body” class=”intro-body” style=”display:block”>
         <p style=”font-weight:700;color:#1e3a5f;margin-bottom:6px”>Read the following to the patient before proceeding:</p>
         <p>”Before we begin, I want to be upfront with you about a few things. Today is a holistic psychiatric assessment — I'm going to look at everything, not just ADHD. I can't guarantee that I'll make an ADHD diagnosis, because that depends on what I find during the assessment. And even if I do diagnose ADHD, I can't guarantee that we'll end up on stimulant medication — that depends on your medical history, what's safe for you, and what makes clinical sense. What I can guarantee is that I want to do the very best by you. This is a thorough, holistic assessment and whatever we find, we'll work out the best path forward together.”</p>
         <p>”I also want to be transparent about the cost. Today's assessment is one appointment, but depending on what comes up, there may be follow-up appointments — for example if we need to monitor how medication is going during titration. I'm always mindful of the financial impact and I'll only recommend follow-up when it's genuinely clinically necessary. I'll do everything I safely can to be efficient with your time and money.”</p>
         <p style=”font-weight:700;color:#1e3a5f;margin-top:10px”>”Are you happy to continue?”</p>
       </div>
-    </details>
-    <div style=”display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;gap:0”>
-      <div class=”confirm-box” style=”margin:0 0 14px;margin-top:0”>
-        <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
-        <label for=”consentGiven” style=”flex:1;cursor:pointer;margin:0”>
-          <span class=”cb-title”>Patient gave verbal consent</span>
-          <span class=”cb-hint”>to proceed, including financial consent and Telehealth consent.</span>
-        </label>
-      </div>
-      <div style=”font:600 11.5px/1.4 var(--sans);color:#475569;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em”>Reason for seeking assessment</div>
-      <div id=”assess-reason-chips”></div>
-      <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
     </div>
+    <div class=”confirm-box” style=”margin:0 0 14px”>
+      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
+      <label for=”consentGiven” style=”flex:1;cursor:pointer;margin:0”>
+        <span class=”cb-title”>Patient gave verbal consent</span>
+        <span class=”cb-hint”>to proceed, including financial consent and Telehealth consent.</span>
+      </label>
+    </div>
+    <div style=”font:600 11.5px var(--sans);color:#475569;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em”>Reason for seeking assessment</div>
+    <div id=”assess-reason-chips”></div>
+    <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
   </div>
 </div>
 
