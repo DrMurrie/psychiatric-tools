@@ -673,6 +673,27 @@ section.card{scroll-margin-top:130px}
 .tile-label{font:600 12.5px/1.3 "Inter",sans-serif;color:var(--ink)}
 .tile-sub{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.3}
 
+/* ── Letter Generator ── */
+.doc-toggle-bar{display:flex;flex-wrap:wrap;gap:6px}
+.doc-toggle{padding:5px 11px;border-radius:15px;font:500 11px var(--sans);border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);cursor:pointer;transition:all .12s}
+.doc-toggle:hover{border-color:var(--primary);color:var(--primary)}
+.doc-toggle.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
+.lf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:8px 12px;margin-bottom:12px}
+.lf-group{display:flex;flex-direction:column;gap:3px}
+.lf-wide{grid-column:1/-1}
+.lf-label{font:600 11px/1 "Inter",sans-serif;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.lf-input{font:13px "Inter",sans-serif;padding:6px 10px;border:1px solid var(--border);border-radius:5px;background:#fff;width:100%;box-sizing:border-box}
+.lf-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(59,130,246,.12)}
+.lf-mc{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 10px}
+.letter-preview-box{background:#fff;border:1px solid var(--border);border-radius:7px;padding:20px 24px;font:13.5px/1.7 Georgia,serif;color:#111;min-height:80px}
+.letter-preview-box h2{font:700 15px/1.4 "Inter",sans-serif;margin:0 0 12px;color:#1a1a1a}
+.letter-preview-box h3{font:700 13px/1.4 "Inter",sans-serif;margin:16px 0 6px;color:#1e3a5f;border-bottom:1px solid #e5e7eb;padding-bottom:3px}
+.letter-preview-box p{margin:0 0 8px;font-size:13px}
+.letter-preview-box ul{margin:0 0 10px;padding-left:20px;font-size:13px}
+.letter-preview-box li{margin-bottom:3px}
+.letter-preview-box hr.page-break{border:none;border-top:2px dashed #e5e7eb;margin:24px 0}
+.letter-preview-box table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0 12px}
+
 /* ── pg-details collapsible sections (from adhd5 reference overlays) ── */
 .pg-details{background:#dcebff;border:1px solid #b4d2f3;border-radius:8px;margin:6px 0;padding:0}
 .pg-details summary{cursor:pointer;list-style:none;padding:10px 14px;font-weight:700;font-size:.9rem;background:#7fb3e6;color:#0f2e4a;border-radius:8px}
@@ -778,6 +799,16 @@ section.card{scroll-margin-top:130px}
       <div class="tile-icon">📋</div>
       <div class="tile-label">Follow-along Guide</div>
       <div class="tile-sub">Assessment probes</div>
+    </a>
+    <a class="tile tile-green" href="#" onclick="showGroup('a6-auto-text',this);return false">
+      <div class="tile-icon">📝</div>
+      <div class="tile-label">Auto Text</div>
+      <div class="tile-sub">Titration &amp; follow-up plans</div>
+    </a>
+    <a class="tile tile-teal" href="#" onclick="showGroup('a6-letters',this);return false">
+      <div class="tile-icon">📄</div>
+      <div class="tile-label">Letter Generator</div>
+      <div class="tile-sub">Patient &amp; GP letters</div>
     </a>
     <a class="tile tile-primary" href="#" onclick="showGroup('sec-meds-tit',this);return false">
       <div class="tile-icon">💊</div>
@@ -986,6 +1017,58 @@ section.card{scroll-margin-top:130px}
   <div class="body">
     <p class="lead">Example handover and continuation-prescriber letters. Replace bracketed placeholders with the actual patient and recipient details, or use the Letter Generator for live form-driven letters.</p>
     <div class="example-grid" id="hoc-examples"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     LETTER GENERATOR
+══════════════════════════════════════════════════════════════ -->
+<section class="card teal" id="sec-letters">
+  <div class="ch"><span class="num">📄</span>Letter Generator</div>
+  <div class="body">
+    <p class="lead">Fill in the patient details, choose which letters to include, then copy or print.</p>
+
+    <div class="lf-grid">
+      <div class="lf-group"><label class="lf-label">Patient name</label><input class="lf-input" id="lf-ptName" type="text" placeholder="Full name" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">DOB</label><input class="lf-input" id="lf-ptDob" type="text" placeholder="DD/MM/YYYY" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Date</label><input class="lf-input" id="lf-ptDate" type="date" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Gender</label>
+        <select class="lf-input" id="lf-ptGender" onchange="refreshLetterPreview()">
+          <option value="">Not specified</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div class="lf-group"><label class="lf-label">Diagnosis</label><input class="lf-input" id="lf-dx" type="text" placeholder="ADHD, Combined Presentation" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Medication &amp; dose</label><input class="lf-input" id="lf-med" type="text" placeholder="e.g. Vyvanse 50mg mane" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Clinician name</label><input class="lf-input" id="lf-drName" type="text" placeholder="Dr Name" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Qualifications</label><input class="lf-input" id="lf-drQuals" type="text" placeholder="FRANZCP" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group lf-wide"><label class="lf-label">GP name (handover only)</label><input class="lf-input" id="lf-gpName" type="text" placeholder="Dr GP Name" oninput="refreshLetterPreview()"></div>
+    </div>
+
+    <div class="doc-toggle-bar">
+      <button class="doc-toggle on" data-lsec="diagnosis" onclick="toggleLetterSec(this)">Diagnosis letter</button>
+      <button class="doc-toggle" data-lsec="gphandover" onclick="toggleLetterSec(this)">GP handover</button>
+      <button class="doc-toggle" data-lsec="medcert" onclick="toggleLetterSec(this)">Med cert</button>
+      <button class="doc-toggle" data-lsec="travel" onclick="toggleLetterSec(this)">Travel letter</button>
+      <button class="doc-toggle" data-lsec="possession" onclick="toggleLetterSec(this)">Possession letter</button>
+      <button class="doc-toggle" data-lsec="workplace" onclick="toggleLetterSec(this)">Workplace adjustments</button>
+      <button class="doc-toggle" data-lsec="study" onclick="toggleLetterSec(this)">Study adjustments</button>
+      <button class="doc-toggle" data-lsec="driving" onclick="toggleLetterSec(this)">Driving / machinery</button>
+    </div>
+
+    <div class="lf-mc" id="lf-medcert-fields" style="display:none">
+      <div class="lf-group"><label class="lf-label">Unfit from</label><input class="lf-input" id="lf-mc-from" type="date" oninput="refreshLetterPreview()"></div>
+      <div class="lf-group"><label class="lf-label">Unfit to</label><input class="lf-input" id="lf-mc-to" type="date" oninput="refreshLetterPreview()"></div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px">
+      <button class="copybtn" onclick="copyLetterText()">📋 Copy text</button>
+      <button class="copybtn" style="background:var(--slate)" onclick="printLetterPreview()">🖨️ Print</button>
+    </div>
+
+    <div id="letter-preview" class="letter-preview-box"><p style="color:var(--muted);font-family:var(--sans);font-size:12px">Fill in details above to generate letters.</p></div>
   </div>
 </section>
 
@@ -3912,20 +3995,19 @@ document.addEventListener('keydown', e=>{
 });
 
 // =================== SECTION FILTER ===================
-const NEW_SEC_IDS = ['sec-meds-tit','sec-edu','sec-followup-ref','sec-billing','sec-special-groups','sec-complex'];
+const NEW_SEC_IDS = ['sec-meds-tit','sec-edu','sec-followup-ref','sec-billing','sec-special-groups','sec-complex','sec-tit','sec-fu','sec-trtplan','sec-hoc','sec-letters'];
+const AUTO_TEXT_IDS = new Set(['sec-tit','sec-fu']);
+const LETTER_IDS    = new Set(['sec-trtplan','sec-hoc','sec-letters']);
 let _activeGroup = null; // null = all hidden (home state)
 
 function _applySectionState(){
   document.querySelectorAll('section.card').forEach(s=>{
-    if(_activeGroup === null){
-      s.classList.add('sec-hidden');
-    } else if(_activeGroup === 'follow-along'){
-      if(NEW_SEC_IDS.includes(s.id)) s.classList.add('sec-hidden');
-      else s.classList.remove('sec-hidden');
-    } else {
-      if(s.id === _activeGroup) s.classList.remove('sec-hidden');
-      else s.classList.add('sec-hidden');
-    }
+    const show =
+      _activeGroup === 'follow-along' ? !NEW_SEC_IDS.includes(s.id) :
+      _activeGroup === 'a6-auto-text' ? AUTO_TEXT_IDS.has(s.id) :
+      _activeGroup === 'a6-letters'   ? LETTER_IDS.has(s.id) :
+      _activeGroup !== null           ? s.id === _activeGroup : false;
+    s.classList.toggle('sec-hidden', !show);
   });
 }
 
@@ -3947,7 +4029,271 @@ function backToMenu(){
   document.querySelector('.tile-section').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// =================== SCROLL PROGRESS ===================
+// =================== LETTER GENERATOR ===================
+var letterSecs = {diagnosis:true,gphandover:false,medcert:false,travel:false,possession:false,workplace:false,study:false,driving:false};
+
+function lf(id){var el=document.getElementById('lf-'+id);return el?el.value.trim():'';}
+function lfDate(id){var v=lf(id);if(!v){return new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});}return new Date(v+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});}
+function lesc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function lpron(g){return g==='Male'?'he':g==='Female'?'she':'they';}
+function lposs(g){return g==='Male'?'his':g==='Female'?'her':'their';}
+function lpronCap(g){var p=lpron(g);return p[0].toUpperCase()+p.slice(1);}
+function lisStim(){var med=(lf('med')||'').toLowerCase();return/vyvanse|lisdex|dex|ritalin|concerta|methylphenidate|amphetamine/.test(med);}
+
+function toggleLetterSec(btn){
+  var sec=btn.getAttribute('data-lsec');
+  letterSecs[sec]=!letterSecs[sec];
+  btn.classList.toggle('on',letterSecs[sec]);
+  var mc=document.getElementById('lf-medcert-fields');
+  if(mc) mc.style.display=letterSecs.medcert?'flex':'none';
+  refreshLetterPreview();
+}
+
+function refreshLetterPreview(){
+  var parts=[];
+  if(letterSecs.diagnosis) parts.push(buildLetterDiagnosis());
+  if(letterSecs.gphandover) parts.push(buildLetterGPHandover());
+  if(letterSecs.medcert)    parts.push(buildLetterMedCert());
+  if(letterSecs.travel)     parts.push(buildLetterTravel());
+  if(letterSecs.possession) parts.push(buildLetterPossession());
+  if(letterSecs.workplace)  parts.push(buildLetterWorkplace());
+  if(letterSecs.study)      parts.push(buildLetterStudy());
+  if(letterSecs.driving)    parts.push(buildLetterDriving());
+  var el=document.getElementById('letter-preview');
+  if(el) el.innerHTML=parts.join('<hr class="page-break">');
+}
+
+function letterHeader(){
+  var name=lf('ptName')||'[Patient Name]';
+  var dob=lf('ptDob');
+  var ds=lfDate('ptDate');
+  var drN=lf('drName')||'[Clinician]';
+  var quals=lf('drQuals');
+  return '<p>'+lesc(ds)+'</p>'+'<p><strong>Patient:</strong> '+lesc(name)+(dob?' &nbsp;|&nbsp; <strong>DOB:</strong> '+lesc(dob):'')+' &nbsp;|&nbsp; <strong>Treating clinician:</strong> '+lesc(drN)+(quals?' | '+lesc(quals):'')+'</p>';
+}
+function letterSig(){
+  var drN=lf('drName')||'[Clinician]';
+  var quals=lf('drQuals');
+  return '<p>Yours sincerely,<br><br><strong>'+lesc(drN)+'</strong><br>Consultant Psychiatrist'+(quals?'<br><span style="font-size:11px;color:#555">'+lesc(quals)+'</span>':'')+'</p>';
+}
+
+function buildLetterDiagnosis(){
+  var name=lf('ptName')||'[Patient Name]';
+  var firstName=name.split(' ')[0];
+  var g=lf('ptGender');
+  var po=lposs(g),prCap=lpronCap(g);
+  var ds=lfDate('ptDate');
+  var drN=lf('drName')||'[Clinician]';
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var med=lf('med');
+  var h='<h2>Dear '+lesc(firstName)+',</h2>';
+  h+=letterHeader();
+  h+='<p>Thank you for attending your assessment on '+lesc(ds)+'. I am writing to summarise the outcome of our appointment and the plan we discussed.</p>';
+  h+='<h3>Diagnosis</h3>';
+  h+='<p>Following a thorough psychiatric assessment — including a detailed developmental and clinical history, standardised rating scales, and careful consideration of alternative explanations — you have been formally diagnosed with <strong>'+lesc(dx)+'</strong>.</p>';
+  h+='<p>This is a neurodevelopmental condition reflecting real and measurable differences in how your brain regulates attention, impulse control, and executive function. It is not a character flaw or a failure of effort or intelligence, and it is one of the most treatable conditions in psychiatry.</p>';
+  if(med){
+    h+='<h3>Treatment Plan</h3>';
+    h+='<p>We have commenced <strong>'+lesc(med)+'</strong>. Please follow the titration schedule provided and contact my rooms if you experience any concerning side effects before your next review.</p>';
+  }
+  h+='<h3>What to Expect</h3>';
+  h+='<p>When medication is working well, most people describe calm clarity, boring-but-important tasks becoming more manageable, and more pause between feeling and reacting. It should not feel robotic or flat — if it does, the dose is likely too high and should be adjusted.</p>';
+  h+='<p>Please do not hesitate to contact my rooms if you have any questions.</p>';
+  h+=letterSig();
+  return h;
+}
+
+function buildLetterGPHandover(){
+  var patName=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),pr=lpron(g),prCap=lpronCap(g);
+  var clin=lf('drName')||'[Clinician]';
+  var quals=lf('drQuals')||'';
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var med=lf('med');
+  var ds=lfDate('ptDate');
+  var gpName=lf('gpName')||'[GP Name]';
+  var gpStr=gpName.match(/^Dr/i)?gpName:'Dr '+gpName;
+  var h='<h2>GP Handover — ADHD Stimulant Prescribing</h2>';
+  h+=letterHeader();
+  h+='<p>Dear '+lesc(gpStr)+',</p>';
+  h+='<p>Thank you for your ongoing care of <strong>'+lesc(patName)+'</strong>. I am writing to confirm '+po+' diagnosis, current treatment, and to provide my written specialist recommendation supporting you as the ongoing prescriber of '+po+' stimulant medication, in accordance with your state or territory prescribing framework.</p>';
+  h+='<h3>Diagnosis</h3>';
+  h+='<p><strong>'+lesc(patName)+'</strong> meets DSM-5-TR criteria for <strong>'+lesc(dx)+'</strong>. The diagnosis was established following a comprehensive psychiatric assessment including pre-screening, thorough clinical interview, review of collateral history, assessment of substance use, and a medical screen.</p>';
+  h+='<h3>Current Medication Regimen</h3>';
+  if(med){
+    h+='<p><strong>'+lesc(med)+'</strong> — carefully titrated. '+lesc(patName)+' has demonstrated a good therapeutic response with no significant adverse effects at present.</p>';
+  } else {
+    h+='<p>[Medication details — see titration plan]</p>';
+  }
+  h+='<h3>Specialist Recommendation</h3>';
+  h+='<p>I support '+lesc(gpStr)+' taking over ongoing prescribing of this patient\'s ADHD stimulant medication in accordance with the applicable prescribing framework. This letter confirms specialist diagnosis, initiation and stabilisation of treatment, and is provided as the written specialist recommendation required to support any necessary state authority, permit, notification, or approval process.</p>';
+  h+='<h3>Recommended GP Monitoring</h3>';
+  h+='<ul><li>Ongoing review: therapeutic benefit, adherence, adverse effects, mental state, substance use risk, and cardiovascular status</li><li>At least every 6–12 months: blood pressure, heart rate, weight</li><li>ECG: as clinically indicated</li><li>RTPM check before every stimulant script</li></ul>';
+  h+='<p><strong>Review interval:</strong> I recommend routine GP review at least every 6 months, or sooner if any concerns arise. Please do not hesitate to contact my rooms.</p>';
+  h+=letterSig();
+  return h;
+}
+
+function buildLetterMedCert(){
+  var name=lf('ptName')||'[Patient Name]';
+  var drN=lf('drName')||'[Clinician]';
+  var quals=lf('drQuals')||'';
+  var ds=lfDate('ptDate');
+  var mcFrom=lf('mc-from'),mcTo=lf('mc-to');
+  var fromStr=mcFrom?new Date(mcFrom+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):ds;
+  var toStr=mcTo?new Date(mcTo+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):ds;
+  var sameDay=fromStr===toStr;
+  var h='<h2>Medical Certificate</h2>';
+  h+=letterHeader();
+  h+='<p>This is to certify that <strong>'+lesc(name)+'</strong> attended a medical appointment on '+lesc(ds)+' for the treatment of a medical condition under my care.</p>';
+  if(sameDay){
+    h+='<p>In my professional opinion, '+lesc(name)+' was unfit for work, study, and usual obligations on <strong>'+lesc(fromStr)+'</strong>.</p>';
+  } else {
+    h+='<p>In my professional opinion, '+lesc(name)+' was unfit for work, study, and usual obligations from <strong>'+lesc(fromStr)+'</strong> to <strong>'+lesc(toStr)+'</strong> (inclusive).</p>';
+  }
+  h+='<p>Details of the diagnosis and treatment are confidential and have not been disclosed on this certificate in accordance with the patient\'s right to medical privacy. This certificate is issued in good faith on the basis of clinical assessment.</p>';
+  h+='<p>'+lesc(drN)+(quals?' | '+lesc(quals):'')+' | '+lesc(ds)+'</p>';
+  h+=letterSig();
+  return h;
+}
+
+function buildLetterTravel(){
+  var name=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),prCap=lpronCap(g);
+  var drN=lf('drName')||'[Clinician]';
+  var quals=lf('drQuals')||'';
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var med=lf('med')||'[prescribed medication]';
+  var ds=lfDate('ptDate');
+  var h='<h2>To Whom It May Concern</h2>';
+  h+=letterHeader();
+  h+='<p>Dear Sir or Madam,</p>';
+  h+='<p><strong>Re: '+lesc(name)+' — Confirmation of Prescribed Medications for Travel</strong></p>';
+  h+='<p>I am writing in my capacity as a consultant psychiatrist to confirm that <strong>'+lesc(name)+'</strong> is under my ongoing care and has been formally diagnosed with <strong>'+lesc(dx)+'</strong>.</p>';
+  h+='<p>'+lesc(prCap)+' is currently prescribed <strong>'+lesc(med)+'</strong>. These medications are clinically indicated, lawfully prescribed by an authorised prescriber, and are essential to '+po+' ongoing treatment. I respectfully request that '+lesc(name)+' be afforded full and uninterrupted access to '+po+' prescribed medications throughout '+po+' travel, including in any jurisdiction where access may otherwise be restricted.</p>';
+  if(lisStim()){
+    h+='<p>Please note that prescribed stimulant medications may produce a positive result on standard urine or saliva drug screening tests for amphetamines or related substances. This is an expected consequence of legitimate prescribed use and does not indicate illicit drug use. In the event of a positive screening result, confirmatory laboratory testing (GC-MS or LC-MS/MS) should be undertaken before any conclusion is drawn.</p>';
+  }
+  h+='<p>Should you require further information or verification of '+po+' prescription, please do not hesitate to contact my rooms directly.</p>';
+  h+=letterSig();
+  h+='<p style="font-size:11px;color:#6b7280">This letter confirms details accurate as at '+lesc(ds)+'. It does not constitute medical advice to third parties.</p>';
+  return h;
+}
+
+function buildLetterPossession(){
+  var name=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),prCap=lpronCap(g);
+  var drN=lf('drName')||'[Clinician]';
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var med=lf('med')||'[prescribed medication]';
+  var ds=lfDate('ptDate');
+  var h='<h2>To Whom It May Concern</h2>';
+  h+=letterHeader();
+  h+='<p>Dear Sir or Madam,</p>';
+  h+='<p><strong>Re: '+lesc(name)+' — Prescription Possession and Drug Screening Notification</strong></p>';
+  h+='<p>I am writing to confirm that <strong>'+lesc(name)+'</strong> is a patient under my care and has been formally diagnosed with <strong>'+lesc(dx)+'</strong>. '+lesc(prCap)+' is currently prescribed <strong>'+lesc(med)+'</strong>, which is clinically indicated, lawfully prescribed, and essential to '+po+' ongoing treatment. '+lesc(prCap)+' is authorised to possess and carry these medications as directed.</p>';
+  h+='<p>Prescribed stimulant medications may produce a positive result on standard urine or saliva drug screening tests for amphetamines or related substances. This is an expected pharmacological consequence of legitimate prescribed use and does not indicate illicit drug use. I strongly recommend that confirmatory laboratory testing (GC-MS or LC-MS/MS) be undertaken in the event of a positive screening result before any adverse conclusion is drawn.</p>';
+  h+='<p>'+lesc(name)+' is encouraged to present this letter to relevant authorities, employers, or testing laboratories as documentation of '+po+' lawful prescription.</p>';
+  h+=letterSig();
+  h+='<p style="font-size:11px;color:#6b7280">This letter is issued for drug screening disclosure and prescription verification. Details accurate as at '+lesc(ds)+'.</p>';
+  return h;
+}
+
+function buildLetterWorkplace(){
+  var name=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),pr=lpron(g),prCap=lpronCap(g);
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var ds=lfDate('ptDate');
+  var h='<h2>To Whom It May Concern</h2>';
+  h+=letterHeader();
+  h+='<p>Dear Sir or Madam,</p>';
+  h+='<p><strong>Re: '+lesc(name)+' — Support for Workplace Adjustments</strong></p>';
+  h+='<p>I am writing in my capacity as a consultant psychiatrist to confirm that <strong>'+lesc(name)+'</strong> is under my ongoing care and has been formally diagnosed with <strong>'+lesc(dx)+'</strong>. This is a recognised neurodevelopmental condition affecting attention regulation, impulse control, working memory, and executive functioning. These difficulties are neurobiological in origin and can directly impact occupational performance without appropriate environmental support. A treatment plan is in place.</p>';
+  h+='<p>I write to support '+lesc(name)+' in requesting reasonable workplace adjustments. In my clinical opinion, targeted accommodations are both medically justified and consistent with evidence-based practice for ADHD in the workplace. Commonly beneficial adjustments include:</p>';
+  h+='<ul><li>A quiet workspace or provision of noise-cancelling equipment to reduce environmental distraction</li><li>Flexibility in work start times or daily structure where operationally feasible</li><li>Clear, written communication of tasks, priorities, and deadlines in preference to verbal-only instruction</li><li>Regular, brief check-ins with a supervisor to maintain task alignment and provide structured feedback</li><li>Access to a standing desk or ability to move within the workspace to manage restlessness</li><li>Permission to use productivity tools, timers, and task management software as reasonable aids</li></ul>';
+  h+='<p>Specific clinical details cannot be disclosed without '+po+' written consent. Should you wish to discuss '+po+' needs in general terms, please contact my rooms directly.</p>';
+  h+=letterSig();
+  h+='<p style="font-size:11px;color:#6b7280">This letter is provided at the request of the patient to support reasonable workplace adjustments. Details accurate as at '+lesc(ds)+'.</p>';
+  return h;
+}
+
+function buildLetterStudy(){
+  var name=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),pr=lpron(g),prCap=lpronCap(g);
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var ds=lfDate('ptDate');
+  var h='<h2>To Whom It May Concern</h2>';
+  h+=letterHeader();
+  h+='<p>Dear Sir or Madam,</p>';
+  h+='<p><strong>Re: '+lesc(name)+' — Support for Academic Adjustments</strong></p>';
+  h+='<p>I am writing in my capacity as a consultant psychiatrist to confirm that <strong>'+lesc(name)+'</strong> is under my ongoing care and has been formally diagnosed with <strong>'+lesc(dx)+'</strong>. This is a recognised neurodevelopmental condition characterised by persistent difficulties with attention regulation, working memory, task initiation, and executive functioning. These are neurobiological in origin and can materially impact academic performance, study organisation, and examination conditions. A treatment plan is in place.</p>';
+  h+='<p>I write to support '+lesc(name)+' in accessing reasonable academic adjustments. In my clinical opinion, appropriate accommodations are medically justified and consistent with evidence-based practice for ADHD in educational settings. Commonly beneficial adjustments include:</p>';
+  h+='<ul><li>Extended examination time (commonly 25–50% additional) to account for attention variability and processing demands</li><li>A separate or low-distraction examination venue</li><li>Scheduled rest breaks during examinations</li><li>Flexibility around assignment submission deadlines where clinically justified, considered on a case-by-case basis</li><li>Access to oral examination formats or alternative assessment methods where available</li><li>Use of noise-cancelling headphones or ear protection in examination settings</li></ul>';
+  h+='<p>I am supportive of any adjustments identified as appropriate to '+po+' circumstances that can be reasonably accommodated. Specific clinical details cannot be disclosed without '+po+' written consent. Please contact my rooms with any enquiries.</p>';
+  h+=letterSig();
+  h+='<p style="font-size:11px;color:#6b7280">This letter is provided at the request of the patient to support reasonable academic adjustments. Details accurate as at '+lesc(ds)+'.</p>';
+  return h;
+}
+
+function buildLetterDriving(){
+  var name=lf('ptName')||'[Patient Name]';
+  var g=lf('ptGender');
+  var po=lposs(g),prCap=lpronCap(g);
+  var drN=lf('drName')||'[Clinician]';
+  var dx=lf('dx')||'Attention Deficit Hyperactivity Disorder (ADHD)';
+  var med=lf('med')||'[prescribed medication]';
+  var ds=lfDate('ptDate');
+  var h='<h2>To Whom It May Concern</h2>';
+  h+=letterHeader();
+  h+='<p>Dear Sir or Madam,</p>';
+  h+='<p><strong>Re: '+lesc(name)+' — Fitness to Drive and Operate Machinery</strong></p>';
+  h+='<p>I am writing in my capacity as a consultant psychiatrist to confirm that <strong>'+lesc(name)+'</strong> is under my ongoing care and has been formally diagnosed with <strong>'+lesc(dx)+'</strong>. This diagnosis was established following a comprehensive assessment conducted in accordance with DSM-5-TR diagnostic criteria and the AADPA Clinical Practice Guidelines (2024).</p>';
+  h+='<p>'+lesc(prCap)+' is currently prescribed <strong>'+lesc(med)+'</strong> for the treatment of '+lesc(dx)+'. These medications are clinically indicated, lawfully prescribed, and being taken as directed under regular psychiatric review.</p>';
+  if(lisStim()){
+    h+='<p>In my clinical opinion, <strong>'+lesc(name)+'</strong> is fit to drive a motor vehicle and to operate heavy machinery while taking '+po+' prescribed medication at the current doses. Prescribed stimulant medications for ADHD are not sedating and do not impair psychomotor function. To the contrary, the published evidence consistently demonstrates that appropriate pharmacological treatment of ADHD improves sustained attention, reaction time, impulse control, and overall driving safety. The risk of motor vehicle accidents is substantially higher in untreated ADHD than in individuals stable and well-managed on prescribed stimulant therapy.</p>';
+  } else {
+    h+='<p>In my clinical opinion, <strong>'+lesc(name)+'</strong> is fit to drive a motor vehicle and to operate heavy machinery while taking '+po+' prescribed medication at the current doses. The medications prescribed are non-sedating at therapeutic doses and aim to improve sustained attention, impulse control, and executive function. '+lesc(prCap)+' is not experiencing side effects that would impair driving or workplace safety, and treatment is reviewed at regular intervals.</p>';
+  }
+  h+='<p>Should you require further information, please do not hesitate to contact my rooms directly.</p>';
+  h+=letterSig();
+  h+='<p style="font-size:11px;color:#6b7280">This letter reflects clinical opinion based on review of this patient as at '+lesc(ds)+'. It does not replace a formal fitness-to-drive assessment by an authorised medical practitioner where one is separately required by law or a licensing authority.</p>';
+  return h;
+}
+
+function copyLetterText(){
+  var el=document.getElementById('letter-preview');
+  if(!el) return;
+  var txt=el.innerText;
+  navigator.clipboard.writeText(txt).then(function(){
+    var btn=event.target.closest('button');
+    if(btn){btn.textContent='✅ Copied';setTimeout(function(){btn.textContent='📋 Copy text';},1500);}
+  });
+}
+
+function printLetterPreview(){
+  var el=document.getElementById('letter-preview');
+  if(!el) return;
+  var w=window.open('','_blank','width=800,height=700');
+  w.document.write('<html><head><title>Letters</title><style>body{font:13.5px/1.7 Georgia,serif;color:#111;padding:30px 40px;max-width:760px;margin:auto}h2{font-size:16px;margin:0 0 14px}h3{font-size:13px;color:#1e3a5f;border-bottom:1px solid #e5e7eb;padding-bottom:3px;margin:16px 0 6px}p{margin:0 0 8px}ul{margin:0 0 10px;padding-left:20px}li{margin-bottom:3px}table{width:100%;border-collapse:collapse;margin:8px 0 12px}hr{border:none;border-top:2px dashed #ccc;margin:28px 0}@media print{hr{page-break-after:always;visibility:hidden}}</style></head><body>'+el.innerHTML+'</body></html>');
+  w.document.close();
+  w.print();
+}
+
+// Auto-refresh letter preview when the Letters tile is first clicked
+(function(){
+  var origShow = window.showGroup;
+  window.showGroup = function(g, el){
+    origShow(g, el);
+    if(g === 'a6-letters') setTimeout(refreshLetterPreview, 50);
+  };
+})();
+
+
 function updateProgress(){
   const bar = document.getElementById('scroll-progress-bar');
   if(!bar) return;
