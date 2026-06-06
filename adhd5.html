@@ -875,24 +875,20 @@ select.inp{appearance:none}
 <div class=”card” data-initial-only>
   <div class=”ch rose”>Reason for assessment &amp; consent</div>
   <div class=”cb”>
-    <div class=”intro-box” style=”margin:0 0 12px”>
-      <div onclick=”var b=document.getElementById('cs-body');var c=document.getElementById('cs-caret');if(b.style.display==='none'){b.style.display='block';c.textContent='▼'}else{b.style.display='none';c.textContent='▸'}” style=”cursor:pointer;padding:10px 14px;font:600 13px var(--sans);color:#334155;display:flex;align-items:center;gap:8px;user-select:none;-webkit-user-select:none”>
-        <span id=”cs-caret” style=”font-size:11px;flex-shrink:0”>▼</span>
-        Consent and disclosure script — read at the start
-      </div>
-      <div id=”cs-body” class=”intro-body” style=”display:block”>
-        <p style=”font-weight:700;color:#1e3a5f;margin-bottom:6px”>Read the following to the patient before proceeding:</p>
-        <p>”Before we begin, I want to be upfront with you about a few things. Today is a holistic psychiatric assessment — I'm going to look at everything, not just ADHD. I can't guarantee that I'll make an ADHD diagnosis, because that depends on what I find during the assessment. And even if I do diagnose ADHD, I can't guarantee that we'll end up on stimulant medication — that depends on your medical history, what's safe for you, and what makes clinical sense. What I can guarantee is that I want to do the very best by you. This is a thorough, holistic assessment and whatever we find, we'll work out the best path forward together.”</p>
-        <p>”I also want to be transparent about the cost. Today's assessment is one appointment, but depending on what comes up, there may be follow-up appointments — for example if we need to monitor how medication is going during titration. I'm always mindful of the financial impact and I'll only recommend follow-up when it's genuinely clinically necessary. I'll do everything I safely can to be efficient with your time and money.”</p>
-        <p style=”font-weight:700;color:#1e3a5f;margin-top:10px”>”Are you happy to continue?”</p>
+    <div style=”background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;margin:0 0 14px;overflow:hidden”>
+      <div onclick=”var b=document.getElementById('cs-body');var c=document.getElementById('cs-c');if(b.style.display==='none'){b.style.display='block';c.textContent='▼'}else{b.style.display='none';c.textContent='▸'}” style=”cursor:pointer;padding:10px 14px;font:600 13px/1.4 var(--sans);color:#334155;user-select:none;-webkit-user-select:none”><span id=”cs-c”>▼</span> Consent and disclosure script — read at the start</div>
+      <div id=”cs-body” style=”padding:10px 14px 12px;font-size:13.5px;line-height:1.55;color:#1e293b”>
+        <div style=”font-weight:700;color:#1e3a5f;margin-bottom:6px”>Read the following to the patient before proceeding:</div>
+        <div style=”margin-bottom:10px”>”Before we begin, I want to be upfront with you about a few things. Today is a holistic psychiatric assessment — I'm going to look at everything, not just ADHD. I can't guarantee that I'll make an ADHD diagnosis, because that depends on what I find during the assessment. And even if I do diagnose ADHD, I can't guarantee that we'll end up on stimulant medication — that depends on your medical history, what's safe for you, and what makes clinical sense. What I can guarantee is that I want to do the very best by you. This is a thorough, holistic assessment and whatever we find, we'll work out the best path forward together.”</div>
+        <div style=”margin-bottom:10px”>”I also want to be transparent about the cost. Today's assessment is one appointment, but depending on what comes up, there may be follow-up appointments — for example if we need to monitor how medication is going during titration. I'm always mindful of the financial impact and I'll only recommend follow-up when it's genuinely clinically necessary. I'll do everything I safely can to be efficient with your time and money.”</div>
+        <div style=”font-weight:700;color:#1e3a5f”>”Are you happy to continue?”</div>
       </div>
     </div>
-    <div class=”confirm-box” style=”margin:0 0 14px”>
-      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()”>
-      <label for=”consentGiven” style=”flex:1;cursor:pointer;margin:0”>
-        <span class=”cb-title”>Patient gave verbal consent</span>
-        <span class=”cb-hint”>to proceed, including financial consent and Telehealth consent.</span>
-      </label>
+    <div style=”padding:10px 12px;margin:0 0 14px;border:1.5px solid #fdba74;background:#fff7ed;border-radius:8px;cursor:pointer” onclick=”if(event.target.id!=='consentGiven'){var cb=document.getElementById('consentGiven');cb.checked=!cb.checked;save();refresh()}”>
+      <table style=”width:100%;border-collapse:collapse”><tbody><tr style=”vertical-align:top”>
+        <td style=”width:22px;padding:0”><input type=”checkbox” id=”consentGiven” onchange=”save();refresh()” onclick=”event.stopPropagation()” style=”width:18px;height:18px;margin-top:1px;accent-color:#22c55e;cursor:pointer;display:block”></td>
+        <td style=”padding:0 0 0 10px;cursor:pointer”><div style=”font:700 13px/1.4 var(--sans);color:#9a3412”>Patient gave verbal consent</div><div style=”font:400 12px/1.4 var(--sans);color:#a16207;margin-top:2px”>to proceed, including financial consent and Telehealth consent.</div></td>
+      </tr></tbody></table>
     </div>
     <div style=”font:600 11.5px var(--sans);color:#475569;margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em”>Reason for seeking assessment</div>
     <div id=”assess-reason-chips”></div>
