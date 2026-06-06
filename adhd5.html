@@ -494,9 +494,9 @@ select.inp{appearance:none}
 .ms-letter:focus{outline:none;border-color:var(--primary)}
 .ps-tile{background:#fff;border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:7px}
 .ps-tile-label{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:#475569;margin:0}
-.ps-tile .rbtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0}
+.ps-tile .rbtns{display:flex;flex-wrap:wrap;gap:4px;margin:0}
 .ps-tile .rbtns.ps-tile-mode{grid-template-columns:repeat(2,minmax(0,1fr))}
-.ps-tile .rbtns .rb{white-space:normal;overflow-wrap:normal;hyphens:none;text-align:center;padding:5px 6px;font-size:11px;line-height:1.2;min-width:0}
+.ps-tile .rbtns .rb{white-space:nowrap;text-align:center;padding:5px 9px;font-size:11px;line-height:1.2}
 .ps-tile .inp{font-size:12px;padding:6px 9px}
 .ps-tile-mode{display:flex;flex-wrap:wrap;gap:4px}
 .ps-tile-mode .rb{font-size:10px;padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b}
@@ -885,17 +885,18 @@ select.inp{appearance:none}
       </div>
     </details>
 
-    <div class=”confirm-box” style=”border-color:var(--border);background:#f8fafc;margin-bottom:14px;margin-top:0”>
-      <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()” style=”margin-top:2px;flex-shrink:0;width:18px;height:18px;accent-color:var(--primary);cursor:pointer”>
-      <label for=”consentGiven” style=”cursor:pointer;flex:1;margin:0”>
-        <span class=”cb-title” style=”color:#1e3a5f”>Patient gave verbal consent</span>
-        <span class=”cb-hint” style=”color:#475569”> — to proceed, including financial consent and Telehealth consent.</span>
-      </label>
+    <div style=”display:flex;flex-direction:column;gap:0”>
+      <div class=”confirm-box” style=”border-color:var(--border);background:#f8fafc;margin-bottom:14px;margin-top:0”>
+        <input type=”checkbox” id=”consentGiven” onchange=”save();refresh()” style=”margin-top:2px;flex-shrink:0;width:18px;height:18px;accent-color:var(--primary);cursor:pointer”>
+        <label for=”consentGiven” style=”cursor:pointer;flex:1;margin:0”>
+          <span class=”cb-title” style=”color:#1e3a5f;display:block”>Patient gave verbal consent</span>
+          <span class=”cb-hint” style=”color:#475569;display:block”>to proceed, including financial consent and Telehealth consent.</span>
+        </label>
+      </div>
+      <label class=”fl” style=”margin-top:0”>Reason for seeking assessment</label>
+      <div id=”assess-reason-chips” class=”ar-chips”></div>
+      <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
     </div>
-
-    <label class=”fl” style=”margin-top:0”>Reason for seeking assessment</label>
-    <div id=”assess-reason-chips” class=”ar-chips”></div>
-    <input class=”inp” id=”referralReason” placeholder=”Additional context (optional)…” oninput=”save();refresh()” style=”margin-top:8px”>
   </div>
 </div>
 
