@@ -149,7 +149,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .cbox.flag{background:var(--red);border-color:var(--red);color:#fff}
 .cbox.flag::after{content:'!'}
 .clabel{flex:1;font-size:13px;line-height:1.4}
-.qbtn{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:1px;font-family:var(--sans)}
+.qbtn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:0;font-family:var(--sans);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.dev-block .qbtn{width:32px;height:32px;font-size:13px}
 .qbtn:hover{border-color:var(--primary);color:var(--primary)}
 .rrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
 .rlabel{flex:1;font-size:13px;min-width:110px}
@@ -4587,18 +4588,32 @@ function renderDev(){
   devEl.innerHTML=html;
   if(devEl._h)devEl.removeEventListener('click',devEl._h);
   devEl._h=function(e){
-    // Caret → toggle examples panel
+    // ? button — openDrawer handles it via inline onclick; just stop here
+    if(e.target.closest('.qbtn'))return;
+    // Caret → toggle examples panel in-place (no full re-render)
     var car=e.target.closest('.dev-caret');
     if(car){
       e.stopPropagation();
       var cid=car.getAttribute('data-caret');
-      devEl._openIds[cid]=!devEl._openIds[cid];renderDev();return;
+      devEl._openIds[cid]=!devEl._openIds[cid];
+      var open=devEl._openIds[cid];
+      car.setAttribute('aria-expanded',String(open));
+      car.textContent=open?'▾ Hide':'▸ Examples';
+      var block=car.closest('.dev-block');
+      if(block){var opts=block.querySelector('.dev-opts');if(opts)opts.classList.toggle('hidden',!open);}
+      return;
     }
-    // Anywhere on the row (or checkbox) → toggle parent
+    // Anywhere on the row → toggle in-place (no full re-render to avoid jump)
     var row=e.target.closest('.dev-qrow');
     if(row){
       var id2=row.getAttribute('data-devid2');
-      if(id2){S.dev[id2]=!S.dev[id2];renderDev();save();refresh();}
+      if(!id2)return;
+      S.dev[id2]=!S.dev[id2];
+      var on=!!S.dev[id2];
+      row.classList.toggle('on',on);
+      var cbox=row.querySelector('.dev-cbox');
+      if(cbox)cbox.classList.toggle('yes',on);
+      save();refresh();
       return;
     }
   };
