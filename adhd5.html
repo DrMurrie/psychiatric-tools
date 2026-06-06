@@ -333,11 +333,14 @@ select.inp{appearance:none}
 .diff-d.status-better .diff-d-status-pill{background:var(--red-bg);color:var(--red)}
 .diff-d-toggles{display:flex;gap:5px;flex-shrink:0}
 .diff-d-toggle{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:#475569;font-size:20px;font-weight:800;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;justify-content:center;line-height:1;-webkit-tap-highlight-color:transparent;padding:0;transition:all .12s}
-.diff-d-toggle.minus{border-color:var(--green);background:var(--green-bg);color:var(--green)}
-.diff-d-toggle.minus:hover{background:var(--green);color:#fff}
-.diff-d-toggle.plus{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
-.diff-d-toggle.plus:hover{background:var(--amber);color:#fff}
-.diff-d-toggle.active{box-shadow:0 0 0 2px rgba(15,23,42,.18) inset}
+.diff-d-toggle.minus{border-color:var(--border);background:#f8fafc;color:#64748b}
+.diff-d-toggle.minus:hover{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.diff-d-toggle.minus.active{border-color:var(--green);background:var(--green-bg);color:var(--green)}
+.diff-d-toggle.minus.active:hover{background:var(--green);color:#fff}
+.diff-d-toggle.plus{border-color:var(--border);background:#f8fafc;color:#64748b}
+.diff-d-toggle.plus:hover{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.diff-d-toggle.plus.active{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.diff-d-toggle.plus.active:hover{background:var(--amber);color:#fff}
 .diff-d-body{padding:0 14px 14px;border-top:1px dashed var(--border);background:rgba(255,255,255,.55)}
 .diff-d-body.hidden{display:none}
 .diff-d-section-lbl{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:11px 0 6px}
@@ -957,27 +960,6 @@ select.inp{appearance:none}
 </div>
 
 <div class="card" data-initial-only>
-    <div class="ch rose">Criterion D — Functional Impairment</div>
-    <div class="cb">
-      <label class="fl" style="margin-top:0">Main difficulties (tap to tick)</label>
-      <div id="diff-checks"></div>
-      <input class="inp" id="diffExtras" placeholder="Additional difficulties / functional examples..." oninput="save();refresh()" style="margin-top:8px">
-      <label class="confirm-box">
-        <input type="checkbox" id="functionalImpairment" onchange="setFunctionalImpairment(this.checked)">
-        <span><span class="cb-title">Is there functional impairment?</span><span class="cb-hint">Ticking this also confirms Criterion D in the DSM section.</span></span>
-      </label>
-      <label class="fl" style="margin-top:14px">Ability to manage attention (1 = poor, 10 = excellent)</label>
-      <div id="attn-stars"></div>
-      <label class="fl" style="margin-top:10px">Ability to manage impulses (1 = poor, 10 = excellent)</label>
-      <div id="imp-stars"></div>
-      <label class="fl" style="margin-top:10px">Ability to be calm (1 = poor, 10 = excellent)</label>
-      <div id="calm-stars"></div>
-      <label class="fl" style="margin-top:10px">Quality of life (1 = worst, 10 = best)</label>
-      <div id="qol-stars"></div>
-      <textarea class="nf" id="presentNotes" placeholder="Additional notes..." oninput="save();refresh()" rows="2" style="margin-top:10px"></textarea>
-    </div>
-  </div>
-<div class="card" data-initial-only>
     <div class="ch teal">Validated Tools &amp; Collateral</div>
     <div class="cb">
       <div class="pe-group-label" style="padding:0 0 6px;margin:0">Patient-reported</div>
@@ -1138,15 +1120,6 @@ select.inp{appearance:none}
     <div class="ch amber">Criterion A — Core Criteria</div>
     <div class="cb">
       <div id="core-sx-checks"></div>
-      <hr style="border:none;border-top:1px solid var(--border);margin:14px 0 0">
-      <label class="fl" style="margin-top:12px">Criterion C — Cross-situational</label>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Which settings do these symptoms appear in?</div>
-      <div id="settings-checks" class="diff-grid"></div>
-      <label class="confirm-box">
-        <input type="checkbox" id="crossSetConfirm" onchange="setCrossSettingsConfirm(this.checked)">
-        <span><span class="cb-title">Are the symptoms present across different settings?</span><span class="cb-hint">Ticking this confirms Criterion C in the DSM section.</span></span>
-      </label>
-      <textarea class="nf" id="settingsNotes" placeholder="Notes on cross-situational impact..." oninput="save();refresh()" rows="2" style="margin-top:10px"></textarea>
     </div>
   </div>
 <div class="card" data-initial-only>
@@ -1158,6 +1131,33 @@ select.inp{appearance:none}
       <label class="fl" style="margin-top:14px">Developmental pattern</label>
       <div id="dev-checks"></div>
       <textarea class="nf" id="devNotes" placeholder="Developmental notes..." oninput="save();refresh()" rows="2" style="margin-top:10px"></textarea>
+    </div>
+  </div>
+<div class="card" data-initial-only>
+    <div class="ch teal">Criterion C — Cross-situational</div>
+    <div class="cb">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Which settings do these symptoms appear in?</div>
+      <div id="settings-checks" class="diff-grid"></div>
+      <label class="confirm-box">
+        <input type="checkbox" id="crossSetConfirm" onchange="setCrossSettingsConfirm(this.checked)">
+        <span><span class="cb-title">Are the symptoms present across different settings?</span><span class="cb-hint">Ticking this confirms Criterion C in the DSM section.</span></span>
+      </label>
+      <textarea class="nf" id="settingsNotes" placeholder="Notes on cross-situational impact..." oninput="save();refresh()" rows="2" style="margin-top:10px"></textarea>
+    </div>
+  </div>
+<div class="card" data-initial-only>
+    <div class="ch rose">Criterion D — Functional Impairment</div>
+    <div class="cb">
+      <label class="fl" style="margin-top:0">Main difficulties (tap to tick)</label>
+      <div id="diff-checks"></div>
+      <input class="inp" id="diffExtras" placeholder="Additional difficulties / functional examples..." oninput="save();refresh()" style="margin-top:8px">
+      <label class="confirm-box">
+        <input type="checkbox" id="functionalImpairment" onchange="setFunctionalImpairment(this.checked)">
+        <span><span class="cb-title">Is there functional impairment?</span><span class="cb-hint">Ticking this also confirms Criterion D in the DSM section.</span></span>
+      </label>
+      <label class="fl" style="margin-top:14px">Quality of life (1 = worst, 10 = best)</label>
+      <div id="qol-stars"></div>
+      <textarea class="nf" id="presentNotes" placeholder="Additional notes..." oninput="save();refresh()" rows="2" style="margin-top:10px"></textarea>
     </div>
   </div>
 <div class="card" data-initial-only>
@@ -1454,7 +1454,7 @@ select.inp{appearance:none}
         <div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:7px">
           <div class="fu-q-row">
             <span class="fu-q-lbl">With</span>
-            <button type="button" class="fu-q-btn on" data-q="who" data-v="me" onclick="fuQuickPick(this,'who','me')">Me</button>
+            <button type="button" class="fu-q-btn" data-q="who" data-v="me" onclick="fuQuickPick(this,'who','me')">Me</button>
             <button type="button" class="fu-q-btn" data-q="who" data-v="gp" onclick="fuQuickPick(this,'who','gp')">Your GP</button>
             <button type="button" class="fu-q-btn" data-q="who" data-v="other" onclick="fuQuickPick(this,'who','other')">Other</button>
             <input id="fuq-other" type="text" placeholder="Custom name" style="display:none;font:12px var(--sans);padding:0 9px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;flex:1 1 130px;height:32px" oninput="fuQuickDraft.whoText=this.value;fuQuickPreview()">
@@ -1466,13 +1466,13 @@ select.inp{appearance:none}
           <div class="fu-q-row">
             <span class="fu-q-lbl">Unit</span>
             <button type="button" class="fu-q-btn" data-q="unit" data-v="days" onclick="fuQuickPick(this,'unit','days')">Days</button>
-            <button type="button" class="fu-q-btn on" data-q="unit" data-v="weeks" onclick="fuQuickPick(this,'unit','weeks')">Weeks</button>
+            <button type="button" class="fu-q-btn" data-q="unit" data-v="weeks" onclick="fuQuickPick(this,'unit','weeks')">Weeks</button>
             <button type="button" class="fu-q-btn" data-q="unit" data-v="months" onclick="fuQuickPick(this,'unit','months')">Months</button>
           </div>
           <div class="fu-q-row">
             <span class="fu-q-lbl">Length</span>
             <button type="button" class="fu-q-btn fu-q-num" data-q="duration" data-v="15" onclick="fuQuickPick(this,'duration',15)">15</button>
-            <button type="button" class="fu-q-btn fu-q-num on" data-q="duration" data-v="30" onclick="fuQuickPick(this,'duration',30)">30</button>
+            <button type="button" class="fu-q-btn fu-q-num" data-q="duration" data-v="30" onclick="fuQuickPick(this,'duration',30)">30</button>
             <button type="button" class="fu-q-btn fu-q-num" data-q="duration" data-v="45" onclick="fuQuickPick(this,'duration',45)">45</button>
             <button type="button" class="fu-q-btn fu-q-num" data-q="duration" data-v="60" onclick="fuQuickPick(this,'duration',60)">60</button>
             <span style="font:600 11px var(--sans);color:#64748b">min</span>
@@ -1648,7 +1648,7 @@ select.inp{appearance:none}
 <script>
 'use strict';
 
-const DIFFICULTIES=['Attention difficulties','Task initiation difficulties','Disorganisation','Time management','Forgetfulness','Impulsivity','Restlessness','Emotional dysregulation','Rejection sensitivity','Low mood','Anxiety','Burnout','Sleep difficulties','Substance regulation','Eating dysregulation','Relationship difficulties','Workplace underperformance','Financial difficulties','Driving safety','Sensory sensitivities'];
+const DIFFICULTIES=['Attention difficulties','Task initiation difficulties','Disorganisation','Time management difficulties','Forgetfulness','Impulsivity','Restlessness / hyperactivity','Emotional dysregulation','Rejection sensitivity (RSD)','Low mood / depression','Anxiety','Chronic exhaustion / burnout','Sleep difficulties','Binge eating / appetite dysregulation','Low self-esteem / shame','Chronic underachievement','Relationship difficulties','Workplace underperformance','Financial difficulties','Social difficulties / isolation','Sensory sensitivities','Hyperfocus / task-switching difficulties','Object permanence issues','Perfectionism / overthinking','Emotional flooding / meltdowns'];
 const RISK_FACTORS=['Family hx of ADHD','Family hx of autism / NDD','Family hx of mental illness','Prematurity / low birth weight','Prenatal substance exposure','Perinatal complications','Maternal stress / illness in pregnancy','Chronic medical illness in childhood','Childhood TBI','Childhood seizures / epilepsy','Lead / neurotoxin exposure','Early childhood trauma','Insecure attachment','Frequent school changes','Childhood bullying','Childhood neglect or abuse'];
 const PERPETUATING_FACTORS=['Untreated ADHD symptoms','Poor sleep','Medical issues','Comorbid mental illness','Stimulant misuse','Cannabis use','Excessive caffeine','Insufficient workplace supports','Maladaptive coping','Learned helplessness','Internalised shame','Lack of structure','Chronic stress','Relational conflict','Caregiver burden','Financial instability','Housing instability','Low physical activity','Excessive screen use','Lack of psychoeducation about ADHD','Partner accommodating dysfunction'];
 const PROTECTIVE_FACTORS=['Established treatment / engaged with care','Strong family or social supports','Supportive partner','Stable housing and finances','Effective routines and structure','Regular exercise','Good sleep hygiene','Healthy diet','Workplace or educational accommodations in place','Engaged with psychology / coaching','Insight and motivation for change','Positive therapeutic alliance','Above-average intellectual ability','Strong interests or sense of purpose','Spiritual or community engagement','Absence of substance use'];
@@ -2428,8 +2428,8 @@ function getMedSafetyConcerns(){
       // Default: rationale included, recommendation not. Maintains the prior
       // behaviour (letter version is what flows to the GP letter) while making
       // the recommendation opt-in.
-      includeRec:ov.includeRec===true,
-      includeRationale:ov.includeRationale!==false,
+      includeRec:true,
+      includeRationale:false,
       // legacy alias kept so any old code paths that read .include still see
       // "is anything from this concern included?"
       include:(ov.includeRec===true)||(ov.includeRationale!==false)
@@ -3051,11 +3051,12 @@ function fuAutoFromSafety(){
 }
 
 // ─── QUICK-ADD APPOINTMENT ──────────────────────────────────────────────────
-var fuQuickDraft = {who:'me', whoText:'', num:4, unit:'weeks', duration:30};
+var fuQuickDraft = {who:'', whoText:'', num:null, numText:undefined, unit:'weeks', duration:null};
 function _fuResolveWho(){
   if(fuQuickDraft.who==='me') return f('drName') || 'your psychiatrist';
   if(fuQuickDraft.who==='gp') return f('fu-gp-name') || f('gpName') || 'your GP';
-  return (fuQuickDraft.whoText||'').trim() || 'someone';
+  if(fuQuickDraft.who==='other') return (fuQuickDraft.whoText||'').trim() || 'other';
+  return '?';
 }
 function fuQuickPick(btn, group, val){
   fuQuickDraft[group] = val;
@@ -3073,6 +3074,8 @@ function fuQuickPick(btn, group, val){
 }
 function fuQuickPickNum(val){
   fuQuickDraft.num = val;
+  fuQuickDraft.numText = undefined;
+  var inp=$('fuq-custom-num');if(inp)inp.value='';
   document.querySelectorAll('.fu-q-btn[data-q="num"]').forEach(function(b){
     b.classList.toggle('on', parseInt(b.getAttribute('data-v'))===val);
   });
@@ -3082,16 +3085,21 @@ function fuQuickRenderNumRow(){
   var row=$('fuq-num-row'); if(!row) return;
   var html='';
   for(var n=1;n<=12;n++){
-    html+='<button type="button" class="fu-q-btn fu-q-num'+(n===fuQuickDraft.num?' on':'')+'" data-q="num" data-v="'+n+'" onclick="fuQuickPickNum('+n+')">'+n+'</button>';
+    html+='<button type="button" class="fu-q-btn fu-q-num'+(fuQuickDraft.numText===undefined&&n===fuQuickDraft.num?' on':'')+'" data-q="num" data-v="'+n+'" onclick="fuQuickPickNum('+n+')">'+n+'</button>';
   }
+  html+='<input id="fuq-custom-num" type="text" placeholder="e.g. 4-6" style="font:12px var(--sans);padding:0 9px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;width:70px;height:32px;margin-left:2px;" value="'+(fuQuickDraft.numText||'')+'" oninput="fuQuickDraft.numText=this.value.trim();fuQuickDraft.num=null;document.querySelectorAll(\'.fu-q-btn[data-q=\\'num\\']\').forEach(function(b){b.classList.remove(\\'on\\');});fuQuickPreview();">';
   row.innerHTML=html;
 }
 function fuQuickPreview(){
   var p=$('fuq-preview'); if(!p) return;
-  p.textContent='Review with '+_fuResolveWho()+' in '+fuQuickDraft.num+' '+fuQuickDraft.unit+' ('+fuQuickDraft.duration+' min)';
+  var numStr=fuQuickDraft.numText||(fuQuickDraft.num?String(fuQuickDraft.num):'?');
+  var unitStr=fuQuickDraft.unit||'?';
+  var durStr=fuQuickDraft.duration?fuQuickDraft.duration+' min':'?';
+  p.textContent='Review with '+_fuResolveWho()+' in '+numStr+' '+unitStr+' ('+durStr+')';
 }
 function fuQuickAdd(){
-  fuAppts.push({with:_fuResolveWho(), num:fuQuickDraft.num, unit:fuQuickDraft.unit, duration:fuQuickDraft.duration});
+  var numVal=fuQuickDraft.numText||(fuQuickDraft.num?String(fuQuickDraft.num):'');
+  fuAppts.push({with:_fuResolveWho(), num:numVal, unit:fuQuickDraft.unit, duration:fuQuickDraft.duration});
   renderFuAppts(); save(); refresh();
   // Brief visual confirmation
   var btn=document.querySelector('.fu-q-add');
@@ -3114,20 +3122,7 @@ function renderSafetyConcerns(){
         var tab=tabState[c.key]||'rec';
         return '<div class="ms-card" data-mskey="'+c.key+'">'
           +'<div class="ms-head"><span class="ms-concern">'+esc(c.concern)+'</span></div>'
-          +'<div class="ms-includes">'
-            +'<label class="ms-inc-chk"><input type="checkbox" data-mstoggle="includeRec|'+c.key+'"'+(c.includeRec?' checked':'')+'> <span>Include recommendation</span></label>'
-            +'<label class="ms-inc-chk"><input type="checkbox" data-mstoggle="includeRationale|'+c.key+'"'+(c.includeRationale?' checked':'')+'> <span>Include rationale</span></label>'
-          +'</div>'
-          +'<div class="ms-tabs">'
-            +'<button class="ms-tab'+(tab==='rec'?' active':'')+'" data-msview="rec|'+c.key+'">Recommendation</button>'
-            +'<button class="ms-tab'+(tab==='letter'?' active':'')+'" data-msview="letter|'+c.key+'">Rationale for letter</button>'
-          +'</div>'
-          +'<div class="ms-pane'+(tab==='rec'?'':' hidden')+'" data-mspane="rec|'+c.key+'">'
-            +'<div class="ms-plan">'+esc(c.plan)+'</div>'
-          +'</div>'
-          +'<div class="ms-pane'+(tab==='letter'?'':' hidden')+'" data-mspane="letter|'+c.key+'">'
-            +'<textarea class="ms-letter" data-mslettertext="'+c.key+'" rows="3">'+esc(c.letterText)+'</textarea>'
-          +'</div>'
+          +'<div class="ms-plan" style="padding:8px 0 4px;font-size:12.5px;color:#1e293b;line-height:1.5;">'+esc(c.plan)+'</div>'
         +'</div>';
       }).join('')
     :'';
@@ -4561,7 +4556,7 @@ function renderDev(){
         }).join('')+'</div>';
     }
     var caret=d.options&&d.options.length?'<button type="button" class="dev-caret" data-caret="'+d.id+'" aria-expanded="'+open+'" title="Show/hide examples">'+(open?'▾ Hide':'▸ Examples')+'</button>':'';
-    var qBtn=d.qs&&d.qs.length?'<button class="qbtn dev-qbtn" data-qid2="'+d.id+'" title="Example questions">?</button>':'';
+    var qBtn=d.qs&&d.qs.length?'<button class="qbtn" onclick="event.stopPropagation();openDrawer(event,\''+d.id+'\',\'dev\')" title="Example questions">?</button>':'';
     html+='<div class="dev-block">'+
       '<div class="crow dev-qrow'+(on?' on':'')+'" data-devid2="'+d.id+'">'+
         '<div class="cbox dev-cbox'+(on?' yes':'')+'" data-cboxfor="'+d.id+'"></div>'+
@@ -4574,9 +4569,6 @@ function renderDev(){
   devEl.innerHTML=html;
   if(devEl._h)devEl.removeEventListener('click',devEl._h);
   devEl._h=function(e){
-    // ? button → open questions drawer (next to heading)
-    var q=e.target.closest('.dev-qbtn');
-    if(q){e.stopPropagation();openDrawer(e,q.getAttribute('data-qid2'),'dev');return;}
     // Caret → toggle examples panel
     var car=e.target.closest('.dev-caret');
     if(car){
@@ -5412,8 +5404,8 @@ function buildHeidi(){
     var devNorm=devYes.filter(function(d){return d.type!=='sym';});
     var inattSx=devYes.filter(function(d){return d.id&&d.id.indexOf('sym_inatt')===0;});
     var hiSx=devYes.filter(function(d){return d.id&&d.id.indexOf('sym_hi')===0;});
-    o+='DEVELOPMENTAL HISTORY (present):\n';
-    devNorm.forEach(function(d){o+='- '+d.label+'\n';});
+    o+='DEVELOPMENTAL HISTORY (Criterion B):\n';
+    devNorm.forEach(function(d){o+='- '+d.label+': symptoms and patterns at this stage were indicative of ADHD\n';});
     if(inattSx.length)o+='Core inattention symptoms ('+inattSx.length+'/9):\n'+inattSx.map(function(d){return '  - '+d.label;}).join('\n')+'\n';
     if(hiSx.length)o+='Core H/I symptoms ('+hiSx.length+'/9):\n'+hiSx.map(function(d){return '  - '+d.label;}).join('\n')+'\n';
   }
@@ -5424,8 +5416,13 @@ function buildHeidi(){
   var betterEx=DIFFS.filter(function(d){return S.differentials[d.id]==='Better explanation';});
   var comorbid=DIFFS.filter(function(d){return S.differentials[d.id]==='Current'||S.differentials[d.id]==='Past';});
   var notPres=DIFFS.filter(function(d){return S.differentials[d.id]==='Not present';});
-  if(betterEx.length){o+='DIFFERENTIALS - BETTER EXPLANATION:\n';betterEx.forEach(function(d){o+='- '+d.label+'\n';});}
-  if(comorbid.length){o+='DIFFERENTIALS - COMORBID:\n';comorbid.forEach(function(d){o+='- '+d.label+'\n';});}
+  var nilDiffsRep=DIFFS.filter(function(d){return S.differentials[d.id]==='Nil';});
+  if(betterEx.length||comorbid.length||nilDiffsRep.length){
+    o+='CRITERION E — DIFFERENTIAL DIAGNOSES:\n';
+    if(betterEx.length){betterEx.forEach(function(d){var det=(S.diffDetail&&S.diffDetail[d.id]||'').trim();o+='- '+d.label+' [Better explains ADHD]'+(det?' — '+det:'')+'\n';});}
+    if(comorbid.length){comorbid.forEach(function(d){var det=(S.diffDetail&&S.diffDetail[d.id]||'').trim();var st=S.differentials[d.id]==='Past'?'Past Dx':'Comorbid Dx';o+='- '+d.label+' ['+st+']'+(det?' — '+det:'')+'\n';});}
+    if(nilDiffsRep.length){o+='- Assessed and cleared: '+nilDiffsRep.map(function(d){return d.label;}).join(', ')+'\n';}
+  }
   if(notPres.length){o+='DIFFERENTIALS - NOT PRESENT:\n';notPres.forEach(function(d){o+='- '+d.label+'\n';});}
   if(f('diffNotes'))o+=f('diffNotes')+'\n';o+='\n';
   o+='MENTAL STATE EXAMINATION:\n';
@@ -6536,11 +6533,8 @@ function buildLetterReport(){
     return det?lbl+' ('+det+')':lbl;
   }
   var curDiffsP=getCurrentComorbidities();
-  if(pastDiffs.length||nilDiffs.length||notPresDiffs.length||curDiffsP.length||S.noPastPsych){
+  if(pastDiffs.length||nilDiffs.length||notPresDiffs.length||S.noPastPsych){
     h+='<h3>Past psychiatric history</h3>';
-    if(curDiffsP.length){
-      h+='<p>'+prCap+' currently '+_vAgree(gender,'has','have')+' '+esc(_joinList(curDiffsP.map(_diffEntry)))+'.</p>';
-    }
     if(pastDiffs.length){
       h+='<p>'+prCap+' '+_vAgree(gender,'has','have')+' previously experienced '+esc(_joinList(pastDiffs.map(_diffEntry)))+'.</p>';
     }
@@ -6767,6 +6761,16 @@ function buildLetterReport(){
     else if(S.dx==='Insufficient evidence'){calloutCls+=' deferred';prefix='';calloutText='Diagnosis deferred — insufficient evidence at this time';}
     else if(S.dx==='Deferred'){calloutCls+=' deferred';prefix='';calloutText='Diagnostic conclusion deferred pending further review';}
     h+='<div class="'+calloutCls+'">'+prefix+esc(calloutText)+'</div>';
+    var comorbidDx=getCurrentComorbidities();
+    if(comorbidDx.length&&S.dx==='Yes'){
+      comorbidDx.forEach(function(d){
+        h+='<div class="dx-callout">✓ '+esc(d.label)+(S.diffDetail&&S.diffDetail[d.id]?' — '+esc(S.diffDetail[d.id]):'')+'</div>';
+      });
+    }
+    var betterExDx=DIFFS.filter(function(d){return S.differentials[d.id]==='Better explanation';});
+    if(betterExDx.length){
+      h+='<p style="font-size:12px;color:var(--muted);margin-top:6px">Considered as better explanation for the presentation: '+esc(_joinList(betterExDx.map(function(d){return d.label;})))+'.</p>';
+    }
     if(f('dxNotes')){
       h+='<h3>Formulation</h3>';
       h+=_letterParas(f('dxNotes'));
