@@ -44,29 +44,62 @@
     .header h1 { font-size: 1.6em; margin-bottom: 6px; }
     .header p { opacity: 0.9; font-size: 0.95em; }
 
-    .tab-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        margin-bottom: 16px;
-        border-bottom: 2px solid var(--gray-200);
-        padding-bottom: 0;
+    .scale-layout {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        gap: 20px;
+        align-items: start;
     }
-    .tab-btn {
-        padding: 9px 16px;
+    .scale-nav {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+    .nav-cat-btn {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        font-weight: 700;
+        font-size: 0.82em;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+    }
+    .nav-cat-btn:hover { background: #1a365d; }
+    .cat-arrow { transition: transform 0.2s; font-size: 1em; }
+    .nav-category.open .cat-arrow { transform: rotate(180deg); }
+    .nav-scales { display: none; flex-direction: column; border-bottom: 2px solid var(--primary); }
+    .nav-category.open .nav-scales { display: flex; }
+    .scale-btn {
+        padding: 8px 12px 8px 14px;
         background: none;
         border: none;
-        font-size: 0.95em;
-        font-weight: 600;
-        color: var(--gray-600);
+        border-left: 3px solid transparent;
+        font-size: 0.8em;
+        color: var(--gray-700);
         cursor: pointer;
-        border-bottom: 3px solid transparent;
-        margin-bottom: -2px;
-        white-space: nowrap;
-        flex-shrink: 0;
+        text-align: left;
+        line-height: 1.3;
+        border-bottom: 1px solid var(--gray-100);
     }
-    .tab-btn:hover:not(.active) { color: var(--primary); background: var(--primary-light); border-radius: 4px 4px 0 0; }
-    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .scale-btn:last-child { border-bottom: none; }
+    .scale-btn:hover { background: var(--primary-light); color: var(--primary); border-left-color: var(--accent); }
+    .scale-btn.active { border-left-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .scale-abbr { display: block; font-weight: 700; font-size: 1.05em; }
+    .scale-full { display: block; font-size: 0.88em; font-weight: normal; color: var(--gray-600); margin-top: 1px; }
+    .scale-btn.active .scale-full { color: var(--accent); }
+    .scale-content { min-width: 0; }
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
@@ -500,6 +533,10 @@
     }
     .mean-line .mean-value { color: var(--primary); margin-left: 8px; }
 
+    @media (max-width: 720px) {
+        .scale-layout { grid-template-columns: 1fr; }
+        .scale-nav { position: static; max-height: none; }
+    }
     @media (max-width: 600px) {
         .container { padding: 12px; }
         .header { padding: 20px; }
@@ -509,7 +546,6 @@
         .item-block { padding: 14px 12px; }
         .item-sub { padding-left: 0; margin-left: 0; }
         .radio-group { padding-left: 0; }
-        .tab-btn { padding: 8px 12px; font-size: 0.88em; }
         .score-bar { padding: 10px 14px; text-align: center; }
         .btn { padding: 10px 18px; font-size: 0.9em; }
         .output-header { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -541,30 +577,96 @@
         </div>
     </div>
 
-    <!-- TABS -->
-    <div class="tab-row">
-        <button class="tab-btn active" data-tab="madrs" onclick="switchTab('madrs')">MADRS</button>
-        <button class="tab-btn" data-tab="hamd" onclick="switchTab('hamd')">HAM-D</button>
-        <button class="tab-btn" data-tab="phq9" onclick="switchTab('phq9')">PHQ-9</button>
-        <button class="tab-btn" data-tab="gad7" onclick="switchTab('gad7')">GAD-7</button>
-        <button class="tab-btn" data-tab="hama" onclick="switchTab('hama')">HAM-A</button>
-        <button class="tab-btn" data-tab="ymrs" onclick="switchTab('ymrs')">YMRS</button>
-        <button class="tab-btn" data-tab="pcl5" onclick="switchTab('pcl5')">PCL-5</button>
-        <button class="tab-btn" data-tab="iesr" onclick="switchTab('iesr')">IES-R</button>
-        <button class="tab-btn" data-tab="ybocs" onclick="switchTab('ybocs')">Y-BOCS</button>
-        <button class="tab-btn" data-tab="bfcrs" onclick="switchTab('bfcrs')">Bush-Francis</button>
-        <button class="tab-btn" data-tab="bprs" onclick="switchTab('bprs')">BPRS</button>
-        <button class="tab-btn" data-tab="k10" onclick="switchTab('k10')">K10</button>
-        <button class="tab-btn" data-tab="msibpd" onclick="switchTab('msibpd')">MSI-BPD</button>
-        <button class="tab-btn" data-tab="audit" onclick="switchTab('audit')">AUDIT</button>
-        <button class="tab-btn" data-tab="dast" onclick="switchTab('dast')">DAST-10</button>
-        <button class="tab-btn" data-tab="wsas" onclick="switchTab('wsas')">WSAS</button>
-        <button class="tab-btn" data-tab="sds" onclick="switchTab('sds')">SDS</button>
-        <button class="tab-btn" data-tab="edeq" onclick="switchTab('edeq')">EDE-Q</button>
-        <button class="tab-btn" data-tab="ede" onclick="switchTab('ede')">EDE</button>
-        <button class="tab-btn" data-tab="baars" onclick="switchTab('baars')">BAARS-IV</button>
-        <button class="tab-btn" data-tab="cgi" onclick="switchTab('cgi')">CGI</button>
-    </div>
+    <div class="scale-layout">
+    <nav class="scale-nav" id="scaleNav">
+        <div class="nav-category open" data-cat="depression">
+            <button class="nav-cat-btn" onclick="toggleCat('depression')">Depression <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn active" data-tab="madrs" onclick="switchTab('madrs')"><span class="scale-abbr">MADRS</span><span class="scale-full">Montgomery-Åsberg Depression Rating Scale</span></button>
+                <button class="scale-btn" data-tab="hamd" onclick="switchTab('hamd')"><span class="scale-abbr">HAM-D</span><span class="scale-full">Hamilton Depression Rating Scale</span></button>
+                <button class="scale-btn" data-tab="phq9" onclick="switchTab('phq9')"><span class="scale-abbr">PHQ-9</span><span class="scale-full">Patient Health Questionnaire-9</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="anxiety">
+            <button class="nav-cat-btn" onclick="toggleCat('anxiety')">Anxiety <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="gad7" onclick="switchTab('gad7')"><span class="scale-abbr">GAD-7</span><span class="scale-full">Generalised Anxiety Disorder-7</span></button>
+                <button class="scale-btn" data-tab="hama" onclick="switchTab('hama')"><span class="scale-abbr">HAM-A</span><span class="scale-full">Hamilton Anxiety Rating Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="trauma">
+            <button class="nav-cat-btn" onclick="toggleCat('trauma')">Trauma / PTSD <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="pcl5" onclick="switchTab('pcl5')"><span class="scale-abbr">PCL-5</span><span class="scale-full">PTSD Checklist for DSM-5</span></button>
+                <button class="scale-btn" data-tab="iesr" onclick="switchTab('iesr')"><span class="scale-abbr">IES-R</span><span class="scale-full">Impact of Event Scale-Revised</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="mania">
+            <button class="nav-cat-btn" onclick="toggleCat('mania')">Mania <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="ymrs" onclick="switchTab('ymrs')"><span class="scale-abbr">YMRS</span><span class="scale-full">Young Mania Rating Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="ocd">
+            <button class="nav-cat-btn" onclick="toggleCat('ocd')">OCD <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="ybocs" onclick="switchTab('ybocs')"><span class="scale-abbr">Y-BOCS</span><span class="scale-full">Yale-Brown Obsessive Compulsive Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="catatonia">
+            <button class="nav-cat-btn" onclick="toggleCat('catatonia')">Catatonia <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="bfcrs" onclick="switchTab('bfcrs')"><span class="scale-abbr">Bush-Francis</span><span class="scale-full">Bush-Francis Catatonia Rating Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="psychosis">
+            <button class="nav-cat-btn" onclick="toggleCat('psychosis')">Psychosis <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="bprs" onclick="switchTab('bprs')"><span class="scale-abbr">BPRS</span><span class="scale-full">Brief Psychiatric Rating Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="adhd">
+            <button class="nav-cat-btn" onclick="toggleCat('adhd')">ADHD <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="baars" onclick="switchTab('baars')"><span class="scale-abbr">BAARS-IV</span><span class="scale-full">Barkley Adult ADHD Rating Scale-IV</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="eating">
+            <button class="nav-cat-btn" onclick="toggleCat('eating')">Eating Disorders <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="edeq" onclick="switchTab('edeq')"><span class="scale-abbr">EDE-Q</span><span class="scale-full">Eating Disorder Examination Questionnaire</span></button>
+                <button class="scale-btn" data-tab="ede" onclick="switchTab('ede')"><span class="scale-abbr">EDE</span><span class="scale-full">Eating Disorder Examination</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="substance">
+            <button class="nav-cat-btn" onclick="toggleCat('substance')">Substance Use <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="audit" onclick="switchTab('audit')"><span class="scale-abbr">AUDIT</span><span class="scale-full">Alcohol Use Disorders Identification Test</span></button>
+                <button class="scale-btn" data-tab="dast" onclick="switchTab('dast')"><span class="scale-abbr">DAST-10</span><span class="scale-full">Drug Abuse Screening Test-10</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="personality">
+            <button class="nav-cat-btn" onclick="toggleCat('personality')">Personality <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="msibpd" onclick="switchTab('msibpd')"><span class="scale-abbr">MSI-BPD</span><span class="scale-full">McLean Screening Instrument for BPD</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="functional">
+            <button class="nav-cat-btn" onclick="toggleCat('functional')">Functional / Disability <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="wsas" onclick="switchTab('wsas')"><span class="scale-abbr">WSAS</span><span class="scale-full">Work and Social Adjustment Scale</span></button>
+                <button class="scale-btn" data-tab="sds" onclick="switchTab('sds')"><span class="scale-abbr">SDS</span><span class="scale-full">Sheehan Disability Scale</span></button>
+            </div>
+        </div>
+        <div class="nav-category" data-cat="general">
+            <button class="nav-cat-btn" onclick="toggleCat('general')">General <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="k10" onclick="switchTab('k10')"><span class="scale-abbr">K10</span><span class="scale-full">Kessler Psychological Distress Scale</span></button>
+                <button class="scale-btn" data-tab="cgi" onclick="switchTab('cgi')"><span class="scale-abbr">CGI</span><span class="scale-full">Clinical Global Impression</span></button>
+            </div>
+        </div>
+    </nav>
+    <div class="scale-content">
 
     <!-- MADRS -->
     <div class="tab-pane active" id="tab-madrs">
@@ -1402,6 +1504,9 @@
         </div>
     </div>
 
+    </div><!-- .scale-content -->
+    </div><!-- .scale-layout -->
+
 </div>
 
 <script>
@@ -1410,8 +1515,17 @@ document.getElementById('assessmentDate').valueAsDate = new Date();
 
 // ---------- Tabs ----------
 function switchTab(name) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+    document.querySelectorAll('.scale-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
     document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+    const btn = document.querySelector('.scale-btn[data-tab="' + name + '"]');
+    if (btn) {
+        const cat = btn.closest('.nav-category');
+        if (cat && !cat.classList.contains('open')) cat.classList.add('open');
+    }
+}
+
+function toggleCat(cat) {
+    document.querySelector('.nav-category[data-cat="' + cat + '"]').classList.toggle('open');
 }
 
 // ---------- MADRS data ----------
