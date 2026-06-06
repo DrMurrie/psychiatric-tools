@@ -658,6 +658,12 @@
                 <button class="scale-btn" data-tab="sds" onclick="switchTab('sds')"><span class="scale-abbr">SDS</span><span class="scale-full">Sheehan Disability Scale</span></button>
             </div>
         </div>
+        <div class="nav-category" data-cat="medicolegal">
+            <button class="nav-cat-btn" onclick="toggleCat('medicolegal')">Medico-Legal <span class="cat-arrow">▾</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn" data-tab="pirs" onclick="switchTab('pirs')"><span class="scale-abbr">PIRS</span><span class="scale-full">Psychiatric Impairment Rating Scale</span></button>
+            </div>
+        </div>
         <div class="nav-category" data-cat="general">
             <button class="nav-cat-btn" onclick="toggleCat('general')">General <span class="cat-arrow">▾</span></button>
             <div class="nav-scales">
@@ -1504,6 +1510,39 @@
         </div>
     </div>
 
+    <!-- PIRS (Psychiatric Impairment Rating Scale) -->
+    <div class="tab-pane" id="tab-pirs">
+        <div class="card">
+            <div class="card-title">PIRS &mdash; Psychiatric Impairment Rating Scale</div>
+            <p style="font-size:0.9em;">Used in Australian medico-legal psychiatric impairment assessment (NSW Workers Compensation Guidelines for the Evaluation of Permanent Impairment; also adopted by other state/territory CTP and motor accident schemes). Rate each of <strong>six functional areas</strong> on a 5-point class scale (1 = no deficit; 5 = totally impaired). Whole Person Impairment (WPI %) is derived from the <strong>median class score</strong>, with the <strong>aggregate score</strong> used to refine within the band. Diagnoses must be made before scoring; PIRS measures current impairment regardless of cause.</p>
+        </div>
+
+        <div class="section-body" id="pirsItems"></div>
+
+        <div class="score-bar">
+            PIRS Aggregate: <span id="pirsTotal">0</span> / 30 &nbsp; — &nbsp;
+            Median Class: <span id="pirsMedian">—</span> &nbsp; — &nbsp;
+            <span class="severity-pill" id="pirsSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('pirs')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('pirs')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="pirsOutput">
+            <div class="output-header">
+                <h3>PIRS Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('pirs')" id="pirsCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="pirsText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> State Insurance Regulatory Authority (NSW). Workers Compensation Guidelines for the Evaluation of Permanent Impairment, 4th ed., Ch. 11 (Psychiatric and Psychological Disorders). The PIRS rates six areas (Self-care, Social/Recreational, Travel, Social Functioning, Concentration/Persistence/Pace, Employability) each on a 1–5 class scale. WPI is derived from the median class score, modified by the aggregate. This tool provides an estimated band only — definitive WPI conversion must use the official table in the current Guidelines for clinical/forensic reporting.
+        </div>
+    </div>
+
     </div><!-- .scale-content -->
     </div><!-- .scale-layout -->
 
@@ -2017,6 +2056,87 @@ const CGII_OPTIONS = [
     { val: 5, label: 'Minimally worse' },
     { val: 6, label: 'Much worse' },
     { val: 7, label: 'Very much worse' }
+];
+
+// ---------- PIRS data ----------
+// Psychiatric Impairment Rating Scale (NSW WCG, 4th ed., Ch. 11).
+// Six functional areas, each rated Class 1 (no deficit) to Class 5
+// (totally impaired). Class descriptors below are clinical
+// paraphrases reflecting the published criteria — use the official
+// Guidelines for definitive medico-legal reporting.
+const PIRS_DOMAINS = [
+    {
+        key: 'selfcare',
+        title: 'Self-care and personal hygiene',
+        prompt: 'Activities of daily living — bathing, dressing, grooming, feeding, toileting, taking medication.',
+        classes: [
+            'No deficit. Performs all activities of daily living independently and without prompting.',
+            'Can live independently. Looks after self adequately, though may neglect some aspects (e.g. occasional missed grooming, irregular eating) on some days.',
+            'Can live independently but requires regular prompting to complete self-care tasks. Hygiene and grooming are notably below pre-injury baseline.',
+            'Unable to live independently. Requires assistance / supervision from another person to complete most self-care tasks (e.g. needs reminders to shower, eat, take medication).',
+            'Requires constant assistance / supervision for all aspects of self-care. Cannot perform basic activities of daily living.'
+        ]
+    },
+    {
+        key: 'social',
+        title: 'Social and recreational activities',
+        prompt: 'Pre-injury hobbies, sport, recreation, community engagement and willingness to participate in social activities outside the home.',
+        classes: [
+            'No restriction. Participates in social and recreational activities at pre-injury frequency without distress.',
+            'Mild reduction. Continues most pre-injury activities but with reduced enjoyment or some avoidance.',
+            'Moderate restriction. Has dropped several pre-injury activities; participates only in a limited range; some reluctance to engage with others.',
+            'Severe restriction. Rarely engages in social or recreational activities; participates only when strongly encouraged by family.',
+            'No social or recreational activity. Complete withdrawal; refuses all participation.'
+        ]
+    },
+    {
+        key: 'travel',
+        title: 'Travel',
+        prompt: 'Ability to move about and use public or private transport, including driving, catching public transport and going to unfamiliar places.',
+        classes: [
+            'Can travel anywhere by any mode without restriction or distress.',
+            'Mild restriction. Travels independently to familiar places; mild reluctance or anxiety with unfamiliar destinations or modes.',
+            'Moderate restriction. Can travel familiar routes (e.g. home to work, shops) but avoids unfamiliar places. Some modes of transport avoided.',
+            'Severe restriction. Travel limited to short, familiar routes and only when accompanied. Cannot use public transport.',
+            'Cannot leave home unaccompanied. Effectively housebound; even short trips require constant supervision.'
+        ]
+    },
+    {
+        key: 'relationships',
+        title: 'Social functioning (interpersonal relationships)',
+        prompt: 'Ability to form and maintain relationships with family, partner, friends and others — including in established (pre-injury) relationships.',
+        classes: [
+            'No dysfunction. Relationships with family, partner and friends maintained at pre-injury level.',
+            'Mild dysfunction. Some friction or withdrawal in close relationships; most relationships preserved.',
+            'Moderate dysfunction. Notable deterioration in close relationships; some relationships lost. Difficulty forming new relationships.',
+            'Severe dysfunction. Most pre-injury relationships have broken down or are markedly strained; very limited social contact even with family.',
+            'No effective relationships. Estranged from family and friends; no meaningful interpersonal contact.'
+        ]
+    },
+    {
+        key: 'concentration',
+        title: 'Concentration, persistence and pace',
+        prompt: 'Ability to focus, sustain attention, complete tasks at adequate speed — including reading, watching TV, conversation and routine cognitive tasks.',
+        classes: [
+            'No impairment. Sustains concentration, persistence and pace at pre-injury level.',
+            'Mild impairment. Can complete most everyday tasks but slower than before; occasional loss of focus on complex tasks.',
+            'Moderate impairment. Cannot reliably complete complex tasks; concentration limited to short periods; pace clearly reduced.',
+            'Severe impairment. Cannot sustain even simple tasks; pace severely reduced; needs frequent prompting.',
+            'No useful concentration or persistence. Cannot follow simple instructions or complete any task.'
+        ]
+    },
+    {
+        key: 'employability',
+        title: 'Employability',
+        prompt: 'Capacity for paid employment — considering the patient\'s pre-injury education, training, vocational background and current functional capacity.',
+        classes: [
+            'No restriction. Capable of pre-injury work without modification.',
+            'Mild restriction. Can work full-time in pre-injury role with minor accommodations, or has changed to a similar role.',
+            'Moderate restriction. Can only work part-time, in significantly modified duties, or in a role substantially below pre-injury capacity.',
+            'Severe restriction. Capable only of limited / sheltered / supported employment; cannot sustain regular employment in the open labour market.',
+            'Totally impaired. Unemployable in any capacity in the open labour market.'
+        ]
+    }
 ];
 
 // ---------- BAARS-IV data ----------
@@ -2966,6 +3086,30 @@ const HAMA_ITEMS = [
     container.innerHTML = html;
 })();
 
+// ---------- Build PIRS UI ----------
+(function buildPirs() {
+    const container = document.getElementById('pirsItems');
+    let html = '';
+    PIRS_DOMAINS.forEach((d, idx) => {
+        const n = idx + 1;
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">' + d.title + '</span></div>';
+        html += '<div class="item-sub">' + d.prompt + '</div>';
+        html += '<div class="radio-group" style="flex-direction:column; align-items:stretch; gap:6px;">';
+        d.classes.forEach((desc, i) => {
+            const cls = i + 1;
+            html += '<label class="radio-option" style="align-items:flex-start;">';
+            html += '<input type="radio" name="pirs_' + d.key + '" value="' + cls + '" onchange="updatePirs()">';
+            html += '<span class="radio-label" style="align-items:flex-start;">';
+            html += '<span class="val">' + cls + '</span>';
+            html += '<span><strong>Class ' + cls + '.</strong> ' + desc + '</span>';
+            html += '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
 // ---------- Build CGI UI ----------
 (function buildCgi() {
     const sev = document.getElementById('cgisOptions');
@@ -3621,6 +3765,72 @@ function updateCgi() {
     // CGI has no running total display; rating is captured at output generation time.
 }
 
+// ---------- PIRS scoring ----------
+function pirsRatings() {
+    const out = {};
+    let rated = 0, aggregate = 0;
+    PIRS_DOMAINS.forEach(d => {
+        const v = getRadioVal('pirs_' + d.key);
+        if (v !== null) { out[d.key] = parseInt(v, 10); rated++; aggregate += parseInt(v, 10); }
+        else { out[d.key] = null; }
+    });
+    return { ratings: out, rated, aggregate };
+}
+function pirsMedianClass(ratings) {
+    const vals = Object.values(ratings).filter(v => v !== null).slice().sort((a, b) => a - b);
+    if (vals.length === 0) return null;
+    if (vals.length % 2 === 1) return vals[(vals.length - 1) / 2];
+    // even count — average of middle two; if not a whole number, return the
+    // higher of the two (NSW WCG convention rounds the median up).
+    const lo = vals[vals.length / 2 - 1];
+    const hi = vals[vals.length / 2];
+    return (lo + hi) / 2;
+}
+// Median class -> WPI band; aggregate refines within the band. Bands
+// reflect the NSW WCG 4th-edition conversion table (approximations
+// suitable for a clinical estimate — use the official table for
+// medico-legal reporting).
+function pirsWpi(medianClass, aggregate) {
+    if (medianClass === null) return { band: null, label: 'Not rated', css: 'sev-none', cls: 1 };
+    const m = Math.ceil(medianClass);
+    if (m <= 1) return { band: '0%',      label: 'Class 1 — No impairment',     css: 'sev-none',     cls: 1 };
+    if (m === 2) {
+        if (aggregate <= 9)  return { band: '1-3%',  label: 'Class 2 — Mild impairment',    css: 'sev-mild',     cls: 2 };
+        if (aggregate <= 11) return { band: '4-5%',  label: 'Class 2 — Mild impairment',    css: 'sev-mild',     cls: 2 };
+        return                       { band: '6-10%', label: 'Class 2 — Mild impairment',    css: 'sev-mild',     cls: 2 };
+    }
+    if (m === 3) {
+        if (aggregate <= 19) return { band: '11-20%', label: 'Class 3 — Moderate impairment', css: 'sev-moderate', cls: 3 };
+        return                       { band: '21-30%', label: 'Class 3 — Moderate impairment', css: 'sev-moderate', cls: 3 };
+    }
+    if (m === 4) {
+        if (aggregate <= 25) return { band: '31-40%', label: 'Class 4 — Severe impairment',   css: 'sev-modsev',   cls: 4 };
+        if (aggregate <= 27) return { band: '41-50%', label: 'Class 4 — Severe impairment',   css: 'sev-modsev',   cls: 4 };
+        return                       { band: '51-60%', label: 'Class 4 — Severe impairment',   css: 'sev-modsev',   cls: 4 };
+    }
+    return                           { band: '61-100%', label: 'Class 5 — Totally impaired',   css: 'sev-severe',   cls: 5 };
+}
+
+function updatePirs() {
+    const r = pirsRatings();
+    document.getElementById('pirsTotal').textContent = r.aggregate;
+    const medEl = document.getElementById('pirsMedian');
+    const pill = document.getElementById('pirsSeverityPill');
+    if (r.rated === 0) {
+        medEl.textContent = '—';
+        pill.textContent = 'Not rated';
+        pill.className = 'severity-pill';
+        return;
+    }
+    const median = pirsMedianClass(r.ratings);
+    medEl.textContent = (Number.isInteger(median) ? median : median.toFixed(1));
+    const wpi = pirsWpi(median, r.aggregate);
+    let txt = wpi.label + ' (WPI ' + wpi.band + ')';
+    if (r.rated < 6) txt += ' (partial: ' + r.rated + '/6)';
+    pill.textContent = txt;
+    pill.className = 'severity-pill ' + wpi.css;
+}
+
 function getNumVal(id) {
     const el = document.getElementById(id);
     if (!el || el.value === '') return null;
@@ -3680,7 +3890,8 @@ const SCALE_BANDS = {
     wsas:   [{start:0,label:'Subclinical'},{start:10,label:'Significant'},{start:21,label:'Mod-Sev'},{start:31,label:'Severe'}],
     sds:    [{start:0,label:'None'},{start:1,label:'Mild'},{start:6,label:'Moderate'},{start:16,label:'Marked'},{start:21,label:'Extreme'}],
     edeq:   [{start:0,label:'Below threshold'},{start:4,label:'Clinical (≥4)'}],
-    ede:    [{start:0,label:'Below threshold'},{start:4,label:'Clinical (≥4)'}]
+    ede:    [{start:0,label:'Below threshold'},{start:4,label:'Clinical (≥4)'}],
+    pirs:   [{start:0,label:'Class 1 (0%)'},{start:8,label:'Class 2 (1-10%)'},{start:16,label:'Class 3 (11-30%)'},{start:24,label:'Class 4 (31-60%)'},{start:28,label:'Class 5 (61-100%)'}]
     // BAARS-IV bands are attached per-bar inside chartBaars (different
     // thresholds for symptom count vs impairment count).
 };
@@ -4131,6 +4342,45 @@ function chartCgi() {
         bars.push({ label: 'CGI-I Improvement', value: v, max: 7, displayValue: v + ' / 7 (' + CGII_OPTIONS[v - 1].label + ')' });
     }
     renderChart('cgi', bars, 'CGI ratings (lower CGI-S = less ill; lower CGI-I = more improved)');
+}
+function chartPirs() {
+    const r = pirsRatings();
+    if (r.rated === 0) { renderChart('pirs', [], 'PIRS — not rated'); return; }
+    function classToBarClass(v) {
+        if (v === null) return '';
+        if (v <= 1) return 'bar-none';
+        if (v === 2) return 'bar-mild';
+        if (v === 3) return 'bar-moderate';
+        if (v === 4) return 'bar-modsev';
+        return 'bar-severe';
+    }
+    const bars = PIRS_DOMAINS.map(d => {
+        const v = r.ratings[d.key];
+        return {
+            label: d.title,
+            value: v,
+            max: 5,
+            barClass: classToBarClass(v),
+            displayValue: v === null ? 'NR / 5' : 'Class ' + v + ' / 5'
+        };
+    });
+    const median = pirsMedianClass(r.ratings);
+    const wpi = pirsWpi(median, r.aggregate);
+    bars.push({
+        label: 'Aggregate',
+        value: r.aggregate,
+        max: 30,
+        barClass: wpi.css === 'sev-none'     ? 'bar-none'
+                : wpi.css === 'sev-mild'     ? 'bar-mild'
+                : wpi.css === 'sev-moderate' ? 'bar-moderate'
+                : wpi.css === 'sev-modsev'   ? 'bar-modsev'
+                :                              'bar-severe',
+        isTotal: true,
+        displayValue: r.aggregate + ' / 30 (median ' + (Number.isInteger(median) ? median : median.toFixed(1)) + ')'
+    });
+    renderChart('pirs', bars,
+        'PIRS — ' + wpi.label + ' · WPI ' + wpi.band +
+        (r.rated < 6 ? ' (partial: ' + r.rated + '/6)' : ''));
 }
 function chartEdeBars(prefix, title, computed) {
     if (computed.nSubs === 0) { renderChart(prefix, [], title + ' — no items rated'); return; }
@@ -5115,6 +5365,58 @@ function buildSdsText() {
     return t;
 }
 
+function buildPirsText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'PSYCHIATRIC IMPAIRMENT RATING SCALE (PIRS)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    const r = pirsRatings();
+    if (r.rated === 0) {
+        t += 'Not rated.\n';
+        t += line + '\n';
+        return t;
+    }
+
+    t += 'Domain ratings (Class 1 = no deficit; Class 5 = totally impaired):\n';
+    t += thin + '\n';
+    PIRS_DOMAINS.forEach((d, idx) => {
+        const v = r.ratings[d.key];
+        const head = '  ' + (idx + 1) + '. ' + d.title;
+        const padded = head + ' '.repeat(Math.max(1, 56 - head.length));
+        if (v === null) {
+            t += padded + 'Not rated\n';
+        } else {
+            t += padded + 'Class ' + v + '\n';
+            t += '       ' + d.classes[v - 1] + '\n';
+        }
+    });
+    t += thin + '\n';
+
+    const median = pirsMedianClass(r.ratings);
+    const wpi = pirsWpi(median, r.aggregate);
+    t += 'Aggregate score:    ' + r.aggregate + ' / 30';
+    if (r.rated < 6) t += '   (partial: ' + r.rated + '/6 areas rated)';
+    t += '\n';
+    t += 'Median class score: ' + (Number.isInteger(median) ? median : median.toFixed(1)) + '\n';
+    t += 'Estimated impairment class: ' + wpi.label + '\n';
+    t += 'Estimated Whole Person Impairment (WPI): ' + wpi.band + '\n';
+    t += thin + '\n';
+    t += 'Methodology: 6 functional areas (Self-care, Social/Recreational, Travel,\n';
+    t += 'Social Functioning, Concentration/Persistence/Pace, Employability) each\n';
+    t += 'rated 1-5. WPI is derived from the median class with the aggregate\n';
+    t += 'refining the percentage within the band.\n';
+    t += 'Reference: NSW SIRA. Workers Compensation Guidelines for the Evaluation\n';
+    t += 'of Permanent Impairment, 4th ed., Ch. 11. WPI bands above are an\n';
+    t += 'estimate; use the official conversion table for medico-legal reports.\n';
+    t += line + '\n';
+    return t;
+}
+
 function buildCgiText() {
     const line = '='.repeat(66);
     const thin = '-'.repeat(66);
@@ -5623,6 +5925,7 @@ const SCALE_DISPATCH = {
     edeq:   { build: () => buildEdeqText(),   chart: chartEdeq   },
     ede:    { build: () => buildEdeText(),    chart: chartEde    },
     baars:  { build: () => buildBaarsText(),  chart: chartBaars  },
+    pirs:   { build: () => buildPirsText(),   chart: chartPirs   },
     cgi:    { build: () => buildCgiText(),    chart: chartCgi    }
 };
 
@@ -5694,6 +5997,14 @@ function resetScale(which) {
         document.getElementById('edeOutput').classList.remove('visible');
         return;
     }
+    if (which === 'pirs') {
+        PIRS_DOMAINS.forEach(d => {
+            document.querySelectorAll('input[name="pirs_' + d.key + '"]').forEach(r => r.checked = false);
+        });
+        updatePirs();
+        document.getElementById('pirsOutput').classList.remove('visible');
+        return;
+    }
     if (which === 'baars') {
         BAARS_ATTN_ITEMS.forEach(item => {
             document.querySelectorAll('input[name="baarsCur_' + item.num + '"]').forEach(r => r.checked = false);
@@ -5755,6 +6066,7 @@ updateBfcrs();
 updateEdeq();
 updateEde();
 updateBaars();
+updatePirs();
 </script>
 </body>
 </html>
