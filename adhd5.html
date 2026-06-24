@@ -150,7 +150,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .cbox.flag::after{content:'!'}
 .clabel{flex:1;font-size:13px;line-height:1.4}
 .qbtn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:0;font-family:var(--sans);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.dev-block .qbtn{width:22px;height:22px;font-size:11px}
+.dev-block .qbtn{width:40px;height:40px;font-size:14px;min-width:40px;min-height:40px}
 .qbtn:hover{border-color:var(--primary);color:var(--primary)}
 .rrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
 .rlabel{flex:1;font-size:13px;min-width:110px}
@@ -477,9 +477,11 @@ select.inp{appearance:none}
 #out-report.letter-mode .letter-sig .sig-quals{color:#475569;font-size:9.5pt}
 #out-report .mgmt-sub{font:700 11pt Arial,sans-serif;color:#1e40af;margin:12px 0 4px;letter-spacing:0;text-transform:none;border:none}
 #out-report.letter-mode .mgmt-sub{font-family:Arial,sans-serif;font-size:10.5pt;color:#1e40af;font-weight:700;margin:12px 0 4px}
-.ms-card{background:#fff7ed;border:1px solid #fdba74;border-radius:8px;padding:8px 10px;margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.ms-card{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-top:6px;display:flex;flex-direction:column;gap:6px}
 .ms-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ms-concern{font:600 12.5px var(--sans);color:#9a3412;flex:1}
+.ms-concern{font:700 12.5px var(--sans);color:#be123c;flex:1}
+.ms-goto{flex-shrink:0;padding:5px 11px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#be123c;font:700 11px var(--sans);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.ms-goto:hover{background:#fca5a5;color:#fff;border-color:#fca5a5}
 .ms-includes{display:flex;gap:14px;flex-wrap:wrap;padding:2px 0}
 .ms-inc-chk{display:inline-flex;align-items:center;gap:5px;font:600 11.5px var(--sans);color:#475569;cursor:pointer;user-select:none;-webkit-user-select:none}
 .ms-inc-chk input{width:15px;height:15px;accent-color:var(--green);cursor:pointer;margin:0}
@@ -1429,11 +1431,6 @@ select.inp{appearance:none}
         </div>
         <button onclick="titAddBlank()" class="abtn" style="margin-top:6px;font-size:11px;width:100%;border-style:dashed">+ Add medication manually</button>
       </div>
-      <!-- Scripts provided -->
-      <div style="padding:0 13px 10px;border-top:1px solid var(--border)">
-        <label class="fl" style="margin-top:8px">Scripts provided today</label>
-        <div id="scripts-list"></div>
-      </div>
     </div>
   </div>
 </div>
@@ -1581,11 +1578,7 @@ select.inp{appearance:none}
         <button class="cbtn" onclick="copyReportPlain()">Copy plain text</button>
       </div>
     </div>
-    <div id="report-mode-tabs" style="display:flex;gap:4px;padding:8px 14px 0;background:#0f172a;border-top:1px solid #1e293b" onclick="event.stopPropagation()">
-      <button type="button" class="report-mode-tab active" data-mode="letter" onclick="setReportMode('letter')">GP Letter</button>
-      <button type="button" class="report-mode-tab" data-mode="structured" onclick="setReportMode('structured')">Structured</button>
-    </div>
-    <div id="out-report" class="letter-mode" style="background:#fff;color:#000;padding:18px 22px;font-family:Arial,sans-serif;font-size:9.5pt;line-height:1.45"></div>
+    <div id="out-report" style="background:#fff;color:#000;padding:18px 22px;font-family:Arial,sans-serif;font-size:9.5pt;line-height:1.45"></div>
   </div>
 
   <!-- PATIENT DOCUMENT BUILDER -->
@@ -3129,6 +3122,19 @@ function fuQuickInit(){
   fuQuickRenderNumRow();
   fuQuickPreview();
 }
+function goToSection(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var card=el.classList&&el.classList.contains('card')?el:(el.closest?el.closest('.card'):null);
+  if(card&&card.classList.contains('collapsed'))card.classList.remove('collapsed');
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function _warningSectionId(key){
+  if(key==='safescript_unchecked'||key==='safescript_concern')return 'card-safescript';
+  if(/^(bp_|hr_|bmi_|ecg_|uds_)/.test(key))return 'card-investigations';
+  if(/^(cardiac_|medical_)/.test(key))return 'sec-safety';
+  return 'sec-history';
+}
 function renderSafetyConcerns(){
   var alertEl=$('medsafety-panel');
   var fuEl=$('fu-safety-concerns');if(fuEl)fuEl.innerHTML='';
@@ -3139,8 +3145,9 @@ function renderSafetyConcerns(){
   alertEl.innerHTML=concerns.length
     ?'<div class="fl" style="margin-top:12px;padding:0 4px">Medical safety concerns</div>'+
       concerns.map(function(c){
+        var sid=_warningSectionId(c.key);
         return '<div class="ms-card" data-mskey="'+c.key+'">'
-          +'<div class="ms-head"><span class="ms-concern">'+esc(c.concern)+'</span></div>'
+          +'<div class="ms-head"><span class="ms-concern">'+esc(c.concern)+'</span><button class="ms-goto" onclick="goToSection(\''+sid+'\')">Go to ↑</button></div>'
           +'<div class="ms-plan" style="padding:4px 0 2px;font-size:12.5px;color:#1e293b;line-height:1.5;">'+esc(c.plan)+'</div>'
         +'</div>';
       }).join('')
@@ -6323,7 +6330,7 @@ function buildFullReport(){
   return h;
 }
 
-var currentReportMode='letter';
+var currentReportMode='structured';
 function setReportMode(mode){
   currentReportMode=mode;
   document.querySelectorAll('.report-mode-tab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-mode')===mode);});
@@ -6856,13 +6863,12 @@ function buildLetterReport(){
   var fuProvideList=(typeof getFuProvideList==='function')?getFuProvideList():[];
   var fuConKeys=(typeof fuCon!=='undefined')?Array.from(fuCon):[];
   var fuNotes=f('fuNotes');
-  var includedMedSafety=getMedSafetyConcerns().filter(function(c){return c.includeRec||c.includeRationale;});
   var hasMgmt=titMeds.length||f('rxNotes');
   var hasNonPharm=psychoedItems.length||nonpharmItems.length||fuNPList.length;
   var hasPatientTasks=fuProvideList.length>0;
   var hasMonitoring=!!fuMonStr;
   var hasFollowUp=!!fuApptStr;
-  if(hasMgmt||hasNonPharm||hasPatientTasks||hasMonitoring||hasFollowUp||fuNotes||fuConKeys.length||includedMedSafety.length){
+  if(hasMgmt||hasNonPharm||hasPatientTasks||hasMonitoring||hasFollowUp||fuNotes||fuConKeys.length){
     h+='<h3>Management plan</h3>';
 
     // 1. Patient tasks (top)
@@ -6872,19 +6878,7 @@ function buildLetterReport(){
       h+='<p>'+prCap+' '+has+' been asked to arrange / provide the following '+esc(pTime.toLowerCase())+': '+esc(_lowerPreserveAcronyms(fuProvideList.join(', ')))+'.</p>';
     }
 
-    // 2. Medical safety — per concern, emit the rationale (letter version)
-    // and / or the recommendation, in line with the Include checkboxes.
-    if(includedMedSafety.length){
-      h+='<div class="mgmt-sub">Medical safety</div>';
-      h+=includedMedSafety.map(function(c){
-        var parts=[];
-        if(c.includeRationale)parts.push('<p>'+esc(c.letterText||c.plan||c.defaultPlan)+'</p>');
-        if(c.includeRec)parts.push('<p><em>Recommendation:</em> '+esc(c.plan||c.defaultPlan)+'</p>');
-        return parts.join('');
-      }).join('');
-    }
-
-    // 3. Pharmacological
+    // 2. Pharmacological
     if(titMeds.length||f('rxNotes')){
       h+='<div class="mgmt-sub">Pharmacological</div>';
       titMeds.forEach(function(m){
