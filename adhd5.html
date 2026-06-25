@@ -150,7 +150,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .cbox.flag::after{content:'!'}
 .clabel{flex:1;font-size:13px;line-height:1.4}
 .qbtn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:0;font-family:var(--sans);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.dev-block .qbtn{width:40px;height:40px;font-size:14px;min-width:40px;min-height:40px}
+.dev-block .qbtn{width:32px;height:32px;font-size:13px;min-width:32px;min-height:32px}
 .qbtn:hover{border-color:var(--primary);color:var(--primary)}
 .rrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
 .rlabel{flex:1;font-size:13px;min-width:110px}
@@ -280,14 +280,16 @@ select.inp{appearance:none}
 .qol-clear{margin-left:8px;padding:3px 9px;border:1px solid var(--border);background:#fff;color:var(--muted);font:600 11px var(--sans);border-radius:5px;cursor:pointer}
 .qol-clear:hover{color:var(--text);border-color:var(--text)}
 .factor-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
-.dev-block{margin-bottom:8px}
-.dev-block .dev-qrow{padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;display:flex;align-items:center;gap:10px;cursor:pointer;min-height:52px}
+.dev-2col{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+@media(max-width:540px){.dev-2col{grid-template-columns:1fr}}
+.dev-block{margin-bottom:0}
+.dev-block .dev-qrow{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;cursor:pointer;min-height:38px}
 .dev-block .dev-qrow:hover{border-color:#94a3b8;background:#f8fafc}
 .dev-block .dev-qrow.on{border-color:var(--green);background:var(--green-bg)}
-.dev-block .dev-cbox{width:26px;height:26px;border-width:2.5px;border-radius:7px;font-size:14px;margin-top:0}
-.dev-block .clabel{font-size:14px;font-weight:600}
+.dev-block .dev-cbox{width:22px;height:22px;border-width:2px;border-radius:6px;font-size:12px;margin-top:0}
+.dev-block .clabel{font-size:13px;font-weight:600}
 .dev-block .dev-qbtn{margin-left:0;margin-right:0}
-.dev-caret{margin-left:auto;background:none;border:1px solid var(--border);color:var(--muted);font-size:14px;cursor:pointer;padding:3px 9px;border-radius:6px;font-weight:700}
+.dev-caret{margin-left:auto;background:none;border:1px solid var(--border);color:var(--muted);font-size:12px;cursor:pointer;padding:3px 8px;border-radius:6px;font-weight:700}
 .dev-caret:hover{background:#f1f5f9;color:var(--text);border-color:#94a3b8}
 .dev-opts{padding:10px 14px 12px 50px;display:flex;flex-direction:column;gap:5px;background:#fafbff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;margin-top:-4px}
 .dev-opts.hidden{display:none}
@@ -4569,7 +4571,7 @@ function renderDev(){
   if(!S.devOpts)S.devOpts={};
   var devEl=$('dev-checks');if(!devEl)return;
   var header='<div style="display:flex;gap:6px;margin-bottom:8px"><button class="sel-all-btn" onclick="selectAllDev()">Select all</button><button class="sel-all-btn desel" onclick="deselectAllDev()">Deselect all</button></div>';
-  var html=header;
+  var html=header+'<div class="dev-2col">';
   if(!devEl._openIds)devEl._openIds={};
   DEV.forEach(function(d){
     // Skip core symptom rows + the 'Core Symptoms' label — they live in their
@@ -4596,6 +4598,7 @@ function renderDev(){
       optHtml+
     '</div>';
   });
+  html+='</div>';
   devEl.innerHTML=html;
   if(devEl._h)devEl.removeEventListener('click',devEl._h);
   devEl._h=function(e){
@@ -4625,7 +4628,9 @@ function renderDev(){
       row.classList.toggle('on',on);
       var cbox=row.querySelector('.dev-cbox');
       if(cbox)cbox.classList.toggle('yes',on);
-      save();refresh();
+      save();
+      if(typeof updateBadges==='function')updateBadges();
+      if(typeof refreshReport==='function')refreshReport();
       return;
     }
   };
