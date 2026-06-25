@@ -280,18 +280,20 @@ select.inp{appearance:none}
 .qol-clear{margin-left:8px;padding:3px 9px;border:1px solid var(--border);background:#fff;color:var(--muted);font:600 11px var(--sans);border-radius:5px;cursor:pointer}
 .qol-clear:hover{color:var(--text);border-color:var(--text)}
 .factor-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px}
-.dev-2col{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.dev-2col{display:grid;grid-template-columns:1fr 1fr;gap:3px;overflow:hidden}
 @media(max-width:540px){.dev-2col{grid-template-columns:1fr}}
-.dev-block{margin-bottom:0;min-width:0;overflow-x:hidden}
-.dev-block .dev-qrow{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;cursor:pointer;min-height:38px;min-width:0}
+.dev-block{margin-bottom:0;min-width:0;overflow:hidden;max-width:100%}
+.dev-block .dev-qrow{padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;cursor:pointer;min-height:38px;min-width:0;max-width:100%}
+.dev-block .dev-qrow:active{margin:0;padding:7px 10px}
 .dev-block .dev-qrow:hover{border-color:#94a3b8;background:#f8fafc}
 .dev-block .dev-qrow.on{border-color:var(--green);background:var(--green-bg)}
 .dev-block .dev-cbox{width:22px;height:22px;border-width:2px;border-radius:6px;font-size:12px;margin-top:0}
-.dev-block .clabel{font-size:13px;font-weight:600}
+.dev-block .clabel{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis}
 .dev-block .dev-qbtn{margin-left:0;margin-right:0}
 .dev-caret{margin-left:auto;background:none;border:1px solid var(--border);color:var(--muted);font-size:12px;cursor:pointer;padding:3px 8px;border-radius:6px;font-weight:700;white-space:nowrap;min-width:76px;text-align:center;flex-shrink:0}
+.dev-caret:active{margin:0}
 .dev-caret:hover{background:#f1f5f9;color:var(--text);border-color:#94a3b8}
-.dev-opts{padding:10px 14px 12px 50px;display:flex;flex-direction:column;gap:5px;background:#fafbff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;margin-top:-4px}
+.dev-opts{padding:10px 14px 12px 50px;display:flex;flex-direction:column;gap:5px;background:#fafbff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 10px 10px;margin-top:-4px;overflow:hidden;max-width:100%}
 .dev-opts.hidden{display:none}
 .dev-opt-row{display:flex;align-items:flex-start;gap:9px;padding:3px 4px;font-size:12.5px;line-height:1.45;color:#475569}
 .dev-opt-row::before{content:'•';color:var(--primary);font-weight:700;flex-shrink:0;margin-top:-1px}
