@@ -3959,9 +3959,10 @@ function renderScriptRow(m,mi,s,si){
     +'</div>';
 }
 function renderScripts(){
-  var el=$('scripts-list');if(!el)return;
+  // Always ensure script data is populated for all meds (needed for buildScriptLines)
+  titMeds.forEach(function(m){ ensureScripts(m); });
+  var el=$('scripts-list');if(!el){refreshTitOutputs();return;}
   var titHtml=titMeds.map(function(m,mi){
-    ensureScripts(m);
     var def=SCRIPT_DEFAULTS[m.key]||SCRIPT_DEFAULTS.other;
     var nm=m.key==='other'&&m.customName?m.customName:(def.scriptName||m.def.name);
     var rows=m.scripts.map(function(s,si){return renderScriptRow(m,mi,s,si);}).join('');
