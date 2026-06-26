@@ -275,7 +275,8 @@ select.inp{appearance:none}
 .sel-all-btn:hover{background:var(--primary);color:#fff;}
 .sel-all-btn.desel{border-color:var(--border);background:#f1f5f9;color:var(--muted);}
 .sel-all-btn.desel:hover{background:#e2e6ed;color:var(--text);}
-.diff-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:14px}
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);column-gap:10px;row-gap:4px}
+@media(max-width:540px){.diff-grid{grid-template-columns:1fr 1fr}}
 .qol-row{display:flex;flex-wrap:wrap;align-items:center;gap:2px;margin:2px 0}
 .qol-star{font-size:24px;color:#cbd5e1;cursor:pointer;line-height:1;padding:1px 2px;-webkit-tap-highlight-color:transparent;user-select:none;transition:color .12s,transform .08s}
 .qol-star:hover{transform:scale(1.1);color:#f59e0b}
@@ -310,10 +311,12 @@ select.inp{appearance:none}
 .diff-pill:hover{border-color:var(--green);color:var(--green)}
 .diff-pill.on{background:var(--green-bg);border-color:var(--green);color:#166534;font-weight:700;box-shadow:0 1px 3px rgba(22,163,74,.18)}
 .diff-pill.on::before{content:'✓ ';color:var(--green);font-weight:800}
-/* ── MSE — grouped layout ── */
-.mse-group{margin-bottom:12px}
-.mse-group-header{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--primary);padding:5px 0 6px;border-bottom:1.5px solid var(--primary-bg);margin-bottom:6px}
-.mse-group-body{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px 14px}
+/* ── Differential 2-col grid ── */
+.diff-2col{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.diff-2col .diff-d.open{grid-column:1/-1}
+@media(max-width:480px){.diff-2col{grid-template-columns:1fr}}
+/* ── MSE — flat grid (no group headers) ── */
+.mse-flat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 14px}
 .mse-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px}
 .mse-item.flag{border-color:var(--amber);background:#fff9ef}
 .mse-item.flag .mse-label{color:var(--amber)}
@@ -382,6 +385,11 @@ select.inp{appearance:none}
 .ar-chips .ar-chip{padding:5px 11px;border:1.5px solid #cbd5e1;border-radius:7px;background:#fff;color:#475569;font:600 12px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .12s}
 .ar-chips .ar-chip:hover{border-color:var(--primary);color:var(--primary)}
 .ar-chips .ar-chip.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary)}
+/* ── Psychoeducation — 2-col grid ── */
+#pe-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+#pe-list .pe-section{margin-bottom:0}
+#pe-list .pe-group-label{grid-column:1/-1;margin-top:2px}
+#pe-list .pe-section.pe-open{grid-column:1/-1}
 /* ── Psychoeducation expandable topics ── */
 .pe-section{border:1px solid var(--border);border-radius:10px;background:#fff;overflow:hidden;margin-bottom:5px}
 .pe-section.pe-optional{border-style:dashed;opacity:0.85}
@@ -489,7 +497,8 @@ select.inp{appearance:none}
 #out-report.letter-mode .letter-sig .sig-quals{color:#475569;font-size:9.5pt}
 #out-report .mgmt-sub{font:700 11pt Arial,sans-serif;color:#1e40af;margin:12px 0 4px;letter-spacing:0;text-transform:none;border:none}
 #out-report.letter-mode .mgmt-sub{font-family:Arial,sans-serif;font-size:10.5pt;color:#1e40af;font-weight:700;margin:12px 0 4px}
-.ms-card{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.ms-card{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;flex-direction:column;gap:6px}
+#gaps-panel:not(:empty){margin-top:10px}
 .ms-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ms-concern{font:700 12.5px var(--sans);color:#be123c;flex:1}
 .ms-goto{flex-shrink:0;padding:5px 11px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#be123c;font:700 11px var(--sans);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
@@ -510,7 +519,7 @@ select.inp{appearance:none}
 .ps-tile-label{font:700 10px var(--sans);text-transform:uppercase;letter-spacing:.06em;color:#475569;margin:0}
 .ps-tile .rbtns{display:flex;flex-wrap:wrap;gap:4px;margin:0}
 .ps-tile .rbtns.ps-tile-mode{grid-template-columns:repeat(2,minmax(0,1fr))}
-.ps-tile .rbtns .rb{white-space:nowrap;text-align:center;padding:5px 9px;font-size:11px;line-height:1.2}
+.ps-tile .rbtns .rb{white-space:nowrap;text-align:center;padding:5px 9px;font-size:11px;line-height:1.2;flex:1}
 .ps-tile .inp{font-size:12px;padding:6px 9px}
 .ps-tile-mode{display:flex;flex-wrap:wrap;gap:4px}
 .ps-tile-mode .rb{font-size:10px;padding:3px 8px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b}
@@ -531,8 +540,9 @@ select.inp{appearance:none}
 /* ── Titration system ── */
 .tit-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:2px}
 .tit-grp-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:8px 0 4px}
-.tit-med-list{display:flex;flex-direction:column;gap:4px;margin-bottom:6px}
+.tit-med-list{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
 .tit-med-item{transition:opacity .12s}
+.tit-med-item.on{grid-column:1/-1}
 .tit-med-item.dim{opacity:.35}
 .tit-med-item.dim .tit-med-name{cursor:pointer}
 .tit-med-name{display:flex;align-items:center;justify-content:space-between;width:100%;background:#fafbfc;border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;text-align:left;font:600 13px var(--sans);color:var(--text);cursor:pointer;transition:all .12s}
@@ -1201,7 +1211,7 @@ select.inp{appearance:none}
       </div>
       <div style="border:2px solid #dc2626;border-radius:8px;padding:8px 10px;margin-top:6px;background:#fff5f5">
         <div class="rrow" style="padding-top:0">
-          <div class="rlabel" style="font-weight:700;color:#dc2626;font-size:12px">Drug dependent?</div>
+          <div class="rlabel" style="font-weight:700;color:#dc2626;font-size:12px">Are they a Drug Dependent Person?</div>
           <div class="rbtns" id="drugdep-btns">
             <button class="rb" onclick="toggleV('drugDep','No',this,'ay')">No</button>
             <button class="rb" onclick="toggleV('drugDep','Yes',this,'af')">Yes</button>
@@ -1403,9 +1413,6 @@ select.inp{appearance:none}
 </div>
 </div>
 
-<!-- PLAN GROUP DIVIDER -->
-<div class="section-header section-divider">PLAN</div>
-
 <!-- ALERTS -->
 <div class="section-header" id="sec-alerts"><span class="sh-num">3</span>Alerts<span class="sh-badge" id="sh-badge-alerts">--</span></div>
 <div class="panel active" id="panel-alerts">
@@ -1444,6 +1451,10 @@ select.inp{appearance:none}
         <button onclick="titAddBlank()" class="abtn" style="margin-top:6px;font-size:11px;width:100%;border-style:dashed">+ Add medication manually</button>
       </div>
     </div>
+  </div>
+  <div class="out-panel" style="margin-top:8px">
+    <div class="out-head"><span class="out-title">Script text — eScript</span><button class="cbtn" onclick="copyOut('out-script',this)">Copy</button></div>
+    <div class="out-text" id="out-script">--</div>
   </div>
 </div>
 
@@ -1575,11 +1586,6 @@ select.inp{appearance:none}
 <div class="section-header" id="sec-outputs"><span class="sh-num">7</span>Reports</div>
 <div class="panel active" id="panel-outputs">
 
-  <!-- Script + Heidi (unchanged) -->
-  <div class="out-panel">
-    <div class="out-head"><span class="out-title">Script text -- eScript</span><button class="cbtn" onclick="copyOut('out-script',this)">Copy</button></div>
-    <div class="out-text" id="out-script">--</div>
-  </div>
   <!-- Full Assessment Report (official formatted version) -->
   <div class="out-panel" id="report-panel">
     <div class="out-head" onclick="toggleReport(event)" style="cursor:pointer;flex-wrap:wrap;gap:5px;row-gap:6px">
@@ -1660,7 +1666,7 @@ select.inp{appearance:none}
 'use strict';
 
 const DIFFICULTIES=['Attention difficulties','Task initiation difficulties','Disorganisation','Time management difficulties','Forgetfulness','Impulsivity','Restlessness / hyperactivity','Emotional dysregulation','Rejection sensitivity (RSD)','Low mood / depression','Anxiety','Chronic exhaustion / burnout','Sleep difficulties','Binge eating','Appetite dysregulation','Low self-esteem / shame','Chronic underachievement','Relationship difficulties','Workplace underperformance','Financial difficulties','Social difficulties / isolation','Sensory sensitivities','Hyperfocus / task-switching difficulties','Emotional flooding / meltdowns','Driving safety'];
-const RISK_FACTORS=['Family hx of ADHD','Family hx of autism / NDD','Family hx of mental illness','Prematurity / low birth weight','Prenatal substance exposure','Perinatal complications','Maternal stress / illness in pregnancy','Chronic medical illness in childhood','Childhood TBI','Childhood seizures / epilepsy','Lead / neurotoxin exposure','Early childhood trauma','Insecure attachment','Frequent school changes','Childhood bullying','Childhood neglect or abuse'];
+const RISK_FACTORS=['Family hx of ADHD','Family hx of autism / NDD','Family hx of mental illness','Prematurity / low birth weight','Prenatal substance exposure','Perinatal complications','Maternal stress / illness in pregnancy','Chronic medical illness in childhood','Childhood TBI','Childhood seizures / epilepsy','Lead / neurotoxin exposure','Early childhood trauma','Frequent school changes','Childhood bullying','Childhood neglect or abuse'];
 const PERPETUATING_FACTORS=['Untreated ADHD symptoms','Poor sleep','Medical issues','Comorbid mental illness','Stimulant misuse','Cannabis use','Excessive caffeine','Insufficient workplace supports','Maladaptive coping','Learned helplessness','Internalised shame','Lack of structure','Chronic stress','Relational conflict','Caregiver burden','Financial instability','Housing instability','Low physical activity','Excessive screen use','Lack of psychoeducation about ADHD','Partner accommodating dysfunction'];
 const PROTECTIVE_FACTORS=['Established treatment / engaged with care','Strong family or social supports','Supportive partner','Stable housing and finances','Effective routines and structure','Regular exercise','Good sleep hygiene','Healthy diet','Workplace or educational accommodations in place','Engaged with psychology / coaching','Insight and motivation for change','Positive therapeutic alliance','Above-average intellectual ability','Strong interests or sense of purpose','Spiritual or community engagement','Absence of substance use'];
 const ASSESS_REASONS=['Self-recognised symptoms','GP recommended','Psychologist / therapist recommended','Partner / spouse recommended','Child(ren) recently diagnosed','Family member recently diagnosed','Workplace difficulties','Academic difficulties','Referred by employer / OHS','Driver licence / aviation assessment','Legal / forensic referral','Following media coverage'];
@@ -1805,8 +1811,11 @@ const DIFFS=[
   {id:'neurodegen',label:'Neurodegenerative disorder',qs:['Is there a noticeable decline from a previously higher level of functioning?','Are memory, language, or processing speed declining over months to years?','Is this a change from baseline rather than a lifelong pattern?','Are activities of daily living now compromised due to cognitive decline?']},
   {id:'tbi',label:'Acquired brain injury',qs:['Did cognitive difficulties begin or worsen significantly after a head injury?','Are there domain-specific deficits consistent with the injury pattern?','Has there been formal neuropsychological assessment post-injury?']},
   {id:'suicidality',label:'Suicidal ideation',qs:['Are there current thoughts of suicide or self-harm?','Has there been any recent planning, intent, or preparatory behaviour?','What protective factors are in place and how robust are they?']},
-  {id:'substance_induced',label:'Substance-induced disorder',qs:['Could stimulant, cannabis, alcohol, or other substance or medication use explain or worsen the picture?','Do cognitive symptoms resolve or substantially improve during sustained abstinence or medication change?','Is there an active substance use disorder that needs prioritising?']},
   {id:'medical',label:'Medical or neurological cause',qs:['Did symptoms start after a medical illness, injury, or medication change?','Could thyroid, anaemia, seizures, autoimmune, or other medical issues be contributing?','Has relevant medical investigation been completed?']},
+  {id:'pd_general',label:'General Personality Disorder (ICD-11)',qs:['Is there a pervasive pattern of disturbance in how the person experiences and relates to self and others?','Has this pattern been present across most of their adult life and across different contexts?','Does the pattern cause significant distress or impairment in personal, social, or occupational functioning?','Can this be better accounted for by another mental disorder, substance, or medical condition?']},
+  {id:'pd_cluster_a',label:'Cluster A Personality Disorder (DSM)',qs:['Paranoid: Does the person persistently distrust others, reading malicious intent into neutral acts?','Schizoid: Is the person indifferent to social relationships with a restricted range of emotional expression?','Schizotypal: Are there odd beliefs, magical thinking, perceptual distortions, or eccentric behaviour causing social impairment?','Do these patterns reflect enduring, inflexible traits present from early adulthood?']},
+  {id:'pd_cluster_b',label:'Cluster B Personality Disorder (DSM)',qs:['Borderline: Are there unstable relationships, self-image, and affect with marked impulsivity?','Antisocial: Is there persistent disregard for and violation of others\' rights (deceitfulness, recklessness, lack of remorse)?','Narcissistic: Is there grandiosity, need for admiration, and lack of empathy?','Histrionic: Is there excessive emotionality and attention-seeking across contexts?','Do these patterns reflect enduring, inflexible traits present from early adulthood?']},
+  {id:'pd_cluster_c',label:'Cluster C Personality Disorder (DSM)',qs:['Avoidant: Is there social inhibition, feelings of inadequacy, and hypersensitivity to criticism — despite wanting connection?','Dependent: Is there excessive need to be taken care of, leading to submissive and clinging behaviour?','OCPD: Is there a preoccupation with orderliness, perfectionism, and control that is ego-syntonic and interferes with flexibility?','Do these patterns reflect enduring, inflexible traits present from early adulthood?']},
 ];
 const CARDIAC=[
   {id:'c_exertional',label:'Exertional chest pain / unexplained shortness of breath / exercise intolerance',flag:true,
@@ -1858,69 +1867,69 @@ const FAM_PSYCH=[
   {id:'fam_other',label:'Other psychiatric diagnosis'},
 ];
 const MEDICAL=[
-  {id:'epilepsy',flag:true,label:'Epilepsy or seizure disorder',
-    note:'Stimulants may lower seizure threshold. Check recent control and neurology input, start low and monitor.',
-    letter:'Given the history of epilepsy, recent seizure control and neurology input will guide the prescribing plan. Stimulants can lower seizure threshold, so any trial would start at the lowest effective dose with close monitoring.'},
-  {id:'glaucoma',flag:true,label:'Glaucoma',
-    note:'Avoid stimulants and atomoxetine in narrow-angle glaucoma. Consider non-stimulant alternatives.',
-    letter:'In the context of narrow-angle glaucoma, both stimulants and atomoxetine are best avoided; non-stimulant alternatives will be considered.'},
-  {id:'thyroid',flag:false,label:'Thyroid disorder',
-    note:'Treat or stabilise hyperthyroidism before starting stimulants due to additive sympathomimetic effects.',
-    letter:'Thyroid status will be reviewed and stabilised before commencing stimulants given the additive sympathomimetic effect with hyperthyroidism.'},
-  {id:'raynauds',flag:false,label:"Raynaud's phenomenon",
-    note:'Stimulants can worsen vasospasm. Monitor digits and consider dose reduction or switch if symptomatic.',
-    letter:"Stimulants can worsen Raynaud's vasospasm. We will monitor for digital symptoms during titration and adjust dose or switch agent if needed."},
-  {id:'tic',flag:false,label:'Tic disorder',
-    note:'Stimulants can exacerbate tics in some patients. Consider atomoxetine or alpha-2 agonists, or cautious stimulant trial with close monitoring.',
-    letter:'Occasionally stimulants can worsen tics. Whichever treatment we choose, close monitoring of any worsening of symptoms is warranted; if our treatment worsens tics there are alternatives including atomoxetine or alpha-2 agonists.'},
-  {id:'liver',flag:false,label:'Hepatic impairment',
-    note:'Atomoxetine exposure increases significantly in moderate-severe hepatic impairment. Use lower doses and monitor LFTs.',
-    letter:'In the context of hepatic impairment, atomoxetine exposure can increase substantially. We will use lower doses where atomoxetine is considered and monitor liver function.'},
-  {id:'renal',flag:false,label:'Renal impairment',
-    note:'Clonidine and guanfacine may accumulate in renal impairment. Titrate slowly and monitor for hypotension and sedation.',
-    letter:'Renal impairment may slow clearance of clonidine and guanfacine. Titration will be slower with monitoring of blood pressure and sedation.'},
-  {id:'pregnancy',flag:true,label:'Pregnancy',
-    note:'Use non-pharmacological strategies where possible. If prescribing in pregnancy, use the lowest effective dose and agents with the best safety data, with obstetric input.',
-    letter:'Treatment in pregnancy will prioritise non-pharmacological strategies where possible. If pharmacotherapy is needed, this will be at the lowest effective dose, in coordination with the obstetric team, and using agents with the best available safety data.'},
-  {id:'breastfeeding',flag:true,label:'Breastfeeding',
-    note:'Stimulants pass into breast milk in small amounts. Methylphenidate has the lowest excretion. Discuss risks/benefits with the patient and monitor the infant for irritability or feeding changes.',
-    letter:'In the context of breastfeeding, methylphenidate is generally preferred given it has the lowest excretion into breast milk of the available stimulants. Risks and benefits will be discussed with the patient and the infant monitored for irritability or feeding changes during titration.'},
-  {id:'cvd',flag:true,label:'Coronary artery disease',
-    note:'Stimulants increase HR and BP. Optimise vascular risk factors, consider cardiology input, start low and monitor closely.',
-    letter:'Given the history of coronary artery disease, vascular risk factors will be optimised and cardiology input sought before stimulants are considered. Any trial would start low with close haemodynamic monitoring.'},
-  {id:'obesity',flag:false,label:'Obesity with metabolic syndrome',
-    note:'Stimulants may reduce appetite and weight. Monitor weight, blood pressure and metabolic parameters during treatment.',
-    letter:'Stimulants may modestly reduce appetite and weight, which can be incidentally helpful in the context of obesity. We will monitor weight, blood pressure and metabolic parameters through treatment.'},
-  {id:'low_bmi',flag:false,label:'Low BMI',
-    note:'Appetite suppression can be problematic. Prefer non-stimulants or very cautious stimulant use with close weight monitoring.',
-    letter:'Given the low BMI, appetite suppression from stimulants may be problematic. Non-stimulant agents will be preferred, or any stimulant trial used cautiously with close weight monitoring.'},
-  {id:'eating_disorder',flag:true,label:'Current or recent eating disorder',
-    note:'Stimulants may worsen dietary restriction. Avoid or minimise stimulants and prioritise nutritional rehabilitation.',
-    letter:'In the context of a current or recent eating disorder, stimulants will be avoided or minimised, with nutritional rehabilitation and eating-disorder treatment prioritised first.'},
-  {id:'osa',flag:false,label:'Obstructive sleep apnoea',
-    note:'Optimise sleep and OSA treatment first. Time doses to minimise insomnia. Consider alpha-2 agonists for nocturnal hyperarousal.',
-    letter:'Sleep apnoea will be addressed and any treatment optimised before initiating stimulants, since untreated OSA both mimics and amplifies ADHD symptoms. Dosing will be timed to minimise insomnia.'},
   {id:'bph',flag:false,label:'Benign prostatic hyperplasia',
     note:'Atomoxetine can worsen urinary retention. Monitor lower urinary tract symptoms or avoid in severe cases.',
     letter:'Atomoxetine can worsen urinary retention; in the context of significant prostatic hyperplasia we will monitor lower urinary tract symptoms or avoid this agent.'},
-  {id:'end_stage_renal',flag:true,label:'End-stage renal disease',
-    note:'Use clonidine and guanfacine very cautiously. Coordinate with nephrology and monitor haemodynamics carefully.',
-    letter:'In end-stage renal disease, alpha-2 agonists will be used very cautiously and in coordination with nephrology, with close haemodynamic monitoring.'},
+  {id:'breastfeeding',flag:true,label:'Breastfeeding',
+    note:'Stimulants pass into breast milk in small amounts. Methylphenidate has the lowest excretion. Discuss risks/benefits with the patient and monitor the infant for irritability or feeding changes.',
+    letter:'In the context of breastfeeding, methylphenidate is generally preferred given it has the lowest excretion into breast milk of the available stimulants. Risks and benefits will be discussed with the patient and the infant monitored for irritability or feeding changes during titration.'},
   {id:'falls_risk',flag:false,label:'Chronic dizziness or high falls risk',
     note:'Alpha-2 agonists can increase orthostatic symptoms and falls risk. Minimise dose and monitor standing blood pressure.',
     letter:'Given the elevated falls risk, alpha-2 agonists will be used at minimal effective dose with regular standing blood-pressure checks.'},
   {id:'chronic_pain_sedating',flag:false,label:'Chronic pain on sedating medications',
     note:'Clonidine and guanfacine add to sedation and hypotension. Adjust other sedatives and monitor carefully.',
     letter:'Given current sedating analgesia, alpha-2 agonists will be added cautiously with adjustments to existing sedatives and close monitoring.'},
-  {id:'labile_bp',flag:true,label:'Endocrine or autonomic disorders with labile BP (e.g. Addison disease, autonomic neuropathy)',
-    note:"Both stimulants (raise BP) and alpha-2 agonists (lower BP, with rebound on cessation) can destabilise blood pressure. Titrate very cautiously with frequent postural checks.",
-    letter:'Given the labile blood pressure, both stimulants and alpha-2 agonists can destabilise circulation. We will titrate cautiously with frequent postural blood-pressure checks.'},
-  {id:'migraine',flag:false,label:'Migraine or chronic headache',
-    note:'Stimulants can both trigger migraine (vasoconstriction, increased BP) and, in some patients, reduce attack frequency by improving sleep and stress regulation. If propranolol or topiramate is being used for prophylaxis, watch for additive blood-pressure effects with stimulants and additive cognitive blunting with topiramate. Start low, titrate slowly, monitor headache frequency.',
-    letter:'Stimulants can have variable effects on migraine — sometimes triggering attacks via vasoconstriction and raised blood pressure, and sometimes reducing frequency through better sleep and stress regulation. If propranolol or topiramate is being used for prophylaxis, we will be alert to additive effects on blood pressure and cognition. Headache frequency will be monitored through titration.'},
+  {id:'cvd',flag:true,label:'Coronary artery disease',
+    note:'Stimulants increase HR and BP. Optimise vascular risk factors, consider cardiology input, start low and monitor closely.',
+    letter:'Given the history of coronary artery disease, vascular risk factors will be optimised and cardiology input sought before stimulants are considered. Any trial would start low with close haemodynamic monitoring.'},
+  {id:'eating_disorder',flag:true,label:'Current or recent eating disorder',
+    note:'Stimulants may worsen dietary restriction. Avoid or minimise stimulants and prioritise nutritional rehabilitation.',
+    letter:'In the context of a current or recent eating disorder, stimulants will be avoided or minimised, with nutritional rehabilitation and eating-disorder treatment prioritised first.'},
   {id:'postural_dizziness',flag:true,label:'Dizziness on standing / postural hypotension',
     note:'Suggests autonomic instability. Check standing / lying BP and HR before initiating; correct hydration and any contributing medications. Alpha-2 agonists (clonidine, guanfacine) will worsen this; stimulants raise standing BP slightly but can mask underlying autonomic dysfunction. Refer for autonomic / cardiology workup if marked or progressive.',
     letter:'Reported dizziness on standing suggests possible autonomic instability. Lying and standing blood pressure and heart rate will be checked before initiating treatment, with hydration and contributing medications addressed. Alpha-2 agonists in particular can worsen orthostatic symptoms; if findings are marked or progressive, autonomic or cardiology workup will be considered.'},
+  {id:'end_stage_renal',flag:true,label:'End-stage renal disease',
+    note:'Use clonidine and guanfacine very cautiously. Coordinate with nephrology and monitor haemodynamics carefully.',
+    letter:'In end-stage renal disease, alpha-2 agonists will be used very cautiously and in coordination with nephrology, with close haemodynamic monitoring.'},
+  {id:'labile_bp',flag:true,label:'Endocrine or autonomic disorders with labile BP (e.g. Addison disease, autonomic neuropathy)',
+    note:"Both stimulants (raise BP) and alpha-2 agonists (lower BP, with rebound on cessation) can destabilise blood pressure. Titrate very cautiously with frequent postural checks.",
+    letter:'Given the labile blood pressure, both stimulants and alpha-2 agonists can destabilise circulation. We will titrate cautiously with frequent postural blood-pressure checks.'},
+  {id:'epilepsy',flag:true,label:'Epilepsy or seizure disorder',
+    note:'Stimulants may lower seizure threshold. Check recent control and neurology input, start low and monitor.',
+    letter:'Given the history of epilepsy, recent seizure control and neurology input will guide the prescribing plan. Stimulants can lower seizure threshold, so any trial would start at the lowest effective dose with close monitoring.'},
+  {id:'glaucoma',flag:true,label:'Glaucoma',
+    note:'Avoid stimulants and atomoxetine in narrow-angle glaucoma. Consider non-stimulant alternatives.',
+    letter:'In the context of narrow-angle glaucoma, both stimulants and atomoxetine are best avoided; non-stimulant alternatives will be considered.'},
+  {id:'liver',flag:false,label:'Hepatic impairment',
+    note:'Atomoxetine exposure increases significantly in moderate-severe hepatic impairment. Use lower doses and monitor LFTs.',
+    letter:'In the context of hepatic impairment, atomoxetine exposure can increase substantially. We will use lower doses where atomoxetine is considered and monitor liver function.'},
+  {id:'low_bmi',flag:false,label:'Low BMI',
+    note:'Appetite suppression can be problematic. Prefer non-stimulants or very cautious stimulant use with close weight monitoring.',
+    letter:'Given the low BMI, appetite suppression from stimulants may be problematic. Non-stimulant agents will be preferred, or any stimulant trial used cautiously with close weight monitoring.'},
+  {id:'migraine',flag:false,label:'Migraine or chronic headache',
+    note:'Stimulants can both trigger migraine (vasoconstriction, increased BP) and, in some patients, reduce attack frequency by improving sleep and stress regulation. If propranolol or topiramate is being used for prophylaxis, watch for additive blood-pressure effects with stimulants and additive cognitive blunting with topiramate. Start low, titrate slowly, monitor headache frequency.',
+    letter:'Stimulants can have variable effects on migraine — sometimes triggering attacks via vasoconstriction and raised blood pressure, and sometimes reducing frequency through better sleep and stress regulation. If propranolol or topiramate is being used for prophylaxis, we will be alert to additive effects on blood pressure and cognition. Headache frequency will be monitored through titration.'},
+  {id:'obesity',flag:false,label:'Obesity with metabolic syndrome',
+    note:'Stimulants may reduce appetite and weight. Monitor weight, blood pressure and metabolic parameters during treatment.',
+    letter:'Stimulants may modestly reduce appetite and weight, which can be incidentally helpful in the context of obesity. We will monitor weight, blood pressure and metabolic parameters through treatment.'},
+  {id:'osa',flag:false,label:'Obstructive sleep apnoea',
+    note:'Optimise sleep and OSA treatment first. Time doses to minimise insomnia. Consider alpha-2 agonists for nocturnal hyperarousal.',
+    letter:'Sleep apnoea will be addressed and any treatment optimised before initiating stimulants, since untreated OSA both mimics and amplifies ADHD symptoms. Dosing will be timed to minimise insomnia.'},
+  {id:'pregnancy',flag:true,label:'Pregnancy',
+    note:'Use non-pharmacological strategies where possible. If prescribing in pregnancy, use the lowest effective dose and agents with the best safety data, with obstetric input.',
+    letter:'Treatment in pregnancy will prioritise non-pharmacological strategies where possible. If pharmacotherapy is needed, this will be at the lowest effective dose, in coordination with the obstetric team, and using agents with the best available safety data.'},
+  {id:'raynauds',flag:false,label:"Raynaud's phenomenon",
+    note:'Stimulants can worsen vasospasm. Monitor digits and consider dose reduction or switch if symptomatic.',
+    letter:"Stimulants can worsen Raynaud's vasospasm. We will monitor for digital symptoms during titration and adjust dose or switch agent if needed."},
+  {id:'renal',flag:false,label:'Renal impairment',
+    note:'Clonidine and guanfacine may accumulate in renal impairment. Titrate slowly and monitor for hypotension and sedation.',
+    letter:'Renal impairment may slow clearance of clonidine and guanfacine. Titration will be slower with monitoring of blood pressure and sedation.'},
+  {id:'thyroid',flag:false,label:'Thyroid disorder',
+    note:'Treat or stabilise hyperthyroidism before starting stimulants due to additive sympathomimetic effects.',
+    letter:'Thyroid status will be reviewed and stabilised before commencing stimulants given the additive sympathomimetic effect with hyperthyroidism.'},
+  {id:'tic',flag:false,label:'Tic disorder',
+    note:'Stimulants can exacerbate tics in some patients. Consider atomoxetine or alpha-2 agonists, or cautious stimulant trial with close monitoring.',
+    letter:'Occasionally stimulants can worsen tics. Whichever treatment we choose, close monitoring of any worsening of symptoms is warranted; if our treatment worsens tics there are alternatives including atomoxetine or alpha-2 agonists.'},
 ];
 const SUBS=['Alcohol','Cannabis','Methamphetamine','Cocaine/stimulants','MDMA','Opioids','Benzodiazepines','Tobacco/nicotine','Caffeine (excess)','Other'];
 const DIFFICULTY_CATEGORIES=[
@@ -1949,7 +1958,10 @@ const DIFF_SYMPTOMS={
   tic_tourette:['Multiple motor tics (sudden, recurrent)','One or more vocal tics','Tics persist >1 year','Onset before age 18','Tics cause distress or impairment'],
   schizophrenia:['Delusions','Hallucinations','Disorganised speech','Grossly disorganised or catatonic behaviour','Negative symptoms (flat affect, avolition)','Marked decline in functioning','Continuous signs for ≥6 months'],
   ocd:['Recurrent intrusive thoughts or urges (obsessions)','Repetitive behaviours or mental acts (compulsions)','Compulsions aimed at preventing distress / feared event','Time-consuming (>1 hr/day)','Cause significant distress or impairment','Insight typically preserved'],
-  personality:['Pervasive unstable interpersonal relationships','Identity disturbance / unstable self-image','Impulsivity in 2+ potentially damaging areas','Recurrent suicidal or self-harm behaviour','Affective instability (marked reactivity of mood)','Chronic feelings of emptiness','Inappropriate intense anger','Stress-related paranoia or dissociation','Frantic efforts to avoid abandonment'],
+  pd_general:['Pervasive disturbance in self-functioning (identity, self-worth, self-direction)','Pervasive disturbance in interpersonal functioning (difficulty with close relationships or understanding others)','Pattern is relatively inflexible and persistent across situations','Stable over time — present for years','Not better explained by developmental stage, another mental disorder, substance, or medical condition','Associated with significant distress or impairment','Specify severity (Mild / Moderate / Severe) and prominent domains (Negative affectivity / Detachment / Disinhibition / Dissociality / Anankastia / Borderline pattern)'],
+  pd_cluster_a:['Paranoid: Pervasive distrust — others\' motives interpreted as malevolent','Paranoid: Reluctance to confide / unforgiving of perceived slights','Paranoid: Reads demeaning meanings into neutral events','Schizoid: Neither desires nor enjoys close relationships','Schizoid: Emotionally cold, detached, or flattened affect','Schizoid: Indifferent to praise or criticism','Schizotypal: Odd beliefs or magical thinking','Schizotypal: Unusual perceptual experiences','Schizotypal: Odd, eccentric speech or behaviour','Schizotypal: Paranoid ideation or excessive social anxiety','Enduring, inflexible — onset early adulthood'],
+  pd_cluster_b:['BPD: Frantic efforts to avoid real or imagined abandonment','BPD: Unstable and intense interpersonal relationships','BPD: Identity disturbance — unstable self-image','BPD: Impulsivity in ≥2 potentially self-damaging areas','BPD: Recurrent suicidal behaviour or self-harm','BPD: Affective instability — marked mood reactivity','BPD: Chronic feelings of emptiness','BPD: Inappropriate intense anger','BPD: Transient paranoia or dissociation under stress','ASPD: Disregard for / violation of others\' rights (deceitfulness, recklessness, lack of remorse)','ASPD: Conduct disorder onset before age 15','NPD: Grandiosity, need for admiration, lack of empathy','HPD: Excessive emotionality and attention-seeking','Enduring, inflexible — onset early adulthood'],
+  pd_cluster_c:['Avoidant: Social inhibition, feelings of inadequacy, hypersensitivity to criticism / rejection','Avoidant: Avoids occupational activities involving significant interpersonal contact','Avoidant: Preoccupied with being criticised or rejected in social situations','Dependent: Difficulty making everyday decisions without excessive advice','Dependent: Submissive and clinging — excessive need to be cared for','Dependent: Fear of being alone / urgently seeks new relationships when one ends','OCPD: Preoccupation with orderliness, perfectionism, and control (ego-syntonic)','OCPD: Perfectionism interferes with task completion','OCPD: Excessive devotion to work, miserly spending, rigidity','Enduring, inflexible — onset early adulthood'],
   anorexia:['Restriction of energy intake → low body weight','Intense fear of weight gain','Behaviour interfering with weight gain','Disturbance in body-image perception','Lack of recognition of seriousness of low weight'],
   bulimia:['Recurrent binge-eating episodes','Sense of loss of control during binge','Inappropriate compensatory behaviours (vomiting, laxatives, fasting, exercise)','Occur ≥1×/week for 3 months','Self-evaluation unduly influenced by weight/shape'],
   bed:['Recurrent binge-eating episodes','Loss of control during binge','Eating much more rapidly than normal','Eating until uncomfortably full','Eating large amounts when not hungry','Eating alone due to embarrassment','Marked distress regarding binge eating','No regular compensatory behaviour'],
@@ -1957,7 +1969,6 @@ const DIFF_SYMPTOMS={
   neurodegen:['Decline from previous level of cognitive functioning','Memory impairment','Language difficulty (word-finding, naming)','Visuospatial or executive decline','Interferes with independence in daily life','Progressive over months to years'],
   tbi:['History of head injury (LoC, PTA, or imaging changes)','Cognitive symptoms following the injury','Persistent post-concussive symptoms','Mood or behavioural change post-injury','Domain-specific deficits consistent with injury'],
   suicidality:['Current thoughts of suicide or self-harm','Specific plan or intent','Access to means','Recent preparatory acts or attempts','Prior suicide attempts','Hopelessness','Decreased reasons for living','Acute precipitating stressors'],
-  substance_induced:['Active or recent substance use','Symptoms developed during use / within 1 month of withdrawal','Symptoms resolve with sustained abstinence','Substance capable of producing the symptoms','Active substance use disorder'],
   medical:['Thyroid dysfunction','Anaemia / iron deficiency','Vitamin B12 / folate deficiency','Seizure disorder','Autoimmune or inflammatory condition','Sleep apnoea','Medication side-effect','Other medical condition explaining picture']
 };
 const MSE=[
@@ -2417,7 +2428,7 @@ function getCurrentComorbidities(){
   // belong in the Better-explanation bucket if relevant. Bipolar,
   // schizophrenia-spectrum, suicidality, eating disorders etc. are kept
   // because they are genuine comorbidities when marked Current.
-  var EXPLANATION_DIFFS={medical:1,substance_induced:1,neurodegen:1,tbi:1};
+  var EXPLANATION_DIFFS={medical:1,neurodegen:1,tbi:1};
   return DIFFS.filter(function(d){return S.differentials&&S.differentials[d.id]==='Current'&&!EXPLANATION_DIFFS[d.id];});
 }
 function getPastDifferentials(){
@@ -3155,8 +3166,7 @@ function renderSafetyConcerns(){
   if(!alertEl._tabState)alertEl._tabState={};
   var tabState=alertEl._tabState;
   alertEl.innerHTML=concerns.length
-    ?'<div class="fl" style="margin-top:12px;padding:0 4px">Medical safety concerns</div>'+
-      concerns.map(function(c){
+    ?concerns.map(function(c){
         var sid=_warningSectionId(c.key);
         return '<div class="ms-card" data-mskey="'+c.key+'">'
           +'<div class="ms-head"><span class="ms-concern">'+esc(c.concern)+'</span><button class="ms-goto" onclick="goToSection(\''+sid+'\')">Go to ↑</button></div>'
@@ -4360,7 +4370,7 @@ function renderAssessReasonChips(){
   el.innerHTML=ASSESS_REASONS.map(function(r){
     var key=r.replace(/[^a-zA-Z0-9]/g,'_');
     var on=!!S.assessReason[key];
-    return '<label style="display:flex;align-items:flex-start;gap:7px;padding:6px 8px;border:1.5px solid '+(on?'var(--primary)':'#cbd5e1')+';border-radius:7px;background:'+(on?'var(--primary-bg)':'#fff')+';cursor:pointer;user-select:none;-webkit-user-select:none;flex:0 0 calc(50% - 3px);box-sizing:border-box;">'
+    return '<label style="display:flex;align-items:flex-start;gap:7px;padding:6px 8px;border:1.5px solid '+(on?'var(--primary)':'#cbd5e1')+';border-radius:7px;background:'+(on?'var(--primary-bg)':'#fff')+';cursor:pointer;user-select:none;-webkit-user-select:none;flex:0 0 calc(33.333% - 4px);box-sizing:border-box;">'
       +'<input type="checkbox" '+(on?'checked':'')+' style="margin-top:2px;flex-shrink:0;accent-color:var(--primary);width:14px;height:14px;" onchange="toggleAssessReason(\''+key+'\',null)">'
       +'<span style="font:600 12px var(--sans);color:'+(on?'var(--primary)':'#475569')+'">'+r+'</span>'
       +'</label>';
@@ -4669,7 +4679,7 @@ function renderDiffRows(){
     {val:'Current',lbl:'Comorbid Dx',cls:'on-comorbid'},
     {val:'Better explanation',lbl:'Better explains ADHD',cls:'on-better'}
   ];
-  $('diff-rows').innerHTML=header+legend+DIFFS.map(function(d){
+  $('diff-rows').innerHTML=header+legend+'<div class="diff-2col">'+DIFFS.map(function(d){
     var cur=S.differentials[d.id]||'';
     var open=!!S.diffOpen[d.id];
     var statusCls=_diffStatusClass(cur);
@@ -4710,7 +4720,7 @@ function renderDiffRows(){
       +'</div>'
     +'</div>';
     return '<div class="diff-d '+statusCls+(open?' open':'')+'" data-diffid="'+d.id+'">'+headRow+body+'</div>';
-  }).join('');
+  }).join('')+'</div>';
   var el=$('diff-rows');
   if(el._h)el.removeEventListener('click',el._h);
   el._h=function(e){
@@ -4841,11 +4851,9 @@ function renderMSE(){
     return '<div class="mse-item'+flagCls+'"><div class="mse-label">'+esc(sec.label)+'</div><div class="mse-item-chips">'+chips+'</div>'+noteBox+'</div>';
   };
   var header='<div style="display:flex;gap:6px;margin-bottom:10px"><button class="sel-all-btn" onclick="selectAllMSENormal()">All normal</button><button class="sel-all-btn desel" onclick="deselectAllMSE()">Deselect all</button></div>';
-  var groupsHtml=MSE_GROUPS.map(function(g){
-    var items=g.items.map(function(id){return renderSection(MSE_BY_ID[id]);}).join('');
-    return '<div class="mse-group"><div class="mse-group-header">'+esc(g.label)+'</div><div class="mse-group-body">'+items+'</div></div>';
-  }).join('');
-  el.innerHTML=header+groupsHtml;
+  var allMseItems=[];
+  MSE_GROUPS.forEach(function(g){g.items.forEach(function(id){allMseItems.push(renderSection(MSE_BY_ID[id]));});});
+  el.innerHTML=header+'<div class="mse-flat-grid">'+allMseItems.join('')+'</div>';
 }
 function renderCardiac(){
   var noBtn='<div style="margin-bottom:8px"><button class="sel-all-btn'+(S.noCardiacRisk?' on':'')+'" style="'+(S.noCardiacRisk?'background:var(--green-bg);border-color:var(--green);color:#166534;':'')+'" onclick="toggleNoSection(\'noCardiacRisk\')">'+(S.noCardiacRisk?'\u2713 ':'')+'No known cardiac risk factors</button></div>';
@@ -5148,11 +5156,9 @@ function setV(key,val,btn,cls){
   save();refresh();
 }
 function setSub(key,val,btn){
-  S.substances[key]=val;
-  btn.closest('.sub-btns').querySelectorAll('.sb').forEach(function(b){b.className='sb';});
-  btn.classList.add(val==='Nil'?'nil':val==='Past'?'past':'curr');
-  // Selecting Past or Current contradicts "No substance use history".
-  if((val==='Past'||val==='Current')&&S.noSubHistory)S.noSubHistory=false;
+  var cur=S.substances[key]||'';
+  S.substances[key]=cur===val?'':val;
+  if((val==='Past'||val==='Current')&&S.noSubHistory&&cur!==val)S.noSubHistory=false;
   save();refresh();renderSubs();
 }
 function setSubDetail(key,val){
@@ -5182,7 +5188,7 @@ function selectAllDiffsNil(){DIFFS.forEach(function(d){S.differentials[d.id]='Ni
 function deselectAllDiffs(){DIFFS.forEach(function(d){S.differentials[d.id]='';});renderDiffRows();save();refresh();}
 function selectAllSubsNil(){SUBS.forEach(function(s){S.substances['sub_'+s.replace(/\W/g,'_')]='Nil';});S.sudDiff='Nil';S.drugDep='No';renderSubs();save();refresh();}
 function selectAllDifficulties(){DIFFICULTIES.forEach(function(d){S.difficulties[d.replace(/[^a-zA-Z0-9]/g,'_')]=true;});renderDiffChecks();save();refresh();}
-function selectAllDev(){DEV.forEach(function(d){if(d.type!=='label')S.dev[d.id]=true;});renderDev();renderCoreSx();save();refresh();}
+function selectAllDev(){DEV.forEach(function(d){if(d.type!=='label'&&d.type!=='sym')S.dev[d.id]=true;});renderDev();renderCoreSx();save();refresh();}
 function selectAllDSM(){DSM.forEach(function(d){S.dsm[d.id]=true;S.dsmManual[d.id]=true;});renderDSM();save();refresh();}
 function selectAllScreening(){S.screening.asrs='Positive';S.screening.diva='Completed - positive';S.screening.obs='Supportive';S.screening.gpReferral='Supportive';renderScreening();save();refresh();}
 
@@ -5331,7 +5337,7 @@ function getPsychFlags(){
   SUBS.forEach(function(s){var k='sub_'+s.replace(/\W/g,'_');if(S.substances[k]==='Current')f2.push(1);});
   if(S.drugDep==='Yes')f2.push(1);
   if(S.sudDiff==='Current')f2.push(1);
-  var DF={bipolar:1,schizophrenia:1,suicidality:1,anorexia:1,bulimia:1,tbi:1,substance_induced:1,neurodegen:1,medical:1};
+  var DF={bipolar:1,schizophrenia:1,suicidality:1,anorexia:1,bulimia:1,tbi:1,neurodegen:1,medical:1};
   DIFFS.forEach(function(d){if(S.differentials[d.id]==='Current'&&DF[d.id])f2.push(1);});
   var malCount=MAL.filter(function(m){return S.malingering[m.id];}).length;
   if(malCount)f2.push(1);
