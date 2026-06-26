@@ -208,15 +208,17 @@ select.inp{appearance:none}
 .sub-item{background:#f9fafb;border:1px solid var(--border);border-radius:8px;padding:6px 9px;display:flex;flex-direction:column;gap:4px}
 .sub-name{font-size:12px;font-weight:600}
 .sub-btns{display:flex;gap:3px}
-.fam-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:#f9fafb;margin-bottom:3px}
+#fam-checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.fam-row{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#f9fafb;margin-bottom:0}
 .fam-row.fam-nil{background:var(--green-bg);border-color:var(--green)}
 .fam-row.fam-present{background:var(--red-bg);border-color:var(--red)}
-.fam-lbl{flex:1;font-size:13px;font-weight:600;color:var(--text);min-width:0}
-.fam-btns{display:flex;gap:4px;flex-shrink:0}
-.fam-btn{padding:4px 12px;border-radius:5px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font:700 11.5px var(--sans);cursor:pointer;white-space:nowrap}
+.fam-lbl{font-size:12px;font-weight:600;color:var(--text);width:100%;line-height:1.3}
+.fam-btns{display:flex;gap:4px;width:100%}
+.fam-btn{flex:1;padding:5px 2px;border-radius:5px;border:1.5px solid var(--border);background:#fff;color:var(--muted);font:700 11px var(--sans);cursor:pointer;white-space:nowrap;text-align:center}
 .fam-btn.nil{background:var(--green-bg);border-color:var(--green);color:#166534}
 .fam-btn.present{background:var(--red-bg);border-color:var(--red);color:var(--red)}
-.sub-detail,.fam-detail,.diff-detail{font:12px var(--sans);padding:5px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;width:100%;box-sizing:border-box;margin-top:3px}
+.sub-detail,.diff-detail{font:12px var(--sans);padding:5px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;width:100%;box-sizing:border-box;margin-top:3px}
+.fam-detail{font:12px var(--sans);padding:5px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:#0f172a;width:100%;box-sizing:border-box;margin-top:0}
 .sub-detail:focus,.fam-detail:focus,.diff-detail:focus{outline:none;border-color:var(--primary)}
 .sb{flex:1;padding:3px 0;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:10px;font-weight:700;cursor:pointer;text-align:center;font-family:var(--sans)}
 .sb.nil{background:var(--green-bg);border-color:var(--green);color:var(--green)}
@@ -302,13 +304,16 @@ select.inp{appearance:none}
 .dev-opt-row{display:flex;align-items:flex-start;gap:9px;padding:3px 4px;font-size:12.5px;line-height:1.45;color:#475569}
 .dev-opt-row::before{content:'•';color:var(--primary);font-weight:700;flex-shrink:0;margin-top:-1px}
 .dev-opt-label{flex:1}
-.dev-opts-heading{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);padding:2px 4px 4px;margin-bottom:2px;border-bottom:1px solid #e5e7eb}
-/* ── Presenting issues — categorised pill buttons ── */
-.diff-cat-group{margin-bottom:10px}
-.diff-cat-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:6px 0 6px 2px}
-.diff-pills{display:flex;flex-wrap:wrap;gap:6px}
-.diff-pill{padding:7px 13px;border-radius:18px;border:1.5px solid var(--border);background:#fff;color:#475569;font:600 12.5px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1.2;transition:all .12s;user-select:none}
-.diff-pill:hover{border-color:var(--green);color:var(--green)}
+.dev-opts-heading{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#334155;padding:2px 4px 4px;margin-bottom:2px;border-bottom:1px solid #e5e7eb}
+/* ── Presenting issues — categorised checkbox rows ── */
+.diff-cat-group{margin-bottom:8px}
+.diff-cat-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#334155;margin:6px 0 5px 2px}
+.diff-pills{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:4px}
+.diff-pill{padding:6px 10px;border-radius:7px;border:1.5px solid var(--border);background:#fff;color:#475569;font:600 12.5px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1.2;transition:all .12s;user-select:none;display:flex;align-items:center;gap:8px;text-align:left}
+.diff-pill-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid #cbd5e1;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:transparent;transition:all .12s}
+.diff-pill.on .diff-pill-cb{background:var(--green);border-color:var(--green);color:#fff}
+.diff-pill:hover{border-color:var(--green);color:var(--text)}
+.diff-pill:hover .diff-pill-cb{border-color:var(--green)}
 .diff-pill.on{background:var(--green-bg);border-color:var(--green);color:#166534;font-weight:700;box-shadow:0 1px 3px rgba(22,163,74,.18)}
 .diff-pill.on::before{content:'✓ ';color:var(--green);font-weight:800}
 /* ── Differential 2-col grid ── */
@@ -415,7 +420,7 @@ select.inp{appearance:none}
 .pe-body td{padding:3px 7px;border:1px solid var(--border)}
 .pe-body tr:nth-child(even) td{background:#f8fafc}
 .pe-body a{color:var(--primary)}
-.pe-group-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:8px 2px 4px;margin-top:4px}
+.pe-group-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:#334155;padding:8px 2px 4px;margin-top:4px}
 .doc-toggle{padding:5px 11px;border-radius:15px;font:500 11px var(--sans);border:1.5px solid var(--border);background:#fafbfc;color:var(--muted);cursor:pointer;transition:all .12s}
 .doc-toggle:hover{border-color:var(--primary);color:var(--primary)}
 .doc-toggle.on{background:var(--primary-bg);border-color:var(--primary);color:var(--primary);font-weight:700}
@@ -543,7 +548,7 @@ select.inp{appearance:none}
 .fu-ctag button:hover{color:var(--red)}
 /* ── Titration system ── */
 .tit-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:2px}
-.tit-grp-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:8px 0 4px}
+.tit-grp-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#334155;margin:8px 0 4px}
 .tit-med-list{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
 .tit-med-item{transition:opacity .12s}
 .tit-med-item.on{grid-column:1/-1}
@@ -1424,7 +1429,7 @@ select.inp{appearance:none}
 <!-- ALERTS -->
 <div class="section-header" id="sec-alerts"><span class="sh-num">3</span>Alerts<span class="sh-badge" id="sh-badge-alerts">--</span></div>
 <div class="panel active" id="panel-alerts">
-  <div style="padding:2px 4px 0">
+  <div style="padding:8px 6px 4px">
     <div id="medsafety-panel"></div>
     <div id="gaps-panel"></div>
     <div id="flags-panel"></div>
@@ -4322,7 +4327,7 @@ function renderDiffChecks(){
     var pills=cat.items.map(function(d){
       var key=d.replace(/[^a-zA-Z0-9]/g,'_');
       var on=!!S.difficulties[key];
-      return '<button type="button" class="diff-pill'+(on?' on':'')+'" data-diffkey="'+key+'">'+esc(d)+'</button>';
+      return '<button type="button" class="diff-pill'+(on?' on':'')+'" data-diffkey="'+key+'"><span class="diff-pill-cb">'+(on?'✓':'')+'</span><span>'+esc(d)+'</span></button>';
     }).join('');
     return '<div class="diff-cat-group"><div class="diff-cat-label">'+esc(cat.label)+'</div><div class="diff-pills">'+pills+'</div></div>';
   }).join('');
@@ -4333,7 +4338,8 @@ function renderDiffChecks(){
     if(!p)return;
     var k=p.getAttribute('data-diffkey');
     S.difficulties[k]=!S.difficulties[k];
-    p.classList.toggle('on');
+    p.classList.toggle('on',!!S.difficulties[k]);
+    var cb=p.querySelector('.diff-pill-cb');if(cb)cb.textContent=S.difficulties[k]?'✓':'';
     save();refresh();
   };
   el.addEventListener('click',el._h);
