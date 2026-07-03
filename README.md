@@ -21,6 +21,7 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 
 ## ASD
 
+- [Autism Tests (RAADS-R)](autism-tests.html)
 - [ASD Assessment](asd.html)
 
 ## Clinical Tools
