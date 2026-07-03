@@ -557,6 +557,36 @@
         .counter-row { padding-left: 0; }
         .likert-num { flex: 0 0 26px; }
     }
+
+    /* ---------- Printable PDF report ---------- */
+    #raadsrPrintReport { display: none; }
+    .pr-doc { color: #1a202c; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    .pr-title { font-size: 1.5em; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+    .pr-sub { font-size: 0.9em; color: var(--gray-700); margin-bottom: 14px; }
+    .pr-meta { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 0.9em; }
+    .pr-meta td { padding: 3px 8px; vertical-align: top; }
+    .pr-meta td.k { font-weight: 700; width: 130px; color: var(--gray-700); }
+    .pr-section { font-size: 1.05em; font-weight: 700; color: var(--primary); margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 2px solid var(--primary-light); }
+    .pr-total { font-size: 1.15em; font-weight: 700; }
+    .pr-interp { margin: 6px 0 4px; font-weight: 600; }
+    .pr-interp.pos { color: var(--danger); }
+    .pr-interp.neg { color: var(--success); }
+    .pr-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+    .pr-table th, .pr-table td { border: 1px solid var(--gray-300); padding: 5px 8px; text-align: left; }
+    .pr-table th { background: var(--primary-light); color: var(--primary); }
+    .pr-table td.num, .pr-table td.sc { text-align: center; width: 42px; }
+    .pr-note { margin-top: 16px; font-size: 0.78em; color: var(--gray-700); line-height: 1.5; border-top: 1px solid var(--gray-300); padding-top: 8px; }
+
+    @media print {
+        body { background: #fff; }
+        .container { max-width: none; padding: 0; }
+        .header, .card, .scale-nav, .score-bar, .btn-row, .output-card,
+        .disclaimer, .anchor-legend, .section-body, .tab-pane > .card { display: none !important; }
+        .scale-layout { display: block; }
+        .scale-content { min-width: 0; }
+        #raadsrPrintReport { display: block !important; }
+        .pr-item-row { page-break-inside: avoid; }
+    }
 </style>
 </head>
 <body>
@@ -605,6 +635,8 @@
 
         <div class="btn-row">
             <button class="btn btn-primary" onclick="generateOutput('raadsr')">Generate Plain Text Summary</button>
+            <button class="btn btn-primary" onclick="downloadRaadsrPdf()">Download PDF</button>
+            <button class="btn btn-primary" onclick="emailRaadsr()">Email Results</button>
             <button class="btn btn-secondary" onclick="resetScale('raadsr')">Reset</button>
         </div>
 
@@ -615,6 +647,9 @@
             </div>
             <textarea class="output" id="raadsrText" readonly></textarea>
         </div>
+
+        <!-- Printable report (hidden on screen, shown only when printing / saving to PDF) -->
+        <div id="raadsrPrintReport" aria-hidden="true"></div>
 
         <div class="disclaimer">
             <strong>Reference:</strong> Ritvo RA, Ritvo ER, Guthrie D, et al. The Ritvo Autism Asperger Diagnostic Scale-Revised (RAADS-R): a scale to assist the diagnosis of autism spectrum disorder in adults: an international validation study. J Autism Dev Disord. 2011;41(8):1076&ndash;1089. Total score range 0&ndash;240; a total <strong>&ge;65</strong> is consistent with autism spectrum disorder (reported sensitivity ~97%, specificity ~100% in the validation sample). Four subscales: Language (0&ndash;21), Social Relatedness (0&ndash;117), Sensory/Motor (0&ndash;60), Circumscribed Interests (0&ndash;42). Seventeen &ldquo;normative&rdquo; items are reverse-scored. The RAADS-R is a screening aid designed for use alongside a clinical interview &mdash; it is not a stand-alone diagnostic instrument and does not replace comprehensive assessment by a qualified clinician.
@@ -932,6 +967,102 @@ function copyOutput(which) {
         btn.textContent = 'Copied!';
         restore();
     }
+}
+
+// ---------- Printable report / PDF ----------
+function buildRaadsrPrint() {
+    const r = computeRaadsr();
+    const name  = document.getElementById('patientName').value.trim() || 'Not specified';
+    const pid   = document.getElementById('patientId').value.trim() || 'Not specified';
+    const date  = document.getElementById('assessmentDate').value || 'Not specified';
+    const rater = document.getElementById('raterName').value.trim() || 'Not specified';
+    const above = r.total >= RAADS_CUTOFF;
+
+    let h = '<div class="pr-doc">';
+    h += '<div class="pr-title">RAADS-R Results</div>';
+    h += '<div class="pr-sub">Ritvo Autism Asperger Diagnostic Scale &ndash; Revised (80-item self-report)</div>';
+
+    h += '<table class="pr-meta">';
+    h += '<tr><td class="k">Patient</td><td>' + escapeHtml(name) + '</td><td class="k">Date</td><td>' + escapeHtml(date) + '</td></tr>';
+    h += '<tr><td class="k">Patient ID</td><td>' + escapeHtml(pid) + '</td><td class="k">Clinician / Rater</td><td>' + escapeHtml(rater) + '</td></tr>';
+    h += '</table>';
+
+    h += '<div class="pr-section">Result</div>';
+    h += '<div class="pr-total">Total score: ' + r.total + ' / ' + RAADS_TOTAL_MAX +
+         (r.rated < 80 ? ' &nbsp;(partial: ' + r.rated + '/80 items completed)' : '') + '</div>';
+    h += '<div class="pr-interp ' + (above ? 'pos' : 'neg') + '">' +
+         (above ? 'At or above the cut-off of 65 &mdash; consistent with autism spectrum disorder.'
+                : 'Below the cut-off of 65 &mdash; autism spectrum disorder less likely on this screen.') + '</div>';
+
+    h += '<div class="pr-section">Subscale scores</div>';
+    h += '<table class="pr-table"><thead><tr><th>Subscale</th><th class="sc">Score</th><th class="sc">Max</th></tr></thead><tbody>';
+    RAADS_DOMAINS.forEach(dom => {
+        h += '<tr><td>' + escapeHtml(dom.label) + '</td><td class="sc">' + r.subs[dom.key] + '</td><td class="sc">' + dom.max + '</td></tr>';
+    });
+    h += '<tr><td><strong>Total</strong></td><td class="sc"><strong>' + r.total + '</strong></td><td class="sc"><strong>' + RAADS_TOTAL_MAX + '</strong></td></tr>';
+    h += '</tbody></table>';
+
+    h += '<div class="pr-section">Item responses</div>';
+    h += '<table class="pr-table"><thead><tr><th class="num">#</th><th>Statement</th><th>Response</th><th class="sc">Score</th></tr></thead><tbody>';
+    RAADS_ITEMS.forEach(item => {
+        const v = getRadioVal('raadsr_' + item.n);
+        let resp, sc;
+        if (v === null) { resp = 'Not rated'; sc = '&ndash;'; }
+        else { const idx = parseInt(v, 10); resp = RAADS_OPTIONS[idx].label; sc = scoreItem(idx, item.rev); }
+        h += '<tr class="pr-item-row"><td class="num">' + item.n + (item.rev ? '*' : '') + '</td><td>' +
+             escapeHtml(item.t) + '</td><td>' + escapeHtml(resp) + '</td><td class="sc">' + sc + '</td></tr>';
+    });
+    h += '</tbody></table>';
+
+    h += '<div class="pr-note">* reverse-scored (normative) item. ' +
+         'Cut-off for likely autism spectrum disorder: total &ge;65. ' +
+         'The RAADS-R is a screening aid to be used alongside a clinical interview; it is not a stand-alone diagnostic instrument. ' +
+         'Ritvo RA, et al. J Autism Dev Disord. 2011;41(8):1076&ndash;1089.</div>';
+    h += '</div>';
+
+    document.getElementById('raadsrPrintReport').innerHTML = h;
+}
+
+function downloadRaadsrPdf() {
+    buildRaadsrPrint();
+    // Give the browser a tick to lay out the report before opening the print dialog.
+    setTimeout(function () { window.print(); }, 60);
+}
+
+// ---------- Email results (opens the user's own mail app) ----------
+function emailRaadsr() {
+    const r = computeRaadsr();
+    const name  = document.getElementById('patientName').value.trim() || 'Not specified';
+    const pid   = document.getElementById('patientId').value.trim() || 'Not specified';
+    const date  = document.getElementById('assessmentDate').value || 'Not specified';
+    const rater = document.getElementById('raterName').value.trim() || 'Not specified';
+    const above = r.total >= RAADS_CUTOFF;
+
+    const subjName = name === 'Not specified' ? '' : ' - ' + name;
+    const subject = 'RAADS-R Results' + subjName;
+
+    let b = '';
+    b += 'RAADS-R (Ritvo Autism Asperger Diagnostic Scale - Revised)\n';
+    b += '-----------------------------------------------------------\n';
+    b += 'Patient:   ' + name + '\n';
+    b += 'ID:        ' + pid + '\n';
+    b += 'Date:      ' + date + '\n';
+    b += 'Clinician: ' + rater + '\n\n';
+    b += 'TOTAL SCORE: ' + r.total + ' / ' + RAADS_TOTAL_MAX +
+         (r.rated < 80 ? '  (partial: ' + r.rated + '/80 items completed)' : '') + '\n';
+    b += 'INTERPRETATION: ' + (above
+            ? 'At or above the cut-off of 65 - consistent with autism spectrum disorder.'
+            : 'Below the cut-off of 65 - autism spectrum disorder less likely on this screen.') + '\n\n';
+    b += 'Subscale scores:\n';
+    RAADS_DOMAINS.forEach(dom => {
+        b += '  ' + (dom.label + ':').padEnd(26, ' ') + String(r.subs[dom.key]).padStart(3, ' ') + ' / ' + dom.max + '\n';
+    });
+    b += '\nCut-off for likely ASD: total >=65. The RAADS-R is a screening aid to be\n';
+    b += 'used alongside a clinical interview, not a stand-alone diagnostic tool.\n\n';
+    b += '(For the full item-by-item report, use "Download PDF" and attach the PDF to this email.)\n';
+
+    const href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(b);
+    window.location.href = href;
 }
 
 function resetScale(which) {
