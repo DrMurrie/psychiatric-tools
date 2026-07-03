@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autism Tests — Dr Benjamin Murrie</title>
+<style>
+    :root {
+        --primary: #2c5282;
+        --primary-light: #ebf4ff;
+        --accent: #3182ce;
+        --success: #276749;
+        --warning: #c05621;
+        --danger: #c53030;
+        --extreme: #7b341e;
+        --gray-50: #f7fafc;
+        --gray-100: #edf2f7;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e0;
+        --gray-600: #718096;
+        --gray-700: #4a5568;
+        --gray-800: #2d3748;
+        --gray-900: #1a202c;
+        --border-radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: var(--gray-50);
+        color: var(--gray-800);
+        line-height: 1.6;
+    }
+    .container { max-width: 960px; width: 100%; margin: 0 auto; padding: 20px; }
+
+    .header {
+        background: linear-gradient(135deg, var(--primary), #1a365d);
+        color: white;
+        padding: 28px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .header h1 { font-size: 1.6em; margin-bottom: 6px; }
+    .header p { opacity: 0.9; font-size: 0.95em; }
+
+    .scale-layout {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+    .scale-nav {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        overflow: hidden;
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+    .nav-cat-btn {
+        width: 100%;
+        padding: 10px 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        font-weight: 700;
+        font-size: 0.82em;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+    }
+    .nav-cat-btn:hover { background: #1a365d; }
+    .cat-arrow { transition: transform 0.2s; font-size: 1em; }
+    .nav-category.open .cat-arrow { transform: rotate(180deg); }
+    .nav-scales { display: none; flex-direction: column; border-bottom: 2px solid var(--primary); }
+    .nav-category.open .nav-scales { display: flex; }
+    .scale-btn {
+        padding: 8px 12px 8px 14px;
+        background: none;
+        border: none;
+        border-left: 3px solid transparent;
+        font-size: 0.8em;
+        color: var(--gray-700);
+        cursor: pointer;
+        text-align: left;
+        line-height: 1.3;
+        border-bottom: 1px solid var(--gray-100);
+    }
+    .scale-btn:last-child { border-bottom: none; }
+    .scale-btn:hover { background: var(--primary-light); color: var(--primary); border-left-color: var(--accent); }
+    .scale-btn.active { border-left-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .scale-abbr { display: block; font-weight: 700; font-size: 1.05em; }
+    .scale-full { display: block; font-size: 0.88em; font-weight: normal; color: var(--gray-600); margin-top: 1px; }
+    .scale-btn.active .scale-full { color: var(--accent); }
+    .scale-content { min-width: 0; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    .card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 22px;
+        margin-bottom: 18px;
+    }
+    .card-title {
+        font-size: 1.15em;
+        font-weight: 600;
+        color: var(--primary);
+        margin-bottom: 14px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--primary-light);
+    }
+
+    .patient-info { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .patient-info label { display: block; font-weight: 500; margin-bottom: 4px; font-size: 0.9em; color: var(--gray-700); }
+    .patient-info input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid var(--gray-300);
+        border-radius: 6px;
+        font-size: 0.95em;
+    }
+    .patient-info input:focus {
+        outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,0.15);
+    }
+
+    .item-block {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .item-block:last-child { border-bottom: none; }
+    .item-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .item-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        min-width: 28px; height: 28px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 28px;
+        font-size: 0.85em;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    .item-title {
+        font-weight: 600;
+        color: var(--gray-900);
+        font-size: 1em;
+        flex: 1;
+        min-width: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    .item-sub {
+        font-style: italic;
+        color: var(--gray-600);
+        font-size: 0.88em;
+        margin: 0 0 10px 38px;
+        word-wrap: break-word;
+    }
+    .radio-group { padding-left: 38px; display: flex; flex-direction: column; gap: 2px; }
+    .radio-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .radio-option:hover { background: var(--gray-100); }
+    .radio-option input[type="radio"] {
+        accent-color: var(--accent);
+        width: 18px; height: 18px;
+        margin-top: 2px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+    .radio-label {
+        font-size: 0.9em;
+        flex: 1;
+        min-width: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    .radio-label .val { font-weight: 600; color: var(--gray-900); margin-right: 4px; }
+
+    .section-body {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 18px;
+    }
+
+    .score-bar {
+        background: var(--primary-light);
+        padding: 12px 20px;
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 1em;
+        text-align: right;
+        border-top: 2px solid var(--accent);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+
+    .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 18px 0; }
+    .btn {
+        padding: 11px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.95em;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: #1a365d; }
+    .btn-secondary { background: var(--gray-200); color: var(--gray-700); }
+    .btn-secondary:hover { background: var(--gray-300); }
+
+    .output-card { display: none; }
+    .output-card.visible { display: block; }
+    .output-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .output-header h3 { color: var(--primary); font-size: 1.1em; }
+    textarea.output {
+        width: 100%;
+        height: 360px;
+        font-family: 'Courier New', Consolas, monospace;
+        font-size: 0.85em;
+        padding: 14px;
+        border: 1px solid var(--gray-300);
+        border-radius: 6px;
+        resize: vertical;
+        line-height: 1.5;
+        color: var(--gray-800);
+        background: var(--gray-50);
+    }
+
+    .severity-pill {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.82em;
+        font-weight: 600;
+    }
+    .sev-none     { background: #f0fff4; color: #276749; }
+    .sev-mild     { background: #fefcbf; color: #744210; }
+    .sev-moderate { background: #feebc8; color: #c05621; }
+    .sev-modsev   { background: #fed7d7; color: #c53030; }
+    .sev-severe   { background: #fff5f5; color: #7b341e; }
+
+    .disclaimer {
+        background: #ebf8ff;
+        border: 1px solid #90cdf4;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 0.82em;
+        color: #2a4365;
+        margin-top: 12px;
+    }
+
+    .score-chart {
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: 6px;
+        padding: 14px 16px;
+        margin-bottom: 14px;
+    }
+    .chart-title {
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 0.95em;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .chart-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+    }
+    .chart-row:last-child { margin-bottom: 0; }
+    .chart-row.is-total { margin-top: 6px; padding-top: 8px; border-top: 1px dashed var(--gray-300); }
+    .chart-label {
+        flex: 0 0 150px;
+        font-size: 0.85em;
+        color: var(--gray-700);
+        font-weight: 500;
+        text-align: right;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    .chart-row.is-total .chart-label { color: var(--gray-900); font-weight: 700; }
+    .chart-bar-track {
+        flex: 1;
+        position: relative;
+        background: var(--gray-200);
+        border-radius: 4px;
+        height: 22px;
+        overflow: hidden;
+        min-width: 0;
+    }
+    .chart-bar-fill {
+        position: absolute;
+        top: 0; left: 0;
+        height: 100%;
+        background: var(--accent);
+        transition: width 0.3s ease;
+        border-radius: 4px 0 0 4px;
+    }
+    .chart-bar-fill.bar-none     { background: #48bb78; }
+    .chart-bar-fill.bar-mild     { background: #ecc94b; }
+    .chart-bar-fill.bar-moderate { background: #ed8936; }
+    .chart-bar-fill.bar-modsev   { background: #e53e3e; }
+    .chart-bar-fill.bar-severe   { background: #9b2c2c; }
+    .chart-value {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.82em;
+        font-weight: 600;
+        color: var(--gray-900);
+        text-shadow: 0 0 4px rgba(255,255,255,0.85);
+        z-index: 1;
+        white-space: nowrap;
+    }
+    .chart-footer {
+        margin-top: 10px;
+        padding-top: 8px;
+        border-top: 1px solid var(--gray-200);
+        font-size: 0.82em;
+        color: var(--gray-600);
+        font-style: italic;
+    }
+
+    .chart-toolbar {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+    .chart-action-btn {
+        padding: 7px 14px;
+        font-size: 0.82em;
+        background: white;
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .chart-action-btn:hover { background: var(--primary-light); }
+    .chart-action-btn.copied { background: var(--success); color: white; border-color: var(--success); }
+    .chart-svg-wrap {
+        background: white;
+        border: 1px solid var(--gray-200);
+        border-radius: 6px;
+        padding: 10px;
+        overflow-x: auto;
+    }
+    .chart-svg-wrap svg {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .subscale-header {
+        padding: 10px 18px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 0.92em;
+        letter-spacing: 0.3px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .anchor-legend {
+        padding: 10px 14px;
+        background: #fffaf0;
+        border-bottom: 1px solid var(--gray-200);
+        font-size: 0.82em;
+        color: var(--gray-700);
+        line-height: 1.5;
+    }
+    .anchor-legend strong { color: var(--gray-900); }
+    .likert-row {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    .likert-row:last-child { border-bottom: none; }
+    .likert-row-top {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+    .likert-num {
+        flex: 0 0 32px;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 0.95em;
+    }
+    .likert-chips {
+        display: flex;
+        gap: 4px;
+        flex: 0 0 auto;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .likert-chip {
+        display: inline-block;
+        padding: 2px 6px;
+        border-radius: 3px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 0.7em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    .likert-text {
+        flex: 1;
+        font-size: 0.9em;
+        color: var(--gray-800);
+        line-height: 1.45;
+        min-width: 0;
+    }
+    .likert-buttons {
+        display: flex;
+        gap: 6px;
+        padding-left: 42px;
+        flex-wrap: wrap;
+    }
+    .likert-buttons label {
+        cursor: pointer;
+        position: relative;
+        display: block;
+    }
+    .likert-buttons input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+        pointer-events: none;
+    }
+    .likert-btn {
+        display: inline-block;
+        min-width: 38px;
+        padding: 8px 10px;
+        background: white;
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 0.88em;
+        font-weight: 600;
+        color: var(--gray-700);
+        text-align: center;
+        transition: all 0.12s ease;
+        user-select: none;
+    }
+    .likert-buttons label:hover .likert-btn {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .likert-buttons input[type="radio"]:checked + .likert-btn {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    .counter-row {
+        display: flex;
+        gap: 10px;
+        padding-left: 42px;
+        align-items: center;
+    }
+    .counter-btn {
+        width: 34px;
+        height: 34px;
+        background: var(--gray-100);
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--gray-700);
+        cursor: pointer;
+        line-height: 1;
+    }
+    .counter-btn:hover {
+        background: var(--primary-light);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .counter-val {
+        width: 64px;
+        padding: 7px;
+        text-align: center;
+        border: 1px solid var(--gray-300);
+        border-radius: 5px;
+        font-size: 0.95em;
+        font-weight: 600;
+    }
+    .counter-suffix {
+        font-size: 0.85em;
+        color: var(--gray-600);
+    }
+    .mean-line {
+        padding: 10px 18px;
+        background: #f7fafc;
+        border-bottom: 1px solid var(--gray-200);
+        font-size: 0.9em;
+        font-weight: 600;
+        color: var(--gray-800);
+        text-align: right;
+    }
+    .mean-line .mean-value { color: var(--primary); margin-left: 8px; }
+
+    @media (max-width: 720px) {
+        .scale-layout { grid-template-columns: 1fr; }
+        .scale-nav { position: static; max-height: none; }
+    }
+    @media (max-width: 600px) {
+        .container { padding: 12px; }
+        .header { padding: 20px; }
+        .header h1 { font-size: 1.3em; }
+        .card { padding: 16px; }
+        .patient-info { grid-template-columns: 1fr; }
+        .item-block { padding: 14px 12px; }
+        .item-sub { padding-left: 0; margin-left: 0; }
+        .radio-group { padding-left: 0; }
+        .score-bar { padding: 10px 14px; text-align: center; }
+        .btn { padding: 10px 18px; font-size: 0.9em; }
+        .output-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        .chart-label { flex: 0 0 100px; font-size: 0.78em; }
+        .chart-bar-track { height: 20px; }
+        .chart-value { font-size: 0.76em; right: 6px; }
+        .likert-buttons { padding-left: 0; gap: 4px; }
+        .likert-btn { min-width: 32px; padding: 6px 6px; font-size: 0.82em; }
+        .counter-row { padding-left: 0; }
+        .likert-num { flex: 0 0 26px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Autism Tests</h1>
+        <p>Self-report screening scales for autism spectrum traits in adults</p>
+    </div>
+
+    <!-- PATIENT INFO -->
+    <div class="card">
+        <div class="card-title">Patient Information</div>
+        <div class="patient-info">
+            <div><label>Patient Name</label><input type="text" id="patientName" placeholder="Enter patient name"></div>
+            <div><label>Patient ID</label><input type="text" id="patientId" placeholder="Enter patient ID"></div>
+            <div><label>Date of Assessment</label><input type="date" id="assessmentDate"></div>
+            <div><label>Clinician / Rater</label><input type="text" id="raterName" placeholder="Enter clinician name"></div>
+        </div>
+    </div>
+
+    <div class="scale-layout">
+    <nav class="scale-nav" id="scaleNav">
+        <div class="nav-category open" data-cat="screening">
+            <button class="nav-cat-btn" onclick="toggleCat('screening')">Autism Screening <span class="cat-arrow">&#9662;</span></button>
+            <div class="nav-scales">
+                <button class="scale-btn active" data-tab="raadsr" onclick="switchTab('raadsr')"><span class="scale-abbr">RAADS-R</span><span class="scale-full">Ritvo Autism Asperger Diagnostic Scale&ndash;Revised (80 items)</span></button>
+            </div>
+        </div>
+    </nav>
+    <div class="scale-content">
+
+    <!-- RAADS-R -->
+    <div class="tab-pane active" id="tab-raadsr">
+        <div class="card">
+            <div class="card-title">RAADS-R Instructions</div>
+            <p style="font-size:0.9em;">The <strong>Ritvo Autism Asperger Diagnostic Scale&ndash;Revised (RAADS-R)</strong> is an 80-item self-report measure of autistic symptoms in adults. For each statement, choose the option that best describes you. Consider both how you are <strong>now</strong> and how you were <strong>before you were 16</strong>. There are no right or wrong answers &mdash; answer as honestly as you can.</p>
+        </div>
+
+        <div class="section-body">
+            <div class="anchor-legend">
+                <strong>Response options:</strong>
+                <strong>TW</strong> = True now and when I was young &nbsp;&middot;&nbsp;
+                <strong>TN</strong> = True only now &nbsp;&middot;&nbsp;
+                <strong>TY</strong> = True only when I was younger than 16 &nbsp;&middot;&nbsp;
+                <strong>N</strong> = Never true
+            </div>
+            <div id="raadsrItems"></div>
+        </div>
+
+        <div class="score-bar">
+            RAADS-R Total: <span id="raadsrTotal">0</span> / 240 &nbsp; &mdash; &nbsp; <span class="severity-pill" id="raadsrSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('raadsr')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('raadsr')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="raadsrOutput">
+            <div class="output-header">
+                <h3>RAADS-R Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('raadsr')" id="raadsrCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="raadsrText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Ritvo RA, Ritvo ER, Guthrie D, et al. The Ritvo Autism Asperger Diagnostic Scale-Revised (RAADS-R): a scale to assist the diagnosis of autism spectrum disorder in adults: an international validation study. J Autism Dev Disord. 2011;41(8):1076&ndash;1089. Total score range 0&ndash;240; a total <strong>&ge;65</strong> is consistent with autism spectrum disorder (reported sensitivity ~97%, specificity ~100% in the validation sample). Four subscales: Language (0&ndash;21), Social Relatedness (0&ndash;117), Sensory/Motor (0&ndash;60), Circumscribed Interests (0&ndash;42). Seventeen &ldquo;normative&rdquo; items are reverse-scored. The RAADS-R is a screening aid designed for use alongside a clinical interview &mdash; it is not a stand-alone diagnostic instrument and does not replace comprehensive assessment by a qualified clinician.
+        </div>
+    </div>
+
+    </div><!-- .scale-content -->
+    </div><!-- .scale-layout -->
+
+</div>
+
+<script>
+// ---------- Date default ----------
+document.getElementById('assessmentDate').valueAsDate = new Date();
+
+// ---------- Tabs ----------
+function switchTab(name) {
+    document.querySelectorAll('.scale-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
+    const btn = document.querySelector('.scale-btn[data-tab="' + name + '"]');
+    if (btn) {
+        const cat = btn.closest('.nav-category');
+        if (cat && !cat.classList.contains('open')) cat.classList.add('open');
+    }
+}
+function toggleCat(cat) {
+    document.querySelector('.nav-category[data-cat="' + cat + '"]').classList.toggle('open');
+}
+
+// ---------- Helpers ----------
+function getRadioVal(name) {
+    const el = document.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : null;
+}
+function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function patientHeader() {
+    const name  = document.getElementById('patientName').value.trim() || 'Not specified';
+    const pid   = document.getElementById('patientId').value.trim() || 'Not specified';
+    const date  = document.getElementById('assessmentDate').value || 'Not specified';
+    const rater = document.getElementById('raterName').value.trim() || 'Not specified';
+    let t = '';
+    t += 'Patient:   ' + name + '\n';
+    t += 'ID:        ' + pid + '\n';
+    t += 'Date:      ' + date + '\n';
+    t += 'Clinician: ' + rater + '\n';
+    return t;
+}
+
+// ---------- RAADS-R data ----------
+// Each item: n = question number, d = subscale key, rev = reverse (normative) scored, t = statement text.
+const RAADS_ITEMS = [
+    {n:1, d:"social", rev:true, t:"I am a sympathetic person."},
+    {n:2, d:"language", rev:false, t:"I often use words and phrases from movies and television in conversations."},
+    {n:3, d:"social", rev:false, t:"I am often surprised when others tell me I have been rude."},
+    {n:4, d:"sensory", rev:false, t:"Sometimes I talk too loudly or too softly, and I am not aware of it."},
+    {n:5, d:"social", rev:false, t:"I often don’t know how to act in social situations."},
+    {n:6, d:"social", rev:true, t:"I can “put myself in other people’s shoes.”"},
+    {n:7, d:"language", rev:false, t:"I have a hard time figuring out what some phrases mean, like “you are the apple of my eye.”"},
+    {n:8, d:"social", rev:false, t:"I only like to talk to people who share my special interests."},
+    {n:9, d:"interests", rev:false, t:"I focus on details rather than the overall idea."},
+    {n:10, d:"sensory", rev:false, t:"I always notice how food feels in my mouth. This is more important to me than how it tastes."},
+    {n:11, d:"social", rev:true, t:"I miss my best friends or family when we are apart for a long time."},
+    {n:12, d:"social", rev:false, t:"Sometimes I offend others by saying what I am thinking, even if I don’t mean to."},
+    {n:13, d:"interests", rev:false, t:"I only like to think and talk about a few things that interest me."},
+    {n:14, d:"social", rev:false, t:"I’d rather go out to eat in a restaurant by myself than with someone I know."},
+    {n:15, d:"language", rev:false, t:"I cannot imagine what it would be like to be someone else."},
+    {n:16, d:"sensory", rev:false, t:"I have been told that I am clumsy or uncoordinated."},
+    {n:17, d:"social", rev:false, t:"Others consider me odd or different."},
+    {n:18, d:"social", rev:true, t:"I understand when friends need to be comforted."},
+    {n:19, d:"sensory", rev:false, t:"I am very sensitive to the way my clothes feel when I touch them. How they feel is more important to me than how they look."},
+    {n:20, d:"social", rev:false, t:"I like to copy the way certain people speak and act. It helps me appear more normal."},
+    {n:21, d:"social", rev:false, t:"It can be very intimidating for me to talk to more than one person at the same time."},
+    {n:22, d:"social", rev:false, t:"I have to “act normal” to please other people and make them like me."},
+    {n:23, d:"social", rev:true, t:"Meeting new people is usually easy for me."},
+    {n:24, d:"interests", rev:false, t:"I get highly confused when someone interrupts me when I am talking about something I am very interested in."},
+    {n:25, d:"social", rev:false, t:"It is difficult for me to understand how other people are feeling when we are talking."},
+    {n:26, d:"social", rev:true, t:"I like having a conversation with several people, for instance around a dinner table, at school or at work."},
+    {n:27, d:"language", rev:false, t:"I take things too literally, so I often miss what people are trying to say."},
+    {n:28, d:"social", rev:false, t:"It is very difficult for me to understand when someone is embarrassed or jealous."},
+    {n:29, d:"sensory", rev:false, t:"Some ordinary textures that do not bother others feel very offensive when they touch my skin."},
+    {n:30, d:"interests", rev:false, t:"I get extremely upset when the way I like to do things is suddenly changed."},
+    {n:31, d:"social", rev:false, t:"I have never wanted or needed to have what other people call an “intimate relationship.”"},
+    {n:32, d:"interests", rev:false, t:"It is difficult for me to start and stop a conversation. I need to keep going until I am finished."},
+    {n:33, d:"sensory", rev:true, t:"I speak with a normal rhythm."},
+    {n:34, d:"sensory", rev:false, t:"The same sound, color or texture can suddenly change from very sensitive to very dull."},
+    {n:35, d:"language", rev:false, t:"The phrase “I’ve got you under my skin” makes me very uncomfortable."},
+    {n:36, d:"sensory", rev:false, t:"Sometimes the sound of a word or a high-pitched noise can be painful to my ears."},
+    {n:37, d:"social", rev:true, t:"I am an understanding type of person."},
+    {n:38, d:"social", rev:false, t:"I do not connect with characters in movies and cannot feel what they feel."},
+    {n:39, d:"social", rev:false, t:"I cannot tell when someone is flirting with me."},
+    {n:40, d:"interests", rev:false, t:"I can see in my mind in exact detail things that I am interested in."},
+    {n:41, d:"interests", rev:false, t:"I keep lists of things that interest me, even when they have no practical use (for example sports statistics, train schedules, calendar dates, historical facts and dates)."},
+    {n:42, d:"sensory", rev:false, t:"When I feel overwhelmed by my senses, I have to isolate myself to shut them down."},
+    {n:43, d:"social", rev:true, t:"I like to talk things over with my friends."},
+    {n:44, d:"social", rev:false, t:"I cannot tell if someone is interested or bored with what I am saying."},
+    {n:45, d:"social", rev:false, t:"It can be very hard to read someone’s face, hand and body movements when they are talking."},
+    {n:46, d:"sensory", rev:false, t:"The same thing (like clothes or temperatures) can feel very different to me at different times."},
+    {n:47, d:"social", rev:true, t:"I feel very comfortable with dating or being in social situations with others."},
+    {n:48, d:"social", rev:true, t:"I try to be as helpful as I can when other people tell me their personal problems."},
+    {n:49, d:"sensory", rev:false, t:"I have been told that I have an unusual voice (for example flat, monotone, childish, or high-pitched)."},
+    {n:50, d:"interests", rev:false, t:"Sometimes a thought or a subject gets stuck in my mind and I have to talk about it even if no one is interested."},
+    {n:51, d:"sensory", rev:false, t:"I do certain things with my hands over and over again (like flapping, twirling sticks or strings, waving things by my eyes)."},
+    {n:52, d:"interests", rev:false, t:"I have never been interested in what most of the people I know consider interesting."},
+    {n:53, d:"social", rev:true, t:"I am considered a compassionate type of person."},
+    {n:54, d:"social", rev:false, t:"I get along with other people by following a set of specific rules that help me look normal."},
+    {n:55, d:"social", rev:false, t:"It is very difficult for me to work and function in groups."},
+    {n:56, d:"interests", rev:false, t:"When I am talking to someone, it is hard to change the subject. If the other person does so, I can get very upset and confused."},
+    {n:57, d:"sensory", rev:false, t:"Sometimes I have to cover my ears to block out painful noises (like vacuum cleaners or people talking too much or too loudly)."},
+    {n:58, d:"language", rev:true, t:"I can chat and make small talk with people."},
+    {n:59, d:"sensory", rev:false, t:"Sometimes things that should feel painful are not (for instance when I hurt myself or burn my hand on a stove)."},
+    {n:60, d:"social", rev:false, t:"When talking to someone, I have a hard time telling when it is my turn to talk or to listen."},
+    {n:61, d:"social", rev:false, t:"I am considered a loner by those who know me best."},
+    {n:62, d:"sensory", rev:true, t:"I usually speak in a normal tone."},
+    {n:63, d:"interests", rev:false, t:"I like things to be exactly the same day after day and even small changes in my routines upset me."},
+    {n:64, d:"social", rev:false, t:"How to make friends and socialize is a mystery to me."},
+    {n:65, d:"sensory", rev:false, t:"It calms me to spin around or to rock in a chair when I am feeling stressed."},
+    {n:66, d:"language", rev:false, t:"The phrase, “He wears his heart on his sleeve,” does not make sense to me."},
+    {n:67, d:"sensory", rev:false, t:"If I am in a place where there are many smells, textures to feel, noises or bright lights, I feel anxious or frightened."},
+    {n:68, d:"social", rev:true, t:"I can tell when someone says one thing but means something else."},
+    {n:69, d:"social", rev:false, t:"I like to be by myself as much as I can."},
+    {n:70, d:"interests", rev:false, t:"I keep my thoughts stacked in my memory like they are on filing cards, and I pick out the ones I need by looking through the stack and finding the right one (or another unique way)."},
+    {n:71, d:"sensory", rev:false, t:"The same sound sometimes seems very loud or very soft, even though I know it has not changed."},
+    {n:72, d:"social", rev:true, t:"I enjoy spending time eating and talking with my family and friends."},
+    {n:73, d:"sensory", rev:false, t:"I can’t tolerate things I dislike (like smells, textures, sounds or colours)."},
+    {n:74, d:"sensory", rev:false, t:"I don’t like to be hugged or held."},
+    {n:75, d:"interests", rev:false, t:"When I go somewhere, I have to follow a familiar route or I can get very confused and upset."},
+    {n:76, d:"social", rev:false, t:"It is difficult to figure out what other people expect of me."},
+    {n:77, d:"social", rev:true, t:"I like to have close friends."},
+    {n:78, d:"interests", rev:false, t:"People tell me that I give too much detail."},
+    {n:79, d:"social", rev:false, t:"I am often told that I ask embarrassing questions."},
+    {n:80, d:"social", rev:false, t:"I tend to point out other people’s mistakes."},
+];
+
+// Response options, in display order. idx maps to the raw response index used for scoring.
+const RAADS_OPTIONS = [
+    {idx:0, abbr:'TW', label:'True now and when I was young'},
+    {idx:1, abbr:'TN', label:'True only now'},
+    {idx:2, abbr:'TY', label:'True only when I was younger than 16'},
+    {idx:3, abbr:'N',  label:'Never true'}
+];
+
+const RAADS_DOMAINS = [
+    {key:'language',  label:'Language',               max:21},
+    {key:'social',    label:'Social Relatedness',     max:117},
+    {key:'sensory',   label:'Sensory / Motor',        max:60},
+    {key:'interests', label:'Circumscribed Interests',max:42}
+];
+const RAADS_TOTAL_MAX = 240;
+const RAADS_CUTOFF = 65;
+
+// Symptom items: TW=3, TN=2, TY=1, N=0.  Reverse (normative) items: TW=0, TN=1, TY=2, N=3.
+function scoreItem(responseIndex, rev) {
+    return rev ? responseIndex : 3 - responseIndex;
+}
+
+// ---------- Build RAADS-R UI ----------
+(function buildRaadsr() {
+    const container = document.getElementById('raadsrItems');
+    let html = '';
+    RAADS_ITEMS.forEach(item => {
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + item.n + '</span><span class="item-title">' + escapeHtml(item.t) + '</span></div>';
+        html += '<div class="radio-group">';
+        RAADS_OPTIONS.forEach(opt => {
+            html += '<label class="radio-option"><input type="radio" name="raadsr_' + item.n + '" value="' + opt.idx + '" onchange="updateRaadsr()">' +
+                    '<span class="radio-label"><span class="val">' + opt.abbr + '</span>' + escapeHtml(opt.label) + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
+// ---------- Scoring ----------
+function computeRaadsr() {
+    const subs = {language:0, social:0, sensory:0, interests:0};
+    let total = 0, rated = 0;
+    RAADS_ITEMS.forEach(item => {
+        const v = getRadioVal('raadsr_' + item.n);
+        if (v === null) return;
+        const s = scoreItem(parseInt(v, 10), item.rev);
+        subs[item.d] += s;
+        total += s;
+        rated++;
+    });
+    return {subs, total, rated};
+}
+
+function updateRaadsr() {
+    const r = computeRaadsr();
+    document.getElementById('raadsrTotal').textContent = r.total;
+    const pill = document.getElementById('raadsrSeverityPill');
+    if (r.rated === 0) {
+        pill.textContent = 'Not rated';
+        pill.className = 'severity-pill';
+    } else {
+        const above = r.total >= RAADS_CUTOFF;
+        pill.textContent = (above ? 'Above cut-off (≥65)' : 'Below cut-off (<65)') +
+                           (r.rated < 80 ? ' — partial: ' + r.rated + '/80' : '');
+        pill.className = 'severity-pill ' + (above ? 'sev-modsev' : 'sev-none');
+    }
+}
+
+// ---------- Subscale chart ----------
+function renderRaadsrChart() {
+    const outputEl = document.getElementById('raadsrOutput');
+    let c = document.getElementById('raadsrChart');
+    if (!c) {
+        c = document.createElement('div');
+        c.className = 'score-chart';
+        c.id = 'raadsrChart';
+        const ta = document.getElementById('raadsrText');
+        outputEl.insertBefore(c, ta);
+    }
+    const r = computeRaadsr();
+    let html = '<div class="chart-title">RAADS-R Subscale Profile</div>';
+    RAADS_DOMAINS.forEach(dom => {
+        const score = r.subs[dom.key];
+        const pct = Math.max(0, Math.min(100, (score / dom.max) * 100));
+        html += '<div class="chart-row">' +
+                '<div class="chart-label">' + escapeHtml(dom.label) + '</div>' +
+                '<div class="chart-bar-track"><div class="chart-bar-fill" style="width:' + pct.toFixed(1) + '%"></div>' +
+                '<span class="chart-value">' + score + ' / ' + dom.max + '</span></div></div>';
+    });
+    const totPct = Math.max(0, Math.min(100, (r.total / RAADS_TOTAL_MAX) * 100));
+    const above = r.total >= RAADS_CUTOFF;
+    html += '<div class="chart-row is-total">' +
+            '<div class="chart-label">Total</div>' +
+            '<div class="chart-bar-track"><div class="chart-bar-fill ' + (above ? 'bar-modsev' : 'bar-none') + '" style="width:' + totPct.toFixed(1) + '%"></div>' +
+            '<span class="chart-value">' + r.total + ' / ' + RAADS_TOTAL_MAX + '</span></div></div>';
+    html += '<div class="chart-footer">Cut-off for likely autism spectrum disorder: total &ge;' + RAADS_CUTOFF +
+            (r.rated < 80 ? ' &nbsp;(only ' + r.rated + '/80 items completed &mdash; total is provisional)' : '') + '</div>';
+    c.innerHTML = html;
+}
+
+// ---------- Plain-text summary ----------
+function buildRaadsrText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    const r = computeRaadsr();
+    let t = '';
+    t += line + '\n';
+    t += 'RITVO AUTISM ASPERGER DIAGNOSTIC SCALE - REVISED (RAADS-R)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    t += 'TOTAL SCORE: ' + r.total + ' / ' + RAADS_TOTAL_MAX;
+    if (r.rated < 80) t += '  (partial: ' + r.rated + '/80 items completed)';
+    t += '\n';
+    t += 'INTERPRETATION: ' + (r.total >= RAADS_CUTOFF
+            ? 'At or above the cut-off of 65 - consistent with autism spectrum disorder.'
+            : 'Below the cut-off of 65 - autism spectrum disorder less likely on this screen.') + '\n';
+    t += thin + '\n';
+    t += 'SUBSCALE SCORES\n';
+    RAADS_DOMAINS.forEach(dom => {
+        const label = (dom.label + ':').padEnd(26, ' ');
+        t += '  ' + label + String(r.subs[dom.key]).padStart(3, ' ') + ' / ' + dom.max + '\n';
+    });
+    t += thin + '\n';
+    t += 'ITEM RESPONSES  (score shown; * = reverse-scored item)\n';
+    RAADS_ITEMS.forEach(item => {
+        const v = getRadioVal('raadsr_' + item.n);
+        const num = String(item.n).padStart(2, ' ');
+        const star = item.rev ? '*' : ' ';
+        if (v === null) {
+            t += num + star + ' [ -- ]  Not rated  | ' + item.t + '\n';
+        } else {
+            const idx = parseInt(v, 10);
+            const s = scoreItem(idx, item.rev);
+            t += num + star + ' [ ' + s + '  ]  ' + RAADS_OPTIONS[idx].label.padEnd(38, ' ') + ' | ' + item.t + '\n';
+        }
+    });
+    t += line + '\n';
+    t += 'The RAADS-R is a screening aid to be used alongside clinical interview.\n';
+    t += 'It is not a stand-alone diagnostic instrument.\n';
+    t += 'Ritvo RA, et al. J Autism Dev Disord. 2011;41(8):1076-1089.\n';
+    t += line + '\n';
+    return t;
+}
+
+// ---------- Dispatch ----------
+const SCALE_DISPATCH = {
+    raadsr: { build: buildRaadsrText, chart: renderRaadsrChart }
+};
+
+function generateOutput(which) {
+    const spec = SCALE_DISPATCH[which];
+    if (!spec) return;
+    document.getElementById(which + 'Text').value = spec.build();
+    if (spec.chart) spec.chart();
+    const outEl = document.getElementById(which + 'Output');
+    outEl.classList.add('visible');
+    outEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyOutput(which) {
+    const ta = document.getElementById(which + 'Text');
+    const btn = document.getElementById(which + 'CopyBtn');
+    ta.select();
+    ta.setSelectionRange(0, 99999);
+    const restore = () => { setTimeout(() => { btn.textContent = 'Copy to Clipboard'; }, 2000); };
+    try {
+        navigator.clipboard.writeText(ta.value).then(() => {
+            btn.textContent = 'Copied!';
+            restore();
+        }, () => {
+            document.execCommand('copy');
+            btn.textContent = 'Copied!';
+            restore();
+        });
+    } catch (e) {
+        document.execCommand('copy');
+        btn.textContent = 'Copied!';
+        restore();
+    }
+}
+
+function resetScale(which) {
+    if (which === 'raadsr') {
+        RAADS_ITEMS.forEach(item => {
+            document.querySelectorAll('input[name="raadsr_' + item.n + '"]').forEach(r => r.checked = false);
+        });
+        updateRaadsr();
+        document.getElementById('raadsrOutput').classList.remove('visible');
+    }
+}
+
+// initialise score bar
+updateRaadsr();
+</script>
+</body>
+</html>

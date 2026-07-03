@@ -9,6 +9,7 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 ## Rating Scales
 
 - [Psychometric Scales](psychometric-scales.html)
+- [Autism Tests](autism-tests.html)
 - [YBOCS](ybocs_scale.html)
 - [DIVA and ASRS in full](diva_asrs.html)
 
