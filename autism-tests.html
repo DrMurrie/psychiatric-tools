@@ -596,13 +596,6 @@
         </div>
 
         <div class="section-body">
-            <div class="anchor-legend">
-                <strong>Response options:</strong>
-                <strong>TW</strong> = True now and when I was young &nbsp;&middot;&nbsp;
-                <strong>TN</strong> = True only now &nbsp;&middot;&nbsp;
-                <strong>TY</strong> = True only when I was younger than 16 &nbsp;&middot;&nbsp;
-                <strong>N</strong> = Never true
-            </div>
             <div id="raadsrItems"></div>
         </div>
 
@@ -759,10 +752,10 @@ const RAADS_ITEMS = [
 
 // Response options, in display order. idx maps to the raw response index used for scoring.
 const RAADS_OPTIONS = [
-    {idx:0, abbr:'TW', label:'True now and when I was young'},
-    {idx:1, abbr:'TN', label:'True only now'},
-    {idx:2, abbr:'TY', label:'True only when I was younger than 16'},
-    {idx:3, abbr:'N',  label:'Never true'}
+    {idx:0, label:'True now and when I was young'},
+    {idx:1, label:'True only now'},
+    {idx:2, label:'True only when I was younger than 16'},
+    {idx:3, label:'Never true'}
 ];
 
 const RAADS_DOMAINS = [
@@ -789,7 +782,7 @@ function scoreItem(responseIndex, rev) {
         html += '<div class="radio-group">';
         RAADS_OPTIONS.forEach(opt => {
             html += '<label class="radio-option"><input type="radio" name="raadsr_' + item.n + '" value="' + opt.idx + '" onchange="updateRaadsr()">' +
-                    '<span class="radio-label"><span class="val">' + opt.abbr + '</span>' + escapeHtml(opt.label) + '</span></label>';
+                    '<span class="radio-label">' + escapeHtml(opt.label) + '</span></label>';
         });
         html += '</div></div>';
     });
