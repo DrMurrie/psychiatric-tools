@@ -150,7 +150,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .cbox.flag::after{content:'!'}
 .clabel{flex:1;font-size:13px;line-height:1.4}
 .qbtn{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1.5px solid #cbd5e1;background:#f8faff;color:#64748b;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:0;font-family:var(--sans);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.dev-block .qbtn{width:32px;height:32px;font-size:13px;min-width:32px;min-height:32px}
+.dev-block .qbtn{width:40px;height:40px;font-size:13px;min-width:40px;min-height:40px}
 .qbtn:hover{border-color:var(--primary);color:var(--primary)}
 .rrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #e5e7eb;flex-wrap:wrap}
 .rlabel{flex:1;font-size:13px;min-width:110px}
@@ -506,12 +506,12 @@ select.inp{appearance:none}
 #out-report.letter-mode .letter-sig .sig-quals{color:#475569;font-size:9.5pt}
 #out-report .mgmt-sub{font:700 11pt Arial,sans-serif;color:#1e40af;margin:12px 0 4px;letter-spacing:0;text-transform:none;border:none}
 #out-report.letter-mode .mgmt-sub{font-family:Arial,sans-serif;font-size:10.5pt;color:#1e40af;font-weight:700;margin:12px 0 4px}
-.ms-card{background:#fff1f2;border:1.5px solid #fca5a5;border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;flex-direction:column;gap:6px}
+.ms-card{background:#fffbeb;border:1.5px solid #fbbf24;border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;flex-direction:column;gap:6px}
 #gaps-panel:not(:empty){margin-top:10px}
 .ms-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ms-concern{font:700 12.5px var(--sans);color:#be123c;flex:1}
-.ms-goto{flex-shrink:0;padding:5px 11px;border-radius:7px;border:1.5px solid #fca5a5;background:#fff;color:#be123c;font:700 11px var(--sans);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.ms-goto:hover{background:#fca5a5;color:#fff;border-color:#fca5a5}
+.ms-concern{font:700 12.5px var(--sans);color:#92400e;flex:1}
+.ms-goto{flex-shrink:0;padding:5px 11px;border-radius:7px;border:1.5px solid #fbbf24;background:#fff;color:#92400e;font:700 11px var(--sans);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.ms-goto:hover{background:#fbbf24;color:#fff;border-color:#fbbf24}
 .ms-includes{display:flex;gap:14px;flex-wrap:wrap;padding:2px 0}
 .ms-inc-chk{display:inline-flex;align-items:center;gap:5px;font:600 11.5px var(--sans);color:#475569;cursor:pointer;user-select:none;-webkit-user-select:none}
 .ms-inc-chk input{width:15px;height:15px;accent-color:var(--green);cursor:pointer;margin:0}
@@ -3910,55 +3910,6 @@ function addScript(mi){
   m.scripts.push({strength:'',dose:'',tabs:def.tabs,repeats:_defaultRepeats(m.key),interval:def.interval,escript:true,_manualDose:true});
   renderScripts();
 }
-var manualScripts=[];
-function addManualScript(){
-  manualScripts.push({name:'',strength:'',tabs:30,form:'tab',repeats:0,interval:30,escript:true,dose:'',include:true});
-  renderScripts();
-}
-function removeManualScript(i){
-  manualScripts.splice(i,1);
-  renderScripts();
-}
-function setManualScript(i,key,val){
-  if(!manualScripts[i])return;
-  if(key==='tabs'||key==='interval')val=val===''?'':parseInt(val,10);
-  else if(key==='repeats')val=val===''?null:parseInt(val,10);
-  else if(key==='escript'||key==='include')val=!!val;
-  manualScripts[i][key]=val;
-  if(key==='include')renderScripts();
-  refreshTitOutputs();
-}
-function buildManualScriptLine(s){
-  if(!s||!s.name)return '';
-  var head=s.name+(s.strength?' '+s.strength:'');
-  var bits=[head];
-  var form=s.form||'tab';
-  if(s.tabs)bits.push(s.tabs+' '+form+(s.tabs==1?'':'s'));
-  if(s.repeats==null||s.repeats==='')bits.push('? rpts');
-  else bits.push(s.repeats+' rpt'+(s.repeats==1?'':'s'));
-  if(s.dose&&s.dose.trim())bits.push(s.dose.trim());
-  return bits.join(', ');
-}
-function renderManualScriptRow(s,i){
-  var include=(s.include!==false);
-  var rowCls='script-row'+(include?'':' script-row-off');
-  var repBlank=(s.repeats==null||s.repeats==='');
-  var repOpts='<option value=""'+(repBlank?' selected':'')+'>--</option>';
-  for(var r=0;r<=5;r++){repOpts+='<option value="'+r+'"'+(s.repeats===r?' selected':'')+'>'+r+'</option>';}
-  var formOpts=['tab','cap','ml','mL','spray','patch','dose','sachet'].map(function(o){return '<option value="'+o+'"'+((s.form||'tab')===o?' selected':'')+'>'+o+'</option>';}).join('');
-  return '<div class="'+rowCls+'">'
-    +'<input class="script-inp" type="text" placeholder="Med name" value="'+esc(s.name||'')+'" oninput="setManualScript('+i+',\'name\',this.value)" style="flex:1 1 140px;min-width:120px">'
-    +'<input class="script-inp" type="text" placeholder="strength e.g. 50mg" value="'+esc(s.strength||'')+'" oninput="setManualScript('+i+',\'strength\',this.value)" style="width:110px">'
-    +'<span class="script-lbl">Qty</span><input class="script-inp" type="number" min="1" value="'+(s.tabs===''||s.tabs==null?'':s.tabs)+'" onchange="setManualScript('+i+',\'tabs\',this.value)" style="width:60px">'
-    +'<select class="script-inp" onchange="setManualScript('+i+',\'form\',this.value)" style="width:78px">'+formOpts+'</select>'
-    +'<span class="script-lbl">Rpts</span><select class="script-inp script-rpts'+(repBlank?' needs-fill':'')+'" onchange="setManualScript('+i+',\'repeats\',this.value)">'+repOpts+'</select>'
-    +'<span class="script-lbl">Interval</span><input class="script-inp" type="number" min="1" value="'+(s.interval===''||s.interval==null?'':s.interval)+'" onchange="setManualScript('+i+',\'interval\',this.value)" style="width:54px"><span class="script-lbl-suf">d</span>'
-    +'<label class="script-escript"><input type="checkbox" '+(s.escript?'checked':'')+' onchange="setManualScript('+i+',\'escript\',this.checked)"> eScript</label>'
-    +'<button type="button" class="script-include'+(include?' on':'')+'" onclick="setManualScript('+i+',\'include\','+(!include)+');renderScripts()" title="Include in scripts list">'+(include?'Included':'Excluded')+'</button>'
-    +'<button type="button" class="script-remove" onclick="removeManualScript('+i+')" title="Remove this manual script">×</button>'
-    +'<div class="script-dose-row"><textarea class="script-inp script-dose" rows="2" placeholder="Directions (e.g. take 1 tab in the morning)" oninput="setManualScript('+i+',\'dose\',this.value)">'+esc(s.dose||'')+'</textarea></div>'
-    +'</div>';
-}
 function removeScript(mi,si){
   titMeds[mi].scripts.splice(si,1);
   if(!titMeds[mi].scripts.length){var def=SCRIPT_DEFAULTS[titMeds[mi].key]||SCRIPT_DEFAULTS.other;var s=getDefaultStrength(titMeds[mi]);titMeds[mi].scripts.push({strength:s,dose:deriveScriptInstructions(titMeds[mi],s),tabs:def.tabs,repeats:_defaultRepeats(titMeds[mi].key),interval:def.interval,escript:true});}
@@ -4009,14 +3960,8 @@ function renderScripts(){
       +'<button class="script-add" onclick="addScript('+mi+')">+ Add another script</button>'
       +'</div>';
   }).join('');
-  if(!titHtml)titHtml='<div style="font-size:12px;color:var(--muted);padding:6px 0">Add a medication to the plan above to auto-generate script details, or add a manual script below.</div>';
-  var manualRows=manualScripts.map(function(s,i){return renderManualScriptRow(s,i);}).join('');
-  var manualHtml='<div class="script-med-block">'
-    +'<div class="script-med-head">Manual scripts <span style="font-weight:400;font-size:11px;color:var(--muted)">— for any drug, no titration plan needed</span></div>'
-    +manualRows
-    +'<button class="script-add" onclick="addManualScript()">+ Add manual script</button>'
-    +'</div>';
-  el.innerHTML=titHtml+manualHtml;
+  if(!titHtml)titHtml='<div style="font-size:12px;color:var(--muted);padding:6px 0">Add a medication to the plan above to auto-generate script details.</div>';
+  el.innerHTML=titHtml;
   refreshTitOutputs();
 }
 
@@ -4063,11 +4008,6 @@ function buildScriptLines(){
       if(s.include===false)return;
       lines.push(buildOneScriptLine(m,s));
     });
-  });
-  manualScripts.forEach(function(s){
-    if(s.include===false)return;
-    var ln=buildManualScriptLine(s);
-    if(ln)lines.push(ln);
   });
   return lines;
 }
