@@ -1,0 +1,616 @@
+#!/usr/bin/env python3
+"""Generate bed-psychoeducation.html  -  Binge Eating Disorder psychoeducation tool."""
+
+def esc(s):
+    return s.replace("'", "\\'")
+
+groups = [
+    {
+        "label": None,
+        "optional": False,
+        "items": [
+            {
+                "id": "bed_what_is",
+                "title": "What is Binge Eating Disorder?",
+                "body": """<p><strong>Definition:</strong> Binge Eating Disorder (BED) is characterised by recurrent episodes of eating a large amount of food in a discrete period, with a sense of loss of control, and marked distress about the eating. Unlike bulimia nervosa, there are no regular compensatory behaviours (purging, fasting, excessive exercise) after binge episodes.</p>
+<p><strong>What a binge episode actually is:</strong> Eating a larger amount than most people would in similar circumstances in a defined time window (typically under 2 hours), with a felt sense of loss of control - not being able to stop, not choosing what or how much to eat. Associated features during the episode: eating rapidly, eating past fullness, eating when not physically hungry, eating alone due to shame, feeling disgusted/depressed/guilty afterwards.</p>
+<p><strong>What BED is not:</strong></p>
+<ul>
+<li>Emotional eating (everyone does this - BED involves loss of control)</li>
+<li>Greediness, weakness, or lack of willpower - it is a recognised disorder with a specific neurobiology</li>
+<li>The same as bulimia (BED has no purging; different neural profile; different treatment)</li>
+<li>Just "overeating" - the loss of control and distress are what define it</li>
+</ul>
+<p><strong>Prevalence:</strong> BED is the most common eating disorder in adults - more common than anorexia and bulimia combined. Lifetime prevalence approximately 3-5% in women, 2% in men. Mean onset late teens to mid-20s. Often goes undiagnosed and untreated for years.</p>
+<p><strong>Why it matters:</strong> Beyond the psychological distress, BED is associated with metabolic syndrome, type 2 diabetes, cardiovascular risk, sleep disorders, and significant quality of life impairment. It is also highly comorbid with depression, anxiety, and ADHD - sometimes all three simultaneously. The good news: BED has excellent treatment outcomes, particularly with targeted psychological and pharmacological approaches.</p>"""
+            },
+            {
+                "id": "bed_neuroscience",
+                "title": "The neuroscience of binge eating",
+                "body": """<p><strong>Why willpower is not the problem:</strong> The binge eating brain has measurable differences in reward circuitry, impulse control systems, and stress regulation that make bingeing a neurobiological drive, not a moral failure. Understanding this changes what treatment looks like.</p>
+<p><strong>The reward circuit:</strong> Highly palatable foods (high fat, high sugar, high salt combinations) trigger a dopamine release in the nucleus accumbens that is larger and faster than the same foods in non-binge eaters. Over time, this creates a tolerance effect - you need more, more often, to get the same relief. The pattern is structurally similar to substance use disorder, and BED and addiction share significant genetic overlap.</p>
+<p><strong>The impulsivity factor:</strong> Prefrontal cortex activity is reduced in BED, particularly in the circuits that normally inhibit impulsive action. The urge to binge hits fast and hard; the braking system is less effective. This is why binge urges feel irresistible - they often genuinely are, in the moment, without interventions that engage the prefrontal system before the urge peaks.</p>
+<p><strong>Stress and cortisol:</strong> Elevated cortisol (the stress hormone) directly drives appetite for high-calorie foods. The stress eating pattern has a neurobiological basis: corticotropin-releasing hormone activates reward pathways that direct eating toward comfort foods. BED often worsens significantly during periods of sustained stress.</p>
+<p><strong>Restriction makes it worse:</strong> Caloric restriction increases ghrelin (hunger hormone), decreases leptin (satiety hormone), and sensitises the dopamine reward system to food cues. This is the restriction-binge cycle in neurobiology: dietary restriction biologically primes the brain for a binge. Any treatment approach that relies primarily on restriction will be self-defeating.</p>
+<p><strong>The ADHD connection:</strong> ADHD and BED co-occur at rates far above chance (studies suggest 20-30% of people with BED also have ADHD). The same executive function and impulse control deficits that drive ADHD make binge urges harder to resist and harder to interrupt once started. Treating ADHD often reduces binge frequency significantly.</p>"""
+            }
+        ]
+    },
+    {
+        "label": "Practical Strategies",
+        "optional": False,
+        "items": [
+            {
+                "id": "bed_structured_eating",
+                "title": "Structured eating - the most important foundation",
+                "body": """<p><strong>The single most effective behavioural intervention for BED:</strong> Eating at regular, planned intervals throughout the day. This sounds almost insultingly simple, but the evidence is strong and the mechanism is clear - structured eating reduces the physiological hunger and neurochemical drive that make binge episodes more likely.</p>
+<p><strong>The structure that works:</strong></p>
+<ul>
+<li><strong>Three meals and two planned snacks</strong> - at consistent times, regardless of hunger level. Do not skip meals even if not hungry, especially breakfast and lunch.</li>
+<li><strong>No more than 3-4 hours between eating</strong> - longer gaps allow hunger to escalate to the point where the dopamine-seeking binge drive takes over.</li>
+<li><strong>Protein at every meal</strong> - especially breakfast (aim for 30-40g). Protein increases satiety hormones, stabilises blood sugar, and reduces the mid-afternoon and evening appetite surge that drives most evening binges.</li>
+<li><strong>Adequacy, not restriction</strong> - meals should be enough to be genuinely satisfying. Under-eating at structured times predictably drives over-eating outside them.</li>
+</ul>
+<p><strong>Why high-protein breakfast specifically:</strong> Multiple RCTs show that a high-protein breakfast (35-40g protein: eggs, Greek yoghurt, cottage cheese, protein shake) reduces evening appetite and binge episodes more than a high-carbohydrate or low-calorie breakfast. The mechanism involves dopamine, ghrelin, and PYY (a satiety peptide). It is one of the highest-yield single changes you can make.</p>
+<p><strong>The paradox:</strong> People with BED often restrict food intake during the day ("saving up" or punishing themselves for the previous night's binge). This daytime restriction reliably produces evening binges. The intervention is the opposite of intuition: eat more during the day to eat less at night.</p>
+<p><strong>Practical start:</strong> Do not try to fix everything at once. Begin with breakfast. Make it high-protein. Do it for two weeks before adding the next change.</p>"""
+            },
+            {
+                "id": "bed_urge_management",
+                "title": "Managing binge urges - techniques that actually work",
+                "body": """<p><strong>The 20-minute delay:</strong> When a binge urge hits, make one commitment only: do something else for 20 minutes. Set a timer. Most binge urges peak at 15-20 minutes and then decrease if not acted on. You are not committing to not eating - you are committing to not eating yet. The distinction matters. After 20 minutes, reassess. Often the urge has shifted or reduced. Sometimes it has not - but you have still interrupted the automatic pattern.</p>
+<p><strong>Urge surfing:</strong> From DBT and ACT - observe the urge as a wave rather than a command. Sit with the urge without acting on it. Notice it in your body: where is it? What does it feel like? Does it change? The urge is not you, and it is not permanent. You are watching it, not fighting it. Fighting creates pressure; watching allows it to pass. Most urges last 15-20 minutes at full intensity if not fed.</p>
+<p><strong>HALT check:</strong> Before a binge, pause and ask: Am I Hungry? (actual physical hunger - stomach empty, low energy?) Angry/Anxious? Lonely? Tired? If the answer to hunger is no, the urge is driven by emotion or state. The binge will not fix the actual need. What would actually help?</p>
+<p><strong>Opposite action (DBT):</strong> When the emotion driving the binge urge is identified, do the opposite of what the urge demands. Loneliness drives eating - opposite action is to contact someone. Boredom drives eating - opposite action is engagement with something stimulating. Anxiety drives eating - opposite action is grounding or movement.</p>
+<p><strong>Physical interrupt:</strong> Cold water on the face or wrists (activates the mammalian dive reflex, rapidly reduces emotional arousal), 60 seconds of jumping jacks, or walking outside. These are not distractions - they are physiological interventions that shift the neurochemical state driving the urge.</p>
+<p><strong>The "planned indulgence":</strong> Build in scheduled, deliberate, guilt-free pleasure eating. Have chocolate on Tuesday afternoon at 3pm, intentionally. This removes the forbidden-fruit effect. Restriction and prohibition intensify urges; planned permission reduces them.</p>"""
+            },
+            {
+                "id": "bed_environment",
+                "title": "Environment design - making bingeing harder",
+                "body": """<p><strong>The core principle:</strong> Willpower is a finite, depletable resource. Environment design creates behaviour change that does not depend on willpower at the point of decision. Make the desired behaviour easy and the undesired behaviour hard.</p>
+<p><strong>What to change at home:</strong></p>
+<ul>
+<li><strong>Remove trigger foods from the house</strong> - not permanently, not as punishment, but as recognition that "if it is there, it will be eaten." This is not restriction; it is removing the availability that bypasses the decision point entirely.</li>
+<li><strong>Replace, do not just remove:</strong> Stock the home with adequate, genuinely satisfying food that does not trigger binges. Hunger with nothing appropriate to eat is a setup for a binge.</li>
+<li><strong>Pre-portioned accessible protein:</strong> Greek yoghurt cups, hard-boiled eggs in the fridge, protein bars in a visible spot. These intercept the appetite before it escalates.</li>
+<li><strong>The kitchen closed rule:</strong> After a set time in the evening, the kitchen is "closed." Put up a visual reminder. Brush your teeth - makes eating immediately less appealing. Most evening binges happen in a specific window; closing the environment closes the window.</li>
+<li><strong>Eating surface only:</strong> Only eat at the table. Not on the couch, not in bed, not in front of a screen. The screen-eating combination is particularly high-risk for loss of control because attention is split and satiety signals are missed.</li>
+</ul>
+<p><strong>Shopping strategy:</strong> Shop after eating, with a list, online delivery where possible. Hungry shopping in a supermarket with no list is one of the highest-risk scenarios for purchasing binge foods.</p>
+<p><strong>At work:</strong> Keep adequate food at your desk. Arrive hungry and without food is a setup. Pack lunch rather than deciding what to eat when already hungry mid-day.</p>"""
+            },
+            {
+                "id": "bed_dopamine",
+                "title": "Dopamine, reward, and finding alternatives",
+                "body": """<p><strong>What bingeing is often really about:</strong> For many people with BED, the binge is not primarily about hunger or even about food. It is about dopamine - rapid reward, relief from boredom, escape from distress, stimulation, or comfort. The food is the vehicle for a neurochemical need. This understanding is liberating: if the actual need is for reward or relief or stimulation, those needs can be met in other ways that do not create the binge cycle.</p>
+<p><strong>High-dopamine alternatives to reach for first:</strong></p>
+<ul>
+<li><strong>Physical movement</strong> - even 10 minutes of vigorous activity produces a meaningful dopamine spike. A walk, a short run, dancing to one song. This is the highest-yield alternative because it addresses the neurochemical need directly.</li>
+<li><strong>Music</strong> - particularly music you love, played loudly. Activates the same dopamine circuitry as food reward.</li>
+<li><strong>Social connection</strong> - even brief (a voice call, not text). Oxytocin and dopamine together. Particularly useful when the binge urge follows loneliness.</li>
+<li><strong>Novelty and stimulation</strong> - a new podcast episode, a game, something genuinely engaging. Boredom is a major binge trigger; high-interest stimulation competes with it.</li>
+<li><strong>Creative work or a hands-on task</strong> - cooking something genuinely enjoyable (not binge food), a craft, building something. Hands busy = mouth less busy, but the deeper effect is genuine engagement replacing dopamine-seeking.</li>
+</ul>
+<p><strong>Building a personal "urge menu":</strong> Write a list of 5-8 dopamine alternatives that genuinely appeal to you, that are immediately accessible, and that you would actually do. Keep it somewhere visible. In the moment of an urge, deciding what to do instead is cognitively demanding - having a pre-made list removes that barrier.</p>
+<p><strong>The pleasure and rest principle:</strong> BED often worsens when life is chronically low in genuine pleasure, rest, and reward. Regular scheduled non-food pleasure is not a luxury - it reduces the intensity and frequency of binge urges over time.</p>"""
+            },
+            {
+                "id": "bed_sleep",
+                "title": "Sleep, circadian rhythms, and binge eating",
+                "body": """<p><strong>The sleep-binge connection:</strong> This is one of the most underappreciated drivers of binge eating. Short sleep duration reliably increases ghrelin (hunger hormone), decreases leptin (satiety hormone), increases cortisol, and increases activation in the brain's reward centres in response to high-calorie food. After poor sleep, the brain is neurobiologically more likely to binge - before you have made a single conscious choice.</p>
+<p><strong>Night Eating Syndrome (NES):</strong> A distinct pattern involving recurrent evening hyperphagia (eating the majority of daily calories after dinner) or nocturnal awakenings with eating. Occurs in approximately 20-25% of people with BED. Unlike standard BED, the eating is often not accompanied by a subjective sense of loss of control but occurs in a different state of consciousness. Associated with insomnia, depression, and circadian rhythm disruption.</p>
+<p><strong>What actually helps sleep in BED:</strong></p>
+<ul>
+<li><strong>Consistent wake time</strong> - non-negotiable, including weekends. This anchors the circadian rhythm more than any other intervention.</li>
+<li><strong>Morning light exposure</strong> - 20-30 minutes of bright light on waking (outside, or Re-Timer 3 light therapy glasses). Advances the circadian clock, which reduces evening cortisol and appetite.</li>
+<li><strong>Evening food timing</strong> - finishing eating 2-3 hours before bed. Evening eating activates metabolic processes and warms core body temperature, both of which disrupt sleep onset.</li>
+<li><strong>Managing the "awake and hungry" pattern</strong> - if you wake at night with strong hunger urges: this is a circadian issue, not a failure. Light therapy in the morning, consistent meal timing during the day, and adequate evening protein are all first-line approaches before considering medication.</li>
+</ul>
+<p><strong>Melatonin and sleep:</strong> Low-dose melatonin (0.5-1mg) 90 minutes before target sleep time is safe and can help with sleep onset without the appetite-stimulating effects of some sleep medications. Discuss with your psychiatrist.</p>"""
+            }
+        ]
+    },
+    {
+        "label": "Psychological Approaches",
+        "optional": True,
+        "items": [
+            {
+                "id": "bed_cbt_e",
+                "title": "CBT-Enhanced (CBT-E) - the gold-standard psychological treatment",
+                "body": """<p><strong>CBT-E (Enhanced Cognitive Behavioural Therapy)</strong> was developed specifically for eating disorders by Christopher Fairburn at Oxford and has the strongest evidence base of any psychological treatment for BED. It is not generic CBT applied to eating - it is a transdiagnostic eating disorder-specific protocol.</p>
+<p><strong>What it targets:</strong> The "cognitive" part is less about thoughts and more about the specific mechanisms maintaining binge eating: overevaluation of shape and weight, dietary restriction, interpersonal difficulties, low self-esteem, and perfectionism. CBT-E addresses the complete maintenance cycle rather than just the eating behaviour.</p>
+<p><strong>The four stages:</strong></p>
+<ul>
+<li><strong>Stage 1 (4 weeks):</strong> Understanding your own pattern, introducing structured eating, real-time monitoring (not calorie counting - recording what you ate, where, and emotional context). Self-monitoring is itself therapeutic - awareness disrupts automatic patterns.</li>
+<li><strong>Stage 2 (2 weeks):</strong> Review, identify the main maintaining mechanisms for this individual, plan Stage 3.</li>
+<li><strong>Stage 3 (6 weeks):</strong> Addressing the specific mechanisms - dietary rules and restriction, body image, perfectionism, low self-esteem, interpersonal difficulties as relevant.</li>
+<li><strong>Stage 4 (3 weeks):</strong> Maintaining change, managing setbacks, long-term wellbeing.</li>
+</ul>
+<p><strong>Evidence:</strong> Approximately 50-60% of people who complete CBT-E achieve abstinence from binge eating. Dropout rates are lower than for restrictive eating disorder treatments because the approach is not restriction-based. Effects are maintained at 12-month follow-up. Superior to IPT and supportive therapy for speed of response, though IPT catches up at longer follow-up.</p>
+<p><strong>What to look for in a therapist:</strong> Specific training in eating disorder-focused CBT. Not all CBT therapists are trained in CBT-E. The ANZAED registry (Australia/NZ) lists trained practitioners. Telehealth delivery has equivalent outcomes to in-person for BED.</p>"""
+            },
+            {
+                "id": "bed_dbt",
+                "title": "DBT skills for binge eating",
+                "body": """<p><strong>Why DBT is particularly well-suited to BED:</strong> Dialectical Behaviour Therapy was developed for emotion dysregulation. BED is fundamentally a disorder of emotion dysregulation - binge eating is, for most people, primarily a strategy for managing emotional states that feel intolerable. DBT teaches alternative strategies directly.</p>
+<p><strong>The most relevant DBT modules for BED:</strong></p>
+<ul>
+<li><strong>Distress Tolerance:</strong> Skills for surviving high-distress moments without making things worse. For BED, the TIPP skill is key: Temperature (cold water on face - activates dive reflex and rapidly reduces emotional intensity); Intense exercise (60 seconds burns physiological activation); Paced breathing (4 in, 7 out); Progressive muscle relaxation. These are not coping tricks - they are physiological interventions for the state that drives bingeing.</li>
+<li><strong>Emotion Regulation:</strong> Identifying emotions accurately (naming them reduces amygdala reactivity), understanding the link between states and binge urges, building positive experiences. The PLEASE skills (treating Physical illness, Eating balanced, Avoiding mood-altering substances, Sleep, Exercise) establish the physical baseline that emotional regulation depends on.</li>
+<li><strong>Mindfulness:</strong> Observing urges without acting on them (urge surfing). Eating mindfully - not as a weight loss strategy, but to notice satiety signals that are missed during distracted or shame-driven eating.</li>
+<li><strong>Interpersonal Effectiveness:</strong> Many BED triggers are interpersonal - conflict, rejection, unmet needs. Skills for asking for what you need and saying no reduce the chronic interpersonal stress that fuels binge urges.</li>
+</ul>
+<p><strong>DBT for BED:</strong> There are specific adapted DBT protocols for BED. Group skills training with individual therapy produces the best outcomes. Three-month intensive programs have strong evidence for BED specifically.</p>"""
+            },
+            {
+                "id": "bed_act",
+                "title": "ACT and the food freedom approach",
+                "body": """<p><strong>ACT (Acceptance and Commitment Therapy) for BED</strong> targets the psychological rigidity and experiential avoidance that maintains the binge cycle. Rather than challenging thoughts directly, ACT creates distance from them - which is particularly useful when the "thought" driving bingeing is an overwhelming emotional urge rather than a cognitive belief.</p>
+<p><strong>Core ACT techniques for BED:</strong></p>
+<ul>
+<li><strong>Defusion:</strong> Creating distance from food-related thoughts and urges. "I notice I am having the urge to binge" rather than the urge being your reality. The urge is a mental event, not a command. You can notice it, name it, and not follow it.</li>
+<li><strong>Acceptance of discomfort:</strong> The attempt to avoid uncomfortable emotions (loneliness, anxiety, boredom, shame) via binge eating is the core driver. ACT trains willingness to experience these emotions without escaping into food. Not suppression - contact with the feeling, without it running behaviour.</li>
+<li><strong>Values clarification:</strong> Connecting daily behaviour to what genuinely matters. "What kind of person do I want to be? What does that person do when they feel this urge?" Values-driven action is more sustainable than rule-following.</li>
+</ul>
+<p><strong>Food freedom and intuitive eating:</strong> Intuitive eating is not "eat whatever you want" - it is a structured approach to rebuilding trust with your body's hunger and satiety signals, which are often disrupted by years of bingeing and restriction. Key principles: reject the diet mentality; honour hunger; make peace with food (unconditional permission to eat); challenge the food police; discover the satisfaction factor; honour fullness; cope with emotions without using food. The evidence for intuitive eating in BED is moderate and growing - it works best after the binge cycle has been interrupted by other means (structured eating, psychological therapy).</p>"""
+            }
+        ]
+    },
+    {
+        "label": "Medication",
+        "optional": True,
+        "items": [
+            {
+                "id": "bed_vyvanse",
+                "title": "Vyvanse (lisdexamfetamine) - TGA-approved for BED",
+                "body": """<p><strong>Vyvanse (lisdexamfetamine, LDX)</strong> is the only medication approved by the TGA (Australia) and FDA (USA) specifically for moderate-to-severe Binge Eating Disorder. It is the same medication used first-line for ADHD, but its approval for BED reflects the shared neurobiology of both conditions.</p>
+<p><strong>How it works for BED:</strong> LDX increases dopamine and noradrenaline in the prefrontal cortex, strengthening the impulse-control circuits that are underactive in BED. It also reduces the reward salience of food cues, making it easier to resist binge urges before they escalate. It works on the decision-making architecture rather than simply suppressing appetite.</p>
+<p><strong>What the evidence shows:</strong> In three large RCTs (PODER, SPD489-343, SPD489-344), LDX at 50-70mg significantly reduced binge days per week, number of binge episodes, obsessive thoughts about food, and compulsive eating scores compared to placebo. Response rates of 40-50% full abstinence at 12 weeks; 70-80% meaningful reduction. Effects maintain over 12 months.</p>
+<p><strong>Practical details:</strong> Start at 20mg, titrate to 50mg, then 70mg as needed. Once daily in the morning. Takes effect the same day but full benefit builds over 2-4 weeks. Can be opened and dissolved in water. Should not be taken after 2pm (insomnia risk).</p>
+<p><strong>Common side effects:</strong> Reduced appetite (expected and usually mild), dry mouth, insomnia if taken late, increased heart rate, initial headache (settles 1-2 weeks).</p>
+<p><strong>Who benefits most:</strong> People with moderate-to-severe BED (6+ binge days per month), particularly where impulse control and food preoccupation are prominent features. Particularly useful when ADHD is also present - single medication addresses both.</p>
+<p><strong>Note:</strong> Vyvanse is a Schedule 8 controlled drug in Australia. PBS listing for BED requires specialist (psychiatrist) prescription. Not appropriate in untreated cardiovascular disease, structural heart abnormalities, or severe anxiety.</p>"""
+            },
+            {
+                "id": "bed_other_meds",
+                "title": "Other medication options for BED",
+                "body": """<p><strong>GLP-1 receptor agonists (semaglutide, liraglutide)</strong></p>
+<ul>
+<li>Emerging evidence suggests GLP-1 agonists reduce binge eating significantly, beyond weight effects. Mechanism: reduce "food noise" (the constant preoccupation with food), reduce reward salience of palatable foods, and slow gastric emptying (increasing satiety signals). Case series and observational data are compelling; randomised trial data for BED specifically is still emerging as of 2024-2025.</li>
+<li>Semaglutide (Ozempic/Wegovy) weekly injection; liraglutide (Saxenda) daily. Not PBS-listed for BED but may be considered where weight-related metabolic risk is also present.</li>
+<li>Particularly useful when BED co-occurs with obesity, type 2 diabetes, or cardiovascular risk factors.</li>
+</ul>
+<p><strong>Topiramate</strong></p>
+<ul>
+<li>Multiple RCTs show significant reduction in binge frequency (50-60% vs 20-30% placebo). Also produces weight loss. Mechanism partly via GABA modulation.</li>
+<li>Significant side effects limit use: cognitive dulling ("dopamax"), word-finding difficulties, tingling extremities, metabolic acidosis, kidney stone risk, teratogenicity (contraindicated in pregnancy).</li>
+<li>Consider when LDX is not appropriate or has failed and weight is a concern.</li>
+</ul>
+<p><strong>SSRIs (fluoxetine, sertraline, escitalopram)</strong></p>
+<ul>
+<li>Modest evidence for reducing binge frequency. More useful where significant comorbid depression or anxiety is driving binge behaviour. Not considered first-line for BED itself.</li>
+<li>Fluoxetine has the most evidence; sertraline and escitalopram are reasonable alternatives.</li>
+</ul>
+<p><strong>Naltrexone</strong></p>
+<ul>
+<li>Opioid antagonist - blocks the reward/pleasure component of bingeing. The most useful preparation for BED is naltrexone-bupropion combination (Contrave, not TGA-listed for BED but used off-label).</li>
+<li>Reduces food cravings and binge frequency in open-label studies. Useful when food reward is the prominent driver.</li>
+</ul>
+<p><strong>Atomoxetine</strong></p>
+<ul>
+<li>Non-stimulant SNRI used for ADHD. Some evidence for BED, particularly where ADHD is comorbid and stimulants are not appropriate. Reduces impulsivity and food preoccupation. Slower onset (4-8 weeks) than LDX.</li>
+</ul>
+<p><strong>Combination approaches:</strong> Medication is most effective when combined with structured eating and psychological treatment. LDX + CBT-E has the best combined evidence for moderate-to-severe BED.</p>"""
+            }
+        ]
+    },
+    {
+        "label": "Additional Topics",
+        "optional": True,
+        "items": [
+            {
+                "id": "bed_body_image",
+                "title": "Body image, weight stigma, and the non-diet approach",
+                "body": """<p><strong>Why this matters clinically:</strong> The dominant cultural narrative about binge eating focuses on weight and dieting. This narrative is not only ineffective for BED - it actively makes it worse. Understanding why changes how you approach recovery.</p>
+<p><strong>The restriction-binge cycle:</strong> The single strongest predictor of a binge episode in BED is restriction. Dietary restriction (intentional caloric restriction below hunger levels) increases binge frequency, binge size, and the subjective sense of loss of control. Every restrictive diet attempted in the context of BED creates the neurobiological conditions for the next binge. This is not weakness - it is biology.</p>
+<p><strong>Weight is not the target:</strong> The primary targets in BED treatment are binge frequency, psychological distress, and quality of life. Weight loss may or may not follow - for many people it does when binge eating reduces, but making weight the primary goal predictably triggers restriction, which triggers bingeing. Treatment focused on weight loss first consistently underperforms treatment focused on eating behaviour and psychological wellbeing first.</p>
+<p><strong>Body image work:</strong> Negative body image is both a trigger for binge eating (eating to manage the distress of hating your body) and a consequence (shame after bingeing worsens body image). Effective approaches:</p>
+<ul>
+<li>Social media audit - unfollow accounts that trigger body comparison and follow accounts that present diverse bodies without commentary on size</li>
+<li>Body functionality focus - what your body does, rather than how it looks</li>
+<li>Body image exposure - gradually engaging with appearance-related situations that are currently avoided</li>
+<li>Challenging appearance-related rules and assumptions in CBT-E specifically</li>
+</ul>
+<p><strong>Weight stigma and healthcare:</strong> Weight stigma in clinical settings is common and harmful. Effective BED treatment does not involve weight commentary, BMI-based moral judgement, or the assumption that the goal is weight loss. If you encounter this, it is appropriate to redirect the focus to eating behaviour and wellbeing.</p>"""
+            },
+            {
+                "id": "bed_medical",
+                "title": "Medical considerations and comorbidities",
+                "body": """<p><strong>Medical assessment in BED should include:</strong></p>
+<ul>
+<li><strong>Metabolic screening:</strong> HbA1c, fasting glucose, lipids, blood pressure. BED significantly increases type 2 diabetes and cardiovascular risk independent of weight.</li>
+<li><strong>Sleep assessment:</strong> Sleep apnoea is more common in BED populations and independently worsens appetite regulation and emotional dysregulation. If you snore, wake unrefreshed, or have significant daytime sleepiness, ask about a sleep study.</li>
+<li><strong>Thyroid function:</strong> Hypothyroidism can worsen appetite regulation and mood - worth ruling out.</li>
+<li><strong>Micronutrient status:</strong> Variable eating patterns can produce nutritional deficiencies even in the context of excess caloric intake. Iron, vitamin D, and B12 are worth checking.</li>
+</ul>
+<p><strong>Common comorbidities requiring separate attention:</strong></p>
+<ul>
+<li><strong>Depression:</strong> Present in 50-60% of people with BED. Often partly driven by the shame and isolation of BED. Treating BED often improves depression, but significant depression may need direct treatment first (medication or therapy) as it impairs engagement with BED-specific interventions.</li>
+<li><strong>Anxiety disorders:</strong> Present in 50% of BED. GAD and social anxiety are most common. Anxiety is a major binge trigger - the binge functions as temporary relief. Address both simultaneously.</li>
+<li><strong>ADHD:</strong> 20-30% co-occurrence. When both are present, ADHD treatment (particularly lisdexamfetamine) meaningfully reduces BED and should be prioritised.</li>
+<li><strong>PTSD and complex trauma:</strong> Elevated in BED populations. Trauma processing (EMDR, trauma-focused CBT) may be necessary before eating disorder-specific treatment is effective in severe cases.</li>
+</ul>
+<p><strong>Gastrointestinal symptoms:</strong> Bloating, abdominal discomfort, and altered bowel habits are common in BED from large meal volume and eating speed. These typically improve with treatment of binge eating directly. Avoid the reflex to investigate extensively before addressing the eating behaviour.</p>"""
+            }
+        ]
+    }
+]
+
+
+def build_items_js(groups):
+    lines = []
+    lines.append("var BED_PE_GROUPS=[")
+    for gi, g in enumerate(groups):
+        label = "null" if g["label"] is None else ("'" + esc(g["label"]) + "'")
+        optional = "true" if g["optional"] else "false"
+        lines.append("  {label:" + label + ",optional:" + optional + ",items:[")
+        for ii, item in enumerate(g["items"]):
+            title = esc(item["title"])
+            body = esc(item["body"])
+            body = body.replace("\n", " ").replace("  ", " ")
+            comma = "," if ii < len(g["items"]) - 1 else ""
+            lines.append("    {id:'" + item["id"] + "',title:'" + title + "',body:'" + body + "'}" + comma)
+        group_comma = "," if gi < len(groups) - 1 else ""
+        lines.append("  ]}" + group_comma)
+    lines.append("]")
+    return "\n".join(lines)
+
+
+groups_js = build_items_js(groups)
+
+html = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Binge Eating Disorder Psychoeducation  -  Dr Benjamin Murrie</title>
+<style>
+:root{--bg:#f0f2f5;--surface:#fff;--border:#e2e6ed;--text:#1a1d23;--muted:#6b7280;--bed:#d97706;--bed-bg:#fffbeb;--bed-dark:#78350f;--bed-mid:#b45309;--navy:#0f172a;--sans:-apple-system,BlinkMacSystemFont,\'Segoe UI\',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;min-height:100vh}
+.topbar{background:var(--navy);padding:10px 14px;border-bottom:3px solid var(--bed);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.topbar-title{font-size:13px;font-weight:800;color:#fde68a;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.ti{background:#1e293b;border:1px solid #334155;color:#f1f5f9;padding:5px 9px;border-radius:7px;font:inherit;font-size:13px;min-width:0}
+.ti::placeholder{color:#64748b}
+.ti:focus{outline:1px solid var(--bed);background:#243349}
+.content{max-width:900px;margin:0 auto;padding:14px 12px 40px}
+.condition-block{margin-bottom:14px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.condition-header{padding:10px 14px;font:700 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--bed-dark);display:flex;align-items:center;gap:10px}
+.cond-sel-btns{margin-left:auto;display:flex;gap:5px;flex-shrink:0}
+.cond-sel-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;font:600 11px var(--sans);padding:3px 10px;border-radius:5px;cursor:pointer}
+.cond-sel-btn:hover{background:rgba(255,255,255,.3)}
+.topic-list{background:#fff}
+.pe-group-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:10px 14px 5px;background:#f8fafc;border-top:1px solid #f0f2f5}
+.pe-section{border-top:1px solid #f4f5f8}
+.pe-section:first-child{border-top:none}
+.pe-header{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;user-select:none;-webkit-user-select:none}
+.pe-header:hover{background:#f9fafb}
+.pe-tick-btn{font-size:1rem;color:var(--muted);flex-shrink:0;min-width:20px;text-align:center;line-height:1;padding:2px;border-radius:4px}
+.pe-title{font-weight:600;font-size:13px;color:var(--text);flex:1;line-height:1.35}
+.pe-arrow{font-size:9px;color:var(--muted);flex-shrink:0;transition:transform .15s;margin-left:auto}
+.pe-section.pe-open .pe-arrow{transform:rotate(90deg)}
+.pe-body{display:none;padding:8px 14px 14px 43px;font-size:12.5px;line-height:1.65;color:#374151;border-top:1px solid #f4f5f8}
+.pe-section.pe-open .pe-body{display:block}
+.pe-body p{margin:0 0 7px}
+.pe-body p:last-child{margin:0}
+.pe-body ul{margin:4px 0 8px 16px}
+.pe-body li{margin-bottom:4px}
+.pe-body table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0 10px}
+.pe-body th{background:#f1f5f9;padding:5px 8px;text-align:left;border:1px solid var(--border);font-size:11px}
+.pe-body td{padding:4px 8px;border:1px solid var(--border);vertical-align:top}
+.pe-section.bed-done{background:#fffbeb}
+.pe-section.bed-done .pe-tick-btn{color:var(--bed)}
+.pe-section.pe-optional{opacity:.88}
+.export-row{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.export-row .ex-label{font:700 12px var(--sans);color:var(--muted);flex-shrink:0}
+.abtn{padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text);font:600 12px var(--sans);cursor:pointer;transition:background .1s,border-color .1s}
+.abtn:hover{background:#f3f4f6;border-color:#94a3b8}
+.abtn.copied{background:#dcfce7;border-color:#86efac;color:#166534}
+.preview-wrap{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.preview-head{background:#f8fafc;border-bottom:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.preview-head-title{font:700 11px var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.preview-body{padding:22px 26px;font-family:Arial,sans-serif;font-size:10pt;line-height:1.55;color:#111;min-height:100px}
+.preview-body .empty-msg{color:var(--muted);font-style:italic;text-align:center;padding:36px 20px;font-size:11pt}
+.ho-header{margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #e5e7eb}
+.ho-pt{font-size:17pt;font-weight:800;color:#0f172a;margin-bottom:2px}
+.ho-meta{font-size:9pt;color:#6b7280;margin-bottom:12px}
+.ho-notice{font-size:9.5pt;background:#fffbeb;border-left:3px solid #d97706;padding:9px 12px;line-height:1.5;color:#78350f}
+.ho-condition-title{font-size:15pt;font-weight:800;padding:8px 12px;border-radius:6px;margin:20px 0 10px;color:#fff;background:var(--bed-dark)}
+.ho-group-label{font-size:9pt;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin:12px 0 6px;padding-bottom:3px;border-bottom-width:2px;border-bottom-style:solid}
+.ho-group-label.bed-g-core{color:#78350f;border-bottom-color:#78350f}
+.ho-group-label.bed-g-practical{color:#0f766e;border-bottom-color:#0f766e}
+.ho-group-label.bed-g-psych{color:#5b21b6;border-bottom-color:#5b21b6}
+.ho-group-label.bed-g-med{color:#0369a1;border-bottom-color:#0369a1}
+.ho-group-label.bed-g-additional{color:#065f46;border-bottom-color:#065f46}
+.ho-topic{margin-bottom:7px;padding:9px 12px;border:1px solid #e5e7eb;border-radius:7px;background:#fffdf5}
+.ho-topic-title{font-weight:700;font-size:11pt;color:#0f172a;margin:0 0 6px;padding-bottom:5px;border-bottom:1px solid #e5e7eb}
+.ho-topic-body{font-size:10pt;line-height:1.65;color:#374151}
+.ho-topic-body p{margin:0 0 6px}
+.ho-topic-body p:last-child{margin:0}
+.ho-topic-body ul{margin:3px 0 7px 16px}
+.ho-topic-body li{margin-bottom:3px}
+.ho-topic-body table{width:100%;border-collapse:collapse;font-size:9.5pt;margin:5px 0 8px}
+.ho-topic-body th{background:#fffbeb;padding:4px 7px;text-align:left;border:1px solid #d1d5db;font-size:9pt}
+.ho-topic-body td{padding:3px 7px;border:1px solid #d1d5db;vertical-align:top}
+.ho-footer{margin-top:24px;padding-top:12px;border-top:1px solid #e5e7eb;font-size:8.5pt;color:#9ca3af;font-style:italic}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-title">BED Psychoeducation</span>
+  <input class="ti" id="ptName" placeholder="Patient name..." style="flex:1;min-width:130px;max-width:210px" oninput="refresh()">
+  <input class="ti" id="ptDate" type="date" style="flex:0 0 128px" oninput="refresh()">
+  <input class="ti" id="drName" placeholder="Clinician name..." style="flex:1;min-width:130px;max-width:200px" oninput="refresh()">
+</div>
+<div class="content">
+  <div class="condition-block">
+    <div class="condition-header">
+      Binge Eating Disorder  -  Topics
+      <div class="cond-sel-btns">
+        <button class="cond-sel-btn" onclick="selectAll()">Select all</button>
+        <button class="cond-sel-btn" onclick="clearAll()">Clear all</button>
+      </div>
+    </div>
+    <div class="topic-list" id="bed-topic-list"></div>
+  </div>
+  <div class="export-row">
+    <span class="ex-label">Export</span>
+    <button class="abtn" id="btn-docx" onclick="dlDocx()">Download .docx</button>
+    <button class="abtn" id="btn-plain" onclick="copyPlain(this)">Copy plain text</button>
+    <button class="abtn" id="btn-fmt" onclick="copyFormatted(this)">Copy formatted</button>
+  </div>
+  <div class="preview-wrap">
+    <div class="preview-head">
+      <span class="preview-head-title">Handout Preview</span>
+      <button class="abtn" onclick="refresh()" style="padding:4px 11px;font-size:11px">Refresh</button>
+    </div>
+    <div class="preview-body" id="preview">
+      <div class="empty-msg">Tick topics above to generate the handout.</div>
+    </div>
+  </div>
+</div>
+<script>
+''' + groups_js + r'''
+
+var sel = {};
+var BED_GROUP_COLORS = {
+  'null': 'bed-g-core',
+  'Practical Strategies': 'bed-g-practical',
+  'Psychological Approaches': 'bed-g-psych',
+  'Medication': 'bed-g-med',
+  'Additional Topics': 'bed-g-additional'
+};
+
+function $(id){return document.getElementById(id);}
+function f(id){var el=$(id);return el?el.value.trim():'';}
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function spaceBody(s){return s.replace(/<\/p>/gi,'</p><br>').replace(/<\/ul>/gi,'</ul><br>').replace(/<\/ol>/gi,'</ol><br>');}
+
+function renderTopics(){
+  var el=$('bed-topic-list'); if(!el) return;
+  var html='';
+  BED_PE_GROUPS.forEach(function(g){
+    if(g.label) html+='<div class="pe-group-label">'+(g.optional?'<span style="font-size:9px;opacity:.6;font-weight:600;margin-right:4px">OPTIONAL</span>':'')+esc(g.label)+'</div>';
+    g.items.forEach(function(item){
+      var done=!!sel[item.id];
+      html+='<div class="pe-section'+(done?' bed-done':'')+(g.optional?' pe-optional':'')+'" data-id="'+item.id+'">';
+      html+='<div class="pe-header">';
+      html+='<span class="pe-tick-btn">'+(done?'&#9745;':'&#9744;')+'</span>';
+      html+='<span class="pe-title">'+esc(item.title)+'</span>';
+      html+='<span class="pe-arrow">&#9658;</span>';
+      html+='</div>';
+      html+='<div class="pe-body">'+item.body+'</div>';
+      html+='</div>';
+    });
+  });
+  el.innerHTML=html;
+  el.addEventListener('click',function(e){
+    var sec=e.target.closest('[data-id]'); if(!sec) return;
+    var id=sec.getAttribute('data-id');
+    var isTick=e.target.classList.contains('pe-tick-btn');
+    if(isTick){
+      e.stopPropagation();
+      sel[id]=!sel[id];
+      sec.classList.toggle('bed-done',!!sel[id]);
+      sec.querySelector('.pe-tick-btn').innerHTML=sel[id]?'&#9745;':'&#9744;';
+      refresh();
+    } else {
+      var hdr=e.target.closest('.pe-header'); if(hdr) sec.classList.toggle('pe-open');
+    }
+  });
+}
+
+function selectAll(){
+  BED_PE_GROUPS.forEach(function(g){g.items.forEach(function(item){sel[item.id]=true;});});
+  renderTopics(); refresh();
+}
+function clearAll(){
+  Object.keys(sel).forEach(function(k){sel[k]=false;});
+  renderTopics(); refresh();
+}
+
+function getSelectedItems(){
+  var result=[];
+  BED_PE_GROUPS.forEach(function(g){
+    g.items.forEach(function(item){
+      if(sel[item.id]) result.push({group:g.label,item:item});
+    });
+  });
+  return result;
+}
+
+function buildHandout(){
+  var items=getSelectedItems(); if(!items.length) return null;
+  var name=f('ptName')||'Patient';
+  var dr=f('drName')||'Your clinician';
+  var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
+  var h='';
+  h+='<div class="ho-header">';
+  h+='<div class="ho-pt">Binge Eating Disorder - Psychoeducation Handout</div>';
+  h+='<div class="ho-meta">Patient: <strong>'+esc(name)+'</strong>';
+  if(ds) h+=' &nbsp;|&nbsp; '+esc(ds);
+  h+=' &nbsp;|&nbsp; Clinician: <strong>'+esc(dr)+'</strong></div>';
+  h+='<div class="ho-notice">The following information was discussed or provided as educational material during your appointment. It is a reference guide only - all treatment decisions should be made in consultation with your treating clinician.</div>';
+  h+='</div>';
+  h+='<div class="ho-condition-title">Binge Eating Disorder (BED)</div>';
+  var curGroup=null;
+  BED_PE_GROUPS.forEach(function(g){
+    g.items.forEach(function(item){
+      if(!sel[item.id]) return;
+      var gKey=g.label||'null';
+      if(gKey!==curGroup){
+        if(g.label){
+          var cls=BED_GROUP_COLORS[g.label]||'bed-g-core';
+          h+='<div class="ho-group-label '+cls+'">'+esc(g.label)+'</div>';
+        }
+        curGroup=gKey;
+      }
+      h+='<div class="ho-topic">';
+      h+='<div class="ho-topic-title">'+esc(item.title)+'</div>';
+      h+='<div class="ho-topic-body">'+item.body+'</div>';
+      h+='</div>';
+    });
+  });
+  h+='<div class="ho-footer">This handout was prepared specifically for '+esc(name)+(ds?' following a psychiatric appointment on '+esc(ds):'')+'. It is not a substitute for clinical advice.</div>';
+  return h;
+}
+
+function refresh(){
+  var html=buildHandout();
+  var pv=$('preview');
+  if(!html){pv.innerHTML='<div class="empty-msg">Tick topics above to generate the handout.</div>';return;}
+  pv.innerHTML=html;
+}
+
+function buildDocxHtml(){
+  var html=buildHandout(); if(!html) return null;
+  return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">'+
+    '<head><meta charset="UTF-8"><style>'+
+    '@page{margin:2cm 2.5cm;}body{font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;color:#111;}'+
+    '.ho-header{margin-bottom:14pt;padding-bottom:10pt;border-bottom:1pt solid #e5e7eb;}'+
+    '.ho-pt{font-size:17pt;font-weight:bold;color:#0f172a;margin-bottom:3pt;}'+
+    '.ho-meta{font-size:9pt;color:#6b7280;margin-bottom:10pt;}'+
+    '.ho-notice{font-size:9.5pt;background:#fffbeb;border-left:3pt solid #d97706;padding:8pt 10pt;color:#78350f;}'+
+    '.ho-condition-title{font-size:14pt;font-weight:bold;padding:7pt 10pt;background:#78350f;color:#fff;margin:18pt 0 9pt;}'+
+    '.ho-group-label{font-size:8.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;margin:11pt 0 5pt;padding-bottom:2pt;border-bottom:1.5pt solid currentColor;}'+
+    '.ho-group-label.bed-g-core{color:#78350f;}.ho-group-label.bed-g-practical{color:#0f766e;}.ho-group-label.bed-g-psych{color:#5b21b6;}.ho-group-label.bed-g-med{color:#0369a1;}.ho-group-label.bed-g-additional{color:#065f46;}'+
+    '.ho-topic{margin-bottom:7pt;padding:8pt 11pt;border:1pt solid #e5e7eb;background:#fffdf5;}'+
+    '.ho-topic-title{font-weight:bold;font-size:11pt;color:#0f172a;margin:0 0 5pt;padding-bottom:4pt;border-bottom:1pt solid #e5e7eb;}'+
+    '.ho-topic-body{font-size:10pt;line-height:1.65;color:#374151;}'+
+    '.ho-topic-body p{margin:0 0 5pt;}.ho-topic-body ul{margin:3pt 0 6pt 14pt;}.ho-topic-body li{margin-bottom:3pt;}'+
+    '.ho-footer{margin-top:20pt;padding-top:10pt;border-top:1pt solid #e5e7eb;font-size:8pt;color:#9ca3af;font-style:italic;}'+
+    '</style></head><body>'+html+'</body></html>';
+}
+
+function dlDocx(){
+  var docx=buildDocxHtml(); if(!docx){alert('No topics selected.');return;}
+  var name=(f('ptName')||'Patient').replace(/[^a-zA-Z0-9]/g,'_');
+  var blob=new Blob(['﻿'+docx],{type:'application/msword;charset=utf-8'});
+  var url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='BED_Psychoeducation_'+name+'.doc';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(url);},2000);
+  flash($('btn-docx'),'Downloaded!');
+}
+
+function buildPasteHtml(){
+  if(!buildHandout()) return null;
+  var name=f('ptName')||'Patient';
+  var dr=f('drName')||'Your clinician';
+  var dv=f('ptDate'),ds=dv?new Date(dv+'T12:00:00').toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'}):'';
+  var sp='<p style="margin:0;line-height:1.2">&nbsp;</p>';
+  var h='<div style="font-family:Arial,sans-serif;font-size:10pt;line-height:1.6;color:#111">';
+  h+='<p style="font-size:14pt;font-weight:bold;margin:0"><b>Binge Eating Disorder - Psychoeducation Handout</b></p>';
+  h+=sp;
+  h+='<p style="font-size:9pt;color:#555;margin:0">Patient: <b>'+esc(name)+'</b>';
+  if(ds) h+=' | '+esc(ds);
+  if(dr) h+=' | Clinician: <b>'+esc(dr)+'</b>';
+  h+='</p>';
+  h+=sp;
+  h+='<p style="font-size:12pt;font-weight:bold;color:#fff;background:#78350f;padding:4px 8px;margin:0"><b>Binge Eating Disorder (BED)</b></p>';
+  h+=sp;
+  var curGroup=null;
+  BED_PE_GROUPS.forEach(function(g){
+    g.items.forEach(function(item){
+      if(!sel[item.id]) return;
+      if(g.label&&g.label!==curGroup){
+        curGroup=g.label;
+        h+='<p style="font-weight:bold;text-transform:uppercase;font-size:8pt;color:#444;margin:0"><b>'+esc(g.label)+'</b></p>';
+        h+=sp;
+      }
+      h+='<div style="border:1px solid #ccc;padding:7px 10px">';
+      h+='<p style="font-weight:bold;margin:0;padding-bottom:4px;border-bottom:1px solid #e0e0e0"><b>'+esc(item.title)+'</b></p>';
+      h+='<br>';
+      h+=spaceBody(item.body);
+      h+='</div>';
+      h+=sp;
+    });
+  });
+  h+='<p style="color:#999;font-size:8pt;font-style:italic;margin:0"><i>This handout was prepared for '+esc(name)+(ds?' on '+esc(ds):'')+'. It is not a substitute for clinical advice.</i></p>';
+  h+='</div>';
+  return h;
+}
+
+function copyPlain(btn){
+  if(!buildHandout()){alert('No topics selected.');return;}
+  var pv=$('preview');
+  navigator.clipboard.writeText(pv.innerText||pv.textContent).then(function(){flash(btn,'Copied!');}).catch(function(){});
+}
+
+function copyFormatted(btn){
+  var content=buildPasteHtml();
+  if(!content){alert('No topics selected.');return;}
+  var el=document.createElement('div');
+  el.style.cssText='position:fixed;left:-9999px;top:0;width:780px;background:#fff;overflow:hidden';
+  el.innerHTML=content;
+  document.body.appendChild(el);
+  var range=document.createRange();
+  range.selectNodeContents(el);
+  var wsel=window.getSelection();
+  wsel.removeAllRanges();
+  wsel.addRange(range);
+  var ok=false;
+  try{ok=document.execCommand('copy');}catch(ex){}
+  wsel.removeAllRanges();
+  document.body.removeChild(el);
+  if(ok){flash(btn,'Copied!');}
+  else if(window.ClipboardItem){
+    var blob=new Blob([content],{type:'text/html'});
+    navigator.clipboard.write([new ClipboardItem({'text/html':blob})]).then(function(){flash(btn,'Copied!');}).catch(function(){copyPlain(btn);});
+  } else {copyPlain(btn);}
+}
+
+function flash(btn,msg){
+  if(!btn)return;
+  var orig=btn.textContent;
+  btn.textContent=msg;btn.classList.add('copied');
+  setTimeout(function(){btn.textContent=orig;btn.classList.remove('copied');},2000);
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var td=new Date().toISOString().slice(0,10);
+  var dtEl=$('ptDate'); if(dtEl&&!dtEl.value) dtEl.value=td;
+  renderTopics();
+  refresh();
+});
+</script>
+</body>
+</html>'''
+
+import os
+BASE = os.path.dirname(os.path.abspath(__file__))
+out = os.path.join(BASE, 'bed-psychoeducation.html')
+with open(out, 'w', encoding='utf-8') as fh:
+    fh.write(html)
+print("Written:", out)
