@@ -579,10 +579,10 @@
 
     <div class="scale-layout">
     <nav class="scale-nav" id="scaleNav">
-        <div class="nav-category open" data-cat="depression">
+        <div class="nav-category" data-cat="depression">
             <button class="nav-cat-btn" onclick="toggleCat('depression')">Depression <span class="cat-arrow">▾</span></button>
             <div class="nav-scales">
-                <button class="scale-btn active" data-tab="madrs" onclick="switchTab('madrs')"><span class="scale-abbr">MADRS</span><span class="scale-full">Montgomery-Åsberg Depression Rating Scale</span></button>
+                <button class="scale-btn" data-tab="madrs" onclick="switchTab('madrs')"><span class="scale-abbr">MADRS</span><span class="scale-full">Montgomery-Åsberg Depression Rating Scale</span></button>
                 <button class="scale-btn" data-tab="hamd" onclick="switchTab('hamd')"><span class="scale-abbr">HAM-D</span><span class="scale-full">Hamilton Depression Rating Scale</span></button>
                 <button class="scale-btn" data-tab="phq9" onclick="switchTab('phq9')"><span class="scale-abbr">PHQ-9</span><span class="scale-full">Patient Health Questionnaire-9</span></button>
             </div>
@@ -676,8 +676,17 @@
     </nav>
     <div class="scale-content">
 
+    <!-- Intro / landing (shown until a scale is selected) -->
+    <div class="tab-pane active" id="tab-intro">
+        <div class="card">
+            <div class="card-title">Psychometric Scales</div>
+            <p style="font-size:0.95em;">Select a scale from the list on the left to begin.</p>
+            <p style="font-size:0.9em; color:var(--gray-600); margin-top:8px;">Expand a category (Depression, Anxiety, Trauma / PTSD, and so on), then choose a scale to view its items, score it live, and generate a plain-text summary.</p>
+        </div>
+    </div>
+
     <!-- MADRS -->
-    <div class="tab-pane active" id="tab-madrs">
+    <div class="tab-pane" id="tab-madrs">
         <div class="card">
             <div class="card-title">MADRS Instructions</div>
             <p style="font-size:0.9em;">Rate each item based on the <strong>past week</strong>. The rating should be based on a clinical interview, moving from broadly phrased questions about symptoms to more detailed ones. The rater must decide whether the rating lies on defined scale steps (0, 2, 4, 6) or between (1, 3, 5).</p>
