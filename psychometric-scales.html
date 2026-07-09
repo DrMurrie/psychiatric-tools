@@ -637,6 +637,7 @@
             <div class="nav-scales">
                 <button class="scale-btn" data-tab="edeq" onclick="switchTab('edeq')"><span class="scale-abbr">EDE-Q</span><span class="scale-full">Eating Disorder Examination Questionnaire</span></button>
                 <button class="scale-btn" data-tab="ede" onclick="switchTab('ede')"><span class="scale-abbr">EDE</span><span class="scale-full">Eating Disorder Examination</span></button>
+                <button class="scale-btn" data-tab="bes" onclick="switchTab('bes')"><span class="scale-abbr">BES</span><span class="scale-full">Binge Eating Scale</span></button>
             </div>
         </div>
         <div class="nav-category" data-cat="substance">
@@ -1423,6 +1424,37 @@
 
         <div class="disclaimer">
             <strong>Reference:</strong> Fairburn CG, Cooper Z, O'Connor M. Eating Disorder Examination (Edition 17.0D). In: Fairburn CG. Cognitive Behavior Therapy and Eating Disorders. New York: Guilford Press; 2008. Investigator-based interview; community-norm global ≈ 1.5; global ≥ 4 commonly used as clinical threshold. Items, probes and scoring conventions are not reproduced here — use the official EDE schedule.
+        </div>
+    </div>
+
+    <!-- BES (Binge Eating Scale) -->
+    <div class="tab-pane" id="tab-bes">
+        <div class="card">
+            <div class="card-title">BES Instructions</div>
+            <p style="font-size:0.9em;">Below are groups of statements. Read <strong>all</strong> of the statements in each group and select the <strong>one</strong> that best describes the way you feel about the problems you have controlling your eating behaviour. The number beside each statement is its weight; groups are not always scored 0–3.</p>
+        </div>
+
+        <div class="section-body" id="besItems"></div>
+
+        <div class="score-bar">
+            BES Total: <span id="besTotal">0</span> / 46 &nbsp; — &nbsp; <span class="severity-pill" id="besSeverityPill">Not rated</span>
+        </div>
+
+        <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateOutput('bes')">Generate Plain Text Summary</button>
+            <button class="btn btn-secondary" onclick="resetScale('bes')">Reset</button>
+        </div>
+
+        <div class="card output-card" id="besOutput">
+            <div class="output-header">
+                <h3>BES Plain Text Summary</h3>
+                <button class="btn btn-primary" onclick="copyOutput('bes')" id="besCopyBtn">Copy to Clipboard</button>
+            </div>
+            <textarea class="output" id="besText" readonly></textarea>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Reference:</strong> Gormally J, Black S, Daston S, Rardin D. The assessment of binge eating severity among obese persons. Addict Behav. 1982;7(1):47–55. 16 items; each group's statement weights sum to a total of 0–46. Cut-offs: ≤17 non/minimal binge eating; 18–26 moderate; ≥27 severe binge eating. A screening aid, not a diagnostic instrument — a positive screen warrants clinical assessment for binge-eating disorder.
         </div>
     </div>
 
@@ -4055,6 +4087,129 @@ function escapeXml(s) {
 // is {start, label}; band's range ends at the next band's start (exclusive)
 // or at max+1 for the last band. Bands are auto-attached to bars flagged
 // isTotal: true when renderChart is called.
+// ---------- BES (Binge Eating Scale) data ----------
+const BES_ITEMS = [
+    [ {w:0, label:"I don’t feel self-conscious about my weight or body size when I’m with others."}, {w:0, label:"I feel concerned about how I look to others, but it normally does not make me feel disappointed with myself."}, {w:1, label:"I do get self-conscious about my appearance and weight which makes me feel disappointed in myself."}, {w:3, label:"I feel very self-conscious about my weight and frequently, I feel intense shame and disgust for myself. I try to avoid social contacts because of my self consciousness."} ],
+    [ {w:0, label:"I don’t have any difficulty eating slowly in the proper manner."}, {w:1, label:"Although I seem to “gobble down” foods, I don’t end up feeling stuffed because of eating too much."}, {w:2, label:"At times, I tend to eat quickly and then, I feel uncomfortably full afterwards."}, {w:3, label:"I have the habit of bolting down my food, without really chewing it. When this happens I usually feel uncomfortably stuffed because I’ve eaten too much."} ],
+    [ {w:0, label:"I feel capable to control my eating urges when I want to."}, {w:1, label:"I feel like I have failed to control my eating more than the average person."}, {w:3, label:"I feel utterly helpless when it comes to feeling in control of my eating urges."}, {w:3, label:"Because I feel so helpless about controlling my eating I have become very desperate about trying to get in control."} ],
+    [ {w:0, label:"I don’t have the habit of eating when I’m bored."}, {w:0, label:"I sometimes eat when I’m bored, but often I’m able to “get busy” and get my mind off food."}, {w:0, label:"I have a regular habit of eating when I’m bored, but occasionally, I can use some other activity to get my mind off eating."}, {w:2, label:"I have a strong habit of eating when I’m bored. Nothing seems to help me break the habit."} ],
+    [ {w:0, label:"I’m usually physically hungry when I eat something."}, {w:1, label:"Occasionally, I eat something on impulse even though I really am not hungry."}, {w:2, label:"I have the regular habit of eating foods, that I might not really enjoy, to satisfy a hungry feeling even though physically, I don’t need the food."}, {w:3, label:"Even though I’m not physically hungry, I get a hungry feeling in my mouth that only seems to be satisfied when I eat a food, like a sandwich, that fills my mouth. Sometimes, when I eat the food to satisfy my mouth hunger, I then spit the food out so I won’t gain weight."} ],
+    [ {w:0, label:"I don’t feel any guilt or self-hate after I overeat."}, {w:1, label:"After I overeat, occasionally I feel guilt or self-hate."}, {w:3, label:"Almost all the time I experience strong guilt or self-hate after I overeat."} ],
+    [ {w:0, label:"I don’t lose total control of my eating when dieting even after periods when I overeat."}, {w:2, label:"Sometimes when I eat a “forbidden food” on a diet, I feel like I “blew it” and eat even more."}, {w:3, label:"Frequently, I have the habit of saying to myself, “I’ve blown it now, why not go all the way” when I overeat on a diet. When that happens I eat even more."}, {w:3, label:"I have a regular habit of starting strict diets for myself, but I break the diets by going on an eating binge. My life seems to be either a “feast” or “famine.”"} ],
+    [ {w:0, label:"I rarely eat so much food that I feel uncomfortably stuffed afterwards."}, {w:1, label:"Usually about once a month, I eat such a quantity of food, I end up feeling very stuffed."}, {w:2, label:"I have regular periods during the month when I eat large amounts of food, either at mealtime or at snacks."}, {w:3, label:"I eat so much food that I regularly feel quite uncomfortable after eating and sometimes a bit nauseous."} ],
+    [ {w:0, label:"My level of calorie intake does not go up very high or go down very low on a regular basis."}, {w:1, label:"Sometimes after I overeat, I will try to reduce my caloric intake to almost nothing to compensate for the excess calories I’ve eaten."}, {w:2, label:"I have a regular habit of overeating during the night. It seems that my routine is not to be hungry in the morning but overeat in the evening."}, {w:3, label:"In my adult years, I have had week-long periods where I practically starve myself. This follows periods when I overeat. It seems I live a life of either “feast or famine.”"} ],
+    [ {w:0, label:"I usually am able to stop eating when I want to. I know when “enough is enough.”"}, {w:1, label:"Every so often, I experience a compulsion to eat which I can’t seem to control."}, {w:2, label:"Frequently, I experience strong urges to eat which I seem unable to control, but at other times I can control my eating urges."}, {w:3, label:"I feel incapable of controlling urges to eat. I have a fear of not being able to stop eating voluntarily."} ],
+    [ {w:0, label:"I don’t have any problem stopping eating when I feel full."}, {w:1, label:"I usually can stop eating when I feel full but occasionally overeat leaving me feeling uncomfortably stuffed."}, {w:2, label:"I have a problem stopping eating once I start and usually I feel uncomfortably stuffed after I eat a meal."}, {w:3, label:"Because I have a problem not being able to stop eating when I want, I sometimes have to induce vomiting to relieve my stuffed feeling."} ],
+    [ {w:0, label:"I seem to eat just as much when I’m with others (family, social gatherings) as when I’m by myself."}, {w:1, label:"Sometimes, when I’m with other persons, I don’t eat as much as I want to eat because I’m self-conscious about my eating."}, {w:2, label:"Frequently, I eat only a small amount of food when others are present, because I’m very embarrassed about my eating."}, {w:3, label:"I feel so ashamed about overeating that I pick times to overeat when I know no one will see me. I feel like a “closet eater.”"} ],
+    [ {w:0, label:"I eat three meals a day with only an occasional between meal snack."}, {w:0, label:"I eat 3 meals a day, but I also normally snack between meals."}, {w:2, label:"When I am snacking heavily, I get in the habit of skipping regular meals."}, {w:3, label:"There are regular periods when I seem to be continually eating, with no planned meals."} ],
+    [ {w:0, label:"I don’t think much about trying to control unwanted eating urges."}, {w:1, label:"At least some of the time, I feel my thoughts are pre-occupied with trying to control my eating urges."}, {w:2, label:"I feel that frequently I spend much time thinking about how much I ate or about trying not to eat anymore."}, {w:3, label:"It seems to me that most of my waking hours are pre-occupied by thoughts about eating or not eating. I feel like I’m constantly struggling not to eat."} ],
+    [ {w:0, label:"I don’t think about food a great deal."}, {w:1, label:"I have strong cravings for food but they last only for brief periods of time."}, {w:2, label:"I have days when I can’t seem to think about anything else but food."}, {w:3, label:"Most of my days seem to be pre-occupied with thoughts about food. I feel like I live to eat."} ],
+    [ {w:0, label:"I usually know whether or not I’m physically hungry. I take the right portion of food to satisfy me."}, {w:1, label:"Occasionally, I feel uncertain about knowing whether or not I’m physically hungry. At these times it’s hard to know how much food I should take to satisfy me."}, {w:2, label:"Even though I might know how many calories I should eat, I don’t have any idea what is a “normal” amount of food for me."} ],
+];
+// ---------- Build BES UI ----------
+(function buildBes() {
+    const container = document.getElementById('besItems');
+    if (!container) return;
+    let html = '';
+    BES_ITEMS.forEach((options, idx) => {
+        const n = idx + 1;
+        html += '<div class="item-block">';
+        html += '<div class="item-header"><span class="item-number">' + n + '</span><span class="item-title">Question ' + n + '</span></div>';
+        html += '<div class="radio-group">';
+        options.forEach((opt, oi) => {
+            html += '<label class="radio-option"><input type="radio" name="bes_' + n + '" value="' + oi + '" onchange="updateBes()">' +
+                    '<span class="radio-label"><span class="val">' + opt.w + '</span>' + opt.label + '</span></label>';
+        });
+        html += '</div></div>';
+    });
+    container.innerHTML = html;
+})();
+
+// weight of the currently selected option for BES item i (1-based); null if none
+function besItemWeight(i) {
+    const v = getRadioVal('bes_' + i);
+    if (v === null) return null;
+    const opt = BES_ITEMS[i - 1][parseInt(v, 10)];
+    return opt ? opt.w : null;
+}
+
+function besSeverity(score) {
+    if (score <= 17) return { level: 'Non / minimal binge eating', css: 'sev-none' };
+    if (score <= 26) return { level: 'Moderate binge eating',      css: 'sev-moderate' };
+    return               { level: 'Severe binge eating',        css: 'sev-severe' };
+}
+
+function updateBes() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 16; i++) {
+        const w = besItemWeight(i);
+        if (w !== null) { total += w; rated++; }
+    }
+    document.getElementById('besTotal').textContent = total;
+    const pill = document.getElementById('besSeverityPill');
+    if (rated === 0) { pill.textContent = 'Not rated'; pill.className = 'severity-pill'; }
+    else {
+        const sev = besSeverity(total);
+        pill.textContent = sev.level + (rated < 16 ? ' (partial: ' + rated + '/16)' : '');
+        pill.className = 'severity-pill ' + sev.css;
+    }
+}
+
+function chartBes() {
+    let total = 0, rated = 0;
+    for (let i = 1; i <= 16; i++) {
+        const w = besItemWeight(i);
+        if (w !== null) { total += w; rated++; }
+    }
+    if (rated === 0) { renderChart('bes', [], 'BES — not rated'); return; }
+    const sev = besSeverity(total);
+    renderChart('bes',
+        [{ label: 'BES Total', value: total, max: 46, barClass: severityToBarClass(sev.css), isTotal: true }],
+        'BES — ' + sev.level + (rated < 16 ? ' (partial: ' + rated + '/16)' : ''));
+}
+
+function buildBesText() {
+    const line = '='.repeat(66);
+    const thin = '-'.repeat(66);
+    let t = '';
+    t += line + '\n';
+    t += 'BINGE EATING SCALE (BES)\n';
+    t += line + '\n';
+    t += patientHeader();
+    t += thin + '\n';
+
+    let total = 0, rated = 0;
+    const rows = [];
+    for (let i = 1; i <= 16; i++) {
+        const v = getRadioVal('bes_' + i);
+        let w = 'NR', answer = 'Not rated';
+        if (v !== null) {
+            const opt = BES_ITEMS[i - 1][parseInt(v, 10)];
+            w = opt.w; answer = opt.label;
+            total += opt.w; rated++;
+        }
+        rows.push({ num: i, w: w, answer: answer });
+    }
+
+    const sev = besSeverity(total);
+    t += 'TOTAL SCORE: ' + total + ' / 46';
+    if (rated < 16) t += '  (partial: ' + rated + '/16 items rated)';
+    t += '\n';
+    t += 'CATEGORY:    ' + sev.level + '\n';
+    t += thin + '\n';
+    t += 'ITEM RESPONSES\n';
+    t += thin + '\n';
+    rows.forEach(r => {
+        t += r.num.toString().padStart(2, ' ') + '. [Weight: ' + r.w + ']  ' + r.answer + '\n';
+    });
+    t += thin + '\n';
+    t += 'Cut-offs: <=17 non/minimal | 18-26 moderate | >=27 severe binge eating.\n';
+    t += 'Reference: Gormally et al. Addict Behav. 1982;7(1):47-55.\n';
+    t += line + '\n';
+    return t;
+}
+
+
 const SCALE_BANDS = {
     madrs:  [{start:0,label:'None'},{start:7,label:'Mild'},{start:20,label:'Moderate'},{start:35,label:'Severe'}],
     hamd:   [{start:0,label:'Normal'},{start:8,label:'Mild'},{start:14,label:'Moderate'},{start:19,label:'Severe'},{start:23,label:'V.Severe'}],
@@ -4075,7 +4230,8 @@ const SCALE_BANDS = {
     edeq:   [{start:0,label:'Below threshold'},{start:4,label:'Clinical (≥4)'}],
     ede:    [{start:0,label:'Below threshold'},{start:4,label:'Clinical (≥4)'}],
     pirs:   [{start:0,label:'Class 1 (0%)'},{start:8,label:'Class 2 (1-10%)'},{start:16,label:'Class 3 (11-30%)'},{start:24,label:'Class 4 (31-60%)'},{start:28,label:'Class 5 (61-100%)'}],
-    wurs:   [{start:0,label:'Below threshold'},{start:36,label:'Suggestive (≥36)'},{start:46,label:'Probable ADHD (≥46)'},{start:66,label:'Strongly suggestive'}]
+    wurs:   [{start:0,label:'Below threshold'},{start:36,label:'Suggestive (≥36)'},{start:46,label:'Probable ADHD (≥46)'},{start:66,label:'Strongly suggestive'}],
+    bes:    [{start:0,label:'None/Minimal'},{start:18,label:'Moderate'},{start:27,label:'Severe'}]
     // BAARS-IV bands are attached per-bar inside chartBaars (different
     // thresholds for symptom count vs impairment count).
 };
@@ -6198,6 +6354,7 @@ const SCALE_DISPATCH = {
     sds:    { build: () => buildSdsText(),    chart: chartSds    },
     edeq:   { build: () => buildEdeqText(),   chart: chartEdeq   },
     ede:    { build: () => buildEdeText(),    chart: chartEde    },
+    bes:    { build: () => buildBesText(),   chart: chartBes    },
     baars:  { build: () => buildBaarsText(),  chart: chartBaars  },
     wurs:   { build: () => buildWursText(),   chart: chartWurs   },
     pirs:   { build: () => buildPirsText(),   chart: chartPirs   },
@@ -6237,7 +6394,7 @@ function copyOutput(which) {
 }
 
 function resetScale(which) {
-    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, ybocs: 19, bfcrs: 23, bprs: 18, k10: 10, msibpd: 10, audit: 10, dast: 10, wsas: 5, sds: 3 };
+    const counts = { madrs: 10, hamd: 17, phq9: 9, gad7: 7, hama: 14, ymrs: 11, pcl5: 20, iesr: 22, ybocs: 19, bfcrs: 23, bprs: 18, k10: 10, msibpd: 10, audit: 10, dast: 10, wsas: 5, sds: 3, bes: 16 };
     if (which === 'cgi') {
         document.querySelectorAll('input[name="cgis"]').forEach(r => r.checked = false);
         document.querySelectorAll('input[name="cgii"]').forEach(r => r.checked = false);
@@ -6323,7 +6480,8 @@ function resetScale(which) {
                        hama: updateHama, ymrs: updateYmrs, pcl5: updatePcl5, iesr: updateIesr,
                        ybocs: updateYbocs, bfcrs: updateBfcrs,
                        bprs: updateBprs, k10: updateK10, msibpd: updateMsibpd,
-                       audit: updateAudit, dast: updateDast, wsas: updateWsas, sds: updateSds };
+                       audit: updateAudit, dast: updateDast, wsas: updateWsas, sds: updateSds,
+                       bes: updateBes };
     if (updaters[which]) updaters[which]();
     document.getElementById(which + 'Output').classList.remove('visible');
 }
@@ -6351,6 +6509,7 @@ updateEde();
 updateBaars();
 updatePirs();
 updateWurs();
+updateBes();
 </script>
 </body>
 </html>
