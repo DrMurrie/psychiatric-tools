@@ -337,15 +337,15 @@ groups = [
             },
             {
                 "id": "med_aripiprazole",
-                "title": "Aripiprazole — mania and maintenance | PBS listed | monthly injection available",
-                "body": """<p><strong>Class:</strong> Partial dopamine agonist / atypical antipsychotic. <strong>PBS status:</strong> Listed for acute mania and bipolar maintenance in Australia. <strong>Brands:</strong> Abilify (oral tablets, orodispersible, oral solution, IM short-acting); Abilify Maintena (extended-release suspension, IM monthly — PBS listed for bipolar maintenance); generic aripiprazole oral widely available.</p>
+                "title": "Aripiprazole — mania and maintenance | NOT PBS listed for BD | monthly injection available",
+                "body": """<p><strong>Class:</strong> Partial dopamine agonist / atypical antipsychotic. <strong>PBS status:</strong> NOT listed for bipolar disorder in Australia — aripiprazole is PBS listed for schizophrenia but NOT for bipolar disorder. Private prescription required for the bipolar indication. Abilify Maintena (monthly injection) is similarly not PBS listed for bipolar maintenance. <strong>Brands:</strong> Abilify (oral tablets, orodispersible, oral solution, IM short-acting); Abilify Maintena (extended-release suspension, IM monthly — private only for BD); generic aripiprazole oral widely available.</p>
 <p><strong>Mechanism:</strong> Partial agonist at D2 and D3 receptors (the key distinguishing feature — functional antagonism in hyperdopaminergic states, functional agonism in hypodopaminergic states); partial agonist at 5-HT1A; antagonist at 5-HT2A; relatively low H1 and M1 affinity (explaining favourable metabolic and sedation profile).</p>
 <p><strong>Evidence:</strong> RCT evidence for acute mania; long-term maintenance trials showing relapse prevention. Less evidence than lithium or valproate for depressive prevention — primarily used for the manic/hypomanic pole and maintenance. Not effective for bipolar depression as monotherapy.</p>
 <p><strong>Dosing:</strong></p>
 <table>
 <tr><th>Formulation</th><th>Starting dose</th><th>Target dose</th><th>Notes</th></tr>
 <tr><td>Oral tablet</td><td>10–15mg daily</td><td>15–30mg daily</td><td>Morning dosing preferred (activating)</td></tr>
-<tr><td>IM monthly (Maintena)</td><td>400mg IM gluteal</td><td>400mg monthly (can reduce to 300mg)</td><td>Must overlap with oral for first 2 weeks; PBS listed for maintenance</td></tr>
+<tr><td>IM monthly (Maintena)</td><td>400mg IM gluteal</td><td>400mg monthly (can reduce to 300mg)</td><td>Must overlap with oral for first 2 weeks; private prescription — NOT PBS listed for BD</td></tr>
 </table>
 <p><strong>Advantages over olanzapine and quetiapine:</strong></p>
 <ul>

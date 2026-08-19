@@ -155,7 +155,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15
 .pe-section.anx-done .pe-tick-btn{color:var(--anx)}
 .pe-section.bed-done{background:#fffbeb}
 .pe-section.bed-done .pe-tick-btn{color:var(--bed)}
-.pe-section.pe-optional{opacity:.88}
+
 .export-row{background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .export-row .ex-label{font:700 12px var(--sans);color:var(--muted);flex-shrink:0;white-space:nowrap}
 .abtn{padding:7px 14px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--text);font:600 12px var(--sans);cursor:pointer;transition:background .1s,border-color .1s}
@@ -451,10 +451,10 @@ function renderTopicList(containerId, groups, sel, condKey, doneClass){
   var el=$(containerId); if(!el) return;
   var html='';
   groups.forEach(function(g){
-    if(g.label) html+='<div class="pe-group-label">'+(g.optional?'<span style="font-size:9px;opacity:.6;font-weight:600;margin-right:4px">OPTIONAL</span>':'')+esc(g.label)+'</div>';
+    if(g.label) html+='<div class="pe-group-label">'+esc(g.label)+'</div>';
     g.items.forEach(function(item){
       var done=!!sel[item.id];
-      html+='<div class="pe-section'+(done?' '+doneClass:'')+(g.optional?' pe-optional':'')+'" data-id="'+item.id+'" data-cond="'+condKey+'">';
+      html+='<div class="pe-section'+(done?' '+doneClass:'')+'" data-id="'+item.id+'" data-cond="'+condKey+'">';
       html+='<div class="pe-header">';
       html+='<span class="pe-tick-btn">'+(done?'&#9745;':'&#9744;')+'</span>';
       html+='<span class="pe-title">'+esc(item.title)+'</span>';
