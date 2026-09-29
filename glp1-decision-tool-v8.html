@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLP-1 Prescribing Protocol — Psychiatry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root,[data-theme="light"]{
+--bg:#f5f4f0;--surface:#ffffff;--surface-2:#fafaf8;--surface-offset:#eeece8;--border:#d8d5cf;--divider:#e6e4e0;
+--text:#1a1916;--muted:#3d3b36;--faint:#6a6860;
+--primary:#016a70;--primary-h:#0b5055;--primary-hi:#d4e8e8;
+--warning:#8a3d14;--warning-hi:#faeee7;
+--error:#9b2770;--error-hi:#f7e8f2;
+--success:#3a7018;--success-hi:#e2f0d9;
+--gold:#a86000;--gold-hi:#fef3d5;
+--blue:#005e8a;--blue-hi:#dceef8;
+--orange:#b85400;--orange-hi:#fdeee0;
+--shadow-sm:0 1px 3px rgba(26,25,22,.07),0 1px 2px rgba(26,25,22,.04);
+--shadow-md:0 4px 12px rgba(26,25,22,.08);
+--shadow-lg:0 12px 40px rgba(26,25,22,.11);
+--r-sm:5px;--r-md:9px;--r-lg:13px;--r-xl:17px;--r-full:9999px;
+--font:'Inter','Helvetica Neue',sans-serif;
+--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;
+--trans:160ms cubic-bezier(.16,1,.3,1);
+}
+[data-theme="dark"]{
+--bg:#141312;--surface:#1a1918;--surface-2:#1e1d1c;--surface-offset:#222120;--border:#363432;--divider:#292826;
+--text:#d8d6d2;--muted:#a8a6a2;--faint:#7a7876;
+--primary:#4d9aa5;--primary-h:#237d89;--primary-hi:#1e3638;
+--warning:#c06832;--warning-hi:#36200e;
+--error:#cc5ea8;--error-hi:#38162c;
+--success:#68a840;--success-hi:#1a2e0e;
+--gold:#e8a830;--gold-hi:#382c0e;
+--blue:#5090c8;--blue-hi:#182a40;
+--orange:#f89040;--orange-hi:#362010;
+--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 12px rgba(0,0,0,.4);--shadow-lg:0 12px 40px rgba(0,0,0,.5);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;line-height:1.6;font-size:15px;transition:background var(--trans),color var(--trans)}
+h1,h2,h3,h4{line-height:1.2}button{cursor:pointer;font:inherit;color:inherit;background:none;border:none}
+.app{display:flex;flex-direction:column;min-height:100dvh}
+.prog-wrap{height:3px;background:var(--divider)}.prog{height:100%;background:var(--primary);transition:width .4s ease}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.hdr-top{padding:0 var(--s6);min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:var(--s4)}
+.logo{display:flex;align-items:center;gap:var(--s3);flex-shrink:0}
+.logo-text h1{font-size:.88rem;font-weight:600;letter-spacing:-.01em}.logo-text p{font-size:.67rem;color:var(--muted)}
+.hdr-r{display:flex;align-items:center;gap:var(--s2);flex-shrink:0}
+.icon-btn{width:32px;height:32px;border-radius:var(--r-full);border:1px solid var(--border);background:var(--surface-2);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all var(--trans)}
+.icon-btn:hover{border-color:var(--primary);color:var(--primary)}
+.reset-btn{font-size:.72rem;padding:5px 12px;border-radius:var(--r-full);border:1px solid var(--border);background:var(--surface-2);color:var(--muted);font-weight:500;transition:all var(--trans)}
+.reset-btn:hover{border-color:var(--error);color:var(--error)}
+
+/* SELECTION CHIPS BAR */
+.chips-bar{min-height:0;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s ease;background:var(--surface-2);border-bottom:0px solid var(--divider)}
+.chips-bar.has-chips{max-height:200px;padding:6px var(--s6);border-bottom-width:1px}
+.chips-inner{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.chips-lbl{font-size:.62rem;color:var(--faint);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-right:2px;flex-shrink:0}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:var(--r-full);background:var(--primary-hi);color:var(--primary);border:1px solid var(--primary);white-space:nowrap;animation:chipIn .2s ease;transition:all var(--trans)}
+.chip.chip-warn{background:var(--warning-hi);color:var(--warning);border-color:var(--warning)}
+.chip.chip-err{background:var(--error-hi);color:var(--error);border-color:var(--error)}
+.chip.chip-med{background:var(--gold-hi);color:var(--gold);border-color:var(--gold)}
+.chip.chip-pop{background:var(--blue-hi);color:var(--blue);border-color:var(--blue)}
+.chip.chip-agent-s{background:var(--blue-hi);color:var(--blue);border-color:var(--blue)}
+.chip.chip-agent-t{background:var(--orange-hi);color:var(--orange);border-color:var(--orange)}
+@keyframes chipIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+
+.layout{display:grid;grid-template-columns:210px minmax(0,1fr);flex:1}
+@media(max-width:800px){.layout{grid-template-columns:1fr}}
+.sidebar{border-right:1px solid var(--border);background:var(--surface);padding:var(--s4) 0;position:sticky;top:0;height:calc(100dvh);overflow-y:auto}
+.sb-lbl{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);padding:var(--s3) var(--s4) var(--s2)}
+.nav-item{display:flex;align-items:center;gap:var(--s2);padding:7px var(--s4);width:100%;text-align:left;font-size:.78rem;color:var(--muted);font-weight:500;border-left:2px solid transparent;transition:all var(--trans)}
+.nav-item:hover{color:var(--text);background:var(--surface-offset)}
+.nav-item.active{color:var(--primary);background:var(--primary-hi);border-left-color:var(--primary);font-weight:600}
+.nav-num{font-size:.62rem;font-weight:700;color:var(--faint);min-width:13px}
+.nav-item.active .nav-num{color:var(--primary)}
+.nav-chk{width:13px;height:13px;flex-shrink:0;color:var(--success);display:none}
+.nav-item.done .nav-chk{display:block}.nav-item.done .nav-num{display:none}
+.sb-gen{padding:var(--s4);border-top:1px solid var(--divider);margin-top:var(--s2)}
+.gen-btn{width:100%;padding:9px var(--s3);background:var(--primary);color:white;border-radius:var(--r-md);font-weight:600;font-size:.77rem;display:flex;align-items:center;justify-content:center;gap:6px;transition:all var(--trans)}
+.gen-btn:hover{background:var(--primary-h);box-shadow:var(--shadow-md)}
+.content{padding:var(--s8);max-width:840px;min-width:0;overflow-x:hidden}
+.panel{display:none}.panel.active{display:block}
+.step-tag{display:inline-flex;font-size:.65rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--primary);background:var(--primary-hi);padding:3px 10px;border-radius:var(--r-full);margin-bottom:var(--s3)}
+.step-hdr{margin-bottom:var(--s6)}.step-hdr h2{font-size:1.45rem;font-weight:700;margin-bottom:2px}.step-hdr p{color:var(--muted);font-size:.83rem;max-width:64ch}
+
+/* Indication cards */
+.ind-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--s3)}
+.ind-card{border:1.5px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);background:var(--surface);cursor:pointer;text-align:left;position:relative;transition:all var(--trans)}
+.ind-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md)}
+.ind-card.sel{border-color:var(--primary);background:var(--primary-hi)}
+.ind-check{position:absolute;top:var(--s3);right:var(--s3);width:18px;height:18px;border-radius:var(--r-full);background:var(--primary);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.5);transition:all var(--trans)}
+.ind-card.sel .ind-check{opacity:1;transform:scale(1)}
+.ind-icon{font-size:1rem;margin-bottom:var(--s2)}
+.ind-name{font-size:.85rem;font-weight:600;margin-bottom:4px}
+.ind-crit{font-size:.76rem;color:var(--muted);line-height:1.5}
+.off-card{border-color:var(--warning)}.off-card.sel{background:var(--warning-hi);border-color:var(--warning)}
+.off-card .ind-check{background:var(--warning)}
+.off-tag{display:inline-block;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:var(--r-full);background:var(--warning-hi);color:var(--warning);margin-bottom:var(--s1);margin-top:2px}
+
+/* Checklist rows */
+.cl-section{margin-bottom:var(--s5)}
+.cl-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2);flex-wrap:wrap;gap:var(--s2)}
+.cl-section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.cl-bulk{display:flex;gap:var(--s2)}
+.cl-bulk-btn{font-size:.7rem;padding:3px 10px;border-radius:var(--r-full);border:1.5px solid var(--border);font-weight:600;color:var(--muted);transition:all var(--trans)}
+.cl-bulk-btn.nil{border-color:var(--success);color:var(--success)}
+.cl-bulk-btn.nil:hover{background:var(--success);color:white}
+.cl-bulk-btn.clr:hover{border-color:var(--error);color:var(--error)}
+.cl-list{display:flex;flex-direction:column;gap:var(--s1)}
+.cl-row{display:flex;align-items:flex-start;gap:var(--s3);padding:9px var(--s4);border:1.5px solid var(--border);border-radius:var(--r-lg);background:var(--surface);cursor:pointer;transition:border-color var(--trans),background var(--trans)}
+.cl-row:hover{border-color:var(--primary)}
+.cl-row.flagged{border-color:var(--error);background:var(--error-hi)}
+.cl-row.nil-set{border-color:var(--success);background:var(--success-hi)}
+.cl-row.checked{border-color:var(--primary);background:var(--primary-hi)}
+.cl-cb{width:17px;height:17px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;border-radius:4px;border:2px solid var(--border);transition:all var(--trans)}
+.cl-row.flagged .cl-cb{background:var(--error);border-color:var(--error)}
+.cl-row.nil-set .cl-cb{background:var(--success);border-color:var(--success)}
+.cl-row.checked .cl-cb{background:var(--primary);border-color:var(--primary)}
+.chk-ico{display:none;pointer-events:none}
+.cl-row.flagged .chk-ico,.cl-row.nil-set .chk-ico,.cl-row.checked .chk-ico{display:block}
+.cl-label{font-size:.83rem;font-weight:500;color:var(--text)}
+.cl-sub{font-size:.72rem;color:var(--muted);margin-top:1px}
+.cl-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:var(--r-full);flex-shrink:0;margin-top:2px}
+.badge-high{background:#fee2e2;color:#c0392b}[data-theme="dark"] .badge-high{background:#3a1010;color:#f08080}
+.badge-info{background:var(--success-hi);color:var(--success)}
+.stop-banner{display:none;background:var(--error);color:white;border-radius:var(--r-lg);padding:var(--s3) var(--s4);margin:var(--s3) 0;gap:var(--s3);align-items:center;font-size:.82rem}
+.stop-banner.vis{display:flex}
+
+/* Medications */
+.med-group{margin-bottom:var(--s5)}
+.med-group-hdr{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:var(--s2);padding-bottom:4px;border-bottom:1px solid var(--divider)}
+.med-row{display:grid;grid-template-columns:18px 1fr;gap:var(--s3);padding:8px var(--s4);border:1.5px solid var(--border);border-radius:var(--r-lg);background:var(--surface);cursor:pointer;transition:all var(--trans);margin-bottom:var(--s1);align-items:start}
+.med-row:hover{border-color:var(--primary)}
+.med-row.checked{border-color:var(--primary);background:var(--primary-hi)}
+.med-cb{width:17px;height:17px;flex-shrink:0;margin-top:2px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all var(--trans)}
+.med-row.checked .med-cb{background:var(--primary);border-color:var(--primary)}
+.med-chk-ico{display:none;pointer-events:none}
+.med-row.checked .med-chk-ico{display:block}
+.med-main{min-width:0}
+.med-top-line{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap;margin-bottom:2px}
+.med-name{font-size:.82rem;font-weight:600;color:var(--text)}
+.med-risk{font-size:.68rem;font-weight:600;padding:1px 7px;border-radius:var(--r-full);flex-shrink:0}
+.rh{background:#fee2e2;color:#c0392b}[data-theme="dark"] .rh{background:#3a1010;color:#f08080}
+.rm{background:#fff3e0;color:#b85c00}[data-theme="dark"] .rm{background:#3a2808;color:#ffb74d}
+.rw{background:var(--success-hi);color:var(--success)}
+.med-reason{font-size:.74rem;color:var(--muted);line-height:1.5}
+
+/* Population */
+.pop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--s2)}
+.pop-card{border:1.5px solid var(--border);border-radius:var(--r-lg);padding:var(--s3) var(--s4);background:var(--surface);cursor:pointer;text-align:left;transition:all var(--trans)}
+.pop-card:hover{border-color:var(--primary)}
+.pop-card.sel{border-color:var(--primary);background:var(--primary-hi)}
+.pop-name{font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:var(--s2)}
+.pop-sub{font-size:.73rem;color:var(--muted);margin-top:3px}
+.pop-chk{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all var(--trans)}
+.pop-card.sel .pop-chk{background:var(--primary);border-color:var(--primary)}
+.pop-chk-ico{display:none;pointer-events:none}
+.pop-card.sel .pop-chk-ico{display:block}
+
+/* Agent */
+.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);margin-bottom:var(--s6)}
+@media(max-width:540px){.agent-grid{grid-template-columns:1fr}}
+.agent-card{border:2px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);background:var(--surface);cursor:pointer;text-align:left;position:relative;transition:all var(--trans)}
+.agent-card:hover{box-shadow:var(--shadow-md)}
+.agent-card.sema{border-color:var(--blue);background:var(--blue-hi)}
+.agent-card.tirz{border-color:var(--orange);background:var(--orange-hi)}
+.agent-sel-lbl{position:absolute;top:var(--s3);right:var(--s3);font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:var(--r-full);display:none}
+.agent-card.sema .agent-sel-lbl{display:inline-flex;background:var(--blue);color:white}
+.agent-card.tirz .agent-sel-lbl{display:inline-flex;background:var(--orange);color:white}
+.agent-name{font-size:1.05rem;font-weight:700;margin-bottom:2px}
+.sema-col{color:var(--blue)}.tirz-col{color:var(--orange)}
+.agent-brand{font-size:.7rem;color:var(--muted);margin-bottom:var(--s3)}
+.agent-wl{font-size:1.4rem;font-weight:700;line-height:1;margin-bottom:2px}
+.agent-wl-lbl{font-size:.7rem;color:var(--muted);margin-bottom:var(--s3);padding-bottom:var(--s3);border-bottom:1px solid var(--divider)}
+.agent-pref-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:var(--s2)}
+.agent-pref{font-size:.79rem;color:var(--text);padding-left:var(--s4);position:relative;margin-bottom:3px}
+.agent-pref::before{content:'–';position:absolute;left:0;color:var(--muted)}
+
+/* Dose */
+.dose-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-top:var(--s4)}
+@media(max-width:540px){.dose-grid{grid-template-columns:1fr}}
+.dose-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4)}
+.dose-title{font-size:.8rem;font-weight:700;margin-bottom:var(--s3);padding-bottom:var(--s2);border-bottom:1px solid var(--divider)}
+.dose-row{display:flex;align-items:center;gap:var(--s3);font-size:.78rem;margin-bottom:3px}
+.dose-amt{font-weight:700;min-width:80px;color:var(--primary)}
+.dose-dur{color:var(--muted);font-size:.74rem}
+.dose-info{font-size:.73rem;color:var(--muted);background:var(--surface-2);border-radius:var(--r-md);padding:var(--s2) var(--s3);margin-top:var(--s2);border:1px solid var(--divider);line-height:1.5}
+.rx-notes{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);margin-top:var(--s4)}
+.rx-2col{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+@media(max-width:540px){.rx-2col{grid-template-columns:1fr}}
+.rx-col h5{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:var(--s2)}
+.rx-col ul{font-size:.77rem;padding-left:var(--s4);color:var(--text);display:flex;flex-direction:column;gap:4px}
+
+/* Timeline */
+.tl{display:flex;flex-direction:column;gap:0;position:relative}
+.tl::before{content:'';position:absolute;left:17px;top:22px;bottom:22px;width:2px;background:var(--divider)}
+.tl-item{display:flex;gap:var(--s4);padding-bottom:var(--s5);position:relative}
+.tl-dot{width:36px;height:36px;border-radius:var(--r-full);background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:.6rem;font-weight:700;color:var(--muted)}
+.tl-dot.act{border-color:var(--primary);background:var(--primary);color:white}
+.tl-body{flex:1;padding-top:7px;min-width:0}
+.tl-hd{font-size:.83rem;font-weight:600;margin-bottom:var(--s2)}
+.tl-tags{display:flex;flex-wrap:wrap;gap:var(--s1)}
+.tag{font-size:.69rem;padding:2px 8px;border-radius:var(--r-full);border:1px solid var(--border)}
+.t-std{background:var(--surface-2);color:var(--text)}
+.t-psy{background:var(--primary-hi);color:var(--primary)}
+.t-med{background:var(--gold-hi);color:var(--gold)}
+.t-pop{background:var(--blue-hi);color:var(--blue)}
+
+/* Output */
+.out-panel{display:none;margin-top:var(--s8);border:1.5px solid var(--primary);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
+.out-panel.vis{display:block}
+.out-hdr{background:var(--primary);color:white;padding:var(--s4) var(--s5);display:flex;align-items:center;justify-content:space-between}
+.out-hdr h3{font-size:.92rem;font-weight:600}
+.copy-btn{padding:5px 14px;border-radius:var(--r-full);border:1.5px solid rgba(255,255,255,.5);color:white;font-size:.72rem;font-weight:600;transition:all var(--trans)}
+.copy-btn:hover{background:rgba(255,255,255,.15)}
+.out-body{padding:var(--s5)}
+.out-text{font-size:.78rem;line-height:1.85;color:var(--text);white-space:pre-wrap;font-family:'Courier New',monospace;background:var(--surface-2);border-radius:var(--r-md);padding:var(--s4);border:1px solid var(--divider);max-height:560px;overflow-y:auto}
+.out-disc{margin-top:var(--s3);font-size:.69rem;color:var(--muted);background:var(--surface-offset);border-radius:var(--r-md);padding:var(--s3);line-height:1.55}
+.nav-btns{display:flex;justify-content:space-between;align-items:center;margin-top:var(--s8);padding-top:var(--s4);border-top:1px solid var(--divider)}
+.btn-back{padding:7px 18px;border-radius:var(--r-full);border:1.5px solid var(--border);font-size:.81rem;color:var(--muted);transition:all var(--trans)}
+.btn-back:hover{border-color:var(--primary);color:var(--primary)}
+.btn-next{padding:7px 22px;border-radius:var(--r-full);background:var(--primary);color:white;font-size:.81rem;font-weight:600;box-shadow:var(--shadow-sm);transition:all var(--trans)}
+.btn-next:hover{background:var(--primary-h)}
+.note-box{border-radius:var(--r-md);padding:var(--s3);margin-top:var(--s3);font-size:.78rem;line-height:1.55}
+.nb-red{background:var(--error-hi);color:var(--error)}
+.nb-blue{background:var(--blue-hi);color:var(--blue)}
+.info-box{background:var(--surface-2);border:1px solid var(--divider);border-radius:var(--r-md);padding:var(--s3) var(--s4);font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:var(--s3)}
+.sec-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:var(--s5) 0 var(--s3)}
+.legend{display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:.71rem;color:var(--muted)}
+
+@media(max-width:800px){
+  .hdr-top{padding:8px 12px}
+  .chips-bar.has-chips{padding:6px 12px}
+  .logo-text h1{font-size:.78rem}.logo-text p{font-size:.62rem}
+  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:10px 0 8px;overflow-x:auto;overflow-y:hidden}
+  .sb-lbl{display:none}
+  #stepNav{display:flex;gap:6px;padding:0 12px 6px;min-width:max-content}
+  .nav-item{display:inline-flex;align-items:center;gap:5px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--r-full);background:var(--surface-2);width:auto;flex:0 0 auto;font-size:.72rem}
+  .nav-item.active{border-color:var(--primary);background:var(--primary-hi);border-left-color:var(--primary)}
+  .sb-gen{padding:6px 12px 0;border-top:none;margin-top:0}
+  .gen-btn{font-size:.74rem;padding:9px 12px}
+  .step-hdr h2{font-size:1.15rem}
+  .ind-grid,.agent-grid,.dose-grid,.rx-2col,.pop-grid{grid-template-columns:1fr}
+  .nav-btns{flex-wrap:wrap;gap:10px}
+  .btn-back,.btn-next{flex:1 1 140px;text-align:center}
+  .tl::before{left:13px}.tl-dot{width:28px;height:28px;font-size:.55rem}
+  .content{padding:var(--s5) var(--s4)}
+}
+
+/* ─── COMPARISON TABLE ─────────────────────────────────────── */
+.cmp-wrap{margin:var(--s4) 0 var(--s6)}
+.cmp-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:var(--s3)}
+.cmp-table-wrap{overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border)}
+.cmp-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.cmp-table thead tr{background:var(--surface-2)}
+.cmp-table th{padding:10px 12px;font-weight:700;text-align:left;border-bottom:2px solid var(--border)}
+.cmp-table th.cmp-sema{color:var(--blue)}
+.cmp-table th.cmp-tirz{color:var(--orange)}
+.cmp-brand{font-size:.68rem;font-weight:400;opacity:.8}
+.cmp-table td{padding:8px 12px;vertical-align:top;border-bottom:1px solid var(--divider);line-height:1.4}
+.cmp-table .cmp-alt{background:var(--surface)}
+.cmp-factor{font-weight:600;color:var(--muted);font-size:.72rem;min-width:160px}
+.cmp-win{color:var(--success);font-weight:600}
+.cmp-note{color:var(--warning);font-weight:500}
+.cmp-table tr:last-child td{border-bottom:none}
+/* ─── AGENT SELECTION ──────────────────────────────────────── */
+.agent-sel-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:var(--s3)}
+.agent-card-slim .agent-pref-title{margin-top:var(--s3);border-top:1px solid var(--divider);padding-top:var(--s3)}
+/* ─── SINGLE DOSE PANEL ───────────────────────────────────── */
+.dose-panel-single{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);margin:var(--s4) 0}
+.dose-panel-title{font-size:.9rem;font-weight:700;margin-bottom:var(--s4);padding-bottom:var(--s3);border-bottom:1px solid var(--divider)}
+.dose-steps{display:flex;flex-direction:column;gap:var(--s2)}
+.dose-step{display:grid;grid-template-columns:110px 160px 1fr;align-items:center;gap:var(--s3);padding:var(--s2) var(--s3);border-radius:var(--r-md);background:var(--surface-2)}
+.dose-step.ds-target{background:var(--primary-hi);border:1px solid var(--primary)}
+.ds-dose{font-size:.92rem;font-weight:700}
+.ds-dur{font-size:.75rem;color:var(--muted)}
+.ds-note{font-size:.72rem;color:var(--faint);font-style:italic}
+.dose-sub{margin-top:var(--s3);font-size:.74rem;color:var(--muted);padding:var(--s2) var(--s3);background:var(--surface-2);border-radius:var(--r-md)}
+@media(max-width:540px){
+  .dose-step{grid-template-columns:90px 1fr;grid-template-rows:auto auto}
+  .ds-note{grid-column:1/-1}
+  .cmp-table{font-size:.7rem}
+  .cmp-table td,.cmp-table th{padding:6px 8px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="prog-wrap"><div class="prog" id="prog" style="width:14.2%"></div></div>
+<header>
+  <div class="hdr-top">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 30 30" fill="none"><rect width="30" height="30" rx="8" fill="var(--primary)"/><circle cx="15" cy="15" r="5" stroke="white" stroke-width="1.8" fill="none"/><circle cx="15" cy="15" r="2" fill="white"/><path d="M15 6v3M15 21v3M6 15h3M21 15h3" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <div class="logo-text"><h1>GLP-1 Prescribing Protocol — Psychiatry</h1><p>Semaglutide · Tirzepatide · Australia</p></div>
+    </div>
+    <div class="hdr-r">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <button class="reset-btn" id="resetBtn">↺ Reset</button>
+    </div>
+  </div>
+  <div class="chips-bar" id="chipsBar">
+    <div class="chips-inner" id="chipsInner">
+      <span class="chips-lbl">Selections:</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sb-lbl">Protocol Steps</div>
+    <div id="stepNav"></div>
+    <div class="sb-gen">
+      <button class="gen-btn" id="sbGen">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Generate Output
+      </button>
+    </div>
+  </nav>
+
+  <main class="content" id="mainContent">
+
+<!-- STEP 1 -->
+<div class="panel active" id="step-1">
+  <div class="step-hdr">
+    <div class="step-tag">Step 1 of 7 — Indication</div>
+    <h2>Establish Indication</h2>
+    <p>Select all TGA-approved indications that apply.</p>
+  </div>
+  <div class="ind-grid">
+    <button class="ind-card" data-ind="t2dm" data-chip="T2DM" data-chip-type="" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ind-icon">🩸</div><div class="ind-name">Type 2 Diabetes</div>
+      <div class="ind-crit">Adjunct to diet and exercise to improve glycaemic control in adults with T2DM.</div>
+    </button>
+    <button class="ind-card" data-ind="obesity" data-chip="Obesity" data-chip-type="" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ind-icon">⚖️</div><div class="ind-name">Obesity / Overweight</div>
+      <div class="ind-crit">BMI ≥30 kg/m², or BMI ≥27 kg/m² with at least one weight-related comorbidity. Adjunct to diet and exercise.</div>
+    </button>
+    <button class="ind-card" data-ind="cvd" data-chip="CVD" data-chip-type="" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ind-icon">❤️</div><div class="ind-name">Cardiovascular Risk Reduction</div>
+      <div class="ind-crit">Established CVD (MI, stroke, PAD) and BMI ≥27 kg/m². Semaglutide 2.4mg (Wegovy) only.</div>
+    </button>
+    <button class="ind-card" data-ind="osa" data-chip="OSA" data-chip-type="" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ind-icon">😴</div><div class="ind-name">Obstructive Sleep Apnoea</div>
+      <div class="ind-crit">Moderate-to-severe OSA with obesity (BMI ≥30). Tirzepatide (Mounjaro) only.</div>
+    </button>
+  </div>
+  <div class="sec-lbl">Off-label — document clinical rationale and informed consent</div>
+  <div class="ind-grid">
+    <button class="ind-card off-card" data-ind="bed" data-chip="BED↑" data-chip-type="chip-warn" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="off-tag">Off-label</span>
+      <div class="ind-name">Binge Eating Disorder</div>
+      <div class="ind-crit">Reward-pathway modulation. Requires co-existing obesity/overweight criterion. Restricting/purging subtypes excluded.</div>
+    </button>
+    <button class="ind-card off-card" data-ind="aud" data-chip="AUD↑" data-chip-type="chip-warn" onclick="toggleInd(this)">
+      <div class="ind-check"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="off-tag">Off-label</span>
+      <div class="ind-name">Alcohol Use Disorder</div>
+      <div class="ind-crit">Craving reduction via mesolimbic dopamine modulation. Requires co-existing obesity criterion. Alongside standard AUD treatment.</div>
+    </button>
+  </div>
+  <div class="nav-btns"><div></div><button class="btn-next" onclick="goStep(2)">Next: Medical History →</button></div>
+</div>
+
+<!-- STEP 2 -->
+<div class="panel" id="step-2">
+  <div class="step-hdr">
+    <div class="step-tag">Step 2 of 7 — Medical History</div>
+    <h2>Medical History Screening</h2>
+    <p>Absolute contraindications must all be confirmed Nil. Relative and other history inform monitoring.</p>
+  </div>
+  <div class="cl-section">
+    <div class="cl-section-hdr">
+      <span class="cl-section-title" style="color:var(--error)">▸ Absolute Contraindications — confirm each is Nil</span>
+      <div class="cl-bulk">
+        <button class="cl-bulk-btn nil" onclick="bulkAbs('nil')">All Nil ✓</button>
+        <button class="cl-bulk-btn clr" onclick="bulkAbs('clear')">Clear</button>
+      </div>
+    </div>
+    <div class="cl-list">
+      <div class="cl-row" id="a-mtc" data-abs="mtc" onclick="cycleAbs(this)">
+        <div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div style="flex:1"><div class="cl-label">Medullary thyroid carcinoma (personal or family history) or MEN-2</div><div class="cl-sub">Absolute contraindication — both agents.</div></div>
+        <span class="cl-badge badge-high" id="lbl-a-mtc">Not set</span>
+      </div>
+      <div class="cl-row" id="a-panc" data-abs="panc" onclick="cycleAbs(this)">
+        <div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div style="flex:1"><div class="cl-label">Active or recent pancreatitis</div><div class="cl-sub">Including chronic pancreatitis with active exacerbation.</div></div>
+        <span class="cl-badge badge-high" id="lbl-a-panc">Not set</span>
+      </div>
+      <div class="cl-row" id="a-hyp" data-abs="hyp" onclick="cycleAbs(this)">
+        <div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div style="flex:1"><div class="cl-label">Severe hypersensitivity to any GLP-1 RA</div><div class="cl-sub">Anaphylaxis or angioedema to semaglutide, tirzepatide, or any incretin-based agent.</div></div>
+        <span class="cl-badge badge-high" id="lbl-a-hyp">Not set</span>
+      </div>
+      <div class="cl-row" id="a-preg" data-abs="preg" onclick="cycleAbs(this)">
+        <div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div style="flex:1"><div class="cl-label">Pregnancy or breastfeeding</div><div class="cl-sub">Cease ≥2 months before planned conception.</div></div>
+        <span class="cl-badge badge-high" id="lbl-a-preg">Not set</span>
+      </div>
+      <div class="cl-row" id="a-ed" data-abs="ed" onclick="cycleAbs(this)">
+        <div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div style="flex:1"><div class="cl-label">Active restrictive eating disorder (AN, atypical AN) or active purging (BN)</div><div class="cl-sub">BED without purging may proceed — flag in psychiatric history.</div></div>
+        <span class="cl-badge badge-high" id="lbl-a-ed">Not set</span>
+      </div>
+    </div>
+    <div class="stop-banner" id="stopBanner"><span>🛑</span><div><strong>Absolute contraindication flagged — do not prescribe.</strong> Document and address before proceeding.</div></div>
+  </div>
+  <div class="cl-section">
+    <div class="cl-section-hdr">
+      <span class="cl-section-title" style="color:var(--warning)">▸ Relative Contraindications — flag if present</span>
+      <button class="cl-bulk-btn clr" onclick="bulkRel('clear')">Clear All</button>
+    </div>
+    <div class="cl-list">
+      <div class="cl-row" id="r-gp" data-rel="gp" data-chip="Gastroparesis" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Gastroparesis or severe GI dysmotility</div><div class="cl-sub">GLP-1 RAs further slow gastric emptying.</div></div></div>
+      <div class="cl-row" id="r-ckd" data-rel="ckd" data-chip="CKD" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">CKD (eGFR &lt;30 mL/min)</div><div class="cl-sub">Limited PK data below eGFR 15; use with caution.</div></div></div>
+      <div class="cl-row" id="r-liver" data-rel="liver" data-chip="Liver↓" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Severe hepatic impairment (Child-Pugh C)</div><div class="cl-sub">Semaglutide preferred; reduce starting doses; monitor closely.</div></div></div>
+      <div class="cl-row" id="r-panch" data-rel="panch" data-chip="Panc↑hx" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Resolved pancreatitis (single, identifiable cause)</div><div class="cl-sub">MDT discussion; document consent.</div></div></div>
+      <div class="cl-row" id="r-ret" data-rel="ret" data-chip="RetinDx" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Pre-existing diabetic retinopathy</div><div class="cl-sub">Rapid glucose lowering may transiently worsen retinopathy. TGA 2025–26 NAION visual signal.</div></div></div>
+      <div class="cl-row" id="r-gall" data-rel="gall" data-chip="Gallstones" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Gallstones / gallbladder disease</div><div class="cl-sub">Rapid weight loss associated with biliary sludge and cholelithiasis.</div></div></div>
+      <div class="cl-row" id="r-hf" data-rel="hf" data-chip="HF" data-chip-type="chip-warn" onclick="toggleRel(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Heart failure (NYHA Class III–IV)</div><div class="cl-sub">Limited data; close cardiac monitoring required.</div></div></div>
+    </div>
+  </div>
+  <div class="cl-section">
+    <div class="cl-section-hdr">
+      <span class="cl-section-title">▸ Other Medical History — tick what applies</span>
+      <button class="cl-bulk-btn clr" onclick="bulkMedHx('clear')">Clear All</button>
+    </div>
+    <div class="cl-list">
+      <div class="cl-row" id="m-t2dm" data-medhx="t2dm" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Type 2 diabetes mellitus</div></div></div>
+      <div class="cl-row" id="m-htn" data-medhx="htn" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Hypertension</div></div></div>
+      <div class="cl-row" id="m-dyslip" data-medhx="dyslip" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Dyslipidaemia</div></div></div>
+      <div class="cl-row" id="m-cvd2" data-medhx="cvd2" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Established CVD (MI, stroke, PAD)</div></div></div>
+      <div class="cl-row" id="m-nafld" data-medhx="nafld" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">NAFLD / MASLD</div></div></div>
+      <div class="cl-row" id="m-pcos" data-medhx="pcos" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">PCOS</div></div></div>
+      <div class="cl-row" id="m-thyroid" data-medhx="thyroid" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Thyroid disease (non-MTC)</div></div></div>
+      <div class="cl-row" id="m-osa" data-medhx="osa" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Obstructive sleep apnoea</div></div></div>
+      <div class="cl-row" id="m-smok" data-medhx="smok" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Current or recent smoking</div></div></div>
+      <div class="cl-row" id="m-hiv" data-medhx="hiv" onclick="toggleMedHx(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">HIV / immunocompromised</div></div></div>
+    </div>
+  </div>
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(1)">← Back</button><button class="btn-next" onclick="goStep(3)">Next: Psychiatric History →</button></div>
+</div>
+
+<!-- STEP 3 -->
+<div class="panel" id="step-3">
+  <div class="step-hdr">
+    <div class="step-tag">Step 3 of 7 — Psychiatric History</div>
+    <h2>Psychiatric History</h2>
+    <p>Select all current and relevant past psychiatric diagnoses.</p>
+  </div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Psychotic disorders</span></div><div class="cl-list">
+    <div class="cl-row" id="px-schiz" data-psych="schiz" data-chip="Scz" data-chip-type="t-psy chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Schizophrenia</div></div></div>
+    <div class="cl-row" id="px-sca" data-psych="sca" data-chip="SzAff" data-chip-type="chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Schizoaffective disorder</div></div></div>
+    <div class="cl-row" id="px-fep" data-psych="fep" data-chip="FEP" data-chip-type="chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">First-episode psychosis</div></div></div>
+    <div class="cl-row" id="px-del" data-psych="del" data-chip="Delus" data-chip-type="chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Delusional disorder</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Mood disorders</span></div><div class="cl-list">
+    <div class="cl-row" id="px-bd1" data-psych="bd1" data-chip="BDI" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Bipolar I disorder</div></div></div>
+    <div class="cl-row" id="px-bd2" data-psych="bd2" data-chip="BDII" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Bipolar II disorder</div></div></div>
+    <div class="cl-row" id="px-mdd" data-psych="mdd" data-chip="MDD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Major depressive disorder</div></div></div>
+    <div class="cl-row" id="px-pdd" data-psych="pdd" data-chip="PDD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Persistent depressive disorder</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Anxiety and stress-related</span></div><div class="cl-list">
+    <div class="cl-row" id="px-gad" data-psych="gad" data-chip="GAD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Generalised anxiety disorder</div></div></div>
+    <div class="cl-row" id="px-panic" data-psych="panic" data-chip="Panic" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Panic disorder</div></div></div>
+    <div class="cl-row" id="px-social" data-psych="social" data-chip="SocAnx" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Social anxiety disorder</div></div></div>
+    <div class="cl-row" id="px-ptsd" data-psych="ptsd" data-chip="PTSD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">PTSD / complex trauma (CPTSD)</div></div></div>
+    <div class="cl-row" id="px-ocd" data-psych="ocd" data-chip="OCD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">OCD</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Neurodevelopmental</span></div><div class="cl-list">
+    <div class="cl-row" id="px-adhd" data-psych="adhd" data-chip="ADHD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">ADHD</div></div></div>
+    <div class="cl-row" id="px-asd" data-psych="asd" data-chip="ASD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Autism spectrum disorder</div></div></div>
+    <div class="cl-row" id="px-id" data-psych="id" data-chip="IntDis" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Intellectual disability</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Eating disorders</span></div><div class="cl-list">
+    <div class="cl-row" id="px-bed" data-psych="bed" data-chip="BED" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Binge eating disorder</div></div></div>
+    <div class="cl-row" id="px-an" data-psych="an" data-chip="AN⚠" data-chip-type="chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Anorexia nervosa / atypical AN (past or current)</div></div></div>
+    <div class="cl-row" id="px-bn" data-psych="bn" data-chip="BN⚠" data-chip-type="chip-err" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Bulimia nervosa</div></div></div>
+    <div class="cl-row" id="px-arfid" data-psych="arfid" data-chip="ARFID" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">ARFID</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Substance use disorders</span></div><div class="cl-list">
+    <div class="cl-row" id="px-aud" data-psych="aud" data-chip="AUD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Alcohol use disorder</div></div></div>
+    <div class="cl-row" id="px-oud" data-psych="oud" data-chip="OUD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Opioid use disorder</div></div></div>
+    <div class="cl-row" id="px-sud" data-psych="sud" data-chip="SUD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Other substance use disorder</div></div></div>
+  </div></div>
+  <div class="cl-section"><div class="cl-section-hdr"><span class="cl-section-title">Personality disorders and other</span></div><div class="cl-list">
+    <div class="cl-row" id="px-bpd" data-psych="bpd" data-chip="BPD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Borderline personality disorder</div></div></div>
+    <div class="cl-row" id="px-opd" data-psych="opd" data-chip="PD" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Other personality disorder (ASPD, NPD, avoidant)</div></div></div>
+    <div class="cl-row" id="px-dem" data-psych="dem" data-chip="Dem" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Dementia / major neurocognitive disorder</div></div></div>
+    <div class="cl-row" id="px-somatic" data-psych="somatic" data-chip="Somatic" data-chip-type="" onclick="togglePsych(this)"><div class="cl-cb"><svg class="chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div style="flex:1"><div class="cl-label">Somatic symptom / functional disorder</div></div></div>
+  </div></div>
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(2)">← Back</button><button class="btn-next" onclick="goStep(4)">Next: Medications →</button></div>
+</div>
+
+<!-- STEP 4 -->
+<div class="panel" id="step-4">
+  <div class="step-hdr">
+    <div class="step-tag">Step 4 of 7 — Medications</div>
+    <h2>Current Medications</h2>
+    <p>Tick all medication classes present. Selected items generate specific alerts in the output.</p>
+  </div>
+  <div class="med-group"><div class="med-group-hdr">High — active management required</div>
+    <div class="med-row" id="med-li" data-med="li" data-chip="Li" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Lithium</span><span class="med-risk rh">HIGH — toxicity risk</span></div><div class="med-reason">GI-induced vomiting/diarrhoea → dehydration → reduced renal clearance → toxicity. Three published cases of semaglutide-precipitated lithium toxicity. Levels: baseline, 2wks, post-each escalation. Semaglutide preferred. Extend escalation intervals to 6–8wks. ≥2L/day hydration.</div></div></div>
+    <div class="med-row" id="med-ins" data-med="ins" data-chip="Insulin/SU" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Insulin / sulfonylurea</span><span class="med-risk rh">HIGH — hypoglycaemia</span></div><div class="med-reason">Additive glucose lowering. Reduce insulin 20–30% at initiation; suspend or reduce sulfonylurea. Tirzepatide: greater glycaemic potency — more aggressive reduction needed. Early BGL review; hypoglycaemia action plan provided.</div></div></div>
+    <div class="med-row" id="med-ocp" data-med="ocp" data-chip="OCP" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Oral contraceptive pill (OCP)</span><span class="med-risk rh">HIGH — tirzepatide only</span></div><div class="med-reason">Tirzepatide delays gastric emptying → reduced OCP absorption → contraceptive failure risk. Switch to non-oral or add barrier method for 4wks after initiation and each escalation (TGA Nov 2025). Semaglutide: no clinically significant OCP interaction.</div></div></div>
+  </div>
+  <div class="med-group"><div class="med-group-hdr">Moderate — monitor and adjust</div>
+    <div class="med-row" id="med-cloz" data-med="cloz" data-chip="Cloz" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Clozapine</span><span class="med-risk rm">MODERATE — level monitoring</span></div><div class="med-reason">Significant weight loss alters volume of distribution → possible increased clozapine plasma levels. Check level: baseline, 4wks, 3 months. COaST RCT (Siskind et al., Lancet Psychiatry 2025) supports semaglutide first-line.</div></div></div>
+    <div class="med-row" id="med-ac" data-med="ac" data-chip="AnticholinAP" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Anticholinergic antipsychotics (olanzapine, quetiapine, chlorpromazine, clozapine)</span><span class="med-risk rm">MODERATE — additive GI slowing</span></div><div class="med-reason">Anticholinergic antipsychotics slow gastric emptying independently. GLP-1 RAs also delay gastric emptying — additive effect increases constipation, nausea, and delayed oral drug absorption. Monitor bowel frequency; prophylactic stool softener considered.</div></div></div>
+    <div class="med-row" id="med-ahi" data-med="ahi" data-chip="Antihist↑Ap" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Antihistaminergic psychotropics (mirtazapine, quetiapine, olanzapine, TCAs)</span><span class="med-risk rm">MODERATE — reduced weight loss efficacy</span></div><div class="med-reason">H1-antihistamine antagonism increases appetite and carbohydrate craving — may blunt GLP-1-mediated satiety and reduce weight loss response. Consider switch to weight-neutral agent if clinically appropriate. Counsel patient on possible attenuated response.</div></div></div>
+    <div class="med-row" id="med-stim" data-med="stim" data-chip="Stim" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Stimulants (methylphenidate, lisdexamfetamine, dexamfetamine)</span><span class="med-risk rm">MODERATE — absorption + additive appetite suppression</span></div><div class="med-reason">Delayed gastric emptying may alter Tmax and absorption of IR formulations. Additive appetite suppression increases risk of inadequate nutritional intake. Consider switch to long-acting formulation. Monitor nutritional status and weight weekly initially.</div></div></div>
+    <div class="med-row" id="med-val" data-med="val" data-chip="VPA" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Valproate</span><span class="med-risk rm">MODERATE — level shift with weight loss</span></div><div class="med-reason">Highly protein-bound; significant weight loss alters free fraction and volume of distribution. Check total and free valproate at 3 and 6 months. Check mid-cycle if clinical change occurs.</div></div></div>
+    <div class="med-row" id="med-warf" data-med="warf" data-chip="Warf/NTI" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Warfarin / narrow therapeutic index drugs (digoxin, cyclosporine, tacrolimus)</span><span class="med-risk rm">MODERATE — altered absorption</span></div><div class="med-reason">GE delay alters absorption rate and Tmax of narrow TI oral drugs. INR weekly × 4 weeks and post-each escalation. Drug levels (digoxin, cyclosporine) at initiation and each escalation. Liaise with prescribing specialist.</div></div></div>
+  </div>
+  <div class="med-group"><div class="med-group-hdr">Watch — generally compatible, monitor</div>
+    <div class="med-row" id="med-ssri" data-med="ssri" data-chip="SSRI/SNRI" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">SSRIs / SNRIs</span><span class="med-risk rw">WATCH</span></div><div class="med-reason">No major PK interaction. Weight-gain SSRIs (paroxetine, escitalopram) may partially offset benefit. Monitor appetite, mood, weight trend.</div></div></div>
+    <div class="med-row" id="med-met" data-med="met" data-chip="Metf" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Metformin</span><span class="med-risk rw">WATCH</span></div><div class="med-reason">Standard compatible combination in T2DM. Review eGFR — hold if eGFR &lt;30. Consider ceasing if T2DM achieves remission on GLP-1 RA.</div></div></div>
+    <div class="med-row" id="med-ntx" data-med="ntx" data-chip="NTX/BUP" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Naltrexone / acamprosate / buprenorphine</span><span class="med-risk rw">WATCH</span></div><div class="med-reason">No direct PK interaction. Both act on reward circuitry — monitor for cumulative appetite and motivational suppression. Do not co-prescribe Contrave (naltrexone/bupropion) with GLP-1 RA without specialist review.</div></div></div>
+    <div class="med-row" id="med-antihtn" data-med="antihtn" data-chip="AntiHTN" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Antihypertensives (ACE-I, ARB, beta-blocker, CCB)</span><span class="med-risk rw">WATCH</span></div><div class="med-reason">Weight loss reduces BP — existing antihypertensives may become excessive → postural hypotension. Review dose at 3 and 6 months. Particularly important in elderly.</div></div></div>
+    <div class="med-row" id="med-bzd" data-med="bzd" data-chip="BZD" data-chip-type="chip-med" onclick="toggleMed(this)"><div class="med-cb"><svg class="med-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div><div class="med-main"><div class="med-top-line"><span class="med-name">Benzodiazepines / z-drugs</span><span class="med-risk rw">WATCH</span></div><div class="med-reason">Reduced GI motility + sedation increases aspiration risk if vomiting occurs. Relevant for ECT, procedures, anaesthesia. No direct PK interaction.</div></div></div>
+  </div>
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(3)">← Back</button><button class="btn-next" onclick="goStep(5)">Next: Population →</button></div>
+</div>
+
+<!-- STEP 5 -->
+<div class="panel" id="step-5">
+  <div class="step-hdr">
+    <div class="step-tag">Step 5 of 7 — Special Populations</div>
+    <h2>Special Populations</h2>
+    <p>Select applicable groups. Each adds targeted clinical guidance to the output.</p>
+  </div>
+  <div class="pop-grid">
+    <button class="pop-card" data-pop="paeds" data-chip="Paeds" data-chip-type="chip-pop" onclick="togglePop(this)">
+      <div class="pop-name"><div class="pop-chk"><svg class="pop-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>Paediatric / adolescent (&lt;18)</div>
+      <div class="pop-sub">Neither agent TGA-approved under 18. Specialist adolescent psychiatry review required. Document capacity and consent.</div>
+    </button>
+    <button class="pop-card" data-pop="wra" data-chip="OCP/HRT" data-chip-type="chip-pop" onclick="togglePop(this)">
+      <div class="pop-name"><div class="pop-chk"><svg class="pop-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>Women on OCP / hormonal contraception</div>
+      <div class="pop-sub">Tirzepatide + OCP: reduced bioavailability (TGA Nov 2025) — add barrier or switch to non-oral. Semaglutide: no significant interaction.</div>
+    </button>
+    <button class="pop-card" data-pop="preg" data-chip="PreConc" data-chip-type="chip-pop" onclick="togglePop(this)">
+      <div class="pop-name"><div class="pop-chk"><svg class="pop-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>Planning pregnancy</div>
+      <div class="pop-sub">Cease ≥2 months before planned conception. Absolute contraindication during pregnancy and breastfeeding.</div>
+    </button>
+    <button class="pop-card" data-pop="elderly" data-chip="Elderly" data-chip-type="chip-pop" onclick="togglePop(this)">
+      <div class="pop-name"><div class="pop-chk"><svg class="pop-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>Older adults (≥65)</div>
+      <div class="pop-sub">Sarcopenia risk. Extend escalation to 6–8 weeks. Review antihypertensives. Semaglutide preferred.</div>
+    </button>
+    <button class="pop-card" data-pop="ses" data-chip="LowSES" data-chip-type="chip-pop" onclick="togglePop(this)">
+      <div class="pop-name"><div class="pop-chk"><svg class="pop-chk-ico" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></div>Low socioeconomic status</div>
+      <div class="pop-sub">Significant cost barrier. Explore T2DM PBS pathway if eligible. Address food security, bulk-bill dietitian, needle costs.</div>
+    </button>
+  </div>
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(4)">← Back</button><button class="btn-next" onclick="goStep(6)">Next: Agent & Dosing →</button></div>
+</div>
+
+<!-- STEP 6 -->
+<div class="panel" id="step-6">
+  <div class="step-hdr">
+    <div class="step-tag">Step 6 of 7 — Agent Selection &amp; Dosing</div>
+    <h2>Choose Agent</h2>
+    <p>Review the comparison table, then select your agent. Titration will show for your selection only.</p>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="cmp-wrap">
+    <div class="cmp-title">Head-to-Head Comparison</div>
+    <div class="cmp-table-wrap">
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th class="cmp-factor">Factor</th>
+          <th class="cmp-sema">Semaglutide<br><span class="cmp-brand">Wegovy / Ozempic / Rybelsus</span></th>
+          <th class="cmp-tirz">Tirzepatide<br><span class="cmp-brand">Mounjaro</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="cmp-factor">Mechanism</td><td>GLP-1 agonist</td><td>GIP + GLP-1 dual agonist</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Mean weight loss (head-to-head SURMOUNT-5)</td><td>13.7%</td><td class="cmp-win">20.2% ↑ 47% more</td></tr>
+        <tr><td class="cmp-factor">HbA1c reduction (T2DM)</td><td>1.5–1.8%</td><td class="cmp-win">2.0–2.5% (superior)</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">TGA-approved indications (AU)</td><td>T2DM · Obesity · CVD+obesity</td><td class="cmp-win">T2DM · Obesity · OSA</td></tr>
+        <tr><td class="cmp-factor">PBS listed (AU, 2026)</td><td class="cmp-win">Wegovy: PBAC-recommended Nov 2025 (pending price); Ozempic: listed T2DM</td><td class="cmp-note">Withdrawn from PBS negotiations Apr 2026 — private only</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Approx. monthly cost (private)</td><td>~$150–200/mo (Ozempic); Wegovy TBC</td><td class="cmp-note">~$380–450/mo (Mounjaro)</td></tr>
+        <tr><td class="cmp-factor">Dosing route</td><td>Weekly SC injection <em>or</em> daily oral (Rybelsus)</td><td>Weekly SC injection only</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Titration steps</td><td>0.25 → 0.5 → 1.0 → 1.7 → 2.4 mg/wk</td><td>2.5 → 5 → 7.5 → 10 → 12.5 → 15 mg/wk</td></tr>
+        <tr><td class="cmp-factor">Nausea / GI side effects</td><td>Common (GLP-1); generally mild–moderate</td><td class="cmp-note">Slightly more frequent at escalation (dual agonism)</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">GI onset / speed</td><td class="cmp-win">More gradual — preferred if on lithium or elderly</td><td>Faster weight loss onset</td></tr>
+        <tr><td class="cmp-factor">OCP interaction</td><td class="cmp-win">None significant</td><td class="cmp-note">Reduces OCP absorption — add barrier/switch to non-oral (TGA Nov 2025)</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Clozapine VoD shift risk</td><td>Present (both); check levels at baseline/4wks/3mo</td><td>Present (both); check levels at baseline/4wks/3mo</td></tr>
+        <tr><td class="cmp-factor">Evidence in psychosis (AU)</td><td class="cmp-win">COaST RCT (Siskind, Lancet Psychiatry 2025) — semaglutide preferred</td><td>Limited psychiatric RCT data</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">OSA-specific trial</td><td>No dedicated OSA indication</td><td class="cmp-win">SURMOUNT-OSA RCT — only TGA-approved for OSA</td></tr>
+        <tr><td class="cmp-factor">CVD outcome trial</td><td class="cmp-win">SELECT trial: MACE −20% (Wegovy PBS pathway)</td><td>SURPASS-CVOT (ongoing; non-inferior data available)</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Lean mass / sarcopenia risk</td><td>Moderate — protein + resistance training mandatory</td><td class="cmp-note">Higher — more aggressive weight loss; protein + ExPhys more critical</td></tr>
+        <tr><td class="cmp-factor">Injection aversion / ASD/ID</td><td class="cmp-win">Oral Rybelsus option available</td><td>Injection only</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Hepatic impairment</td><td class="cmp-win">More PK data available</td><td>Limited severe hepatic impairment data</td></tr>
+        <tr><td class="cmp-factor">Renal impairment</td><td>No dose adjustment required</td><td>No dose adjustment required</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">Pancreatitis / thyroid risk</td><td>Class effect: contraindicated MTC/MEN-2, caution pancreatitis</td><td>Class effect: contraindicated MTC/MEN-2, caution pancreatitis</td></tr>
+        <tr><td class="cmp-factor">TGA psychiatric safety warning</td><td>Class: suicidal ideation (Nov 2025) — monitor both</td><td>Class: suicidal ideation (Nov 2025) — monitor both</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">AUD craving evidence</td><td class="cmp-win">More published craving-reduction RCT data</td><td>Emerging; less data</td></tr>
+        <tr><td class="cmp-factor">BED / reward circuit</td><td>Effective</td><td class="cmp-win">Dual agonism may offer greater appetite/reward suppression</td></tr>
+        <tr class="cmp-alt"><td class="cmp-factor">ECT / anaesthesia risk</td><td colspan="2" style="text-align:center">Both: NBM ≥12h pre-procedure; gastric emptying delay — inform anaesthetist</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- SELECTION BUTTONS -->
+  <div class="agent-sel-label">Select your agent:</div>
+  <div class="agent-grid">
+    <button class="agent-card agent-card-slim" id="agentSema" onclick="selectAgent('sema')">
+      <span class="agent-sel-lbl">✓ Selected</span>
+      <div class="agent-name sema-col">Semaglutide</div>
+      <div class="agent-brand">Wegovy (obesity/CVD) · Ozempic (T2DM) · Rybelsus (oral)</div>
+      <div class="agent-pref-title" style="margin-top:var(--s3)">Why select — based on your choices:</div>
+      <div id="semaPrefList"><div class="agent-pref" style="color:var(--color-text-muted);font-style:italic">Complete steps 1–5 first</div></div>
+    </button>
+    <button class="agent-card agent-card-slim" id="agentTirz" onclick="selectAgent('tirz')">
+      <span class="agent-sel-lbl">✓ Selected</span>
+      <div class="agent-name tirz-col">Tirzepatide</div>
+      <div class="agent-brand">Mounjaro (T2DM / obesity / OSA)</div>
+      <div class="agent-pref-title" style="margin-top:var(--s3)">Why select — based on your choices:</div>
+      <div id="tirzPrefList"><div class="agent-pref" style="color:var(--color-text-muted);font-style:italic">Complete steps 1–5 first</div></div>
+    </button>
+  </div>
+
+  <!-- SINGLE DOSE CARD — shows after selection -->
+  <div id="dosePanel" class="dose-panel-single" style="display:none">
+    <div class="dose-panel-title" id="dosePanelTitle">Titration Protocol</div>
+    <div id="dosePanelBody"></div>
+  </div>
+
+  <div class="rx-notes" id="rxNotes" style="display:none">
+    <h4 style="font-size:.82rem;font-weight:700;margin-bottom:var(--s3)">Titration &amp; Nutritional Guidance</h4>
+    <div class="rx-2col">
+      <div class="rx-col"><h5>Titration rules</h5><ul>
+        <li>Same day each week; rotate injection sites</li>
+        <li>Hold escalation if ≥2 nausea/vomiting episodes/week — stay 4 more weeks then retry</li>
+        <li>Extend to 6–8wks: lithium patients, elderly, GI sensitivity</li>
+        <li>Rapid weight loss (&gt;1 kg/week): hold, increase protein, consider temporary dose reduction</li>
+        <li>Target: ≥5% weight loss at 6 months at maximum tolerated dose</li>
+      </ul></div>
+      <div class="rx-col"><h5>Nutritional</h5><ul>
+        <li>Protein ≥1.2–1.5 g/kg/day throughout treatment</li>
+        <li>Daily multivitamin + mineral supplement</li>
+        <li>Vitamin D + calcium: elderly, long-term antipsychotics</li>
+        <li>≥2 L water/day — critical if on lithium, sulfonylurea, or diuretics</li>
+        <li>Dietitian referral at initiation (mandatory: elderly, ASD/ID, eating disorders, rapid weight loss)</li>
+        <li>Exercise physiologist referral — resistance training to mitigate sarcopenia</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(5)">← Back</button><button class="btn-next" onclick="goStep(7)">Next: Monitoring →</button></div>
+</div>
+
+<!-- STEP 7 -->
+<div class="panel" id="step-7">
+  <div class="step-hdr">
+    <div class="step-tag">Step 7 of 7 — Monitoring</div>
+    <h2>Monitoring Plan</h2>
+    <p>Based on your selections. Standard items appear for all patients; additional items appear only when relevant to your choices.</p>
+  </div>
+  <div class="legend">
+    <div class="leg-item"><span class="tag t-std">Standard</span><span>all patients</span></div>
+    <div class="leg-item"><span class="tag t-psy">Psychiatric</span><span>psych dx selected</span></div>
+    <div class="leg-item"><span class="tag t-med">Medication</span><span>med selected</span></div>
+    <div class="leg-item"><span class="tag t-pop">Population</span><span>group selected</span></div>
+  </div>
+  <div class="tl" id="monitorTL"></div>
+  <div class="note-box nb-red" style="margin-top:var(--s5)"><strong>TGA Nov 2025 Psychiatric Safety Warning:</strong> Monitor for new or worsening depression, anxiety, and suicidal ideation — particularly in first 3 months and after each dose escalation. Report adverse events to TGA via DAEN.</div>
+  <div class="note-box nb-blue" style="margin-top:var(--s3)"><strong>Visual Safety (TGA/Medsafe 2025–26):</strong> Emerging NAION signal. Advise patients to report any sudden visual changes immediately. Document visual acuity at 6-month review.</div>
+  <div class="info-box" style="margin-top:var(--s3)">⚕️ <strong>Clinical judgement required.</strong> This monitoring plan is a suggested aide-memoire generated from your protocol selections. It does not replace individualised clinical assessment, formal medication review, TGA prescribing information, or institutional guidelines. Adjust frequency based on clinical complexity and patient response.</div>
+  <div class="nav-btns"><button class="btn-back" onclick="goStep(6)">← Back</button><button class="btn-next" onclick="generateOutput()">📋 Generate Output →</button></div>
+  <div class="out-panel" id="outPanel">
+    <div class="out-hdr"><h3>Clinical Decision Documentation</h3><button class="copy-btn" id="copyBtn">Copy</button></div>
+    <div class="out-body">
+      <div class="out-text" id="outText"></div>
+      <div class="out-disc">Clinical decision-support only. Does not replace clinician judgement, TGA prescribing information, or PBS eligibility criteria. GLP-1 Prescribing Protocol — Psychiatry (Australia) v5.0, June 2026.</div>
+    </div>
+  </div>
+</div>
+
+  </main>
+</div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const S = {
+  step: 1,
+  indications: new Set(),
+  abs: {},       // id -> 'nil' | 'flagged'
+  rel: new Set(),
+  medHx: new Set(),
+  psych: new Set(),
+  meds: new Set(),
+  pops: new Set(),
+  agent: null
+};
+
+// ─── CHIPS ───────────────────────────────────────────────────────────────────
+function updateChips() {
+  const inner = document.getElementById('chipsInner');
+  const bar = document.getElementById('chipsBar');
+  // collect all chip sources
+  const chips = [];
+  document.querySelectorAll('.ind-card.sel').forEach(el => chips.push({label: el.dataset.chip, type: el.dataset.chipType||''}));
+  document.querySelectorAll('.cl-row.flagged[data-rel]').forEach(el => chips.push({label: el.dataset.chip, type: el.dataset.chipType||'chip-warn'}));
+  document.querySelectorAll('.cl-row.checked[data-psych]').forEach(el => chips.push({label: el.dataset.chip, type: el.dataset.chipType||''}));
+  document.querySelectorAll('.med-row.checked').forEach(el => chips.push({label: el.dataset.chip, type: el.dataset.chipType||'chip-med'}));
+  document.querySelectorAll('.pop-card.sel').forEach(el => chips.push({label: el.dataset.chip, type: el.dataset.chipType||'chip-pop'}));
+  if (S.agent === 'sema') chips.push({label: 'Sema', type: 'chip-agent-s'});
+  else if (S.agent === 'tirz') chips.push({label: 'Tirz', type: 'chip-agent-t'});
+
+  // rebuild preserving label element
+  inner.innerHTML = '<span class="chips-lbl">Selections:</span>';
+  chips.forEach(({label, type}) => {
+    const sp = document.createElement('span');
+    sp.className = 'chip ' + type;
+    sp.textContent = label;
+    inner.appendChild(sp);
+  });
+  bar.classList.toggle('has-chips', chips.length > 0);
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+const STEP_LABELS = ['Indication','Medical Hx','Psych Hx','Medications','Population','Agent','Monitoring'];
+
+function buildNav() {
+  const nav = document.getElementById('stepNav');
+  nav.innerHTML = '';
+  STEP_LABELS.forEach((label, i) => {
+    const n = i + 1;
+    const b = document.createElement('button');
+    b.className = 'nav-item' + (n === S.step ? ' active' : n < S.step ? ' done' : '');
+    b.innerHTML = `<svg class="nav-chk" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span class="nav-num">${n}</span><span>${label}</span>`;
+    b.onclick = () => goStep(n);
+    nav.appendChild(b);
+  });
+}
+
+// ─── DYNAMIC AGENT CARD BULLETS ─────────────────────────────────────────────
+function renderAgentCards() {
+  const hp  = id => S.psych.has(id);
+  const hm  = id => S.meds.has(id);
+  const hi  = k  => S.indications.has(k);
+  const hpo = k  => S.pops.has(k);
+  const hr  = id => S.rel.has(id);
+  const mkPref = t => '<div class="agent-pref">' + t + '</div>';
+
+  const sema = [], tirz = [];
+
+  // Psychosis / schizophrenia → sema (COaST RCT)
+  if (hp('px-schiz') || hp('px-sca') || hp('px-fep') || hp('px-del'))
+    sema.push('Psychotic disorder (COaST RCT, Siskind 2025 — semaglutide first-line)');
+
+  // Bipolar on lithium → sema (slower GI = safer lithium levels)
+  if ((hp('px-bd1') || hp('px-bd2')) && hm('med-li'))
+    sema.push('Bipolar on lithium — more gradual GI onset → lower lithium toxicity risk');
+  else if (hp('px-bd1') || hp('px-bd2'))
+    sema.push('Bipolar disorder — semaglutide preferred; tirzepatide use requires close monitoring');
+
+  // OCP without switching → sema (no interaction)
+  if (hm('med-ocp') || hpo('wra'))
+    sema.push('On OCP — semaglutide has no significant oral contraceptive interaction');
+
+  // ASD / ID / injection aversion → oral sema
+  if (hp('px-asd') || hp('px-id'))
+    sema.push('ASD / intellectual disability — oral Rybelsus avoids injection aversion');
+
+  // CVD → sema PBS (SELECT trial)
+  if (hi('cvd'))
+    sema.push('Established CVD + obesity — SELECT trial (MACE −20%); Wegovy PBS pathway');
+
+  // AUD → sema (more craving data)
+  if (hi('aud') || hp('px-aud'))
+    sema.push('AUD — more published craving-reduction RCT data vs tirzepatide');
+
+  // Hepatic impairment → sema (more PK data)
+  if (hr('r-liver'))
+    sema.push('Severe hepatic impairment — more semaglutide PK safety data available');
+
+  // Elderly → sema (gentler GI onset)
+  if (hpo('elderly'))
+    sema.push('Older adult — gradual GI onset better tolerated; more long-term safety data');
+
+  // Tirzepatide — max weight loss
+  if (hi('obesity') || hi('t2dm') || hi('osa'))
+    tirz.push('Maximum weight loss required — 20.2% vs 13.7% (SURMOUNT-5 head-to-head, 47% greater)');
+
+  // T2DM suboptimal control → tirz
+  if (hi('t2dm'))
+    tirz.push('T2DM with metabolic burden — dual GIP + GLP-1 mechanism; superior HbA1c reduction');
+
+  // OSA → tirz (only TGA-approved)
+  if (hi('osa'))
+    tirz.push('OSA indication — SURMOUNT-OSA RCT; only TGA-approved GLP-1 RA for OSA');
+
+  // No OCP concern → tirz ok
+  if (!hm('med-ocp') && !hpo('wra'))
+    tirz.push('No oral contraceptive — no OCP absorption interaction concern with tirzepatide');
+
+  // Sema failure / intolerance always an option
+  tirz.push('Semaglutide failure or documented intolerance — switch candidate');
+
+  // BED → tirz (greater appetite suppression)
+  if (hi('bed') || hp('px-bed'))
+    tirz.push('BED / binge eating — greater appetite and reward-circuit suppression (dual agonism)');
+
+  // No entries? Generic
+  if (sema.length === 0) sema.push('Standard GLP-1 RA with long-term safety evidence');
+  if (tirz.length <= 1)  tirz.push('Superior efficacy when metabolic burden is the primary driver');
+
+  const sp = document.getElementById('semaPrefList');
+  const tp = document.getElementById('tirzPrefList');
+  if (sp) sp.innerHTML = sema.map(mkPref).join('');
+  if (tp) tp.innerHTML = tirz.map(mkPref).join('');
+}
+
+function goStep(n) {
+  if (n < 1 || n > 7) return;
+  document.getElementById('step-' + S.step).classList.remove('active');
+  S.step = n;
+  document.getElementById('step-' + n).classList.add('active');
+  document.getElementById('prog').style.width = (n / 7 * 100) + '%';
+  buildNav();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (n === 6) renderAgentCards();
+  if (n === 7) buildTimeline();
+}
+
+// ─── THEME ───────────────────────────────────────────────────────────────────
+(function() {
+  const btn = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  let dark = matchMedia('(prefers-color-scheme:dark)').matches;
+  root.setAttribute('data-theme', dark ? 'dark' : 'light');
+  function updateIcon() {
+    btn.innerHTML = dark
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  updateIcon();
+  btn.addEventListener('click', () => {
+    dark = !dark;
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    updateIcon();
+  });
+})();
+
+// ─── RESET ───────────────────────────────────────────────────────────────────
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (!confirm('Reset all selections?')) return;
+  S.indications.clear(); S.abs = {}; S.rel.clear(); S.medHx.clear();
+  S.psych.clear(); S.meds.clear(); S.pops.clear(); S.agent = null;
+  document.querySelectorAll('.ind-card').forEach(el => {
+    el.classList.remove('sel');
+    const ck = el.querySelector('.ind-check');
+    if (ck) { ck.style.opacity = '0'; ck.style.transform = 'scale(0.5)'; }
+  });
+  document.querySelectorAll('.cl-row').forEach(el => el.classList.remove('flagged','nil-set','checked'));
+  ['lbl-a-mtc','lbl-a-panc','lbl-a-hyp','lbl-a-preg','lbl-a-ed'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = 'Not set'; el.className = 'cl-badge badge-high'; }
+  });
+  document.querySelectorAll('.med-row').forEach(el => el.classList.remove('checked'));
+  document.querySelectorAll('.pop-card').forEach(el => el.classList.remove('sel'));
+  const sa = document.getElementById('agentSema');
+  const ta = document.getElementById('agentTirz');
+  if (sa) { sa.classList.remove('sema','tirz'); const sl = sa.querySelector('.agent-sel-lbl'); if(sl) sl.style.display='none'; }
+  if (ta) { ta.classList.remove('sema','tirz'); const tl = ta.querySelector('.agent-sel-lbl'); if(tl) tl.style.display='none'; }
+  document.getElementById('stopBanner').classList.remove('vis');
+  document.getElementById('outPanel').classList.remove('vis');
+  const tl = document.getElementById('monitorTL'); if (tl) tl.innerHTML = '';
+  const sp = document.getElementById('semaPrefList'); if (sp) sp.innerHTML = '';
+  const tp = document.getElementById('tirzPrefList'); if (tp) tp.innerHTML = '';
+  const dp = document.getElementById('dosePanel'); if (dp) dp.style.display = 'none';
+  const rxn = document.getElementById('rxNotes'); if (rxn) rxn.style.display = 'none';
+  for (let i = 1; i <= 7; i++) { const p = document.getElementById('step-'+i); if(p) p.classList.remove('active'); }
+  document.getElementById('step-1').classList.add('active');
+  S.step = 1;
+  document.getElementById('prog').style.width = '14.2%';
+  buildNav(); updateChips();
+});
+
+// ─── STEP 1 — Indications ────────────────────────────────────────────────────
+function toggleInd(el) {
+  const k = el.dataset.ind;
+  el.classList.toggle('sel');
+  const ck = el.querySelector('.ind-check');
+  if (el.classList.contains('sel')) {
+    ck.style.cssText = 'opacity:1;transform:scale(1)';
+    S.indications.add(k);
+  } else {
+    ck.style.cssText = 'opacity:0;transform:scale(0.5)';
+    S.indications.delete(k);
+  }
+  updateChips();
+}
+
+// ─── STEP 2 — Medical History ────────────────────────────────────────────────
+function cycleAbs(el) {
+  const id = el.id;
+  const lbl = document.getElementById('lbl-' + id);
+  if (el.classList.contains('nil-set')) {
+    // nil → flagged
+    el.classList.remove('nil-set'); el.classList.add('flagged');
+    S.abs[id] = 'flagged';
+    if (lbl) { lbl.textContent = 'Flagged ⚠'; lbl.className = 'cl-badge badge-high'; }
+  } else if (el.classList.contains('flagged')) {
+    // flagged → clear
+    el.classList.remove('flagged');
+    delete S.abs[id];
+    if (lbl) { lbl.textContent = 'Not set'; lbl.className = 'cl-badge badge-high'; }
+  } else {
+    // clear → nil
+    el.classList.add('nil-set');
+    S.abs[id] = 'nil';
+    if (lbl) { lbl.textContent = 'Nil ✓'; lbl.className = 'cl-badge badge-info'; }
+  }
+  const anyFlagged = Object.values(S.abs).some(v => v === 'flagged');
+  document.getElementById('stopBanner').classList.toggle('vis', anyFlagged);
+  updateChips();
+}
+
+function bulkAbs(action) {
+  ['a-mtc','a-panc','a-hyp','a-preg','a-ed'].forEach(id => {
+    const el = document.getElementById(id);
+    const lbl = document.getElementById('lbl-' + id);
+    el.classList.remove('flagged', 'nil-set');
+    if (action === 'nil') {
+      el.classList.add('nil-set');
+      S.abs[id] = 'nil';
+      if (lbl) { lbl.textContent = 'Nil ✓'; lbl.className = 'cl-badge badge-info'; }
+    } else {
+      delete S.abs[id];
+      if (lbl) { lbl.textContent = 'Not set'; lbl.className = 'cl-badge badge-high'; }
+    }
+  });
+  document.getElementById('stopBanner').classList.remove('vis');
+  updateChips();
+}
+
+function toggleRel(el) {
+  const id = el.id;
+  el.classList.toggle('flagged');
+  if (el.classList.contains('flagged')) S.rel.add(id);
+  else S.rel.delete(id);
+  updateChips();
+}
+
+function bulkRel(action) {
+  document.querySelectorAll('[data-rel]').forEach(el => {
+    el.classList.remove('flagged');
+    S.rel.delete(el.id);
+  });
+  updateChips();
+}
+
+function toggleMedHx(el) {
+  const id = el.id;
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) S.medHx.add(id);
+  else S.medHx.delete(id);
+  updateChips();
+}
+
+function bulkMedHx(action) {
+  document.querySelectorAll('[data-medhx]').forEach(el => {
+    el.classList.remove('checked');
+    S.medHx.delete(el.id);
+  });
+  updateChips();
+}
+
+// ─── STEP 3 — Psychiatric Diagnoses ─────────────────────────────────────────
+function togglePsych(el) {
+  const id = el.id;
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) S.psych.add(id);
+  else S.psych.delete(id);
+  updateChips();
+}
+
+// ─── STEP 4 — Medications ────────────────────────────────────────────────────
+function toggleMed(el) {
+  const id = el.id;
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) S.meds.add(id);
+  else S.meds.delete(id);
+  updateChips();
+}
+
+// ─── STEP 5 — Population ─────────────────────────────────────────────────────
+function togglePop(el) {
+  const k = el.dataset.pop;
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) S.pops.add(k);
+  else S.pops.delete(k);
+  updateChips();
+}
+
+// ─── STEP 6 — Agent ──────────────────────────────────────────────────────────
+function selectAgent(a) {
+  S.agent = a;
+  ['agentSema', 'agentTirz'].forEach(id => {
+    document.getElementById(id).classList.remove('sema', 'tirz');
+    document.getElementById(id).querySelector('.agent-sel-lbl').style.display = 'none';
+  });
+  if (a === 'sema') {
+    document.getElementById('agentSema').classList.add('sema');
+    document.getElementById('agentSema').querySelector('.agent-sel-lbl').style.display = 'inline-flex';
+  } else {
+    document.getElementById('agentTirz').classList.add('tirz');
+    document.getElementById('agentTirz').querySelector('.agent-sel-lbl').style.display = 'inline-flex';
+  }
+  updateChips();
+  renderDosePanel(a);
+}
+
+function renderDosePanel(a) {
+  const panel = document.getElementById('dosePanel');
+  const title = document.getElementById('dosePanelTitle');
+  const body  = document.getElementById('dosePanelBody');
+  const rx    = document.getElementById('rxNotes');
+  if (!panel) return;
+
+  if (a === 'sema') {
+    title.innerHTML = '<span style="color:var(--blue)">Semaglutide — Titration Protocol</span>';
+    body.innerHTML = `
+      <div class="dose-steps">
+        <div class="dose-step"><span class="ds-dose sema-col">0.25 mg/wk</span><span class="ds-dur">Weeks 1–4</span><span class="ds-note">Initiation</span></div>
+        <div class="dose-step"><span class="ds-dose sema-col">0.5 mg/wk</span><span class="ds-dur">Weeks 5–8</span><span class="ds-note"></span></div>
+        <div class="dose-step"><span class="ds-dose sema-col">1.0 mg/wk</span><span class="ds-dur">Weeks 9–12</span><span class="ds-note">T2DM maintenance dose</span></div>
+        <div class="dose-step"><span class="ds-dose sema-col">1.7 mg/wk</span><span class="ds-dur">Weeks 13–16</span><span class="ds-note">Obesity escalation</span></div>
+        <div class="dose-step ds-target"><span class="ds-dose sema-col">2.4 mg/wk</span><span class="ds-dur">Week 17+</span><span class="ds-note">Obesity maintenance target</span></div>
+      </div>
+      <div class="dose-sub">Oral option (Rybelsus): 3 mg daily × 4 wks → 7 mg × 4 wks → 14 mg. Take 30 min before first food/drink with water only.</div>`;
+  } else {
+    title.innerHTML = '<span style="color:var(--orange)">Tirzepatide — Titration Protocol</span>';
+    body.innerHTML = `
+      <div class="dose-steps">
+        <div class="dose-step"><span class="ds-dose tirz-col">2.5 mg/wk</span><span class="ds-dur">Weeks 1–4</span><span class="ds-note">Initiation</span></div>
+        <div class="dose-step"><span class="ds-dose tirz-col">5.0 mg/wk</span><span class="ds-dur">Weeks 5–8</span><span class="ds-note"></span></div>
+        <div class="dose-step"><span class="ds-dose tirz-col">7.5 mg/wk</span><span class="ds-dur">Weeks 9–12</span><span class="ds-note">T2DM maintenance option</span></div>
+        <div class="dose-step"><span class="ds-dose tirz-col">10 mg/wk</span><span class="ds-dur">Weeks 13–16</span><span class="ds-note"></span></div>
+        <div class="dose-step"><span class="ds-dose tirz-col">12.5 mg/wk</span><span class="ds-dur">Weeks 17–20</span><span class="ds-note"></span></div>
+        <div class="dose-step ds-target"><span class="ds-dose tirz-col">15 mg/wk</span><span class="ds-dur">Week 21+</span><span class="ds-note">Maximum / obesity target</span></div>
+      </div>
+      <div class="dose-sub">⚠ OCP interaction: add barrier method or switch to non-oral contraception for 4 weeks post-initiation AND 4 weeks post-each escalation step (TGA Nov 2025).</div>`;
+  }
+  panel.style.display = 'block';
+  if (rx) rx.style.display = 'block';
+}
+
+// ─── STEP 7 — Monitoring Timeline ────────────────────────────────────────────
+function tag(text, cls) { return `<span class="tag ${cls}">${text}</span>`; }
+
+function buildTimeline() {
+  // Helpers — only truthy if explicitly selected
+  const hasMed = id => S.meds.has(id);
+  const hasPsych = id => S.psych.has(id);
+  const hasRel = id => S.rel.has(id);
+  const hasMedHx = id => S.medHx.has(id);
+  const hasPop = k => S.pops.has(k);
+  const hasInd = k => S.indications.has(k);
+
+  const hasPsychDx = S.psych.size > 0;
+  const isMood = hasPsych('px-mdd') || hasPsych('px-pdd') || hasPsych('px-bd1') || hasPsych('px-bd2');
+  const isED = hasPsych('px-an') || hasPsych('px-bn') || hasPsych('px-arfid') || hasPsych('px-bed');
+  const isAdhd = hasPsych('px-adhd');
+  const hasOsaRisk = hasInd('osa') || hasMedHx('m-osa');
+
+  const points = [
+    {
+      dot: 'BL', act: true, head: 'Baseline — before first dose',
+      items: [
+        tag('Weight, BMI, waist circumference', 't-std'),
+        tag('HbA1c, fasting glucose', 't-std'),
+        tag('Lipid panel (TC, LDL, HDL, TG)', 't-std'),
+        tag('LFTs, eGFR, electrolytes', 't-std'),
+        tag('BP and HR', 't-std'),
+        tag('Thyroid function (FT4, TSH)', 't-std'),
+        ...(hasPsychDx ? [tag('Psychiatric rating scale (baseline)', 't-psy')] : []),
+        ...(hasMed('med-li') ? [tag('⚠ Lithium level — mandatory', 't-med')] : []),
+        ...(hasMed('med-cloz') ? [tag('Clozapine plasma level', 't-med')] : []),
+        ...(hasMed('med-val') ? [tag('Valproate level (total + free)', 't-med')] : []),
+        ...(hasMed('med-warf') ? [tag('INR / narrow TI drug level', 't-med')] : []),
+        ...(hasMed('med-ins') ? [tag('BGL diary — initiation baseline', 't-med')] : []),
+        ...(hasMed('med-antihtn') || hasMedHx('m-htn') ? [tag('Postural BP if on antihypertensives', 't-med')] : []),
+        ...(hasPop('wra') && S.agent === 'tirz' ? [tag('Contraception confirmed — OCP barrier or non-oral', 't-pop')] : []),
+        ...(hasRel('r-ret') ? [tag('Visual acuity documentation', 't-pop')] : []),
+        ...(isED ? [tag('Eating disorder severity + dietitian referral', 't-pop')] : []),
+        ...(hasPop('paeds') ? [tag('Capacity and consent documented; guardian involved', 't-pop')] : []),
+      ]
+    },
+    {
+      dot: '2w', act: false, head: '2 weeks — tolerability check',
+      items: [
+        tag('GI side effects (nausea, vomiting, constipation)', 't-std'),
+        tag('Weight (early trend)', 't-std'),
+        tag('Hydration and oral intake adequacy', 't-std'),
+        ...(hasPsychDx ? [tag('Mood screen — new psychiatric symptoms', 't-psy')] : []),
+        ...(isMood ? [tag('Depression / suicidality screen (TGA 2025 warning)', 't-psy')] : []),
+        ...(hasMed('med-li') ? [tag('⚠ Lithium level — mandatory post-initiation', 't-med')] : []),
+        ...(hasMed('med-ins') ? [tag('BGL review — adjust insulin/SU if needed', 't-med')] : []),
+        ...(hasMed('med-ac') ? [tag('Bowel function check — constipation screen', 't-med')] : []),
+        ...(isED ? [tag('Nutritional intake check; restrict/purge behaviour review', 't-pop')] : []),
+      ]
+    },
+    {
+      dot: '4w', act: false, head: '4 weeks — escalation decision',
+      items: [
+        tag('Weight', 't-std'),
+        tag('Tolerability — escalate dose or hold current dose', 't-std'),
+        ...(hasPsychDx ? [tag('Psychiatric review', 't-psy')] : []),
+        ...(hasMed('med-cloz') ? [tag('Clozapine level', 't-med')] : []),
+        ...(hasMed('med-warf') ? [tag('INR / drug level review', 't-med')] : []),
+        ...(hasPop('wra') && S.agent === 'tirz' ? [tag('OCP barrier method confirmed — re-confirm each escalation', 't-pop')] : []),
+        ...(hasPop('elderly') ? [tag('Postural BP and falls risk screen', 't-pop')] : []),
+        ...(hasMed('med-stim') || isAdhd ? [tag('Stimulant dose review — appetite and absorption', 't-med')] : []),
+      ]
+    },
+    {
+      dot: '3m', act: false, head: '3 months — first full review',
+      items: [
+        tag('Weight, BMI, waist circumference', 't-std'),
+        tag('HbA1c, lipids, LFTs, eGFR', 't-std'),
+        tag('BP and HR', 't-std'),
+        ...(hasPsychDx ? [tag('Full psychiatric review with rating scale', 't-psy')] : []),
+        ...(isMood ? [tag('Depression / suicidality (TGA 2025 warning)', 't-psy')] : []),
+        ...(hasMed('med-cloz') ? [tag('Clozapine level', 't-med')] : []),
+        ...(hasMed('med-val') ? [tag('Valproate level (total + free)', 't-med')] : []),
+        ...(hasMed('med-li') ? [tag('Lithium level', 't-med')] : []),
+        ...(hasMed('med-stim') || isAdhd ? [tag('Stimulant tolerance and nutritional status', 't-med')] : []),
+        ...(hasMed('med-ahi') ? [tag('Weight loss response vs baseline — antihistaminergic attenuation?', 't-med')] : []),
+        tag('Protein and nutritional intake review', 't-std'),
+        ...(hasPop('elderly') ? [tag('Sarcopenia screen — grip strength, gait speed', 't-pop')] : []),
+        ...(isED ? [tag('Eating disorder re-assessment + dietitian review', 't-pop')] : []),
+      ]
+    },
+    {
+      dot: '6m', act: false, head: '6 months — response evaluation',
+      items: [
+        tag('Full metabolic panel', 't-std'),
+        tag('Assess ≥5% weight loss as minimum treatment response', 't-std'),
+        tag('CVD risk score recalculation', 't-std'),
+        tag('Visual acuity (NAION signal TGA 2025–26)', 't-std'),
+        ...(hasPsychDx ? [tag('Full psychiatric review — dose optimisation or agent switch', 't-psy')] : []),
+        ...(hasMed('med-li') ? [tag('Lithium level', 't-med')] : []),
+        ...(hasMed('med-cloz') ? [tag('Clozapine level', 't-med')] : []),
+        ...(hasMed('med-val') ? [tag('Valproate level', 't-med')] : []),
+        ...(hasMed('med-antihtn') || hasMedHx('m-htn') ? [tag('Review antihypertensive dose — BP may be lower post-weight-loss', 't-med')] : []),
+        ...(hasOsaRisk ? [tag('OSA: consider repeat polysomnography if symptomatic improvement', 't-pop')] : []),
+        ...(hasRel('r-gall') ? [tag('Hepatobiliary review if gallstone history', 't-pop')] : []),
+        ...(hasPop('ses') ? [tag('Cost/access review — PBS eligibility re-check', 't-pop')] : []),
+      ]
+    },
+    {
+      dot: '1yr', act: false, head: 'Annual review',
+      items: [
+        tag('Full metabolic panel, HbA1c, lipids, LFTs, eGFR', 't-std'),
+        tag('BMI and weight trajectory review', 't-std'),
+        ...(hasPsychDx ? [tag('Annual psychiatric review — reassess ongoing indication', 't-psy')] : []),
+        ...(hasMed('med-li') || hasMed('med-val') ? [tag('Mood stabiliser level review', 't-med')] : []),
+        ...(hasMed('med-cloz') ? [tag('Annual clozapine metabolic review', 't-med')] : []),
+        tag('Continuation vs cessation discussion — document rebound weight gain risk on stopping', 't-std'),
+        ...(hasPop('elderly') ? [tag('Annual falls, sarcopenia, and functional review', 't-pop')] : []),
+      ]
+    }
+  ];
+
+  let html = '';
+  points.forEach(({dot, act, head, items}) => {
+    if (items.length > 0) {
+      html += `<div class="tl-item"><div class="tl-dot${act ? ' act' : ''}">${dot}</div><div class="tl-body"><div class="tl-hd">${head}</div><div class="tl-tags">${items.join('')}</div></div></div>`;
+    }
+  });
+  document.getElementById('monitorTL').innerHTML = html;
+}
+
+// ─── OUTPUT GENERATOR ────────────────────────────────────────────────────────
+document.getElementById('sbGen').addEventListener('click', () => {
+  goStep(7);
+  setTimeout(generateOutput, 400);
+});
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const txt = document.getElementById('outText').textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    const b = document.getElementById('copyBtn');
+    const orig = b.textContent;
+    b.textContent = '✓ Copied!';
+    setTimeout(() => b.textContent = orig, 2000);
+  });
+});
+
+function generateOutput() {
+  buildTimeline();
+  const now = new Date();
+  const ds = now.toLocaleDateString('en-AU', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  const ts = now.toLocaleTimeString('en-AU', {hour:'2-digit', minute:'2-digit'});
+
+  const indLabels = {
+    t2dm: 'Type 2 Diabetes Mellitus',
+    obesity: 'Obesity / Overweight (BMI ≥30, or ≥27 with comorbidity)',
+    cvd: 'Cardiovascular Risk Reduction — established CVD + BMI ≥27 (Wegovy)',
+    osa: 'Obstructive Sleep Apnoea + obesity (Mounjaro)',
+    bed: 'Binge Eating Disorder [OFF-LABEL — document consent]',
+    aud: 'Alcohol Use Disorder [OFF-LABEL — document consent]'
+  };
+  const psychLabels = {
+    'px-schiz':'Schizophrenia','px-sca':'Schizoaffective disorder','px-fep':'First-episode psychosis','px-del':'Delusional disorder',
+    'px-bd1':'Bipolar I disorder','px-bd2':'Bipolar II disorder','px-mdd':'Major depressive disorder','px-pdd':'Persistent depressive disorder',
+    'px-gad':'GAD','px-panic':'Panic disorder','px-social':'Social anxiety disorder','px-ptsd':'PTSD / complex trauma',
+    'px-ocd':'OCD','px-adhd':'ADHD','px-asd':'ASD','px-id':'Intellectual disability',
+    'px-bed':'Binge eating disorder','px-an':'Anorexia nervosa (CONTRAINDICATION if active)','px-bn':'Bulimia nervosa (CONTRAINDICATION if active purging)','px-arfid':'ARFID',
+    'px-aud':'Alcohol use disorder','px-oud':'Opioid use disorder','px-sud':'Other substance use disorder',
+    'px-bpd':'Borderline personality disorder','px-opd':'Other personality disorder','px-dem':'Dementia','px-somatic':'Somatic symptom / functional disorder'
+  };
+  const medLabels = {
+    'med-li':'Lithium','med-ins':'Insulin / sulfonylurea','med-ocp':'OCP',
+    'med-cloz':'Clozapine','med-ac':'Anticholinergic antipsychotics','med-ahi':'Antihistaminergic psychotropics',
+    'med-stim':'Stimulants','med-val':'Valproate','med-warf':'Warfarin / narrow TI drugs',
+    'med-ssri':'SSRIs / SNRIs','med-met':'Metformin','med-ntx':'Naltrexone / buprenorphine',
+    'med-antihtn':'Antihypertensives','med-bzd':'Benzodiazepines'
+  };
+  const relLabels = {
+    'r-gp':'Gastroparesis / GI dysmotility','r-ckd':'CKD (eGFR <30)','r-liver':'Severe hepatic impairment',
+    'r-panch':'Resolved pancreatitis','r-ret':'Diabetic retinopathy','r-gall':'Gallstones','r-hf':'Heart failure NYHA III–IV'
+  };
+  const medHxLabels = {
+    'm-t2dm':'T2DM','m-htn':'Hypertension','m-dyslip':'Dyslipidaemia','m-cvd2':'Established CVD',
+    'm-nafld':'NAFLD / MASLD','m-pcos':'PCOS','m-thyroid':'Thyroid disease','m-osa':'OSA','m-smok':'Smoking','m-hiv':'HIV / immunocompromised'
+  };
+  const popLabels = {
+    'paeds':'Paediatric (<18)','wra':'Women on OCP / hormonal contraception','preg':'Planning pregnancy',
+    'elderly':'Older adults (≥65)','ses':'Low SES'
+  };
+  const absNames = {
+    'a-mtc':'MTC / MEN-2','a-panc':'Active pancreatitis','a-hyp':'GLP-1 RA hypersensitivity',
+    'a-preg':'Pregnancy / breastfeeding','a-ed':'Active restrictive eating disorder'
+  };
+
+  const hasMed = id => S.meds.has(id);
+  const hasPsych = id => S.psych.has(id);
+  const hasPop = k => S.pops.has(k);
+  const hasRel = id => S.rel.has(id);
+  const hasMedHx = id => S.medHx.has(id);
+
+  const isMood = hasPsych('px-mdd') || hasPsych('px-pdd') || hasPsych('px-bd1') || hasPsych('px-bd2');
+  const hasOsaRisk = S.indications.has('osa') || hasMedHx('m-osa');
+
+  const selInds = [...S.indications].map(k => indLabels[k] || k);
+  const selPsych = [...S.psych].map(k => psychLabels[k] || k);
+  const selMeds = [...S.meds].map(k => medLabels[k] || k);
+  const selRel = [...S.rel].map(k => relLabels[k] || k);
+  const selMedHx = [...S.medHx].map(k => medHxLabels[k] || k);
+  const selPops = [...S.pops].map(k => popLabels[k] || k);
+  const flaggedAbs = Object.entries(S.abs).filter(([,v]) => v === 'flagged');
+  const isOffLabel = S.indications.has('bed') || S.indications.has('aud');
+
+  const agentName = S.agent === 'sema' ? 'Semaglutide (Ozempic / Wegovy / Rybelsus)'
+    : S.agent === 'tirz' ? 'Tirzepatide (Mounjaro)'
+    : '[Agent not selected — complete Step 6]';
+  const agentDosing = S.agent === 'sema'
+    ? '0.25mg SC weekly ×4wks → 0.5mg → 1.0mg (T2DM maint.) or continue → 1.7mg → 2.4mg (obesity maint.).\nOral option (Rybelsus): 3mg daily ×4wks → 7mg ×4wks → 14mg. Take 30min before food/drink (water only).'
+    : S.agent === 'tirz'
+    ? '2.5mg SC weekly ×4wks → 5mg → 7.5mg → 10mg → 12.5mg → 15mg (maximum).\n⚠ OCP: add barrier / switch to non-oral for 4wks after initiation and each escalation (TGA Nov 2025).'
+    : '[Select agent in Step 6]';
+
+  // Build only the alerts that are actually selected
+  const medAlerts = [];
+  if (hasMed('med-li')) medAlerts.push('⚠ LITHIUM: GI side effects → dehydration → reduced renal clearance → toxicity risk. Mandatory levels: baseline, 2wks post-initiation, 2wks post-each escalation. ≥2L/day hydration. Extend escalation intervals to 6–8wks. Semaglutide strongly preferred. Counsel on toxicity symptoms (tremor, confusion, diarrhoea, polyuria).');
+  if (hasMed('med-ins')) medAlerts.push('⚠ INSULIN / SU: Reduce insulin 20–30% at initiation; suspend or reduce sulfonylurea. BGL review at 2wks. Provide hypoglycaemia action plan. Tirzepatide: greater glycaemic potency — more aggressive initial dose reduction may be required.');
+  if (hasMed('med-ocp') && S.agent === 'tirz') medAlerts.push('⚠ OCP + TIRZEPATIDE: Delayed GE reduces OCP absorption → contraceptive failure risk. Switch to non-oral contraception OR add barrier method for 4wks after initiation and 4wks after each escalation (TGA Mounjaro PI, Nov 2025).');
+  if (hasMed('med-cloz')) medAlerts.push('⚠ CLOZAPINE: Significant weight loss alters volume of distribution → increased plasma levels possible. Levels: baseline, 4wks, 3 months. COaST RCT (Siskind et al., Lancet Psychiatry 2025) supports semaglutide first-line in clozapine-treated patients.');
+  if (hasMed('med-ac')) medAlerts.push('⚠ ANTICHOLINERGIC ANTIPSYCHOTICS: Independent GE-slowing effect — additive with GLP-1 RA → increased constipation, nausea, and delayed oral drug absorption. Monitor bowel function; consider prophylactic stool softener.');
+  if (hasMed('med-ahi')) medAlerts.push('⚠ ANTIHISTAMINERGIC PSYCHOTROPICS (mirtazapine, quetiapine, olanzapine, TCAs): H1-antagonism increases appetite and carbohydrate craving — may blunt GLP-1 satiety and reduce overall weight loss response. Consider switch to weight-neutral agent where clinically appropriate. Counsel patient on possible attenuated response.');
+  if (hasMed('med-stim')) medAlerts.push('⚠ STIMULANTS: Delayed GE may alter Tmax and absorption of IR formulations. Additive appetite suppression increases inadequate nutrition risk. Consider long-acting formulation switch. Weigh weekly in first 3 months; monitor nutritional intake closely.');
+  if (hasMed('med-val')) medAlerts.push('⚠ VALPROATE: Highly protein-bound — weight loss alters free fraction and volume of distribution. Check total and free valproate at 3 months and 6 months. Check mid-cycle if clinical change occurs.');
+  if (hasMed('med-warf')) medAlerts.push('⚠ WARFARIN / NARROW TI: GE delay alters absorption rate of oral drugs. INR weekly ×4wks and after each escalation. Drug levels (digoxin, cyclosporine, tacrolimus) at initiation and each escalation. Liaise with prescribing specialist.');
+  if (hasMed('med-antihtn')) medAlerts.push('⚠ ANTIHYPERTENSIVES: Weight loss lowers BP — antihypertensive dosing may become excessive → postural hypotension. Review dose at 3 and 6 months.');
+  if (hasMed('med-ssri')) medAlerts.push('NOTE: SSRIs/SNRIs — no major PK interaction. Weight-gain SSRIs (paroxetine, escitalopram) may partially offset benefit; monitor weight trend.');
+  if (hasMed('med-bzd')) medAlerts.push('NOTE: Benzodiazepines — reduced GI motility + sedation increases aspiration risk if vomiting occurs; relevant for ECT and anaesthetic procedures.');
+  if (hasMed('med-ntx')) medAlerts.push('NOTE: Naltrexone / buprenorphine — no direct PK interaction. Do not co-prescribe Contrave (naltrexone/bupropion) with GLP-1 RA without specialist review.');
+  if (hasMed('med-met')) medAlerts.push('NOTE: Metformin — standard compatible combination. Check eGFR; hold if <30. Consider ceasing if T2DM achieves remission.');
+
+  const popAlerts = [];
+  if (hasPop('paeds')) popAlerts.push('PAEDIATRIC (<18): Neither agent TGA-approved under 18. Specialist adolescent psychiatry review required. Formal capacity and consent process documented. Family/guardian involvement documented.');
+  if (hasPop('wra')) popAlerts.push('OCP / HORMONAL CONTRACEPTION: ' + (S.agent === 'tirz' ? 'Tirzepatide selected — switch to non-oral or add barrier for 4wks after initiation and each escalation.' : 'Semaglutide selected — no significant OCP interaction, no barrier method change required.') + ' Cease GLP-1 RA ≥2 months before planned conception.');
+  if (hasPop('preg')) popAlerts.push('PLANNING PREGNANCY: Cease ≥2 months before planned conception. Document contraception plan. Absolute contraindication during pregnancy and breastfeeding.');
+  if (hasPop('elderly')) popAlerts.push('OLDER ADULTS (≥65): Extend escalation intervals to 6–8wks. Protein ≥1.2g/kg/day; exercise physiologist referral for resistance training. Review antihypertensives (postural hypotension risk). Semaglutide preferred — more gradual GI onset. Annual sarcopenia and falls review.');
+  if (hasPop('ses')) popAlerts.push('LOW SES: Significant cost barrier — obesity PBS not confirmed either agent (June 2026). Explore T2DM PBS pathway if eligible. Address food security, bulk-bill dietitian, community exercise supports, needle/sharps disposal.');
+
+  // Build monitoring summary (selection-specific)
+  const monLines = [];
+  monLines.push('Baseline: Weight/BMI/waist | HbA1c, glucose | Lipids, LFTs, eGFR | BP, HR | TFTs'
+    + (S.psych.size > 0 ? ' | Psychiatric rating scale' : '')
+    + (hasMed('med-li') ? ' | ⚠ Lithium level' : '')
+    + (hasMed('med-cloz') ? ' | Clozapine level' : '')
+    + (hasMed('med-val') ? ' | Valproate level' : '')
+    + (hasMed('med-warf') ? ' | INR/drug level' : ''));
+  monLines.push('2 weeks: GI tolerability | weight | hydration'
+    + (S.psych.size > 0 ? ' | mood screen' : '')
+    + (isMood ? ' | depression/suicidality (TGA 2025)' : '')
+    + (hasMed('med-li') ? ' | ⚠ Lithium level (mandatory)' : '')
+    + (hasMed('med-ins') ? ' | BGL review' : ''));
+  monLines.push('4 weeks: Weight | escalation decision'
+    + (S.psych.size > 0 ? ' | psychiatric review' : '')
+    + (hasMed('med-cloz') ? ' | Clozapine level' : '')
+    + (hasPop('wra') && S.agent === 'tirz' ? ' | OCP barrier re-confirm' : ''));
+  monLines.push('3 months: Full metabolic panel | HbA1c'
+    + (S.psych.size > 0 ? ' | psychiatric rating scale' : '')
+    + (hasMed('med-cloz') ? ' | Clozapine level' : '')
+    + (hasMed('med-val') ? ' | Valproate' : '')
+    + (hasMed('med-li') ? ' | Lithium' : '')
+    + (hasMed('med-stim') ? ' | stimulant review' : ''));
+  monLines.push('6 months: Full metabolic review | ≥5% weight loss response | CVD risk | visual acuity'
+    + (S.psych.size > 0 ? ' | full psychiatric review' : '')
+    + (hasMed('med-li') ? ' | Lithium' : '')
+    + (hasMed('med-cloz') ? ' | Clozapine' : '')
+    + (hasMed('med-val') ? ' | Valproate' : '')
+    + (hasMed('med-antihtn') ? ' | antihypertensive dose review' : '')
+    + (hasOsaRisk ? ' | OSA reassessment' : ''));
+  monLines.push('Annual: Full metabolic panel | BMI trajectory'
+    + (S.psych.size > 0 ? ' | annual psychiatric review' : '')
+    + ((hasMed('med-li') || hasMed('med-val')) ? ' | mood stabiliser levels' : '')
+    + (hasMed('med-cloz') ? ' | clozapine metabolic review' : '')
+    + ' | continuation vs cessation discussion');
+
+  const txt =
+`GLP-1 RECEPTOR AGONIST — PRESCRIBING DECISION RECORD
+Generated: ${ds}, ${ts}
+GLP-1 Prescribing Protocol — Psychiatry (Australia) v5.0
+═══════════════════════════════════════════════════════════
+
+1. INDICATION(S)
+───────────────────────────────────────────────────────
+${selInds.length > 0 ? selInds.map((v,i) => `${i+1}. ${v}`).join('\n') : '[None selected]'}
+${isOffLabel ? '\n⚠ OFF-LABEL USE: Clinical rationale documented. Informed consent obtained.' : ''}
+
+2. MEDICAL HISTORY
+───────────────────────────────────────────────────────
+Absolute contraindication screening:
+${flaggedAbs.length > 0
+  ? '⛔ FLAGGED — DO NOT PRESCRIBE:\n' + flaggedAbs.map(([k]) => '  ✗ ' + (absNames[k] || k)).join('\n')
+  : Object.values(S.abs).every(v => v === 'nil')
+  ? '  All five confirmed Nil ✓'
+  : '  [Incomplete — confirm all five before prescribing]'}
+
+Relative contraindications flagged:
+${selRel.length > 0 ? selRel.map(v => '  • ' + v).join('\n') : '  None'}
+
+Other relevant medical history:
+${selMedHx.length > 0 ? selMedHx.map(v => '  • ' + v).join('\n') : '  Not specified'}
+
+3. PSYCHIATRIC DIAGNOSES
+───────────────────────────────────────────────────────
+${selPsych.length > 0 ? selPsych.map(v => '  • ' + v).join('\n') : '  None selected'}
+
+4. MEDICATIONS — ALERTS AND ACTIONS
+───────────────────────────────────────────────────────
+${selMeds.length > 0 ? 'Medications selected: ' + selMeds.join(', ') : 'No key medication classes selected.'}
+
+${medAlerts.length > 0 ? medAlerts.join('\n\n') : '  No specific medication interactions flagged.'}
+
+5. SPECIAL POPULATION CONSIDERATIONS
+───────────────────────────────────────────────────────
+${selPops.length > 0 ? selPops.map(v => '  • ' + v).join('\n') : '  None selected'}
+${popAlerts.length > 0 ? '\n' + popAlerts.join('\n\n') : ''}
+
+6. AGENT, DOSING AND INITIATION
+───────────────────────────────────────────────────────
+Selected agent: ${agentName}
+
+Dosing titration:
+${agentDosing}
+
+Titration interval: ${
+  hasMed('med-li') ? '6–8 weeks mandatory (lithium — toxicity risk with rapid weight loss)' :
+  hasPop('elderly') ? '6–8 weeks (elderly — extended for tolerability)' :
+  hasRel('r-gp') ? '6–8 weeks (gastroparesis — extended)' : '4 weeks standard'
+}
+${hasMed('med-li') ? '⚠ LITHIUM: Check level 2 wks post-initiation and 2 wks after each dose escalation. Counsel patient on toxicity signs (tremor, confusion, polyuria, vomiting).' : ''}
+${hasMed('med-ins') ? '⚠ INSULIN/SU: Reduce insulin by 20–30% before first dose; consider suspending or reducing SU. Review BGLs at 2 weeks.' : ''}
+${hasMed('med-ocp') && S.agent === 'tirz' ? '⚠ OCP + TIRZEPATIDE: Add barrier method or switch to non-oral contraception for 4 weeks post-initiation AND 4 weeks post-each escalation (TGA Nov 2025).' : ''}
+${hasMed('med-cloz') ? '⚠ CLOZAPINE: Significant weight loss alters volume of distribution → increased plasma levels possible. Check clozapine level at baseline, 4 wks, and 3 months.' : ''}
+Hold escalation if: ≥2 nausea/vomiting episodes per week (hold 4 wks then retry) | >1 kg/wk weight loss (increase protein intake, consider dose reduction)
+Target: ≥5% weight loss at 6 months at maximum tolerated dose
+
+Nutritional plan:
+  • Protein: ≥1.2–1.5 g/kg/day${hasPop('elderly') || hasPsych('px-asd') || hasPsych('px-id') ? ' — dietitian referral mandatory' : ''}
+  • Daily multivitamin and mineral supplement
+  ${hasPop('elderly') || hasMed('med-ap') || hasPsych('px-schiz') || hasPsych('px-sca') || hasPsych('px-fep') ? '• Vitamin D + calcium (long-term antipsychotic use or elderly)\n  ' : ''}• Hydration: ≥2 L/day${hasMed('med-li') ? ' — CRITICAL with lithium (dehydration triggers toxicity)' : hasMed('med-su') ? ' — important with sulfonylurea' : ''}
+  • Exercise physiologist referral — resistance training to mitigate lean mass loss${hasPop('elderly') ? ' (HIGH PRIORITY — elderly)' : ''}
+
+
+7. MONITORING PLAN
+───────────────────────────────────────────────────────
+(Standard items for all patients; additional items based on your selections only)
+
+${monLines.join('\n\n')}
+
+SAFETY NOTICES
+───────────────────────────────────────────────────────
+• TGA Nov 2025: Monitor for new/worsening depression, anxiety, and suicidal ideation — especially first 3 months and post-escalation. Report via TGA DAEN.
+• TGA/Medsafe 2025–26: Emerging NAION visual signal — advise patients to report sudden visual changes immediately.
+• PBS (June 2026): Ozempic and Mounjaro PBS-listed for T2DM. Wegovy PBS (CVD + obesity) pending pricing. Tirzepatide obesity PBS withdrawn after Eli Lilly negotiations failed April 2026.
+
+Clinical disclaimer: This output is a decision-support aide-memoire generated from protocol selections. It does not replace clinician judgement, TGA-approved product information, PBS prescribing requirements, or institutional guidelines.
+
+───────────────────────────────────────────────────────
+GLP-1 Prescribing Protocol — Psychiatry (Australia) v5.0 | ${ds}
+───────────────────────────────────────────────────────`;
+
+  document.getElementById('outText').textContent = txt;
+  document.getElementById('outPanel').classList.add('vis');
+  setTimeout(() => document.getElementById('outPanel').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+buildNav();
+</script>
+</body>
+</html>
