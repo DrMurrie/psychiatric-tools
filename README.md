@@ -25,7 +25,7 @@ All tools run entirely in your browser — no data is sent anywhere, nothing is 
 - [ASD Assessment](asd.html)
 
 ## Clinical Tools
-
+- [GLP1 agonist Decision Tool](glp1-decision-tool-v8.html)
 - [Titration Builder](titration.html)
 - [Letter Generator](letter-generator.html)
 
